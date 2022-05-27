@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize("bookingPortal", "root", "", {
   host: "localhost",
   dialect: "mysql",
-  operatorsAliases: flase,
+  operatorsAliases: false,
 });
 
 module.exports = sequelize;
