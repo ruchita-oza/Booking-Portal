@@ -1,4 +1,6 @@
-const User = require("../models/Users");
+// const User = require("../models/Users");
+const db = require("../models");
+const User = db.users;
 
 const updateUser = async (req, res, next) => {
   try {
