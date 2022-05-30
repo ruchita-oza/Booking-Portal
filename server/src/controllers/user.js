@@ -2,7 +2,6 @@ const User = require("../models/Users");
 
 const updateUser = async (req, res, next) => {
   try {
-    var selector = { where: { id: req.params.id } };
     console.log("at update");
     const updateUser = await User.update(
       req.body,
