@@ -1,0 +1,37 @@
+/** @format */
+
+.cbtn {
+	width: 150px;
+	background-color: #000102;
+	border: none;
+	outline: none;
+	height: 49px;
+	border-radius: 49px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: 600;
+	margin: 10px 0;
+	cursor: pointer;
+	transition: 0.5s;
+	background-color: #003580;
+}
+
+.cbtn:hover {
+	background-color: rgb(187, 187, 187);
+	color: rgb(255, 255, 255);
+	width: 200px;
+}
+
+.cbtn.transparent {
+	margin: 0;
+	background: none;
+	border: 2px solid #fff;
+	width: 130px;
+	height: 41px;
+	font-weight: 600;
+	font-size: 0.8rem;
+}
+
+.cbtn.transparent:hover {
+	background-color: #fff;
+}
