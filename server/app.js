@@ -7,6 +7,8 @@ const PORT = process.env.PORT;
 const authRoute = require("./src/routes/auth");
 const userRoute = require("./src/routes/users");
 const cityRoute = require("./src/routes/city");
+const busRoute = require("./src/routes/busDetails");
+
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
@@ -21,6 +23,7 @@ app.use(cookieParser());
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/city", cityRoute);
+app.use("/bus/details", busRoute);
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong";
