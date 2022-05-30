@@ -1,6 +1,10 @@
-const { Op } = require("sequelize");
-const City = require("../models/Cities");
-const Sequelize = require("sequelize");
+// const { Op } = require("sequelize");
+// const City = require("../models/Cities");
+// const Sequelize = require("sequelize");
+
+const db = require("../models");
+const City = db.cities;
+
 const createCity = async (req, res, next) => {
   try {
     const newCity = await City.create({ cityName: req.body.cityName });

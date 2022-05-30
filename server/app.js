@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const sequelize = require("./src/database/connection");
 const cookieParser = require("cookie-parser");
 let app = express();
 dotenv.config();
@@ -16,9 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //create express route
 const router = express.Router();
 app.use(router);
-
-//DB connection
-require("./src/database/connection");
 
 //middleware
 app.use(cookieParser());
@@ -37,5 +33,5 @@ app.use((err, req, res, next) => {
 });
 app.listen(PORT, (err) => {
   if (err) return console.log(`cannot connect to port : ${PORT}`);
-  console.log(`Server is Listening on  : http://localhost:${PORT}`);
+  console.log(`Server is Listening on : http://localhost:${PORT}`);
 });
