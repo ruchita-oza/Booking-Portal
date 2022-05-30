@@ -13,7 +13,11 @@ const Header = ({type}) => {
   const [date, setDate] = useState([
     {
       startDate: new Date(),
+<<<<<<< HEAD
       endDate: new Date(),
+=======
+      endDate: null,
+>>>>>>> 34aa66dcc014eafe6ebdc0c8e0f4a86f05f92b48
       key: 'selection',
     }
   ]);
@@ -72,6 +76,7 @@ const Header = ({type}) => {
                 <div className="headerSearchItem">
                   <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />  
                   <span onClick={() => setOpenDate(!openDate)} className="headerSearchText">
+<<<<<<< HEAD
                     {
                       format(date[0]?.startDate, "MM/dd/yyyy")
                     }
@@ -79,6 +84,13 @@ const Header = ({type}) => {
                     {
                       format(date[0]?.endDate, "MM/dd/yyyy")
                     }
+=======
+                    {/* {`
+                        ${format(date[0].startDate, "MM/dd/yyyy")} 
+                        to 
+                        ${format(date[0].endDate, "MM/dd/yyyy")}
+                    `} */}
+>>>>>>> 34aa66dcc014eafe6ebdc0c8e0f4a86f05f92b48
                   </span>
                   {openDate && (
                     <DateRange editableDateInput={true} 
