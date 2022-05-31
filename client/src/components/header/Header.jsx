@@ -36,7 +36,7 @@ const Header = ({type}) => {
   return (    
       <div className="header"> 
         <div className={type === "list" ? "headerContainer listMode" : "headerContainer"}>
-          <div className="headerList">          
+          {/* <div className="headerList">          
             <div className="headerListItem active">
               <FontAwesomeIcon icon={faPlane}/>
               <span>Flights</span>
@@ -49,7 +49,7 @@ const Header = ({type}) => {
               <FontAwesomeIcon icon={faTrain}/>
               <span>Train</span>
             </div>            
-          </div>     
+          </div>      */}
           { type !== "list" && (
             <>
               <h1 className="headerTitle">
