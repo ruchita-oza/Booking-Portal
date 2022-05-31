@@ -1,7 +1,6 @@
 import React from 'react'
 import './list.css';
-
-// import Navbar from '../../components/navbar/Navbar'
+import SearchItem from "../../components/searchItem/SearchItem";
 import Header from '../../components/header/Header'
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
@@ -76,7 +75,10 @@ const List = () => {
             </div>
           </div>          
           <div className="listResult">
-            
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
           </div>
         </div>
       </div>
