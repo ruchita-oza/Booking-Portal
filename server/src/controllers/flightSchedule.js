@@ -1,11 +1,13 @@
 const db = require("../models");
+const { Op } = require("sequelize");
 const Flight = db.flight_details;
-const City = db.city;
+const City = db.cities;
 const createError = require("../utils/error");
 const FlightSchedule = db.flight_schedule;
-
+const Apifeatures = require("../utils/apiFeatures");
 const createFlightSchedule = async (req, res, next) => {
   try {
+    console.log(req.body);
     if (req.body.source === req.body.destination)
       return next(createError(401, "source and destination must be different"));
     if (req.body.departureTime === req.body.arrivalTime)
@@ -82,8 +84,13 @@ const getFlightSchedule = async (req, res, next) => {
 };
 const getFlightSchedules = async (req, res, next) => {
   try {
-    const flightSchedulees = await FlightSchedule.findAndCountAll();
-    res.status(200).json({ flightSchedulees });
+    const apiFeatures = new Apifeatures(FlightSchedule, req.query)
+      .priceFilter()
+      .filter();
+    let flightSchedules = await apiFeatures.query;
+
+    // const flightSchedulees = await FlightSchedule.findAndCountAll();
+    res.status(200).json({ flightSchedules });
   } catch (err) {
     next(err);
   }
