@@ -36,7 +36,9 @@ class Apifeatures {
   priceFilter() {
     const minPrice = this.queryStr.minPrice ? this.queryStr.minPrice : 1;
     const maxPrice = this.queryStr.maxPrice ? this.queryStr.maxPrice : 1000000;
-    this.priceQuery = { pricePerSeat: { [Op.between]: [minPrice, maxPrice] } };
+    this.priceQuery = {
+      price_per_seat: { [Op.between]: [minPrice, maxPrice] },
+    };
     console.log("price query");
     console.log(this.priceQuery);
     return this;

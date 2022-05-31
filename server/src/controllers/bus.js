@@ -13,9 +13,9 @@ const createBus = async (req, res, next) => {
         createError(401, "busNumber already exist please use another busNumber")
       );
     const newBus = await Bus.create({
-      busName: req.body.busName,
-      busType: req.body.busType,
-      busNumber: req.body.busNumber,
+      bus_name: req.body.bus_name,
+      bus_type: req.body.bus_type,
+      bus_number: req.body.bus_number,
     });
     await newBus.save();
     res.status(200).send("Bus added successfully");
@@ -60,7 +60,7 @@ const getBus = async (req, res, next) => {
 const getBusByBusNumber = async (req, res, next) => {
   try {
     const bus = await Bus.findOne({
-      where: { busNumber: req.params.busNumber },
+      where: { bus_number: req.params.bus_number },
     });
     res.status(200).json(bus);
   } catch (err) {

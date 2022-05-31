@@ -5,7 +5,7 @@ const Apifeatures = require("../utils/apiFeatures");
 const createFlight = async (req, res, next) => {
   try {
     const flight = await Flight.findOne({
-      where: { flightNumber: req.body.flightNumber },
+      where: { flight_number: req.body.flight_number },
     });
     if (flight)
       return next(
@@ -16,9 +16,9 @@ const createFlight = async (req, res, next) => {
       );
     console.log(req.body);
     const newFlight = await Flight.create({
-      flightName: req.body.flightName,
-      flightType: req.body.flightType,
-      flightNumber: req.body.flightNumber,
+      flight_name: req.body.flight_name,
+      flight_type: req.body.flight_type,
+      flight_number: req.body.flight_number,
     });
     await newFlight.save();
     res.status(200).send("Flight added successfully");
@@ -63,7 +63,7 @@ const getFlight = async (req, res, next) => {
 const getFlightByFlightNumber = async (req, res, next) => {
   try {
     const flight = await Flight.findOne({
-      where: { FlightNumber: req.params.FlightNumber },
+      where: { flight_number: req.params.flight_number },
     });
     res.status(200).json(flight);
   } catch (err) {

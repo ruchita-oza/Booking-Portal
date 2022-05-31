@@ -32,13 +32,13 @@ const createBusSchedule = async (req, res, next) => {
     if (!destination)
       return next(createError(401, "destination city not found"));
     const busSchedule = await BusSchedule.create({
-      busId: req.body.busId,
+      bus_id: req.body.bus_id,
       source: req.body.source,
       destination: req.body.destination,
-      departureTime: req.body.departureTime,
-      arrivalTime: req.body.arrivalTime,
-      totalAvailableSeats: req.body.totalAvailableSeats,
-      pricePerSeat: req.body.pricePerSeat,
+      departure_time: req.body.departure_time,
+      arrival_time: req.body.arrival_time,
+      total_available_seats: req.body.total_available_seats,
+      price_per_seat: req.body.price_per_seat,
     });
     await busSchedule.save();
     res.status(200).json({ success: true, busSchedule });
