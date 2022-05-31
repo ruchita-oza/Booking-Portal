@@ -7,7 +7,6 @@ import AuthPage from "./pages/authPage/authPage";
 import ErrorPage from "./components/errorPage/errorPage";
 // import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
-
 function App() {
   return (
     <BrowserRouter>
@@ -20,7 +19,7 @@ function App() {
         <Route path="/flights/:id" element={<Flight />} />
         <Route path="/authPage" element={<AuthPage />} />
         <Route component={ErrorPage} />
-      </Routes>
+  </Routes>
     </BrowserRouter>
   );
 }

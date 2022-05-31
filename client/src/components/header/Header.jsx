@@ -1,4 +1,4 @@
-import { faPlane, faBus, faTrain, faCalendarDays, faPerson} from "@fortawesome/free-solid-svg-icons";
+import { faPlane, faCalendarDays, faPerson} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {format} from "date-fns";
 import { DateRange } from 'react-date-range';
@@ -7,8 +7,10 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import "./header.css";
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
 const Header = ({type}) => {
+  const [destination, setDestination] = useState("")
   const [openDate, setOpenDate] = useState(false)
   const [date, setDate] = useState([
     {
@@ -24,6 +26,8 @@ const Header = ({type}) => {
     children: 0,    
   });
 
+  const navigate = useNavigate();
+  
   const handleOption = (name, operation) => {
     setOptions((prev) => {
       return {
@@ -33,10 +37,14 @@ const Header = ({type}) => {
     });
   };
 
+  const handleSearch = (name, operation) => {
+    navigate("/flights", {state:{destination, date, options}})
+  }
+
   return (    
       <div className="header"> 
         <div className={type === "list" ? "headerContainer listMode" : "headerContainer"}>
-          <div className="headerList">          
+          {/* <div className="headerList">          
             <div className="headerListItem active">
               <FontAwesomeIcon icon={faPlane}/>
               <span>Flights</span>
@@ -49,7 +57,7 @@ const Header = ({type}) => {
               <FontAwesomeIcon icon={faTrain}/>
               <span>Train</span>
             </div>            
-          </div>     
+          </div>      */}
           { type !== "list" && (
             <>
               <h1 className="headerTitle">
@@ -67,7 +75,8 @@ const Header = ({type}) => {
                   <input 
                     type="text" 
                     placeholder="Where are you going ?"
-                    className="headerSearchInput"/>
+                    className="headerSearchInput"
+                    onChange={e => setDestination(e.target.value)}/>
                 </div>
                 <div className="headerSearchItem">
                   <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />  
@@ -116,7 +125,7 @@ const Header = ({type}) => {
                   </div>)}
                 </div>
                 <div className="headerSearchItem">
-                  <button className="headerBtn">Search</button>
+                  <button className="headerBtn" onClick={handleSearch}>Search</button>
                 </div>
               </div>
             </>
