@@ -1,12 +1,6 @@
 import "./navbar.css";
 import React from "react";
-import {
-  faPlane,
-  faBus,
-  faTrain,
-  faCalendarDays,
-  faPerson,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlane, faBus, faTrain} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Navbar = () => {
