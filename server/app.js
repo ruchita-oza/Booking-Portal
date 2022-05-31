@@ -8,6 +8,7 @@ const authRoute = require("./src/routes/auth");
 const userRoute = require("./src/routes/users");
 const cityRoute = require("./src/routes/city");
 const busRoute = require("./src/routes/busDetails");
+const busScheduleRoute = require("./src/routes/busSchedule");
 
 const bodyParser = require("body-parser");
 
@@ -24,6 +25,7 @@ app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use("/city", cityRoute);
 app.use("/bus/details", busRoute);
+app.use("/bus/Schedule", busScheduleRoute);
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || "Something went wrong";

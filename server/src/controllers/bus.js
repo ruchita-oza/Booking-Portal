@@ -2,8 +2,15 @@
 const db = require("../models");
 const Bus = db.bus_details;
 
+const Bus = require("../models/BusDetails");
+const createError = require("../utils/error");
 const createBus = async (req, res, next) => {
   try {
+    const bus = await Bus.findOne({ where: { busNumber: req.body.busNumber } });
+    if (bus)
+      return next(
+        createError(401, "busNumber already exist please use another busNumber")
+      );
     const newBus = await Bus.create({
       busName: req.body.busName,
       busType: req.body.busType,
