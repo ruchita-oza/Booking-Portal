@@ -1,15 +1,13 @@
 const db = require("../models");
-// const Bus = require("../models/BusDetails");
-const Bus = db.bus_details;
-// const City = require("../models/Cities");
+const { Op } = require("sequelize");
+const Flight = db.flight_details;
 const City = db.cities;
 const createError = require("../utils/error");
-// const BusSchedule = require("../models/BusSchedule");
-const BusSchedule = db.bus_schedule;
+const FlightSchedule = db.flight_schedule;
 const Apifeatures = require("../utils/apiFeatures");
-
-const createBusSchedule = async (req, res, next) => {
+const createFlightSchedule = async (req, res, next) => {
   try {
+    console.log(req.body);
     if (req.body.source === req.body.destination)
       return next(createError(401, "source and destination must be different"));
     if (req.body.departureTime === req.body.arrivalTime)
@@ -24,15 +22,15 @@ const createBusSchedule = async (req, res, next) => {
       return next(createError(401, "totalAvailableSeats must be positive"));
     if (req.body.pricePerSeat < 0)
       return next(createError(401, "pricePerSeat must be positive"));
-    const bus = Bus.findOne({ where: { id: req.body.busId } });
-    if (!bus) return next(createError(401, "Bus not found"));
+    const flight = Flight.findOne({ where: { id: req.body.flightId } });
+    if (!flight) return next(createError(401, "Flight not found"));
     const source = City.findOne({ where: { id: req.body.source } });
     if (!source) return next(createError(401, "source city not found"));
     const destination = City.findOne({ where: { id: req.body.destination } });
     if (!destination)
       return next(createError(401, "destination city not found"));
-    const busSchedule = await BusSchedule.create({
-      busId: req.body.busId,
+    const flightSchedule = await FlightSchedule.create({
+      flightId: req.body.FlightId,
       source: req.body.source,
       destination: req.body.destination,
       departureTime: req.body.departureTime,
@@ -40,66 +38,68 @@ const createBusSchedule = async (req, res, next) => {
       totalAvailableSeats: req.body.totalAvailableSeats,
       pricePerSeat: req.body.pricePerSeat,
     });
-    await busSchedule.save();
-    res.status(200).json({ success: true, busSchedule });
+    await flightSchedule.save();
+    res.status(200).json({ success: true, flightSchedule });
   } catch (err) {
     next(err);
   }
 };
-const updateBusSchedule = async (req, res, next) => {
+const updateFlightSchedule = async (req, res, next) => {
   try {
-    const updateBusSchedule = await BusSchedule.update(
+    const updateFlightSchedule = await FlightSchedule.update(
       req.body,
       { where: { id: req.params.id } },
       { new: true, runValidator: true, useFindAndModify: false }
     );
-    if (!updateBusSchedule) {
-      return next(createError(404, "BusSchedule not found"));
+    if (!updateFlightSchedule) {
+      return next(createError(404, "FlightSchedule not found"));
     }
-    const busSchedule = await BusSchedule.findOne({
+    const flightSchedule = await FlightSchedule.findOne({
       where: { id: req.params.id },
     });
-    res.status(200).json({ busSchedule, success: true });
+    res.status(200).json({ flightSchedule, success: true });
   } catch (err) {
     next(err);
   }
 };
 
-const deleteBusSchedule = async (req, res, next) => {
+const deleteFlightSchedule = async (req, res, next) => {
   try {
-    await BusSchedule.destroy({ where: { id: req.params.id } });
-    res.status(200).json("BusSchedule has been deleted");
+    await FlightSchedule.destroy({ where: { id: req.params.id } });
+    res.status(200).json("FlightSchedule has been deleted");
   } catch (err) {
     next(err);
   }
 };
 
-const getBusSchedule = async (req, res, next) => {
+const getFlightSchedule = async (req, res, next) => {
   try {
-    const busSchedule = await BusSchedule.findOne({
+    const flightSchedule = await FlightSchedule.findOne({
       where: { id: req.params.id },
     });
-    res.status(200).json(busSchedule);
+    res.status(200).json(flightSchedule);
   } catch (err) {
     next(err);
   }
 };
-const getBusSchedules = async (req, res, next) => {
+const getFlightSchedules = async (req, res, next) => {
   try {
-    const apiFeatures = new Apifeatures(BusSchedule, req.query)
+    const apiFeatures = new Apifeatures(FlightSchedule, req.query)
       .priceFilter()
       .filter();
-    let busSchedules = await apiFeatures.query;
-    res.status(200).json({ busSchedules });
+    let flightSchedules = await apiFeatures.query;
+
+    // const flightSchedulees = await FlightSchedule.findAndCountAll();
+    res.status(200).json({ flightSchedules });
   } catch (err) {
     next(err);
   }
 };
 
 module.exports = {
-  createBusSchedule,
-  updateBusSchedule,
-  deleteBusSchedule,
-  getBusSchedule,
-  getBusSchedules,
+  createFlightSchedule,
+  updateFlightSchedule,
+  deleteFlightSchedule,
+  getFlightSchedule,
+  getFlightSchedules,
 };

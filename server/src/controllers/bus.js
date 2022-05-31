@@ -1,6 +1,7 @@
 // const Bus = require("../models/BusDetails");
 const db = require("../models");
 const Bus = db.bus_details;
+const Apifeatures = require("../utils/apiFeatures");
 
 // const Bus = require("../models/BusDetails");
 const createError = require("../utils/error");
@@ -68,7 +69,8 @@ const getBusByBusNumber = async (req, res, next) => {
 };
 const getBuses = async (req, res, next) => {
   try {
-    const buses = await Bus.findAndCountAll();
+    const apiFeatures = new Apifeatures(Bus, req.query).filter();
+    let buses = await apiFeatures.query;
     res.status(200).json({ buses });
   } catch (err) {
     next(err);

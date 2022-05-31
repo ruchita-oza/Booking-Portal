@@ -2,12 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const BookedRecords = sequelize.define(
     "bookedrecords",
     {
-      // id: {
-      //   type: Sequelize.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       custId: {
         // type: Sequelize.INTEGER,
         type: DataTypes.INTEGER,
@@ -43,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true, paranoid: true,
     }
   );
   return BookedRecords;

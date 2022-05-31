@@ -3,12 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     "passengerdetails",
 
     {
-      // id: {
-      //   type: Sequelize.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       bookingId: {
         type: DataTypes.INTEGER,
         // references: { model: "BookedRecords", key: "id" },
@@ -28,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
     }
   );
   return PassengerDetails;

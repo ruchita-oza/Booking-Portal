@@ -2,12 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const BusSchedules = sequelize.define(
     "busschedule",
     {
-      // id: {
-      //   type: Sequelize.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       busId: {
         type: DataTypes.INTEGER,
         // references: { model: "BusDetails", key: "id" },
@@ -40,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
     }
   );
   return BusSchedules;

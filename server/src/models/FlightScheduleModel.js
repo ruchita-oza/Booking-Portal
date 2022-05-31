@@ -3,12 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     "flightschedule",
 
     {
-      // id: {
-      //   type: Sequelize.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       flightId: {
         type: DataTypes.INTEGER,
         // references: { model: "FlightDetails", key: "id" },
@@ -41,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
     }
   );
   return FlightSchedule;

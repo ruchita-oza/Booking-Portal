@@ -14,10 +14,11 @@ const verifyToken = (req, res, next) => {
 
 const verifyUser = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin === "Admin") {
+    if (req.user.id == req.params.id || req.user.isAdmin === "Admin") {
       next();
     } else {
-      return next(createError(403, "You are not authorized to access this"));
+      const msg = `user : ${req.user.id} + Please login into your account first this is account of ${req.params.id} `;
+      return next(createError(403, msg));
     }
   });
 };

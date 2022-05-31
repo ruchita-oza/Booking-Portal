@@ -3,12 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     "flightdetails",
 
     {
-      // id: {
-      //   type: DataTypes.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       flightName: {
         type: DataTypes.STRING(50),
       },
@@ -17,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
     }
   );
   return FlightDetails;
