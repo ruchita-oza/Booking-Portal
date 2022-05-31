@@ -6,6 +6,7 @@ const City = db.cities;
 const createError = require("../utils/error");
 // const BusSchedule = require("../models/BusSchedule");
 const BusSchedule = db.bus_schedule;
+const Apifeatures = require("../utils/apiFeatures");
 
 const createBusSchedule = async (req, res, next) => {
   try {
@@ -85,8 +86,11 @@ const getBusSchedule = async (req, res, next) => {
 };
 const getBusSchedules = async (req, res, next) => {
   try {
-    const busSchedulees = await BusSchedule.findAndCountAll();
-    res.status(200).json({ busSchedulees });
+    const apiFeatures = new Apifeatures(BusSchedule, req.query)
+      .priceFilter()
+      .filter();
+    let busSchedules = await apiFeatures.query;
+    res.status(200).json({ busSchedules });
   } catch (err) {
     next(err);
   }

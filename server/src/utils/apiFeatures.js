@@ -27,7 +27,7 @@ class Apifeatures {
     removeFields.forEach((key) => delete queryCopy[key]);
     console.log("filter query");
     console.log(queryCopy);
-    this.query = this.query.findAndCountAll({
+    this.query = this.query.findAll({
       where: { [Op.and]: [queryCopy, this.priceQuery] },
     });
     // console.log(this.query);
