@@ -2,7 +2,7 @@
 const db = require("../models");
 const Bus = db.bus_details;
 
-const Bus = require("../models/BusDetails");
+// const Bus = require("../models/BusDetails");
 const createError = require("../utils/error");
 const createBus = async (req, res, next) => {
   try {

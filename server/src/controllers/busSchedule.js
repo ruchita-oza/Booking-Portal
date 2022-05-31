@@ -1,7 +1,11 @@
-const Bus = require("../models/BusDetails");
-const City = require("../models/Cities");
+const db = require("../models");
+// const Bus = require("../models/BusDetails");
+const Bus = db.bus_details;
+// const City = require("../models/Cities");
+const City = db.cities;
 const createError = require("../utils/error");
-const BusSchedule = require("../models/BusSchedule");
+// const BusSchedule = require("../models/BusSchedule");
+const BusSchedule = db.bus_schedule;
 
 const createBusSchedule = async (req, res, next) => {
   try {

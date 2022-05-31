@@ -7,7 +7,7 @@ const PORT = process.env.PORT;
 const authRoute = require("./src/routes/auth");
 const userRoute = require("./src/routes/users");
 const cityRoute = require("./src/routes/city");
-const busRoute = require("./src/routes/busDetails");
+const busRoute = require("./src/routes/BusDetails");
 const busScheduleRoute = require("./src/routes/busSchedule");
 
 const bodyParser = require("body-parser");
