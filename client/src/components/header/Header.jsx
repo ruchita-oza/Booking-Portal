@@ -63,7 +63,7 @@ const Header = ({type}) => {
               
               <div className="headerSearch">
                 <div className="headerSearchItem">
-                  <FontAwesomeIcon icon={faPlane} className="headerIcon" />  
+                  <FontAwesomeIcon icon={faPlane} className="m-2 headerIcon" />  
                   <input 
                     type="text" 
                     placeholder="Where are you going ?"
