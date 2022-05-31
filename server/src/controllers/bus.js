@@ -2,12 +2,19 @@
 const db = require("../models");
 const Bus = db.bus_details;
 
+const Bus = require("../models/BusDetails");
+const createError = require("../utils/error");
 const createBus = async (req, res, next) => {
   try {
+    const bus = await Bus.findOne({ where: { busNumber: req.body.busNumber } });
+    if (bus)
+      return next(
+        createError(401, "busNumber already exist please use another busNumber")
+      );
     const newBus = await Bus.create({
-      BusName: req.body.BusName,
-      BusType: req.body.BusType,
-      BusNumber: req.body.BusNumber,
+      busName: req.body.busName,
+      busType: req.body.busType,
+      busNumber: req.body.busNumber,
     });
     await newBus.save();
     res.status(200).send("Bus added successfully");
@@ -49,6 +56,16 @@ const getBus = async (req, res, next) => {
     next(err);
   }
 };
+const getBusByBusNumber = async (req, res, next) => {
+  try {
+    const bus = await Bus.findOne({
+      where: { busNumber: req.params.busNumber },
+    });
+    res.status(200).json(bus);
+  } catch (err) {
+    next(err);
+  }
+};
 const getBuses = async (req, res, next) => {
   try {
     const buses = await Bus.findAndCountAll();
@@ -58,4 +75,11 @@ const getBuses = async (req, res, next) => {
   }
 };
 
-module.exports = { createBus, updateBus, deleteBus, getBus, getBuses };
+module.exports = {
+  createBus,
+  getBusByBusNumber,
+  updateBus,
+  deleteBus,
+  getBus,
+  getBuses,
+};
