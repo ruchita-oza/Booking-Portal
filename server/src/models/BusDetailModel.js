@@ -3,12 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     "busdetails",
 
     {
-      // id: {
-      //   type: Sequelize.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       busName: {
         type: DataTypes.STRING(50),
       },
@@ -20,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
     }
   );
   return BusDetails;

@@ -2,12 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const TrainDetails = sequelize.define(
     "traindetails",
     {
-      // id: {
-      //   type: Sequelize.INTEGER(11),
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      // },
       trainName: {
         type: DataTypes.STRING(50),
       },
@@ -16,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: false,
+      timestamps: true,
+      paranoid: true,
     }
   );
   return TrainDetails;
