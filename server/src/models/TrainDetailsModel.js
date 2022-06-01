@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const TrainDetails = sequelize.define(
-    "traindetails",
+    "train_details",
     {
-      trainName: {
+      train_name: {
         type: DataTypes.STRING(50),
       },
-      trainNumber: {
+      train_number: {
         type: DataTypes.STRING(10),
       },
     },

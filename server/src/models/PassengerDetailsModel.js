@@ -1,9 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const PassengerDetails = sequelize.define(
-    "passengerdetails",
+    "passenger_details",
 
     {
-      bookingId: {
+      booking_id: {
         type: DataTypes.INTEGER,
         // references: { model: "BookedRecords", key: "id" },
         // onUpdate: "cascade",
