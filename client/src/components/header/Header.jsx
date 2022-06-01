@@ -40,8 +40,7 @@ const Header = ({type}) => {
   };
 
   const handleSearch = (name, operation) => {
-    navigate("/flights", {state:{source, date, options}})
-    navigate("/flights", {state:{destination, date, options}})
+    navigate("/flights", {state:{source ,destination, date, options}})
   }
 
   

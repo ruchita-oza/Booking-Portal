@@ -16,7 +16,7 @@ export const flightScheduleReducer = (
     case ALL_FLIGHTSCHEDULE_SUCESS:
       return { loading: false, flights: action.payload };
     case ALL_FLIGHTSCHEDULE_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload.busSchedules };
     case CLEAR_ERR:
       return { ...state, error: null };
     default:
