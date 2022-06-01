@@ -11,7 +11,7 @@ export const getFlightSchedules =
   (source, destination, minPrice, maxPrice) => async (dispatch) => {
     try {
       dispatch({ type: ALL_FLIGHTSCHEDULE_REQUEST });
-      let link = `/flight/schedule`;
+      let link = `/flight/schedule/`;
       if (source && destination && !minPrice && !maxPrice) {
         link += `/flight/schedule?source=${source}&destination=${destination}`;
       }
