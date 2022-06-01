@@ -9,6 +9,7 @@ import { DateRange } from "react-date-range";
 
 const List = () => {
   const location = useLocation();
+  const [source] = useState(location.state.source);
   const [destination] = useState(location.state.destination);
   const [date, setDate] = useState(location.state.date);
   const [openDate, setOpenDate] = useState(false);
@@ -23,7 +24,7 @@ const List = () => {
             <h1 className="lsTitle">Search</h1>    
             <div className="lsItem">
               <label>Source</label>
-              <input type="text"></input>
+              <input placeholder={source} type="text"></input>
             </div>             
             <div className="lsItem">
               <label>Destination</label>

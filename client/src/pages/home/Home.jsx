@@ -19,7 +19,7 @@ const Home = () => {
     if (error) {
       return alert.error(error);
     }
-    // dispatch(getFlightSchedules());
+    dispatch(getFlightSchedules());
     dispatch(getBusSchedules());
   }, [dispatch, error]);
   return (

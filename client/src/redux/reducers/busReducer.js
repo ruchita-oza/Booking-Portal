@@ -14,9 +14,9 @@ export const busScheduleReducer = (
     case ALL_BUSSCHEDULE_REQUEST:
       return { loading: true, buses: [] };
     case ALL_BUSSCHEDULE_SUCESS:
-      return { loading: false, buses: action.payload.BusSchedules };
+      return { loading: false, buses: action.payload };
     case ALL_BUSSCHEDULE_FAIL:
-      return { loading: false, error: action.payload.error };
+      return { loading: false, error: action.payload };
     case CLEAR_ERR:
       return { ...state, error: null };
     default:
