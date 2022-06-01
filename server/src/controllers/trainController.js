@@ -3,7 +3,6 @@ const Train = db.train_details;
 const createError = require("../utils/error");
 
 async function checkExists(id) {
-  //   console.log("train number", id);
   const trains = await Train.findAll({
     where: { trainNumber: id },
   });
@@ -12,40 +11,29 @@ async function checkExists(id) {
 
 const createTrain = async (req, res, next) => {
   try {
-    // console.log(req.body);
-    // console.log("in create train");
     const status = await checkExists(req.body.trainNumber);
-    // console.log("train status", status);
     if (!status) {
       const data = req.body;
-      //   const train = await Train.create({
-      //     trainName: req.body.trainName,
-      //     trainNumber: req.body.trainNumber,
-      //   });
       const train = await Train.create(data);
       await train.save();
-      //   res.status(200).send("Train added successfully");
 
       return res.json({ data: "Train added successfully", status: true });
     } else {
       return next(createError("trainNumber is already registered"));
-      //   return createError("trainNumber is already registered");
     }
   } catch (error) {
-    return res.json({ data: error, status: false });
+    return next(createError(500, "Error while creating train" + error));
   }
 };
 
 const updateTrain = async (req, res, next) => {
   try {
     const trainNumber = req.params.id;
-    // console.log("in update train");
     const status = await checkExists(trainNumber);
     if (status) {
       const train = await Train.update(req.body, {
         where: { trainNumber: trainNumber },
       });
-      // await train.save();
 
       return res.json({
         data: "train details updated successfully",
@@ -55,7 +43,7 @@ const updateTrain = async (req, res, next) => {
       return next(createError("Error while updating train details"));
     }
   } catch (error) {
-    return res.json({ data: error, status: false });
+    return next(createError(500, "Error while updating train details" + error));
   }
 };
 
@@ -70,7 +58,7 @@ const deleteTrain = async (req, res, next) => {
       return next(createError("Error while deleting train"));
     }
   } catch (error) {
-    return res.json({ data: "Error while deleting train", status: false });
+    return next(createError(500, "Error while deleting train" + error));
   }
 };
 
@@ -90,10 +78,9 @@ const getTrainByTrainNumber = async (req, res, next) => {
       return next(createError("Error while fetching required train"));
     }
   } catch (error) {
-    return res.json({
-      data: "Error while fetching required train",
-      status: false,
-    });
+    return next(
+      createError(500, "Error while fetching required train" + error)
+    );
   }
 };
 
@@ -109,7 +96,9 @@ const getAllTrain = async (req, res, next) => {
       });
     }
   } catch (error) {
-    return next(createError("Error while fetching all train details"));
+    return next(
+      createError(500, "Error while fetching all train details" + error)
+    );
   }
 };
 
