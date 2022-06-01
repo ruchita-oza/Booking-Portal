@@ -1,5 +1,6 @@
 import "./navbar.css";
 import React from "react";
+import { Link } from 'react-router-dom';
 import {faPlane, faBus, faTrain,} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -10,10 +11,16 @@ const Navbar = () => {
         <div className="navContainer">
           <span className="logo">Skyline booking</span>
           <div className="navItems">
-            <button className="navButton">Register</button>
-            <button className="navButton">Login</button>
-            <button className="navButton">Logout</button>
-            <button className="navButton">User Profile</button>
+            <Link to="/authPage">
+              <button className="navButton">Register</button>
+              <button className="navButton">Login</button>
+            </Link>  
+            <Link to="/">
+              <button className="navButton">Logout</button>
+            </Link>
+            <Link to="/userProfile">
+              <button className="navButton">User Profile</button>
+            </Link>      
           </div>
         </div>
       </div>

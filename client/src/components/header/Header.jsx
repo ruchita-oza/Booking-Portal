@@ -8,6 +8,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import "./header.css";
 import React from 'react';
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const Header = ({type}) => {
   const [source, setSource] = useState("")
@@ -57,8 +58,9 @@ const Header = ({type}) => {
               <p className="headerDesc">
                 Explore for your travels with a free Skyline booking account.
               </p>
-              <button className="headerBtn"> Sign in / Register </button>   
-              
+              <Link to="/authPage">
+                <button className="headerBtn"> Sign in / Register </button> 
+              </Link>
               <div className="headerSearch">
                 <div className="headerSearchItem">
                   <FontAwesomeIcon icon={faPlane} className="m-2 headerIcon" />  
