@@ -8,9 +8,6 @@ const {
   getUsers,
 } = require("../controllers/user");
 
-router.get("/checkauthentication", verifyToken, (req, res, next) => {
-  res.send("hello user you are authenticated");
-});
 router.get("/", getUsers);
 
 router.put("/:id", verifyUser, updateUser);
