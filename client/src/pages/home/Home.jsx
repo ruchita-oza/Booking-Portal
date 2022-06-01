@@ -12,7 +12,7 @@ import Loader from "../../components/loader/loader";
 const Home = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { loading, error, busesAvailable } = useSelector(
+  const { loading, error, buses } = useSelector(
     (state) => state.busesAvailable
   );
   useEffect(() => {

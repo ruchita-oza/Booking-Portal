@@ -21,7 +21,7 @@ function App() {
         <Route path="/authPage" element={<AuthPage />} />
         <Route path="/BusList" element={<BusList />} />
         <Route component={ErrorPage} />
-  </Routes>
+      </Routes>
     </BrowserRouter>
   );
 }
