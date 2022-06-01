@@ -23,7 +23,7 @@ const createTrain = async (req, res, next) => {
       //     trainNumber: req.body.trainNumber,
       //   });
       const train = await Train.create(data);
-      //   await train.save();
+      await train.save();
       //   res.status(200).send("Train added successfully");
 
       return res.json({ data: "Train added successfully", status: true });
@@ -45,6 +45,7 @@ const updateTrain = async (req, res, next) => {
       const train = await Train.update(req.body, {
         where: { trainNumber: trainNumber },
       });
+      // await train.save();
 
       return res.json({
         data: "train details updated successfully",
