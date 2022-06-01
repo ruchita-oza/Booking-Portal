@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const flightSchedule = sequelize.define(
-    "flightschedule",
+    "flight_schedules",
 
     {
       flight_id: {

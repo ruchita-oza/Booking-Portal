@@ -4,14 +4,14 @@ const createError = require("../utils/error");
 
 async function checkExists(id) {
   const trains = await Train.findAll({
-    where: { trainNumber: id },
+    where: { train_number: id },
   });
   return trains.length > 0 ? true : false;
 }
 
 const createTrain = async (req, res, next) => {
   try {
-    const status = await checkExists(req.body.trainNumber);
+    const status = await checkExists(req.body.train_number);
     if (!status) {
       const data = req.body;
       const train = await Train.create(data);
@@ -19,20 +19,20 @@ const createTrain = async (req, res, next) => {
 
       return res.json({ data: "Train added successfully", status: true });
     } else {
-      return next(createError("trainNumber is already registered"));
+      return next(createError(500, "Train number is already registered"));
     }
   } catch (error) {
-    return next(createError(500, "Error while creating train" + error));
+    return next(createError(500, "Error while creating train " + error));
   }
 };
 
 const updateTrain = async (req, res, next) => {
   try {
-    const trainNumber = req.params.id;
-    const status = await checkExists(trainNumber);
+    const train_number = req.params.id;
+    const status = await checkExists(train_number);
     if (status) {
       const train = await Train.update(req.body, {
-        where: { trainNumber: trainNumber },
+        where: { train_number: train_number },
       });
 
       return res.json({
@@ -40,46 +40,48 @@ const updateTrain = async (req, res, next) => {
         status: true,
       });
     } else {
-      return next(createError("Error while updating train details"));
+      return next(createError(500, "Error while updating train details"));
     }
   } catch (error) {
-    return next(createError(500, "Error while updating train details" + error));
+    return next(
+      createError(500, "Error while updating train details " + error)
+    );
   }
 };
 
 const deleteTrain = async (req, res, next) => {
   try {
-    const trainNumber = req.params.id;
-    const status = await checkExists(trainNumber);
+    const train_number = req.params.id;
+    const status = await checkExists(train_number);
     if (status) {
-      const train = await Train.destroy({ where: { trainNumber } });
+      const train = await Train.destroy({ where: { train_number } });
       return res.json({ data: "Train deleted successfully", status: true });
     } else {
-      return next(createError("Error while deleting train"));
+      return next(createError(500, "Error while deleting train"));
     }
   } catch (error) {
-    return next(createError(500, "Error while deleting train" + error));
+    return next(createError(500, "Error while deleting train " + error));
   }
 };
 
 const getTrainByTrainNumber = async (req, res, next) => {
   try {
-    const trainNumber = req.params.id;
-    const status = await checkExists(trainNumber);
+    const train_number = req.params.id;
+    const status = await checkExists(train_number);
     if (status) {
       const train = await Train.findOne({
-        where: { trainNumber: trainNumber },
+        where: { train_number: train_number },
       });
       return res.json({
         data: train,
         status: true,
       });
     } else {
-      return next(createError("Error while fetching required train"));
+      return next(createError(500, "Error while fetching required train"));
     }
   } catch (error) {
     return next(
-      createError(500, "Error while fetching required train" + error)
+      createError(500, "Error while fetching required train " + error)
     );
   }
 };
@@ -90,14 +92,11 @@ const getAllTrain = async (req, res, next) => {
     if (trains) {
       return res.json({ data: trains, status: true });
     } else {
-      return res.json({
-        data: "Error while fetching all train details",
-        status: false,
-      });
+      return next(createError(500, "Error while fetching all train details"));
     }
   } catch (error) {
     return next(
-      createError(500, "Error while fetching all train details" + error)
+      createError(500, "Error while fetching all train details " + error)
     );
   }
 };

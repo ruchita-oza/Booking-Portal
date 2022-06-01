@@ -12,7 +12,7 @@ const busScheduleRoute = require("./src/routes/busSchedule");
 const trainRoute = require("./src/routes/TrainDetailsRoutes");
 const flightRoute = require("./src/routes/flightDetails");
 const flightScheduleRoute = require("./src/routes/flightSchedule");
-const trainScheduleRoute = require("./src/routes/TrainSchedule");
+const trainScheduleRoute = require("./src/routes/TrainScheduleRoutes");
 
 const bodyParser = require("body-parser");
 

@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const BusDetails = sequelize.define(
-    "busdetails",
+    "bus_details",
 
     {
       bus_name: {

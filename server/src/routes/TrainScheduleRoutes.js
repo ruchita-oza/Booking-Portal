@@ -8,7 +8,7 @@ const {
   viewAllTrainSchedule,
   viewTrainScheduleById,
   viewTrainSchedules,
-} = require("../controllers/trainSchedule");
+} = require("../controllers/trainScheduleController");
 
 router.post("/", createTrainSchedule);
 router.post("/:id", updateTrainSchedule);

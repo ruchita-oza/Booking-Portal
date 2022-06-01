@@ -20,7 +20,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.booked_records = require("./BookedRecordModel")(sequelize, DataTypes);
+db.booked_records = require("./BookingRecordModel")(sequelize, DataTypes);
 db.bus_details = require("./BusDetailModel")(sequelize, DataTypes);
 db.bus_schedule = require("./BusScheduleModel")(sequelize, DataTypes);
 db.cities = require("./CityModel")(sequelize, DataTypes);
@@ -28,7 +28,7 @@ db.flight_details = require("./FlightDetailsModel")(sequelize, DataTypes);
 db.flight_schedule = require("./FlightScheduleModel")(sequelize, DataTypes);
 db.passenger_details = require("./PassengerDetailsModel")(sequelize, DataTypes);
 db.train_details = require("./TrainDetailsModel")(sequelize, DataTypes);
-db.train_schedule = require("./TrainScheduleModel")(sequelize, DataTypes);
+db.train_schedules = require("./TrainScheduleModel")(sequelize, DataTypes);
 db.users = require("./UsersModel")(sequelize, DataTypes);
 
 db.sequelize.sync({ force: false }).then(() => {

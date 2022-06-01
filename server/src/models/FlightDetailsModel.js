@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const flightDetails = sequelize.define(
-    "flightdetails",
+  const FlightDetails = sequelize.define(
+    "flight_details",
 
     {
       flight_name: {
@@ -19,5 +19,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return flightDetails;
+  return FlightDetails;
 };
