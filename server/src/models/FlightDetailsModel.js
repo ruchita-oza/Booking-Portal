@@ -3,11 +3,15 @@ module.exports = (sequelize, DataTypes) => {
     "flightdetails",
 
     {
-      flightName: {
+      flight_name: {
         type: DataTypes.STRING(50),
       },
-      flightNumber: {
+      flight_number: {
         type: DataTypes.STRING(10),
+      },
+      flight_type: {
+        type: DataTypes.ENUM("economy", "premium economy", "business"),
+        default: "economy",
       },
     },
     {

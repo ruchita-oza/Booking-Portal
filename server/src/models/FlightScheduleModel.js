@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "flightschedule",
 
     {
-      flightId: {
+      flight_id: {
         type: DataTypes.INTEGER,
         // references: { model: "flightDetails", key: "id" },
         // onUpdate: "cascade",
@@ -21,16 +21,16 @@ module.exports = (sequelize, DataTypes) => {
         // onUpdate: "cascade",
         // onDelete: "cascade",
       },
-      departureTime: {
+      departure_time: {
         type: DataTypes.TIME,
       },
-      arrivalTime: {
+      arrival_time: {
         type: DataTypes.TIME,
       },
-      totalAvailableSeats: {
+      total_available_seats: {
         type: DataTypes.INTEGER(11),
       },
-      pricePerSeat: {
+      price_per_seat: {
         type: DataTypes.INTEGER,
       },
     },

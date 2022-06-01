@@ -6,6 +6,7 @@ const City = db.cities;
 const createError = require("../utils/error");
 // const BusSchedule = require("../models/BusSchedule");
 const BusSchedule = db.bus_schedule;
+const Apifeatures = require("../utils/apiFeatures");
 
 const createBusSchedule = async (req, res, next) => {
   try {
@@ -31,13 +32,13 @@ const createBusSchedule = async (req, res, next) => {
     if (!destination)
       return next(createError(401, "destination city not found"));
     const busSchedule = await BusSchedule.create({
-      busId: req.body.busId,
+      bus_id: req.body.bus_id,
       source: req.body.source,
       destination: req.body.destination,
-      departureTime: req.body.departureTime,
-      arrivalTime: req.body.arrivalTime,
-      totalAvailableSeats: req.body.totalAvailableSeats,
-      pricePerSeat: req.body.pricePerSeat,
+      departure_time: req.body.departure_time,
+      arrival_time: req.body.arrival_time,
+      total_available_seats: req.body.total_available_seats,
+      price_per_seat: req.body.price_per_seat,
     });
     await busSchedule.save();
     res.status(200).json({ success: true, busSchedule });
@@ -85,8 +86,11 @@ const getBusSchedule = async (req, res, next) => {
 };
 const getBusSchedules = async (req, res, next) => {
   try {
-    const busSchedulees = await BusSchedule.findAndCountAll();
-    res.status(200).json({ busSchedulees });
+    const apiFeatures = new Apifeatures(BusSchedule, req.query)
+      .priceFilter()
+      .filter();
+    let busSchedules = await apiFeatures.query;
+    res.status(200).json({ busSchedules });
   } catch (err) {
     next(err);
   }

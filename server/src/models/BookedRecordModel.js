@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const BookedRecords = sequelize.define(
     "bookedrecords",
     {
-      custId: {
+      cust_id: {
         // type: Sequelize.INTEGER,
         type: DataTypes.INTEGER,
         // references: { model: "Users", key: "id" },
@@ -10,28 +10,28 @@ module.exports = (sequelize, DataTypes) => {
         // onDelete: "cascade",
       },
 
-      custEmail: {
+      cust_email: {
         type: DataTypes.STRING(50),
       },
-      custPhoneNumber: {
+      cust_phoneNumber: {
         type: DataTypes.INTEGER(20),
       },
-      transportType: {
+      transport_type: {
         type: DataTypes.STRING(50),
       },
-      transportId: {
+      transport_id: {
         type: DataTypes.INTEGER(50),
       },
-      totalTickCount: {
+      totalTick_count: {
         type: DataTypes.INTEGER(10),
       },
-      journeyData: {
+      journey_data: {
         type: DataTypes.DATE,
       },
-      TotalFare: {
+      Total_fare: {
         type: DataTypes.INTEGER,
       },
-      bookingStatus: {
+      booking_status: {
         type: DataTypes.ENUM("confirm", "cancel"),
         default: "confirm",
       },

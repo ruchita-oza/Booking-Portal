@@ -3,14 +3,14 @@ module.exports = (sequelize, DataTypes) => {
     "busdetails",
 
     {
-      busName: {
+      bus_name: {
         type: DataTypes.STRING(50),
       },
-      busType: {
-        type: DataTypes.STRING(50),
-      },
-      busNumber: {
+      bus_type: {
         type: DataTypes.STRING(10),
+      },
+      bus_number: {
+        type: DataTypes.STRING(11),
       },
     },
     {

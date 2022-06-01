@@ -6,7 +6,7 @@ const {
   getBusSchedule,
   getBusSchedules,
   createBusSchedule,
-} = require("../controllers/busSchedule");
+} = require("../controllers/busScheduleController");
 
 router.get("/", getBusSchedules);
 router.post("/", createBusSchedule);

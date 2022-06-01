@@ -1,16 +1,18 @@
 // const { Op } = require("sequelize");
 // const City = require("../models/Cities");
 // const Sequelize = require("sequelize");
-
+const { citySchema } = require("../utils/validationSchema");
 const db = require("../models");
 const City = db.cities;
 
 const createCity = async (req, res, next) => {
   try {
-    const newCity = await City.create({ cityName: req.body.cityName });
+    const result = await citySchema.validateAsync(req.body);
+    const newCity = await City.create({ city_name: result.city_name });
     await newCity.save();
     res.status(200).send("City added successfully");
   } catch (err) {
+    if (err.isJoi) err.status = 422;
     next(err);
   }
 };
@@ -25,7 +27,7 @@ const updateCity = async (req, res, next) => {
       return next(createError(404, "City not found"));
     }
     const city = await City.findOne({ where: { id: req.params.id } });
-    res.status(200).json({ city: { city }, success: true, updateCity });
+    res.status(200).json({ city: { city }, success: true });
   } catch (err) {
     next(err);
   }
@@ -35,22 +37,6 @@ const deleteCity = async (req, res, next) => {
   try {
     await City.destroy({ where: { id: req.params.id } });
     res.status(200).json("Bus has been deleted");
-
-    // const deletecity = await City.update(
-    //   { deletedAt: Sequelize.fn("NOW") },
-    //   {
-    //     where: {
-    //       [Op.and]: [{ id: req.params.id }, { deletedAt: { [Op.ne]: null } }],
-    //     },
-    //   },
-    //   { new: true, runValidator: true, useFindAndModify: false }
-    // );
-    // if (!deletecity) {
-    //   return next(createError(404, "something went wrong"));
-    // }
-    // const city = await City.findOne({ where: { id: req.params.id } });
-
-    res.status(200).json({ msg: "City has been deleted", city, deletecity });
   } catch (err) {
     next(err);
   }

@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define(
     "users",
     {
-      firstName: {
+      first_name: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
-      lastName: {
+      last_name: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(60),
         allowNull: false,
       },
-      phoneNumber: {
+      phone_number: {
         type: DataTypes.STRING(50),
         allowNull: false,
       },
-      isAdmin: {
+      is_admin: {
         type: DataTypes.ENUM("User", "Admin"),
         defaultValue: "User",
       },

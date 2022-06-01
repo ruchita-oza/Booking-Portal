@@ -1,24 +1,38 @@
 // const Bus = require("../models/BusDetails");
 const db = require("../models");
 const Bus = db.bus_details;
+const Apifeatures = require("../utils/apiFeatures");
 
-// const Bus = require("../models/BusDetails");
 const createError = require("../utils/error");
+const { busSchema } = require("../utils/validationSchema");
+async function checkExists(bus_number) {
+  const bus = await Bus.findAll({
+    where: { bus_number: bus_number },
+  });
+  return bus.length > 0 ? true : false;
+}
+
 const createBus = async (req, res, next) => {
   try {
-    const bus = await Bus.findOne({ where: { busNumber: req.body.busNumber } });
-    if (bus)
+    const result = await busSchema.validateAsync(req.body);
+    console.log(result);
+    const status = await checkExists(result.bus_number);
+    if (status)
       return next(
-        createError(401, "busNumber already exist please use another busNumber")
+        createError(
+          401,
+          `${result.bus_number} already exist please use another busNumber`
+        )
       );
     const newBus = await Bus.create({
-      busName: req.body.busName,
-      busType: req.body.busType,
-      busNumber: req.body.busNumber,
+      bus_name: result.bus_name,
+      bus_type: result.bus_type,
+      bus_number: result.bus_number,
     });
     await newBus.save();
     res.status(200).send("Bus added successfully");
   } catch (err) {
+    if (err.isJoi) err.status = 422;
     next(err);
   }
 };
@@ -59,7 +73,7 @@ const getBus = async (req, res, next) => {
 const getBusByBusNumber = async (req, res, next) => {
   try {
     const bus = await Bus.findOne({
-      where: { busNumber: req.params.busNumber },
+      where: { bus_number: req.params.bus_number },
     });
     res.status(200).json(bus);
   } catch (err) {
@@ -68,7 +82,8 @@ const getBusByBusNumber = async (req, res, next) => {
 };
 const getBuses = async (req, res, next) => {
   try {
-    const buses = await Bus.findAndCountAll();
+    const apiFeatures = new Apifeatures(Bus, req.query).filter();
+    let buses = await apiFeatures.query;
     res.status(200).json({ buses });
   } catch (err) {
     next(err);
