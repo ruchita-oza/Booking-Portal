@@ -2,11 +2,11 @@ const db = require("../models");
 const Train = db.train_details;
 const City = db.cities;
 const createError = require("../utils/error");
-const TrainSchedule = db.train_schedule;
+const TrainSchedule = db.train_schedules;
 const ApiFeatures = require("../utils/apiFeatures");
 
 async function checkExistsTrain(id) {
-  const trains = await Train.findAll({ where: { trainNumber: id } });
+  const trains = await Train.findAll({ where: { train_number: id } });
   return trains.length > 0 ? true : false;
 }
 
@@ -23,13 +23,13 @@ async function checkExistsTrainSchedule(id) {
 
 const createTrainSchedule = async (req, res, next) => {
   try {
-    const trainNumber = req.body.trainId;
+    const train_number = req.body.train_id;
     const source = req.body.source;
     const destination = req.body.destination;
-    const departureTime = req.body.departureTime;
-    const arrivalTime = req.body.arrivalTime;
-    const totalAvailableSeats = req.body.totalAvailableSeats;
-    const trainStatus = await checkExistsTrain(trainNumber);
+    const departureTime = req.body.departure_time;
+    const arrivalTime = req.body.arrival_time;
+    const totalAvailableSeats = req.body.total_available_seats;
+    const trainStatus = await checkExistsTrain(train_number);
     const sourceCityStatus = await checkExistsCity(source);
     const destinationCityStatus = await checkExistsCity(destination);
 
@@ -59,7 +59,7 @@ const createTrainSchedule = async (req, res, next) => {
     }
   } catch (error) {
     return next(
-      createError(500, "Error while creating train schedule" + error)
+      createError(500, "Error while creating train schedule " + error)
     );
   }
 };
@@ -69,10 +69,10 @@ const updateTrainSchedule = async (req, res, next) => {
     const trainScheduleId = req.params.id;
     const source = req.body.source;
     const destination = req.body.destination;
-    const departureTime = req.body.departureTime;
-    const arrivalTime = req.body.arrivalTime;
+    const departureTime = req.body.departure_time;
+    const arrivalTime = req.body.arrival_time;
     const trainScheduleStatus = await checkExistsTrainSchedule(trainScheduleId);
-    const trainStatus = await checkExistsTrain(req.body.trainId);
+    const trainStatus = await checkExistsTrain(req.body.train_id);
     const sourceCityStatus = await checkExistsCity(req.body.source);
     const destinationCityStatus = await checkExistsCity(req.body.destination);
 
@@ -105,7 +105,7 @@ const updateTrainSchedule = async (req, res, next) => {
     }
   } catch (error) {
     return next(
-      createError(500, "Error while updating train schedule" + error)
+      createError(500, "Error while updating train schedule " + error)
     );
   }
 };
@@ -123,11 +123,11 @@ const deleteTrainSchedule = async (req, res, next) => {
         status: true,
       });
     } else {
-      return next(createError("Error while deleting train schedule"));
+      return next(createError(500, "Error while deleting train schedule"));
     }
   } catch (error) {
     return next(
-      createError(500, "Error while deleting train schedule" + error)
+      createError(500, "Error while deleting train schedule " + error)
     );
   }
 };
@@ -138,7 +138,7 @@ const viewAllTrainSchedule = async (req, res, next) => {
     return res.json({ data: trainschedules, status: true });
   } catch (error) {
     return next(
-      createError(500, "Error while fetching train schedule" + error)
+      createError(500, "Error while fetching train schedule " + error)
     );
   }
 };
@@ -153,11 +153,11 @@ const viewTrainScheduleById = async (req, res, next) => {
       });
       return res.json({ data: trainschedule, status: true });
     } else {
-      return next(createError("Error while fetching train schedule"));
+      return next(createError(500, "Error while fetching train schedule"));
     }
   } catch (error) {
     return next(
-      createError(500, "Error while fetching train schedule" + error)
+      createError(500, "Error while fetching train schedule " + error)
     );
   }
 };
@@ -170,7 +170,7 @@ const viewTrainSchedules = async (req, res, next) => {
     let trainschedules = await apiFeatures.query;
     return res.json({ data: trainschedules, status: true });
   } catch (error) {
-    return next(createError(500, error));
+    return next(createError(500, "Error fetching train schedule" + error));
   }
 };
 
