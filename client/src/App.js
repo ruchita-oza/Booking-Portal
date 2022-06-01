@@ -4,6 +4,7 @@ import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
 import React from "react";
 import AuthPage from "./pages/authPage/authPage";
+import ErrorPage from "./components/errorPage/errorPage";
 // import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
 function App() {
@@ -17,7 +18,8 @@ function App() {
         <Route path="/flights" element={<List />} />
         <Route path="/flights/:id" element={<Flight />} />
         <Route path="/authPage" element={<AuthPage />} />
-      </Routes>
+        <Route component={ErrorPage} />
+  </Routes>
     </BrowserRouter>
   );
 }

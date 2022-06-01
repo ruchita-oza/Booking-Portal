@@ -32,6 +32,7 @@
   flex-direction: column;
   gap: 5px;
   margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 .lsItem>label{
@@ -42,6 +43,7 @@
   height: 30px;
   border: none;
   padding: 5px;
+  border-radius: 5px;
 }
 .lsItem>span{
   height: 30px;
@@ -50,6 +52,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .lsOptions{
@@ -62,10 +65,12 @@
   margin-bottom: 10px;
   color: #555;
   font-size: 12px;
+  border-radius: 5px;
 }
 
 .lsOptionInput{
   width: 50px;
+  border-radius: 3px;
 }
 
 .listSearch>button{
@@ -76,6 +81,8 @@
   width: 100%;
   font-weight: 500;
   cursor: pointer;
+  border-radius: 5px;
+
 }
 
 .listResult {

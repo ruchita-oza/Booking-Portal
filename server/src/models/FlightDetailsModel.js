@@ -3,10 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     "flightdetails",
 
     {
-      flightName: {
+      flight_name: {
         type: DataTypes.STRING(50),
       },
-      flightNumber: {
+      flight_number: {
         type: DataTypes.STRING(10),
       },
     },
