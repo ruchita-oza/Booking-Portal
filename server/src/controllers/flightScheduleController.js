@@ -7,7 +7,6 @@ const FlightSchedule = db.flight_schedule;
 const Apifeatures = require("../utils/apiFeatures");
 const createFlightSchedule = async (req, res, next) => {
   try {
-    console.log(req.body);
     if (req.body.source === req.body.destination)
       return next(createError(401, "source and destination must be different"));
     if (req.body.departureTime === req.body.arrivalTime)

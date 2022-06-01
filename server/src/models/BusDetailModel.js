@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
       },
       bus_type: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING(10),
       },
       bus_number: {
-        type: DataTypes.STRING(10),
+        type: DataTypes.STRING(11),
       },
     },
     {

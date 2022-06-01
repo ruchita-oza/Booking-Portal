@@ -7,7 +7,7 @@ const {
   getBuses,
   createBus,
   getBusByBusNumber,
-} = require("../controllers/bus");
+} = require("../controllers/busController");
 
 router.get("/", getBuses);
 router.post("/", createBus);

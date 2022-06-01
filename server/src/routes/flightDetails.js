@@ -7,7 +7,7 @@ const {
   getFlights,
   createFlight,
   getFlightByFlightNumber,
-} = require("../controllers/flight");
+} = require("../controllers/flightController");
 
 router.get("/", getFlights);
 router.post("/", createFlight);

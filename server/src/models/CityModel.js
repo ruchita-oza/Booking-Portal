@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Cities = sequelize.define(
     "cities",
     {
-      cityName: {
+      city_name: {
         type: DataTypes.STRING(50),
       },
     },

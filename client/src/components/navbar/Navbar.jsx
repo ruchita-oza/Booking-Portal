@@ -1,6 +1,6 @@
 import "./navbar.css";
 import React from "react";
-import { faPlane, faBus, faTrain} from "@fortawesome/free-solid-svg-icons";
+import {faPlane, faBus, faTrain,} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Navbar = () => {
@@ -22,7 +22,7 @@ const Navbar = () => {
           <div className="headerList">
             <div className="headerListItem active">
               <FontAwesomeIcon icon={faPlane} />
-              <span>Flights</span>
+              <span>Flight</span>
             </div>
             <div className="headerListItem">
               <FontAwesomeIcon icon={faBus} />

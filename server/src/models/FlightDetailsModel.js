@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const FlightDetails = sequelize.define(
+  const flightDetails = sequelize.define(
     "flightdetails",
 
     {
@@ -9,11 +9,15 @@ module.exports = (sequelize, DataTypes) => {
       flight_number: {
         type: DataTypes.STRING(10),
       },
+      flight_type: {
+        type: DataTypes.ENUM("economy", "premium economy", "business"),
+        default: "economy",
+      },
     },
     {
       timestamps: true,
       paranoid: true,
     }
   );
-  return FlightDetails;
+  return flightDetails;
 };

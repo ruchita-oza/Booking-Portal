@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyUser = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.id == req.params.id || req.user.isAdmin === "Admin") {
+    if (req.user.id == req.params.id || req.user.is_admin === "Admin") {
       next();
     } else {
       const msg = `user : ${req.user.id} + Please login into your account first this is account of ${req.params.id} `;
@@ -25,7 +25,7 @@ const verifyUser = (req, res, next) => {
 
 const verifyAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.isAdmin === "Admin") {
+    if (req.user.is_admin === "Admin") {
       next();
     } else {
       return next(createError(403, "You are not authorized to access this"));
