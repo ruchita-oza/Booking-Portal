@@ -4,7 +4,6 @@ const User = db.users;
 
 const updateUser = async (req, res, next) => {
   try {
-    console.log("at update");
     const updateUser = await User.update(
       req.body,
       { where: { id: req.params.id } },
@@ -40,7 +39,7 @@ const getUser = async (req, res, next) => {
 };
 const getUsers = async (req, res, next) => {
   try {
-    const users = await User.findAndCountAll({ where: { isAdmin: "User" } });
+    const users = await User.findAndCountAll({ where: { is_admin: "User" } });
     res.status(200).json({ users });
   } catch (err) {
     next(err);

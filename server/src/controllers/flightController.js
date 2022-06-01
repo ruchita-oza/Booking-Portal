@@ -2,27 +2,35 @@ const db = require("../models");
 const Flight = db.flight_details;
 const createError = require("../utils/error");
 const Apifeatures = require("../utils/apiFeatures");
+const { flightSchema } = require("../utils/validationSchema");
+
+async function checkExists(flight_number) {
+  const flight = await Flight.findAll({
+    where: { flight_number: flight_number },
+  });
+  return flight.length > 0 ? true : false;
+}
+
 const createFlight = async (req, res, next) => {
   try {
-    const flight = await Flight.findOne({
-      where: { flight_number: req.body.flight_number },
-    });
-    if (flight)
+    const result = await flightSchema.validateAsync(req.body);
+    const status = await checkExists(result.flight_number);
+    if (status)
       return next(
         createError(
           401,
-          "FlightNumber already exist please use another FlightNumber"
+          `${result.flight_number} already exist please use another FlightNumber`
         )
       );
-    console.log(req.body);
     const newFlight = await Flight.create({
-      flight_name: req.body.flight_name,
-      flight_type: req.body.flight_type,
-      flight_number: req.body.flight_number,
+      flight_name: result.flight_name,
+      flight_type: result.flight_type,
+      flight_number: result.flight_number,
     });
     await newFlight.save();
     res.status(200).send("Flight added successfully");
   } catch (err) {
+    if (err.isJoi) err.status = 422;
     next(err);
   }
 };

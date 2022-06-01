@@ -6,7 +6,7 @@ const {
   getFlightSchedule,
   getFlightSchedules,
   createFlightSchedule,
-} = require("../controllers/flightSchedule");
+} = require("../controllers/flightScheduleController");
 
 router.get("/", getFlightSchedules);
 router.post("/", createFlightSchedule);

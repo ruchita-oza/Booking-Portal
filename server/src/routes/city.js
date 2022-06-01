@@ -6,7 +6,7 @@ const {
   getCity,
   getCities,
   createCity,
-} = require("../controllers/city");
+} = require("../controllers/cityController");
 
 router.get("/", getCities);
 router.post("/", createCity);
