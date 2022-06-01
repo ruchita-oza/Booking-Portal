@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
-  const FlightSchedule = sequelize.define(
+  const flightSchedule = sequelize.define(
     "flightschedule",
 
     {
       flightId: {
         type: DataTypes.INTEGER,
-        // references: { model: "FlightDetails", key: "id" },
+        // references: { model: "flightDetails", key: "id" },
         // onUpdate: "cascade",
         // onDelete: "cascade",
       },
@@ -39,5 +39,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  return FlightSchedule;
+  return flightSchedule;
 };
