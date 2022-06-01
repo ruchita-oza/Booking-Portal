@@ -19,7 +19,7 @@ function App() {
         <Route path="/flights/:id" element={<Flight />} />
         <Route path="/authPage" element={<AuthPage />} />
         <Route component={ErrorPage} />
-  </Routes>
+      </Routes>
     </BrowserRouter>
   );
 }

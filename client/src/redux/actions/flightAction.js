@@ -11,12 +11,12 @@ export const getFlightSchedules =
   (source, destination, minPrice, maxPrice) => async (dispatch) => {
     try {
       dispatch({ type: ALL_FLIGHTSCHEDULE_REQUEST });
-      let link = `/flight/Schedule`;
+      let link = `/flight/schedule`;
       if (source && destination && !minPrice && !maxPrice) {
-        link += `/flights/schedule?source=${source}&destination=${destination}`;
+        link += `/flight/schedule?source=${source}&destination=${destination}`;
       }
       if (source && destination && minPrice && maxPrice) {
-        link += `/flights/schedule?source=${source}&destination=${destination}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
+        link += `/flight/schedule?source=${source}&destination=${destination}&minPrice=${minPrice}&maxPrice=${maxPrice}`;
       }
       const { data } = await axios.get(link);
       if (data) {
@@ -26,6 +26,7 @@ export const getFlightSchedules =
         throw new Error();
       }
     } catch (error) {
+      console.log(error.message);
       dispatch({ type: ALL_FLIGHTSCHEDULE_FAIL, payload: error.message });
     }
   };

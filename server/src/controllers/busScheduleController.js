@@ -12,19 +12,19 @@ const createBusSchedule = async (req, res, next) => {
   try {
     if (req.body.source === req.body.destination)
       return next(createError(401, "source and destination must be different"));
-    if (req.body.departureTime === req.body.arrivalTime)
+    if (req.body.departure_time === req.body.arrival_time)
       return next(
         createError(401, "departureTime and arrivalTime must be different")
       );
-    if (req.body.departureTime > req.body.arrivalTime)
+    if (req.body.departure_time > req.body.arrival_time)
       return next(
         createError(401, "arrival time should be greater than departure time")
       );
-    if (req.body.totalAvailableSeats < 0)
+    if (req.body.total_available_seats < 0)
       return next(createError(401, "totalAvailableSeats must be positive"));
-    if (req.body.pricePerSeat < 0)
+    if (req.body.price_per_seat < 0)
       return next(createError(401, "pricePerSeat must be positive"));
-    const bus = Bus.findOne({ where: { id: req.body.busId } });
+    const bus = Bus.findOne({ where: { id: req.body.bus_id } });
     if (!bus) return next(createError(401, "Bus not found"));
     const source = City.findOne({ where: { id: req.body.source } });
     if (!source) return next(createError(401, "source city not found"));

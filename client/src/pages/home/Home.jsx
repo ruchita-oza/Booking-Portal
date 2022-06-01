@@ -12,14 +12,14 @@ import Loader from "../../components/loader/loader";
 const Home = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { loading, error, busesAvailable } = useSelector(
+  const { loading, error, buses } = useSelector(
     (state) => state.busesAvailable
   );
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
-    // dispatch(getFlightSchedules());
+    dispatch(getFlightSchedules());
     dispatch(getBusSchedules());
   }, [dispatch, error]);
   return (
