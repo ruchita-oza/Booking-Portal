@@ -1,26 +1,38 @@
 import "./navbar.css";
 import React from "react";
-import { Link } from 'react-router-dom';
-import {faPlane, faBus, faTrain,} from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { faPlane, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { selectUser } from "../../redux/users/selectors";
+import { useSelector, useDispatch } from "react-redux";
+import { loggingOutUserThunkAction } from "../../redux/users/actions";
 const Navbar = () => {
+  const { loggedInUser } = useSelector(selectUser);
+  // console.log(user);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(loggingOutUserThunkAction());
+  };
   return (
     <div>
       <div className="navbar">
         <div className="navContainer">
           <span className="logo">Skyline booking</span>
           <div className="navItems">
-            <Link to="/authPage">
-              <button className="navButton">Register</button>
-              <button className="navButton">Login</button>
-            </Link>  
-            <Link to="/">
-              <button className="navButton">Logout</button>
-            </Link>
+            {!loggedInUser && (
+              <Link to="/authPage">
+                <button className="navButton">Register</button>
+                <button className="navButton">Login</button>
+              </Link>
+            )}
+            {loggedInUser && (
+              <Link onClick={handleLogout} to="/">
+                <button className="navButton">Logout</button>
+              </Link>
+            )}
             <Link to="/userProfile">
               <button className="navButton">User Profile</button>
-            </Link>      
+            </Link>
           </div>
         </div>
       </div>

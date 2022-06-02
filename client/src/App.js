@@ -4,13 +4,18 @@ import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
 import React from "react";
 import AuthPage from "./pages/authPage/authPage";
-import ErrorPage from "./components/errorPage/errorPage";
+import ErrorPage from "./pages/errorPage/errorPage";
 // import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
+import { ToastContainer } from "react-toastify";
 import BusList from "./pages/BusList/busList";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <BrowserRouter>
+      <ToastContainer positive="top-right" autoClose={1500} />
+
       <Navbar>
         <Route path="/authPage" element={<AuthPage />} />
       </Navbar>
