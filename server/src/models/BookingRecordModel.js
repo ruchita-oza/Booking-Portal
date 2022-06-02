@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       transport_id: {
         type: DataTypes.INTEGER(50),
       },
-      totalTick_count: {
+      total_ticket_count: {
         type: DataTypes.INTEGER(10),
       },
-      journey_data: {
+      journey_date: {
         type: DataTypes.DATE,
       },
       total_fare: {

@@ -20,7 +20,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.booked_records = require("./BookingRecordModel")(sequelize, DataTypes);
+db.booking_records = require("./BookingRecordModel")(sequelize, DataTypes);
 db.bus_details = require("./BusDetailModel")(sequelize, DataTypes);
 db.bus_schedule = require("./BusScheduleModel")(sequelize, DataTypes);
 db.cities = require("./CityModel")(sequelize, DataTypes);

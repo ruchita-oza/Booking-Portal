@@ -34,11 +34,11 @@ const createTrainSchedule = async (req, res, next) => {
     const destinationCityStatus = await checkExistsCity(destination);
 
     if (!trainStatus) {
-      return next(createError(422, "Train number doesnot exists"));
+      return next(createError(422, "Train number does not exists"));
     } else if (!sourceCityStatus) {
-      return next(createError(422, "Source city doesnot exists"));
+      return next(createError(422, "Source city does not exists"));
     } else if (!destinationCityStatus) {
-      return next(createError(422, "Destination city doesnot exists"));
+      return next(createError(422, "Destination city does not exists"));
     } else if (source == destination) {
       return next(
         createError(422, "Source city and destination city should not be same")
@@ -77,14 +77,14 @@ const updateTrainSchedule = async (req, res, next) => {
     const destinationCityStatus = await checkExistsCity(req.body.destination);
 
     if (!trainScheduleStatus) {
-      return next(createError(422, "Train schedule doesnot exists"));
+      return next(createError(422, "Train schedule does not exists"));
     }
     if (!trainStatus) {
-      return next(createError(422, "Train number doesnot exists"));
+      return next(createError(422, "Train number does not exists"));
     } else if (!sourceCityStatus) {
-      return next(createError(422, "Source city doesnot exists"));
+      return next(createError(422, "Source city does not exists"));
     } else if (!destinationCityStatus) {
-      return next(createError(422, "Destination city doesnot exists"));
+      return next(createError(422, "Destination city does not exists"));
     } else if (source == destination) {
       return next(
         createError(422, "Source city and destination city should not be same")
