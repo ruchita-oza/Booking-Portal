@@ -6,25 +6,23 @@ import "./home.css";
 import React, { useEffect } from "react";
 import { useAlert } from "react-alert";
 import { useSelector, useDispatch } from "react-redux";
-import { getFlightSchedules } from "../../redux/actions/flightAction";
-import { getBusSchedules } from "../../redux/actions/busAction";
+import { getFlightSchedules } from "../../redux/flights/actions";
+import { getBusSchedules } from "../../redux/buses/actions";
 import Loader from "../../components/loader/loader";
 const Home = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { loading, error, buses  } = useSelector(
-    (state) => state.busesAvailable
-  );
+  const { isLoading, error } = useSelector((state) => state.busesAvailable);
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
-    dispatch(getFlightSchedules());
+    // dispatch(getFlightSchedules());
     dispatch(getBusSchedules());
   }, [dispatch, error]);
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div>

@@ -7,15 +7,14 @@ import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import { useAlert } from "react-alert";
 import { useSelector, useDispatch } from "react-redux";
-import { getFlightSchedules } from "../../redux/actions/flightAction";
-import { getBusSchedules } from "../../redux/actions/busAction";
+import { getFlightSchedules } from "../../redux/flights/actions";
+import { getBusSchedules } from "../../redux/buses/actions";
 import Loader from "../../components/loader/loader";
-
+import { selectFlights } from "../../redux/flights/selector";
+import toast from "react-hot-toast";
 const List = () => {
   const dispatch = useDispatch();
-  const { loading, error, flights } = useSelector(
-    (state) => state.flightsAvailable
-  );
+  const { loading, error, flights } = useSelector(selectFlights);
 
   const location = useLocation();
   const [source] = useState(location.state.source);
@@ -25,7 +24,7 @@ const List = () => {
   const [options] = useState(location.state.options);
   useEffect(() => {
     if (error) {
-      return alert(error);
+      toast.error(error);
     }
     dispatch(getFlightSchedules(source, destination));
   }, [dispatch, error]);
@@ -93,14 +92,7 @@ const List = () => {
             </div>
           </div>
           <div className="listResult">
-            {flights.data.flightSchedules &&
-              flights.data.flightSchedules.map((flight) => (
-                <SearchItem flight={flight} />
-              ))}
-            {/* <SearchItem />
-            <SearchItem />
-            <SearchItem />
-            <SearchItem /> */}
+            {flights && flights.map((flight) => <SearchItem flight={flight} />)}
           </div>
         </div>
       </div>
