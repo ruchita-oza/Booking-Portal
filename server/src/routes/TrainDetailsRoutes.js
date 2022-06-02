@@ -7,7 +7,7 @@ const {
   deleteTrain,
   getTrainByTrainNumber,
   getAllTrain,
-} = require("../controllers/trainController");
+} = require("../controllers/trainDetailsController");
 
 router.post("/", createTrain);
 router.put("/:id", updateTrain);
