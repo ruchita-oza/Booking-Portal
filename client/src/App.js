@@ -11,10 +11,9 @@ import BusList from "./pages/BusList/busList";
 function App() {
   return (
     <BrowserRouter>
-      <Navbar>
-        <Route path="/authPage" element={<AuthPage />} />
-      </Navbar>
+      <Navbar/>
       <Routes>
+        <Route path="/authPage" element={<AuthPage />} />
         <Route path="/" element={<Home />} />
         <Route path="/flights" element={<List />} />
         <Route path="/flights/:id" element={<Flight />} />

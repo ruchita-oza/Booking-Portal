@@ -12,7 +12,12 @@ form {
   grid-row: 1 / 2;
 }
 
-body {
+body, card {
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.container-fluid {
   min-width: 575px;
 }
 

@@ -25,17 +25,15 @@ function Register(props) {
   // 	}
   // }
   return (
-    <div className='container'>
-      <div className='row'>
-        <div className='col-sm-12 col-md-12 col-lg-12 mx-auto'>
-          <div className='card border-0 shadow rounded-3 my-5'>
-            <div className='row card-body p-4 '>
+        <div className='col-sm-12 col-md-12 col-lg-12 w-100 mx-auto'>
+          <div className='card border-0 shadow rounded-3 '>
+            <div className='row mt-4 '>
               <div className='col-lg-3 d-flex align-items-center justify-content-center'>
                 <h2 className='card-title text-center mb-5 '>
 					<img src="https://i.pinimg.com/originals/02/fc/da/02fcda11cbfb2a84537f9d059b4c81b2.gif" alt="true" height="200px"/>
 				</h2>
               </div>
-              <div className='col-lg-9 '>
+              <div className='col-lg-9 col-md-9 col-sm-9 '>
                 <div>
                   <Formik
                     initialValues={{
@@ -79,7 +77,7 @@ function Register(props) {
                           <label
                             htmlFor='firstname'
                             id='lblFName'
-                            className='col-lg-4 col-md-4 col-sm-10'>
+                            className='col-lg-4 col-md-5 col-sm-12'>
                             First Name
                           </label>
                           <Input
@@ -273,8 +271,6 @@ function Register(props) {
             </div>
           </div>
         </div>
-      </div>
-    </div>
   );
 }
 

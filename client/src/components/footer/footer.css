@@ -4,16 +4,11 @@
   box-sizing: border-box;
 }
 
-body{
-  background-color: #fcfcfc;
-  min-height: 500px;
+body {
+  min-height: 100%;
 }
 
 footer{
- position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 10px; 
   background: #003580;
   width: 100%;
   min-width: 575px;
@@ -21,9 +16,7 @@ footer{
   font-family: "Open Sans";
   padding-top: 40px;
   color: #fff;
-  text-align: center;
-
-  
+  text-align: center; 
 }
 
 .footer-content{
@@ -89,4 +82,34 @@ footer{
   text-transform: uppercase;
   opacity: .4;
   font-weight: 200;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+@media (min-height: 1100px)  {
+ 
+  
+footer{ 
+  position:fixed;
+  bottom:10px;
+}
+}
+
+@media  (min-height: 670px) and (max-width: 500px) {
+
+  footer{ 
+  position:fixed;
+  bottom:50px;
+}
+}
+
+@media (min-height: 653px) and (max-width: 280px) {
+
+  footer {
+    position: fixed;
+    bottom: 50px;
+  }
+
 }

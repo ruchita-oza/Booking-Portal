@@ -11,14 +11,14 @@ function AuthPage() {
 
 
 	return (
-			<div className="container-fluid">
-				<div>
+			<div className="container-fluid d-flex justify-content-center">
+		
 					{isSignUp ? (
 						<Register changeVal={() => changeForm(false)}></Register>
 					) : (
 						<Login changeVal={() => changeForm(true)}></Login>
 					)}
-				</div>
+			
 		</div>
 	);
 }

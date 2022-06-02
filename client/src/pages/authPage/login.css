@@ -9,9 +9,14 @@ form {
   overflow: hidden;
 }
 
-body {
+.container-fluid {
   min-width: 575px;
+}
 
+
+body, card {
+  min-width: 100%;
+  max-width: 100%;
 }
 body,
 input {
@@ -27,3 +32,4 @@ form.sign-in-form {
   color: #444;
   margin-bottom: 10px;
 }
+

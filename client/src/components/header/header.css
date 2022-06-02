@@ -2,14 +2,15 @@
   background-color: #003580;
   color: white;
   display: flex;
+  min-width: 575px;
   justify-content: center;
   position: relative;
 }
 
 .headerContainer {
-  width: 100%;
-  max-width: 1024px;
+  width:100%;
   margin: 20px 0px 100px 0px;
+  min-width: 575px;
 }
 
 .headerContainer.listMode {
@@ -18,8 +19,9 @@
 
 .headerList {
   display: flex;
-  gap: 40px;
-  margin-bottom: 50px;
+  justify-content: start;
+  gap: 50px;
+  margin: 20px 0px 50px 50px;
 }
 
 .headerListItem {
@@ -49,19 +51,20 @@
 }
 
 
+
 .headerSearch {
   height: 50px;
   background-color: white;
   border: 3px solid #febb02;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 10px 0px;
+  align-self: center;
+  justify-self: center;
   border-radius: 5px;
-  position: absolute;
-  bottom: -25px;
-  width: 100%;
-  max-width: 1024px;
+  position: relative;
+  bottom: -125px;
+  left: 50px;
+  width: 90%;
 }
 
 .headerIcon {
@@ -77,6 +80,8 @@
 .headerSearchInput {
   border: none;
   outline: none;
+  width: 100%;
+
 }
 
 .headerSearchText {
@@ -86,14 +91,16 @@
 
 .date {
   position: absolute;
-  top: 50px;
+  top: 80px;
   z-index: 2;
+  right: 20px;
 }
 
 .options {
   z-index: 2;
   position: absolute;
   top: 50px;
+  right: 100px;
   background-color: white;
   color: gray;
   border-radius: 5px;
@@ -127,4 +134,16 @@
 
 .optionCounterButton:disabled {
   cursor: not-allowed;
+}
+
+
+@media screen and (max-width: 700px) {
+    .headerSearch {
+        height: 75px;
+        margin: 0 1rem;
+        left: 15px;
+    }
+    .headerBtn {
+      height: 65px;
+    }
 }

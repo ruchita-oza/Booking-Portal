@@ -5,11 +5,18 @@ import {faPlane, faBus, faTrain,} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Navbar = () => {
+
+ 
+
   return (
-    <div>
+    <>   
+    
+     <div>
       <div className="navbar">
         <div className="navContainer">
-          <span className="logo">Skyline booking</span>
+          <Link to="/">
+            <span className="logo" style={{color: "white"}}>Skyline booking</span>
+          </Link>          
           <div className="navItems">
             <Link to="/authPage">
               <button className="navButton">Register</button>
@@ -43,6 +50,8 @@ const Navbar = () => {
         </div>
       </div>
     </div>
+    </>
+
   );
 };
 
