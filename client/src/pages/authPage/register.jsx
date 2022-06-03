@@ -1,4 +1,7 @@
 /** @format */
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import Button from "../../components/button/Button";
@@ -6,11 +9,9 @@ import Button from "../../components/button/Button";
 import { Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./register.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-hot-toast";
 
-function Register(props) {
+function Register() {
   const navigate = useNavigate();
   const validate = Yup.object().shape({
     first_name: Yup.string().required("First Name is required"),
@@ -73,7 +74,6 @@ function Register(props) {
 
   return (
     <div className="container">
-      <ToastContainer positive="top-right" autoClose={1500} />
       <div className="row">
         <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
           <div className="card border-0 shadow rounded-3 my-5">
@@ -281,12 +281,6 @@ function Register(props) {
                             value="Sign up"
                             onClick={() => {}}
                           ></Button>
-                          {/* {isSubmitting && (
-                            <img
-                              alt="load"
-                              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                            />
-                          )} */}
                         </div>
                         <hr className="my-4" />
                         <div className="w-100  ">
@@ -297,13 +291,9 @@ function Register(props) {
                             </div>
                           </div>
                           <div className="d-flex justify-content-center">
-                            <Button
-                              value="Sign In"
-                              type="button"
-                              onClick={() => {
-                                props.changeVal();
-                              }}
-                            ></Button>
+                            <Link to="/auth/login">
+                              <Button value="Sign In" type="button"></Button>
+                            </Link>
                           </div>
                         </div>
                       </Form>

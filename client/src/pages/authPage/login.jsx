@@ -1,5 +1,8 @@
 /** @format */
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+
 import Button from "../../components/button/Button";
 import { Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,26 +10,32 @@ import Input from "../../components/Input/Input";
 import "./login.css";
 import { fetchLoginUserThunkAction } from "../../redux/users/actions";
 import { selectUser } from "../../redux/users/selectors";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/loader";
-function Login(props) {
-  const { isLoading } = useSelector(selectUser);
+import { toast } from "react-hot-toast";
+function Login() {
+  const { isLoading, error, loggedInUser } = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // let history = useHistory();
+
   const validate = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
       .required("Password is required")
       .min(5, "Password must be at least 5 characters"),
   });
+  const fetchData = (email, password) => {
+    console.log(email, password);
+    dispatch(fetchLoginUserThunkAction(email, password));
+  };
   function handleLogin({ email, password }) {
     console.log("at handle login");
-    console.log(email, password);
-    dispatch(fetchLoginUserThunkAction(email, password), navigate("/"));
+    console.log(email + " pass: " + password);
+    fetchData(email, password);
   }
+  useEffect(() => {
+    if (loggedInUser) navigate("/");
+  }, [error]);
 
   return (
     <>
@@ -63,7 +72,7 @@ function Login(props) {
                             touched,
                           }) => (
                             <Form>
-                              {console.log(values)}
+                              {/* {console.log(values)} */}
                               <div className="row w-100 mb-3  form-floating">
                                 <label
                                   htmlFor="email"
@@ -152,13 +161,12 @@ function Login(props) {
                                   </div>
                                 </div>
                                 <div className="d-flex justify-content-center">
-                                  <Button
-                                    value="Sign Up"
-                                    type="button"
-                                    onClick={() => {
-                                      props.changeVal();
-                                    }}
-                                  ></Button>
+                                  <Link to="/auth/register">
+                                    <Button
+                                      value="Sign Up"
+                                      type="button"
+                                    ></Button>
+                                  </Link>
                                 </div>
                               </div>
                             </Form>

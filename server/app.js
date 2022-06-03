@@ -26,7 +26,7 @@ app.use(router);
 
 //middleware
 app.use(cookieParser());
-app.use("/auth", authRoute);
+app.use("/authRoute", authRoute);
 app.use("/user", userRoute);
 app.use("/city", cityRoute);
 app.use("/bus/details", busRoute);

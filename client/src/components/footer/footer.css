@@ -1,41 +1,36 @@
-*{
+* {
   margin: 0;
-  padding:0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-body{
-  background-color: #fcfcfc;
-  min-height: 500px;
+body {
+  min-height: 100%;
 }
 
-footer{
- position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 10px; 
+footer {
   background: #003580;
   width: 100%;
   min-width: 575px;
   height: 200px;
   font-family: "Open Sans";
   padding-top: 40px;
+  margin-top: auto;
   color: #fff;
   text-align: center;
-
-  
+  position: relative;
+  top: 1000px;
 }
 
-.footer-content{
+.footer-content {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: cloumn;
   text-align: center;
-  
 }
 
-.footer-content h3{
+.footer-content h3 {
   font-size: 1.8rem;
   font-weight: 400;
   text-transform: capitalize;
@@ -43,14 +38,14 @@ footer{
   align-items: center;
 }
 
-.footer-content p{
+.footer-content p {
   max-width: 500px;
   margin: 10px auto;
   line-height: 28px;
-  font-size: 14px;   
+  font-size: 14px;
 }
 
-.socials{
+.socials {
   list-style: none;
   display: flex;
   align-items: center;
@@ -58,35 +53,64 @@ footer{
   margin: 1rem 0.3rem;
 }
 
-.socials li{
+.socials li {
   margin: 0 10px;
 }
 
-.socials a{
+.socials a {
   text-decoration: none;
   color: #fff;
   font-size: 1.1rem;
-  transition: color .4s ease;
+  transition: color 0.4s ease;
 }
 
-.socials a:hover{
+.socials a:hover {
   color: #0071c2;
 }
 
-.footer-bottom{
+.footer-bottom {
   background: #022960;
   padding: 20px 0;
   text-align: center;
 }
 
-.footer-bottom p{
+.footer-bottom p {
   font-size: 14px;
   word-spacing: 2px;
   text-transform: capitalize;
 }
 
-.footer-bottom span{
+.footer-bottom span {
   text-transform: uppercase;
-  opacity: .4;
+  opacity: 0.4;
   font-weight: 200;
+}
+
+footer {
+  margin-top: auto;
+}
+
+@media (min-height: 1100px) {
+  footer {
+    position: relative;
+    bottom: 10px;
+    margin-top: auto;
+    top: 250px;
+  }
+}
+
+@media (min-height: 750px) and (max-width: 500px) {
+  footer {
+    position: relative;
+    bottom: 50px;
+    top: 250px;
+  }
+}
+
+@media (min-height: 653px) and (max-width: 280px) {
+  footer {
+    position: relative;
+    bottom: 50px;
+    top: 250px;
+  }
 }

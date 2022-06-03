@@ -4,6 +4,7 @@ import {
   SET_IS_SIGNING,
   SET_LOGGEDIN_USER,
   SET_LOGGEDOUT_USER,
+  REFRESH_STATE,
 } from "./types";
 
 const initialState = {
@@ -23,7 +24,7 @@ export const authReducer = (state = initialState, action) => {
     case SET_LOGGEDIN_USER:
       return {
         ...state,
-        loggedInUser: action.payload,
+        loggedInUser: action.payload.user,
         //   token: action.payload.token,
         error: "",
         isSigning: false,
@@ -43,7 +44,11 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isSigning: false,
       };
-
+    case REFRESH_STATE:
+      return {
+        ...state,
+        loggedInUser: action.payload.user,
+      };
     // case CLEAR_ERR:
     //   return { ...state, error: null };
     default:

@@ -1,8 +1,6 @@
 import {
   REFRESH_STATE,
-  RESET_FORGET_PASSWORD_USER_EMAIL,
   RESET_IS_SIGNING,
-  SET_FORGET_PASSWORD_USER_EMAIL,
   SET_IS_SIGNING,
   SET_LOGGEDIN_USER,
   SET_LOGGEDOUT_USER,
@@ -55,7 +53,7 @@ export const fetchLoginUserThunkAction = (email, password) => {
       const { data } = await getLoggedInUserApi({ email, password });
       console.log(data);
       if (data.success !== true) {
-        throw new Error(data.error);
+        throw new Error(data);
       }
       toast.success("Logged in successfully.");
       console.log("user data: " + data);
@@ -69,7 +67,9 @@ export const fetchLoginUserThunkAction = (email, password) => {
       // onSuccess();
     } catch (error) {
       dispatch(resetIsSigning());
-      toast.error(error.message);
+      toast.error(
+        `ERROR ${error.response.data.status} : ${error.response.data.message}`
+      );
     }
   };
 };
