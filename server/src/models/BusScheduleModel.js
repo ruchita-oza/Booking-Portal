@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "bus_schedules",
     {
       bus_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         // references: { model: "BusDetails", key: "id" },
         // onUpdate: "cascade",
         // onDelete: "cascade",

@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   updateBus,
   deleteBus,
-  getBus,
+  // getBus,
   getBuses,
   createBus,
   getBusByBusNumber,
@@ -13,8 +13,8 @@ router.get("/", getBuses);
 router.post("/", createBus);
 
 router.put("/:id", updateBus);
-router.get("/:busNumber", getBusByBusNumber);
+router.get("/:id", getBusByBusNumber);
 router.delete("/:id", deleteBus);
-router.get("/:id", getBus);
+// router.get("/:id", getBus);
 
 module.exports = router;
