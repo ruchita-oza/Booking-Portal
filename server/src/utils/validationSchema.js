@@ -21,27 +21,55 @@ const authSchema = Joi.object({
 });
 // bus schema
 busSchema = Joi.object({
-  bus_name: Joi.string().required(),
-  bus_type: Joi.string().required().uppercase().valid("NON AC", "AC"),
-  bus_number: Joi.string()
+  id: Joi.string()
     .length(10)
     .pattern(/^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/)
     .required(),
+  bus_name: Joi.string().required(),
+  bus_type: Joi.string()
+    .required()
+    .lowercase()
+    .valid("non ac sleeper", "non ac seating", "ac sleeper", "ac seating"),
+  // bus_number: Joi.string()
+  //   .length(10)
+  //   .pattern(/^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/)
+  //   .required(),
 });
 //flight schema
+// flight number example :G8-322
 flightSchema = Joi.object({
-  flight_name: Joi.string().required(),
-  flight_number: Joi.string()
+  id: Joi.string()
     .required()
     .uppercase()
     .pattern(/^[A-Z][A-Z0-9]-[0-9]{3}$/),
+  flight_name: Joi.string().required(),
+  // flight_number: Joi.string()
+  //   .required()
+  //   .uppercase()
+  //   .pattern(/^[A-Z][A-Z0-9]-[0-9]{3}$/),
   flight_type: Joi.string()
     .lowercase()
-    .valid("economy", "premium economy", "business"),
+    .valid("first class", "premium economy", "business class"),
 });
-// flight number example :G8-322
+// train schema
+trainSchema = Joi.object({
+  id: Joi.string()
+    .length(5)
+    .required()
+    .pattern(/[0-9]{5}$/),
+  train_name: Joi.string().required(),
+  train_type: Joi.string()
+    .lowercase()
+    .valid("non ac sleeper", "ac sleeper", "non ac seating"),
+});
 //city schema
 citySchema = Joi.object({
   city_name: Joi.string().required(),
 });
-module.exports = { authSchema, busSchema, flightSchema, citySchema };
+module.exports = {
+  authSchema,
+  busSchema,
+  flightSchema,
+  citySchema,
+  trainSchema,
+};

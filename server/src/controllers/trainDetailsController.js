@@ -1,19 +1,22 @@
 const db = require("../models");
 const Train = db.train_details;
 const createError = require("../utils/error");
+const { trainSchema } = require("../utils/validationSchema");
 
 async function checkExists(id) {
   const trains = await Train.findAll({
-    where: { train_number: id },
+    where: { id },
   });
   return trains.length > 0 ? true : false;
 }
 
 const createTrain = async (req, res, next) => {
   try {
-    const status = await checkExists(req.body.train_number);
+    const data = await trainSchema.validateAsync(req.body);
+    console.log(data);
+    const status = await checkExists(data.id);
     if (!status) {
-      const data = req.body;
+      // const data = data;
       const train = await Train.create(data);
       await train.save();
 
@@ -31,8 +34,9 @@ const updateTrain = async (req, res, next) => {
     const train_number = req.params.id;
     const status = await checkExists(train_number);
     if (status) {
-      const train = await Train.update(req.body, {
-        where: { train_number: train_number },
+      const data = await trainSchema.validateAsync(req.body);
+      const train = await Train.update(data, {
+        where: { id: train_number },
       });
 
       return res.json({
@@ -54,10 +58,10 @@ const deleteTrain = async (req, res, next) => {
     const train_number = req.params.id;
     const status = await checkExists(train_number);
     if (status) {
-      const train = await Train.destroy({ where: { train_number } });
+      const train = await Train.destroy({ where: { id: train_number } });
       return res.json({ data: "Train deleted successfully", status: true });
     } else {
-      return next(createError(500, "Error while deleting train"));
+      return next(createError(500, "Error train number does not exists"));
     }
   } catch (error) {
     return next(createError(500, "Error while deleting train " + error));
@@ -70,7 +74,7 @@ const getTrainByTrainNumber = async (req, res, next) => {
     const status = await checkExists(train_number);
     if (status) {
       const train = await Train.findOne({
-        where: { train_number: train_number },
+        where: { id: train_number },
       });
       return res.json({
         data: train,

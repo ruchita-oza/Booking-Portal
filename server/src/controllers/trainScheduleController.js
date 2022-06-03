@@ -4,9 +4,13 @@ const City = db.cities;
 const createError = require("../utils/error");
 const TrainSchedule = db.train_schedules;
 const ApiFeatures = require("../utils/apiFeatures");
+const {
+  findTrainScheduleById,
+  findAllTrainScheduls,
+} = require("../dao/train.dao");
 
 async function checkExistsTrain(id) {
-  const trains = await Train.findAll({ where: { train_number: id } });
+  const trains = await Train.findAll({ where: { id } });
   return trains.length > 0 ? true : false;
 }
 
@@ -134,7 +138,8 @@ const deleteTrainSchedule = async (req, res, next) => {
 
 const viewAllTrainSchedule = async (req, res, next) => {
   try {
-    const trainschedules = await TrainSchedule.findAll({});
+    // const trainschedules = await TrainSchedule.findAll({});
+    const trainschedules = await findAllTrainScheduls();
     return res.json({ data: trainschedules, status: true });
   } catch (error) {
     return next(
@@ -148,9 +153,11 @@ const viewTrainScheduleById = async (req, res, next) => {
     const trainScheduleId = req.params.id;
     const status = await checkExistsTrainSchedule(trainScheduleId);
     if (status) {
-      const trainschedule = await TrainSchedule.findAll({
-        where: { id: trainScheduleId },
-      });
+      // const trainschedule = await TrainSchedule.findAll({
+      //   where: { id: trainScheduleId },
+      // });
+      const trainschedule = await findTrainScheduleById(trainScheduleId);
+      // console.log("train schedule: " + trainschedule);
       return res.json({ data: trainschedule, status: true });
     } else {
       return next(createError(500, "Error while fetching train schedule"));
