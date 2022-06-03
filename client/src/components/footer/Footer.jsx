@@ -8,7 +8,7 @@ import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
-    <footer contentEdible>
+    <footer>
       <div className="footer-container">
         <h3> BOOKING PORTAL </h3>
         <p>Enjoy your Journey through the best booking deals and service and even with the cheapest rates....!</p>        

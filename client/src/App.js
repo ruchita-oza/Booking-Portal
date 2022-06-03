@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
+import Footer from "./components/footer/Footer";
 import React from "react";
 import AuthPage from "./pages/authPage/authPage";
 import ErrorPage from "./components/errorPage/errorPage";
@@ -21,6 +22,8 @@ function App() {
         <Route path="/BusList" element={<BusList />} />
         <Route component={ErrorPage} />
       </Routes>
+      <Footer />
+
     </BrowserRouter>
   );
 }

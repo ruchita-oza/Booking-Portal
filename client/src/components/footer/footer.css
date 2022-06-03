@@ -15,8 +15,11 @@ footer{
   height: 200px;
   font-family: "Open Sans";
   padding-top: 40px;
+  margin-top: auto;
   color: #fff;
   text-align: center; 
+  position: relative;
+  top: 1000px;
 }
 
 .footer-content{
@@ -84,7 +87,7 @@ footer{
   font-weight: 200;
 }
 
-.footer {
+footer {
   margin-top: auto;
 }
 
@@ -92,24 +95,30 @@ footer{
  
   
 footer{ 
-  position:fixed;
+  position:relative;
   bottom:10px;
+  margin-top: auto;
+  top:250px;
+
 }
 }
 
-@media  (min-height: 670px) and (max-width: 500px) {
+@media  (min-height: 750px) and (max-width: 500px) {
 
   footer{ 
-  position:fixed;
+  position:relative;
   bottom:50px;
+  top:250px;
+
 }
 }
 
 @media (min-height: 653px) and (max-width: 280px) {
 
   footer {
-    position: fixed;
+    position: relative;
     bottom: 50px;
+    top:250px;
   }
 
 }
