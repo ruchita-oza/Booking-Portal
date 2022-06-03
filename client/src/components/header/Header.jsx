@@ -66,7 +66,7 @@ const Header = ({ type }) => {
               Explore for your travels with a free Skyline booking account.
             </p>
             {!loggedInUser && (
-              <Link to="/authPage">
+              <Link to="/auth/login">
                 <button className="headerBtn"> Sign in / Register </button>
               </Link>
             )}{" "}

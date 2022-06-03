@@ -107,10 +107,18 @@ footer {
   }
 }
 
-@media (min-height: 653px) and (max-width: 280px) {
+@media (min-height: 653px) and (max-width: 170px) {
   footer {
     position: relative;
     bottom: 50px;
     top: 250px;
   }
 }
+/* 
+@media (min-height: 170px) and (max-width: 55px) {
+  footer {
+    position: relative;
+    bottom: 50px;
+    top: 250px;
+  }
+} */

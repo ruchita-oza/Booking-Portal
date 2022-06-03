@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
+import AdminHome from "./pages/admin/home/AdminHome";
 import { refreshState } from "./redux/users/actions";
 
 function App() {
@@ -28,13 +29,11 @@ function App() {
   };
   useEffect(() => {
     refreshStateHandler();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const routing = useRoutes(Themeroutes);
 
   return (
     <BrowserRouter>
-      {/* <ToastContainer positive="top-right" autoClose={1500} /> */}
-
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -44,7 +43,9 @@ function App() {
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
         </Route>
+        <Route path="/admin">{routing} </Route>
         <Route path="/BusList" element={<BusList />} />
+        <Route path="/admin" element={<AdminHome />} />
         <Route path="/ErrorPage" element={ErrorPage} />
       </Routes>
     </BrowserRouter>
