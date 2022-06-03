@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const BookedRecords = sequelize.define(
-    "bookedrecords",
+  const BookingRecords = sequelize.define(
+    "booking_records",
     {
       cust_id: {
         // type: Sequelize.INTEGER,
@@ -22,13 +22,13 @@ module.exports = (sequelize, DataTypes) => {
       transport_id: {
         type: DataTypes.INTEGER(50),
       },
-      totalTick_count: {
+      total_ticket_count: {
         type: DataTypes.INTEGER(10),
       },
-      journey_data: {
+      journey_date: {
         type: DataTypes.DATE,
       },
-      Total_fare: {
+      total_fare: {
         type: DataTypes.INTEGER,
       },
       booking_status: {
@@ -37,8 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      timestamps: true, paranoid: true,
+      timestamps: true,
+      paranoid: true,
     }
   );
-  return BookedRecords;
+  return BookingRecords;
 };

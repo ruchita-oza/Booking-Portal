@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const flightSchedule = sequelize.define(
-    "flightschedule",
+    "flight_schedules",
 
     {
       flight_id: {
@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         // onDelete: "cascade",
       },
       departure_time: {
-        type: DataTypes.TIME,
+        type: DataTypes.DATE,
       },
       arrival_time: {
-        type: DataTypes.TIME,
+        type: DataTypes.DATE,
       },
       total_available_seats: {
         type: DataTypes.INTEGER(11),

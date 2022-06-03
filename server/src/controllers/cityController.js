@@ -4,6 +4,7 @@
 const { citySchema } = require("../utils/validationSchema");
 const db = require("../models");
 const City = db.cities;
+const Apifeatures = require("../utils/apiFeatures");
 
 const createCity = async (req, res, next) => {
   try {
@@ -52,7 +53,8 @@ const getCity = async (req, res, next) => {
 };
 const getCities = async (req, res, next) => {
   try {
-    const cities = await City.findAndCountAll();
+    const apiFeatures = new Apifeatures(City, req.query).filter();
+    let cities = await apiFeatures.query;
     res.status(200).json({ cities });
   } catch (err) {
     next(err);

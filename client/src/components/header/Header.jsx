@@ -1,35 +1,43 @@
-import { faPlane, faCalendarDays, faPerson} from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlane,
+  faCalendarDays,
+  faPerson,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {format} from "date-fns";
-import { DateRange } from 'react-date-range';
-import {useState} from 'react';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import { format } from "date-fns";
+import { DateRange } from "react-date-range";
+import { useState } from "react";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 import "./header.css";
-import React from 'react';
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { selectUser } from "../../redux/users/selectors";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = ({type}) => {
-  const [source, setSource] = useState("")
-  const [destination, setDestination] = useState("")
-  const [openDate, setOpenDate] = useState(false)
+const Header = (props) => {
+  const [source, setSource] = useState("");
+  const [destination, setDestination] = useState("");
+  const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
-      key: 'selection',
-    }
+      key: "selection",
+    },
   ]);
 
+  const { loggedInUser } = useSelector(selectUser);
   const [openOptions, setOpenOptions] = useState(false);
   const [options, setOptions] = useState({
     adult: 1,
-    children: 0,    
+    children: 0,
   });
 
   const navigate = useNavigate();
-  
+
+  // console.log(props.heading);
   const handleOption = (name, operation) => {
     setOptions((prev) => {
       return {
@@ -40,33 +48,29 @@ const Header = ({type}) => {
   };
 
   const handleSearch = (name, operation) => {
-    navigate("/flights", {state:{source, date, options}})
-    navigate("/flights", {state:{destination, date, options}})
-  }
-
-  
+    navigate(`/${props.type}`, {
+      state: { source, destination, date, options },
+    });
+  };
 
   return (
     <div className='header'>
       <div
         className={
-          type === "list" ? "headerContainer listMode" : "headerContainer"
+          props.type === "list" ? "headerContainer listMode" : "headerContainer"
         }>
-        {type !== "list" && (
+        {props.type !== "list" && (
           <>
-            <h1 className='headerTitle pl-5'>
-              Introducing Skyline Booking...! It's A Genius
-            </h1>
-
-            <p className='headerDesc pl-5'>
-              Explore for your travels with a free Skyline booking account.
-            </p>
-            <Link to='/authPage'>
-              <button className='headerBtn ml-5'> Sign in / Register </button>
-            </Link>
-            <div className='headerSearch '>
+            <h1 className='headerTitle pl-5'>{props.heading}</h1>
+            <p className='headerDesc pl-5'>{props.description}</p>
+            {!loggedInUser && (
+              <Link to='/authPage'>
+                <button className='headerBtn ml-5'> Sign in / Register </button>
+              </Link>
+            )}
+            <div className='headerSearch'>
               <div className='headerSearchItem'>
-                <FontAwesomeIcon icon={faPlane} className='m-2 headerIcon' />
+                <FontAwesomeIcon icon={props.icon} className='m-2 headerIcon' />
                 <input
                   type='text'
                   placeholder='Source'
@@ -87,6 +91,7 @@ const Header = ({type}) => {
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className='headerSearchText'>
+                  {" "}
                   {format(date[0]?.startDate, "MM/dd/yyyy")} to{" "}
                   {format(date[0]?.endDate, "MM/dd/yyyy")}
                 </span>
@@ -168,4 +173,4 @@ const Header = ({type}) => {
   );
 };
 
-export default Header
+export default Header;

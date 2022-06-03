@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
   const TrainSchedule = sequelize.define(
-    "trainschedule",
+    "train_schedules",
     {
-      trainId: {
+      train_id: {
         type: DataTypes.INTEGER,
         // references: { model: "TrainDetails", key: "id" },
         // onUpdate: "cascade",
@@ -20,16 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         // onUpdate: "cascade",
         // onDelete: "cascade",
       },
-      departureTime: {
-        type: DataTypes.TIME,
+      departure_time: {
+        type: DataTypes.DATE,
       },
-      arrivalTime: {
-        type: DataTypes.TIME,
+      arrival_time: {
+        type: DataTypes.DATE,
       },
-      totalAvailableSeats: {
+      total_available_seats: {
         type: DataTypes.INTEGER(11),
       },
-      pricePerSeat: {
+      price_per_seat: {
         type: DataTypes.INTEGER,
       },
     },

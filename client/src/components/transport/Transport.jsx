@@ -6,12 +6,12 @@ const transport = () => {
     
     
 <div id="carouselExampleIndicators" className=" carousel slide w-5" data-ride="carousel" >
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <ol className="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
     </ol>
-    <div class="w-100 carousel-inner">
-        <div class=" w-100 carousel-item active">
+    <div className="w-100 carousel-inner">
+        <div className=" w-100 carousel-item active">
         <div className='card d-block mb-5 shadow rounded'>
            <div className='row d-flex justify-content-between'>
              <div className='col-lg-3  col-md-3 d-flex justify-content-center ml-3'>
@@ -32,7 +32,7 @@ const transport = () => {
            </div>
          </div>
         </div>
-        <div class="card w-100 carousel-item">
+        <div className="card w-100 carousel-item">
           <div className='card d-block mb-5 shadow rounded'>
             <div className='row d-flex justify-content-between'>
               <div className='col-md-3 d-flex justify-content-center ml-3'>
@@ -53,7 +53,7 @@ const transport = () => {
             </div>
           </div>
         </div>
-        <div class="card w-100 carousel-item">
+        <div className="card w-100 carousel-item">
           <div className='card d-block mb-5 shadow rounded'>
             <div className='row d-flex justify-content-between'>
               <div className='col-lg-3  col-md-3 d-flex justify-content-center ml-3'>
@@ -76,13 +76,13 @@ const transport = () => {
         </div>
     </div>
     
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
+    <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span className="sr-only">Previous</span>
     </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
+    <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        <span className="sr-only">Next</span>
     </a>
 </div>);
 

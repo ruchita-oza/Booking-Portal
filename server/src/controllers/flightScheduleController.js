@@ -83,6 +83,8 @@ const getFlightSchedule = async (req, res, next) => {
 };
 const getFlightSchedules = async (req, res, next) => {
   try {
+    console.log("req query");
+    console.log(req.query);
     const apiFeatures = new Apifeatures(FlightSchedule, req.query)
       .priceFilter()
       .filter();

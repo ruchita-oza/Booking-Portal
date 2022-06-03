@@ -5,22 +5,18 @@ form {
   align-items: center;
   justify-content: center;
   padding: 0rem 5rem;
-  transition: all 0.2s 0.7s;
+  transition: a0ll 0.2s 0.7s;
   overflow: hidden;
 }
 
-.container-fluid {
+body {
   min-width: 575px;
-}
 
-
-body, card {
-  min-width: 100%;
-  max-width: 100%;
 }
 body,
 input {
   font-family: "Poppins", sans-serif;
+  left:100px;
 }
 
 form.sign-in-form {
@@ -32,4 +28,3 @@ form.sign-in-form {
   color: #444;
   margin-bottom: 10px;
 }
-
