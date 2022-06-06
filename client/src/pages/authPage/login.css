@@ -16,6 +16,7 @@ body {
 body,
 input {
   font-family: "Poppins", sans-serif;
+  left:100px;
 }
 
 form.sign-in-form {

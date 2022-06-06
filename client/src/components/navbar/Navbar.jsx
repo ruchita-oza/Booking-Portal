@@ -6,13 +6,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { selectUser } from "../../redux/users/selectors";
 import { useSelector, useDispatch } from "react-redux";
 import { loggingOutUserThunkAction } from "../../redux/users/actions";
-const Navbar = () => {
+import { useNavigate, useLocation } from "react-router-dom";
+
+const Navbar = (props) => {
   const { loggedInUser } = useSelector(selectUser);
   // console.log(user);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(loggingOutUserThunkAction());
   };
+
+  function doChanges(newtype) {
+    props.changeType(newtype);
+
+    if (window.location.pathname !== "/") {
+      navigate(`/${newtype}`, {
+        state: {
+          source: location.state.source,
+          destination: location.state.destination,
+          date: location.state.date,
+          options: location.state.options,
+        },
+      });
+    }
+  }
+
   return (
     <>
       <div>
@@ -45,18 +66,40 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        <div className="header">
-          <div className="headerContainer listMode">
-            <div className="headerList">
-              <div className="headerListItem active">
+        <div className='header'>
+          <div className='headerContainer listMode'>
+            <div className='headerList'>
+              <div
+                className={
+                  props.type === "flights"
+                    ? "headerListItem active"
+                    : "headerListItem "
+                }
+                onClick={() => doChanges("flights")}>
                 <FontAwesomeIcon icon={faPlane} />
                 <span>Flight</span>
               </div>
-              <div className="headerListItem">
+              <div
+                className={
+                  props.type === "buses"
+                    ? "headerListItem active"
+                    : "headerListItem "
+                }
+                onClick={() => {
+                  doChanges("buses");
+                }}>
                 <FontAwesomeIcon icon={faBus} />
                 <span>Bus</span>
               </div>
-              <div className="headerListItem">
+              <div
+                className={
+                  props.type === "trains"
+                    ? "headerListItem active"
+                    : "headerListItem "
+                }
+                onClick={() => {
+                  doChanges("trains");
+                }}>
                 <FontAwesomeIcon icon={faTrain} />
                 <span>Train</span>
               </div>

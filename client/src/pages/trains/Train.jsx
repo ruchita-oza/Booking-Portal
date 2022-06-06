@@ -1,5 +1,5 @@
 import React from 'react'
-import './flight.css'
+import './train.css'
 import Header from "../../components/header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,11 +7,10 @@ import {
   faCircleArrowRight,
   faCircleXmark,
   faLocationDot,
-  faPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-const Flight = () => {
+const Train = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -56,7 +55,7 @@ const Flight = () => {
   return (
     <div>
       <Header type="list" />
-      <div className="flightContainer">
+      <div className="trainContainer">
         {open && (
           <div className="slider">
             <FontAwesomeIcon
@@ -79,58 +78,66 @@ const Flight = () => {
             />
           </div>
         )}
-        <div className="flightWrapper">
+        <div className="trainWrapper">
           <button className="bookNow">Reserve or Book Now!</button>
-          <h1 className="flightTitle">Indigo</h1>
-          <div className="flightAddress">
+          <h1 className="trainTitle">Indigo</h1>
+          <div className="trainAddress">
             <FontAwesomeIcon icon={faLocationDot} />
             <span>Indira Gandhi International Aiport</span>
           </div>
-          <span className="flightClass">
+          <span className="trainClass">
             Class Avaialible – Business / Economy Class Avaialible
           </span>
-          <span className="flightPriceHighlight">
+          <span className="trainPriceHighlight">
             Book your seat and enjoy thw ride with the IndiGo Airlines 
           </span>
-          <div className="flightImages">
+          <div className="trainImages">
             {photos.map((photo, i) => (
-              <div className="flightImgWrapper" key={i}>
+              <div className="trainImgWrapper" key={i}>
                 <img
                   onClick={() => handleOpen(i)}
                   src={photo.src}
                   alt=""
-                  className="flightImg"
+                  className="trainImg"
                 />
               </div>
             ))}
           </div>
-          <div className="flightDetailsPrice">
+          <div className="trainDetails">
+            <div className="trainDetailsTexts">
+              <h1 className="trainTitle">About Indigo</h1>
+              <p className="trainDesc">
+                IndiGo with its headquarters in Gurgaon, Haryana, is a low-cost 
+                carrier in the country. In terms of passengers and fleet size, IndiGo airlines is the largest airline domestically. 
+                About 1500 IndiGo trains operate everyday across 63 domestic and 
+                24 international destinations, with its hub being New Delhi’s Indira Gandhi International Airport.                 
+
+                <br></br>
+
+                You can make IndiGo train booking on a destination you wish to travel to on Yatra. 
+                IndiGo operates a fleet of Airbus A320-200, Airbus 320neo among a host of other Airbuses. 
+                The airlines only offers economy-class seating and does 
+                not offer any complimentary meals on-board, though you have the provision to buy one from the airline’s in-train menu.
+              </p>
+            </div>
+          </div>
+          <div className="trainDetailsPrice">
             <div className="row">
-              <div className="col-md-3">
-              <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0oGFIP8Y_nTBbePyew82IyQf78mSArb19LQ&usqp=CAU" 
-                alt="true"
-                height="160px"
-              />
+              <div className="col-md-6">
               </div>
-              <div className="col-md-9">
+              <div className="col-md-6">
                 <h2>Indianapolis to Paris</h2>
-                <h5>ONEWAY FLIGHT</h5>
+                <h5>ONEWAY train</h5>
                 <br></br>
                 <div className="row">
-                  <div className="col-md-5 align-center">
+                  <div className="col-md-6 align-center">
                     <span>
                       <label><b>TAKE OFF</b></label>
                       < br></br>
                       <span>13 NOV 2022, 7:50 AM </span>
                     </span>                  
                   </div>
-                  <div className="col-md-2">                  
-                    <span>
-                    <FontAwesomeIcon icon={faPlane} className='headerIcon' />
-                    </span>
-                  </div>
-                  <div className="col-md-5">                  
+                  <div className="col-md-6">                  
                     <span>
                       <label><b>LANDING</b></label>
                       <br></br>
@@ -155,29 +162,10 @@ const Flight = () => {
               </div>
             </div>
           </div>
-          <div className="flightDetails">
-            <div className="flightDetailsTexts">
-              <h1 className="flightTitle">About Indigo</h1>
-              <p className="flightDesc">
-                IndiGo with its headquarters in Gurgaon, Haryana, is a low-cost 
-                carrier in the country. In terms of passengers and fleet size, IndiGo airlines is the largest airline domestically. 
-                About 1500 IndiGo flights operate everyday across 63 domestic and 
-                24 international destinations, with its hub being New Delhi’s Indira Gandhi International Airport.                 
-
-                <br></br>
-
-                You can make IndiGo flight booking on a destination you wish to travel to on Yatra. 
-                IndiGo operates a fleet of Airbus A320-200, Airbus 320neo among a host of other Airbuses. 
-                The airlines only offers economy-class seating and does 
-                not offer any complimentary meals on-board, though you have the provision to buy one from the airline’s in-flight menu.
-              </p>
-            </div>
-          </div>
-          
         </div>
       </div>
     </div>
   );
 };
 
-export default Flight;
+export default Train;

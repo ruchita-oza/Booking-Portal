@@ -8,7 +8,7 @@
 }
 
 .headerContainer {
-  width: 100%;
+  width:100%;
   margin: 20px 0px 100px 0px;
   min-width: 575px;
 }
@@ -49,6 +49,7 @@
   cursor: pointer;
   border-radius: 3px;
 }
+
 
 .headerSearch {
   height: 50px;
@@ -133,13 +134,14 @@
   cursor: not-allowed;
 }
 
+
 @media screen and (max-width: 700px) {
-  .headerSearch {
-    height: 75px;
-    margin: 0 1rem;
-    left: 15px;
-  }
-  .headerBtn {
-    height: 65px;
-  }
+    .headerSearch {
+        height: 75px;
+        margin: 0 1rem;
+        left: 15px;
+    }
+    .headerBtn {
+      height: 65px;
+    }
 }
