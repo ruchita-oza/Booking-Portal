@@ -6,7 +6,7 @@ const { flightSchema } = require("../utils/validationSchema");
 
 async function checkExists(flight_number) {
   const flight = await Flight.findAll({
-    where: { flight_number: flight_number },
+    where: { id: flight_number },
   });
   return flight.length > 0 ? true : false;
 }
@@ -14,18 +14,18 @@ async function checkExists(flight_number) {
 const createFlight = async (req, res, next) => {
   try {
     const result = await flightSchema.validateAsync(req.body);
-    const status = await checkExists(result.flight_number);
+    const status = await checkExists(result.id);
     if (status)
       return next(
         createError(
           401,
-          `${result.flight_number} already exist please use another FlightNumber`
+          `${result.id} already exists please use another FlightNumber`
         )
       );
     const newFlight = await Flight.create({
+      id: result.id,
       flight_name: result.flight_name,
       flight_type: result.flight_type,
-      flight_number: result.flight_number,
     });
     await newFlight.save();
     res.status(200).send("Flight added successfully");
@@ -34,50 +34,74 @@ const createFlight = async (req, res, next) => {
     next(err);
   }
 };
+
 const updateFlight = async (req, res, next) => {
   try {
-    const updateFlight = await Flight.update(
-      req.body,
-      { where: { id: req.params.id } },
-      { new: true, runValidator: true, useFindAndModify: false }
-    );
-    if (!updateFlight) {
-      return next(createError(404, "Flight not found"));
+    const id = req.params.id;
+    const status = await checkExists(id);
+    if (status) {
+      const data = await flightSchema.validateAsync(req.body);
+      const flight = await Flight.update(data, { where: { id } });
+      return res.json({
+        data: "Flight details updated successfully",
+        status: true,
+      });
+    } else {
+      return next(createError(422, "Error flight number does not exists"));
     }
-    const flight = await Flight.findOne({ where: { id: req.params.id } });
-    res.status(200).json({ flight, success: true });
   } catch (err) {
-    next(err);
+    return next(createError(500, "Error while updating flight details " + err));
   }
 };
 
 const deleteFlight = async (req, res, next) => {
   try {
-    await Flight.destroy({ where: { id: req.params.id } });
-    res.status(200).json("Flight has been deleted");
-  } catch (err) {
-    next(err);
+    const id = req.params.id;
+    const status = await checkExists(id);
+    if (status) {
+      const flight = await Flight.destroy({ where: { id } });
+      return res.json({
+        data: "Flight details deleted successfully",
+        status: true,
+      });
+    } else {
+      return next(createError(422, "Error flight number does not exists"));
+    }
+  } catch (error) {
+    return next(
+      createError(500, "Error while deleting flight details " + error)
+    );
   }
 };
 
-const getFlight = async (req, res, next) => {
-  try {
-    const flight = await Flight.findOne({ where: { id: req.params.id } });
-    res.status(200).json(flight);
-  } catch (err) {
-    next(err);
-  }
-};
 const getFlightByFlightNumber = async (req, res, next) => {
   try {
-    const flight = await Flight.findOne({
-      where: { flight_number: req.params.flight_number },
-    });
-    res.status(200).json(flight);
-  } catch (err) {
-    next(err);
+    const id = req.params.id;
+    const status = await checkExists(id);
+    if (status) {
+      const flight = await Flight.findAll({ where: { id } });
+      return res.json({ data: flight, status: true });
+    } else {
+      return next(createError(422, "Error flight number does not exists"));
+    }
+  } catch (error) {
+    return next(
+      createError(500, "Error while fetching flight details " + error)
+    );
   }
 };
+
+const getAllFlights = async (req, res, next) => {
+  try {
+    const flights = await Flight.findAll({});
+    return res.json({ data: flights, status: true });
+  } catch (error) {
+    return next(
+      createError(500, "Error while fetching flight details " + error)
+    );
+  }
+};
+
 const getFlights = async (req, res, next) => {
   try {
     const apiFeatures = new Apifeatures(Flight, req.query).filter();
@@ -93,6 +117,6 @@ module.exports = {
   getFlightByFlightNumber,
   updateFlight,
   deleteFlight,
-  getFlight,
   getFlights,
+  // getAllFlights,
 };
