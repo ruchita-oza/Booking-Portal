@@ -31,7 +31,7 @@ db.train_details = require("./TrainDetailsModel")(sequelize, DataTypes);
 db.train_schedules = require("./TrainScheduleModel")(sequelize, DataTypes);
 db.users = require("./UsersModel")(sequelize, DataTypes);
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("Resyncing done...");
 });
 
