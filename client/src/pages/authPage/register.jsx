@@ -1,11 +1,9 @@
 /** @format */
-//import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import Button from "../../components/button/Button";
-// import { authenticationService } from "services";
 import { Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./register.css";
@@ -33,43 +31,31 @@ function Register() {
       .length(10, "enter valid phone_number"),
   });
 
-  const handleRegister = ({
-    first_name,
-    last_name,
-    email,
-    password,
-    confPass,
-    phone_number,
-  }) => {
-    setTimeout(async () => {
-      if (password === confPass) {
-        console.log(first_name);
-        const res = await fetch("/authRoute/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            first_name,
-            last_name,
-            email,
-            password,
-            phone_number,
-          }),
-        });
-        const data = await res.json();
-        if (!data) {
-          toast.error("something went wrong , Please try again later");
-        } else if (res.status === 401) {
-          // toast.error("error");
-          toast.error(`ERROR :   ${data.message}`);
-        } else if (res.status === 200) {
-          toast.success("Registration successful");
-          navigate("/auth/login");
-        } else {
-          window.alert("unknown error");
-          console.log("unknown error");
-        }
-      }
-    }, 500);
+  const handleRegister = (values) => async () => {
+    const { first_name, last_name, email, password, confPass, phone_number } =
+      values;
+    const res = await fetch("/authRoute/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        first_name,
+        last_name,
+        email,
+        password,
+        phone_number,
+      }),
+    });
+    const data = await res.json();
+    if (!data) {
+      toast.error("something went wrong , Please try again later");
+    } else if (res.status === 200) {
+      toast.success("Registration successful");
+      navigate("/auth/login");
+    } else {
+      console.log(data.success == false);
+      if (data.success == false) toast.error(data.message);
+      else toast.error("unknown error");
+    }
   };
 
   return (
@@ -103,11 +89,8 @@ function Register() {
                   >
                     {({ setFieldValue, values, errors, status, touched }) => (
                       <Form>
-                        {/* {" "} */}
-                        {/* {console.log(values)} */}
                         <div className="row w-100 mb-3 form-floating ">
                           <label
-
                             htmlFor="first_name"
                             id="lblFName"
                             className="col-lg-4 col-md-4 col-sm-10"
@@ -280,7 +263,8 @@ function Register() {
                           <Button
                             type="submit"
                             value="Sign up"
-                            onClick={() => {}}
+                            validationSchema={validate}
+                            onClick={handleRegister(values)}
                           ></Button>
                         </div>
                         <hr className="my-4" />
@@ -293,7 +277,7 @@ function Register() {
                           </div>
                           <div className="d-flex justify-content-center">
                             <Link to="/auth/login">
-                              <Button value="Sign In" type="button"></Button>
+                              <Button value="Sign In" type="submit"></Button>
                             </Link>
                           </div>
                         </div>
@@ -305,7 +289,8 @@ function Register() {
             </div>
           </div>
         </div>
-        </div></div>
+      </div>
+    </div>
   );
 }
 

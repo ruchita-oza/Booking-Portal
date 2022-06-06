@@ -4,16 +4,19 @@ import {
   ALL_BUSSCHEDULE_FAIL,
   CLEAR_ERR,
 } from "./types";
-
+import axios from "axios";
 import {
   getAllBusesApi,
   getBusesWithLocationApi,
-  getBusesWithLocationAndPriceApi,
+  getBusesWithLocationTimeApi,
+  getBusesWithLocationPriceApi,
+  getBusesWithLocationPriceTimeApi,
 } from "../../services/BusServices";
 
 import { getCityApi } from "../../services/CityServices";
+import toast from "react-hot-toast";
 
-export const fetchAllBusScheduleRequst = () => {
+export const fetchAllBusScheduleRequest = () => {
   return { type: ALL_BUSSCHEDULE_REQUEST };
 };
 export const fetchAllBusScheduleSuccess = (busSchedules) => {
@@ -24,34 +27,77 @@ export const fetchAllBusScheduleFail = (error) => {
 };
 //get BusSchedules
 export const getBusSchedules =
-  (source, destination, minPrice, maxPrice) => async (dispatch) => {
+  ({ source, destination, minPrice, maxPrice, fromDate, toDate }) =>
+  async (dispatch) => {
     try {
-      dispatch(fetchAllBusScheduleRequst());
-      if (source & destination) {
+      dispatch(fetchAllBusScheduleRequest());
+      // console.log(fromDate);
+      // console.log(toDate);
+      if (source && destination) {
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
         if (
+          (!sourceCity && !destCity) ||
           sourceCity.data.cities.length === 0 ||
           destCity.data.cities.length === 0
-        )
-          throw new Error("Bus not available");
-        if (!minPrice && !maxPrice) {
+        ) {
+          throw new Error(
+            `bus on Schedule ${sourceCity} and ${destCity} is not available`
+          );
+        }
+
+        if (!minPrice && !fromDate) {
+          // console.log("at inner if");
+          // console.log("source id : " + sourceCity.data.cities[0].id);
           let { data } = await getBusesWithLocationApi(
             sourceCity.data.cities[0].id,
             destCity.data.cities[0].id
           );
+          // console.log(data);
           if (data) {
             dispatch(fetchAllBusScheduleSuccess(data));
             return;
           } else {
             throw new Error();
           }
-        } else {
-          let { data } = await getBusesWithLocationAndPriceApi(
+        } else if (minPrice && !fromDate) {
+          let { data } = await getBusesWithLocationPriceApi(
             sourceCity.data.cities[0].id,
             destCity.data.cities[0].id,
             minPrice,
             maxPrice
+          );
+          if (data) {
+            dispatch(fetchAllBusScheduleSuccess(data.busSchedules));
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (!minPrice && fromDate) {
+          // console.log("at inner fromdata");
+          // console.log(sourceCity.data);
+          // console.log(destCity.data);
+          let { data } = await getBusesWithLocationTimeApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
+            fromDate,
+            toDate
+          );
+          // console.log(data);
+          if (data) {
+            dispatch(fetchAllBusScheduleSuccess(data.busSchedules));
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (minPrice && fromDate) {
+          let { data } = await getBusesWithLocationPriceTimeApi(
+            sourceCity.data.cities[0].id,
+            destCity.data.cities[0].id,
+            minPrice,
+            maxPrice,
+            fromDate,
+            toDate
           );
           if (data) {
             dispatch(fetchAllBusScheduleSuccess(data.busSchedules));
@@ -70,6 +116,7 @@ export const getBusSchedules =
         }
       }
     } catch (error) {
+      toast.error(error.message);
       dispatch(fetchAllBusScheduleFail(error));
     }
   };
