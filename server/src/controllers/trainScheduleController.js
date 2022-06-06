@@ -54,6 +54,7 @@ const createTrainSchedule = async (req, res, next) => {
     } else if (totalAvailableSeats == 0) {
       return next(createError(422, "Total available seats cannot be zero"));
     } else {
+      console.log(req.body);
       const train = await TrainSchedule.create(req.body);
       await train.save();
       return res.json({

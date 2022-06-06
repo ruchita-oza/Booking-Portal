@@ -3,7 +3,7 @@ const FlightDetail = db.flight_details;
 const FlightSchedule = db.flight_schedule;
 
 FlightDetail.hasMany(FlightSchedule, { foreignKey: "flight_id" });
-FlightSchedule.belongsTo(FlightSchedule, { foreignKey: "flight_id" });
+FlightSchedule.belongsTo(FlightDetail, { foreignKey: "flight_id" });
 
 const findFlightScheduleById = async (flightScheduleId) => {
   return FlightSchedule.findAll({

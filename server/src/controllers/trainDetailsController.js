@@ -13,7 +13,6 @@ async function checkExists(id) {
 const createTrain = async (req, res, next) => {
   try {
     const data = await trainSchema.validateAsync(req.body);
-    console.log(data);
     const status = await checkExists(data.id);
     if (!status) {
       // const data = data;
