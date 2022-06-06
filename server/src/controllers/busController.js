@@ -49,11 +49,13 @@ const updateBus = async (req, res, next) => {
     // }
     // const bus = await Bus.findOne({ where: { id: req.params.id } });
     // res.status(200).json({ bus, success: true });
-    const busNumber = req.params.id;
-    const status = await checkExists(busNumber);
+    // const busNumber = req.params.id;
+    const result = await busSchema.validateAsync(req.body);
+    console.log(result);
+
+    const status = await checkExists(result.id);
     if (status) {
-      const data = await busSchema.validateAsync(req.body);
-      const bus = await Bus.update(data, { where: { id: busNumber } });
+      const bus = await Bus.update(result, { where: { id: result.id } });
       return res.json({
         data: "Bus details updated successfully",
         status: true,
@@ -111,6 +113,7 @@ const getBuses = async (req, res, next) => {
   try {
     const apiFeatures = new Apifeatures(Bus, req.query).filter();
     let buses = await apiFeatures.query;
+    // console.log(apiFeatures.)
     res.status(200).json({ buses });
   } catch (err) {
     next(err);

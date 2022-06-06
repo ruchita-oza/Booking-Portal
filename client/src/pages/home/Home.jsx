@@ -13,14 +13,14 @@ import Loader from "../../components/loader/loader";
 const Home = ({ type }) => {
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.busesAvailable);
+  const { isLoading, error } = useSelector((state) => state.flightsAvailable);
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
-    
+
     dispatch(getFlightSchedules());
-    dispatch(getBusSchedules());
+    // dispatch(getBusSchedules());
   }, [alert, dispatch, error]);
 
   return (
@@ -28,12 +28,14 @@ const Home = ({ type }) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className='' style={{ height: "100vh" }}>
+        <div className="" style={{ height: "100vh" }}>
           {type === "flights" && (
             <Header
               type={type}
               heading={"Introducting Skyline Booking...! It's A Genius"}
-              description={'Explore for your travels with a free Skyline booking account'}
+              description={
+                "Explore for your travels with a free Skyline booking account"
+              }
               icon={faPlane}
             />
           )}
@@ -41,7 +43,9 @@ const Home = ({ type }) => {
             <Header
               type={type}
               heading={"Introducting Busline Booking...! It's A Genius"}
-              description={'Explore for your travels with a free Busline booking account'}
+              description={
+                "Explore for your travels with a free Busline booking account"
+              }
               icon={faBus}
             />
           )}
@@ -49,11 +53,13 @@ const Home = ({ type }) => {
             <Header
               type={type}
               heading={"Introducting Railwayline Booking...! It's A Genius"}
-              description={'Explore for your travels with a free Railwayline booking account'}
+              description={
+                "Explore for your travels with a free Railwayline booking account"
+              }
               icon={faTrain}
             />
           )}
-          <div className='homeContainer'>
+          <div className="homeContainer">
             <Transport />
           </div>
         </div>

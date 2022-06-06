@@ -1,9 +1,12 @@
 const { Op } = require("sequelize");
+const Sequelize = require("sequelize");
 class Apifeatures {
   constructor(query, queryStr) {
     this.query = query;
     this.queryStr = queryStr;
     this.priceQuery = "";
+    this.timeQuery = "";
+    this.queryCopy = "";
   }
   // search() {
   //   const keyword = this.queryStr.keyword
@@ -19,17 +22,30 @@ class Apifeatures {
   //   return this;
   // }
   filter() {
-    const queryCopy = { ...this.queryStr };
+    this.queryCopy = { ...this.queryStr };
     console.log(this.query);
-    console.log(queryCopy);
+    console.log(this.queryCopy);
     //remove somefield from catagory
-    const removeFields = ["keyword", "page", "limit", "minPrice", "maxPrice"];
-    removeFields.forEach((key) => delete queryCopy[key]);
+    const removeFields = [
+      "keyword",
+      "page",
+      "limit",
+      "minPrice",
+      "maxPrice",
+      "fromDate",
+      "toDate",
+    ];
+    removeFields.forEach((key) => delete this.queryCopy[key]);
     console.log("filter query");
-    console.log(queryCopy);
-    this.query = this.query.findAll({
-      where: { [Op.and]: [queryCopy, this.priceQuery] },
+    console.log(this.queryCopy);
+    const fromDate = this.queryStr.fromDate;
+    const toDate = this.queryStr.toDate;
+    this.query = this.query.findAndCountAll({
+      where: {
+        [Op.and]: [this.queryCopy, this.priceQuery, this.timeQuery],
+      },
     });
+    console.log(this.timeFilter);
     // console.log(this.query);
     return this;
   }
@@ -43,12 +59,33 @@ class Apifeatures {
     console.log(this.priceQuery);
     return this;
   }
-//   pagination(resultPerPage) {
-//     const currentPage = Number(this.queryStr.page) || 1;
-//     const skip = resultPerPage * (currentPage - 1);
-//     this.query = this.query.limit(resultPerPage).skip(skip);
-//     return this;
-//   }
+  timeFilter() {
+    if (this.queryStr.fromDate && this.queryStr.toDate) {
+      const fromDate = this.queryStr.fromDate;
+      const toDate = this.queryStr.toDate;
+      this.timeQuery = {
+        [Op.and]: [
+          (this.timeQuery = Sequelize.where(
+            Sequelize.fn("date", Sequelize.col("departure_time")),
+            ">=",
+            fromDate
+          )),
+          Sequelize.where(
+            Sequelize.fn("date", Sequelize.col("departure_time")),
+            "<=",
+            toDate
+          ),
+        ],
+      };
+    }
+    return this;
+  }
+  //   pagination(resultPerPage) {
+  //     const currentPage = Number(this.queryStr.page) || 1;
+  //     const skip = resultPerPage * (currentPage - 1);
+  //     this.query = this.query.limit(resultPerPage).skip(skip);
+  //     return this;
+  //   }
 }
 
 module.exports = Apifeatures;
