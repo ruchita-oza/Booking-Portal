@@ -1,5 +1,5 @@
 /** @format */
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -107,6 +107,7 @@ function Register() {
                         {/* {console.log(values)} */}
                         <div className="row w-100 mb-3 form-floating ">
                           <label
+
                             htmlFor="first_name"
                             id="lblFName"
                             className="col-lg-4 col-md-4 col-sm-10"
@@ -304,8 +305,7 @@ function Register() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+        </div></div>
   );
 }
 

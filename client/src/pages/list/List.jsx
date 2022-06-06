@@ -11,10 +11,13 @@ import { getFlightSchedules } from "../../redux/flights/actions";
 import { getBusSchedules } from "../../redux/buses/actions";
 import Loader from "../../components/loader/loader";
 import { selectFlights } from "../../redux/flights/selector";
+import { selectBuses } from "../../redux/buses/selector";
+
 import toast from "react-hot-toast";
 const List = () => {
   const dispatch = useDispatch();
-  const { loading, error, flights } = useSelector(selectFlights);
+  const { loading, error, flights, buses, trains } = useSelector(selectFlights, selectBuses);
+  
 
   const location = useLocation();
   const [source] = useState(location.state.source);
@@ -26,10 +29,20 @@ const List = () => {
     if (error) {
       toast.error(error);
     }
-    dispatch(getFlightSchedules(source, destination));
-  }, [dispatch, error]);
+    if(window.location.pathname === '/flights')
+      dispatch(getFlightSchedules(source, destination));
+    if(window.location.pathname === '/buses')
+      dispatch(getBusSchedules(source, destination));
+    if(window.location.pathname === '/trains')
+      dispatch(getBusSchedules(source, destination));
+    
+  }, [dispatch, error,source,destination]);
 
+
+  // console.log(buses);
+  console.log(loading);
   return loading ? (
+  
     <Loader />
   ) : (
     <div>
@@ -92,7 +105,9 @@ const List = () => {
             </div>
           </div>
           <div className="listResult">
-            {flights && flights.map((flight) => <SearchItem flight={flight} />)}
+            {window.location.pathname === '/flights' &&  <SearchItem  />}
+            {window.location.pathname === '/buses' && <SearchItem />}
+            {window.location.pathname === '/trains' && <SearchItem />}
           </div>
         </div>
       </div>

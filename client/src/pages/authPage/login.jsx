@@ -106,7 +106,7 @@ function Login() {
                                 <ErrorMessage
                                   name="email"
                                   component="div"
-                                  className="invalid-feedback  mb-3 "
+                                  className="invalid-feedback  mb-3  " style={{left:"100px"}}
                                 />
                               </div>
                               <div className="row w-100  mb-3   form-floating">
