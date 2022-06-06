@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
@@ -35,15 +35,14 @@ function App() {
   }, []);
   // const routing = useRoutes(Themeroutes);
 
-  const [category, setCategory] = useState('flights');
+  const [category, setCategory] = useState("flights");
 
   const changeCategory = (newCategory) => {
     setCategory(newCategory);
-  }
+  };
 
   return (
     <BrowserRouter>
-
       <Navbar changeType={changeCategory} type={category} />
       {/* <ToastContainer positive="top-right" autoClose={1500} /> */}
       <Routes>
@@ -64,7 +63,6 @@ function App() {
         <Route component={ErrorPage} />
       </Routes>
       <Footer />
-
     </BrowserRouter>
   );
 }
