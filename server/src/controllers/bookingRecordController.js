@@ -222,7 +222,9 @@ const viewAllBookingRecord = async (req, res, next) => {
     const bookingRecords = await BookingRecords.findAll({});
     return res.json({ data: bookingRecords, status: true });
   } catch (error) {
-    return next(createError(500, "Error while fetching booking record"));
+    return next(
+      createError(500, "Error while fetching booking record " + error)
+    );
   }
 };
 
@@ -244,7 +246,9 @@ const viewBookingRecordById = async (req, res, next) => {
       );
     }
   } catch (error) {
-    return next(createError(500, "Error while fetching booking record"));
+    return next(
+      createError(500, "Error while fetching booking record " + error)
+    );
   }
 };
 
