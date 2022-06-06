@@ -45,7 +45,12 @@ export const resetIsSigning = () => {
     type: RESET_IS_SIGNING,
   };
 };
-export const fetchLoginUserThunkAction = (email, password) => {
+export const fetchLoginUserThunkAction = (
+  email,
+  password,
+  onSuccess,
+  onError
+) => {
   return async (dispatch) => {
     try {
       console.log("at login", email, password);
@@ -64,8 +69,9 @@ export const fetchLoginUserThunkAction = (email, password) => {
           user: data,
         })
       );
-      // onSuccess();
+      onSuccess();
     } catch (error) {
+      onError(error.response.data.message || error?.message);
       dispatch(resetIsSigning());
       toast.error(
         `ERROR ${error.response.data.status} : ${error.response.data.message}`

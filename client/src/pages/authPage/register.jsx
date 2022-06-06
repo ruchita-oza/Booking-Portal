@@ -44,7 +44,7 @@ function Register() {
     setTimeout(async () => {
       if (password === confPass) {
         console.log(first_name);
-        const res = await fetch("/auth/register", {
+        const res = await fetch("/authRoute/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -60,10 +60,10 @@ function Register() {
           toast.error("something went wrong , Please try again later");
         } else if (res.status === 401) {
           // toast.error("error");
-          toast.error(`ERROR : ${res.status}  ${data.message}`);
+          toast.error(`ERROR :   ${data.message}`);
         } else if (res.status === 200) {
           toast.success("Registration successful");
-          navigate("/");
+          navigate("/auth/login");
         } else {
           window.alert("unknown error");
           console.log("unknown error");

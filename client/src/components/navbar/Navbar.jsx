@@ -39,9 +39,9 @@ const Navbar = () => {
                   <button className="navButton">Logout</button>
                 </Link>
               )}
-              <Link to="/userProfile">
+              {loggedInUser && (<Link to="/userProfile">
                 <button className="navButton">User Profile</button>
-              </Link>
+              </Link>)}
             </div>
           </div>
         </div>

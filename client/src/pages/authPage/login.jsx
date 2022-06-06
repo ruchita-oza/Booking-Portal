@@ -24,18 +24,27 @@ function Login() {
       .required("Password is required")
       .min(5, "Password must be at least 5 characters"),
   });
+
+  const onSuccess = () => {
+    console.log("on success");
+    navigate("/");
+  };
+
+  const onError = (error) => {
+    console.log("error occured", error);
+  };
   const fetchData = (email, password) => {
     console.log(email, password);
-    dispatch(fetchLoginUserThunkAction(email, password));
+    dispatch(fetchLoginUserThunkAction(email, password, onSuccess, onError));
   };
   function handleLogin({ email, password }) {
     console.log("at handle login");
     console.log(email + " pass: " + password);
     fetchData(email, password);
   }
-  useEffect(() => {
-    if (loggedInUser) navigate("/");
-  }, [error]);
+  // useEffect(() => {
+  //   if (loggedInUser) navigate("/");
+  // }, [error]);
 
   return (
     <>

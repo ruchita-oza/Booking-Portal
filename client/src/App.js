@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
-import AdminHome from "./pages/admin/home/AdminHome";
+// import AdminHome from "./pages/admin/home/AdminHome";
 import { refreshState } from "./redux/users/actions";
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
     refreshStateHandler();
   }, []);
-  const routing = useRoutes(Themeroutes);
+  // const routing = useRoutes(Themeroutes);
 
   return (
     <BrowserRouter>
@@ -38,14 +38,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/flights" element={<List />} />
-        <Route path="/flights/:id" element={<Flight />} />
+        <Route path="/fligh ts/:id" element={<Flight />} />
         <Route path="/auth" element={<AuthRoute />}>
           <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/login" element={<Login />} />
         </Route>
-        <Route path="/admin">{routing} </Route>
+        {/* <Route path="/admin">{routing} </Route> */}
         <Route path="/BusList" element={<BusList />} />
-        <Route path="/admin" element={<AdminHome />} />
+        {/* <Route path="/admin" element={<AdminHome />} /> */}
         <Route path="/ErrorPage" element={ErrorPage} />
       </Routes>
     </BrowserRouter>
