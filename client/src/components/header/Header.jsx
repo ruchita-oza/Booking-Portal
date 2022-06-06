@@ -1,5 +1,4 @@
 import {
-  faPlane,
   faCalendarDays,
   faPerson,
 } from "@fortawesome/free-solid-svg-icons";

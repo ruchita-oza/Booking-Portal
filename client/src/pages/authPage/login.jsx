@@ -1,8 +1,5 @@
 /** @format */
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-
+import React from "react";
 import Button from "../../components/button/Button";
 import { Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -10,32 +7,26 @@ import Input from "../../components/Input/Input";
 import "./login.css";
 import { fetchLoginUserThunkAction } from "../../redux/users/actions";
 import { selectUser } from "../../redux/users/selectors";
+// import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/loader";
-import { toast } from "react-hot-toast";
-function Login() {
-  const { isLoading, error, loggedInUser } = useSelector(selectUser);
+function Login(props) {
+  const { isLoading } = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // let history = useHistory();
-
   const validate = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
       .required("Password is required")
       .min(5, "Password must be at least 5 characters"),
   });
-  const fetchData = (email, password) => {
-    console.log(email, password);
-    dispatch(fetchLoginUserThunkAction(email, password));
-  };
   function handleLogin({ email, password }) {
     console.log("at handle login");
-    console.log(email + " pass: " + password);
-    fetchData(email, password);
+    console.log(email, password);
+    dispatch(fetchLoginUserThunkAction(email, password), navigate("/"));
   }
-  useEffect(() => {
-    if (loggedInUser) navigate("/");
-  }, [error]);
 
   return (
     <>
@@ -72,8 +63,8 @@ function Login() {
                             touched,
                           }) => (
                             <Form>
-                              {/* {console.log(values)} */}
-                              <div className="row w-100 mb-3  form-floating">
+                              {console.log(values)}
+                              <div className="row w-100 mb-3  form-floating ">
                                 <label
                                   htmlFor="email"
                                   id="lblUser"
@@ -140,12 +131,18 @@ function Login() {
                                   value="Login"
                                   onClick={() => {}}
                                 />
+                                {/* {isSubmitting && (
+                              <img
+                                alt="load"
+                                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                              />
+                            )} */}
                               </div>
-                              {/* <div>
+                              <div>
                                 <button type="button" className="btn btn-link">
                                   Forgot Password?
                                 </button>
-                              </div> */}
+                              </div>
                               <hr className="my-4" />
                               <div className="w-100 content ">
                                 <div className="d-flex justify-content-center">
@@ -155,12 +152,13 @@ function Login() {
                                   </div>
                                 </div>
                                 <div className="d-flex justify-content-center">
-                                  <Link to="/auth/register">
-                                    <Button
-                                      value="Sign Up"
-                                      type="button"
-                                    ></Button>
-                                  </Link>
+                                  <Button
+                                    value="Sign Up"
+                                    type="button"
+                                    onClick={() => {
+                                      props.changeVal();
+                                    }}
+                                  ></Button>
                                 </div>
                               </div>
                             </Form>

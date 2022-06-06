@@ -5,14 +5,14 @@ import { Field } from "formik";
 function Input(props) {
 	return (
 		<Field
-			name={props.name}
-			type={props.type}
-			className={props.className}
+			name={props?.name}
+			type={props?.type}
+			className={props?.className}
 		
-			value={props.value}
+			value={props?.value}
 			onChange={(e) => {
 				
-				props.setFieldValue(props.name, e.target.value);
+				props?.setFieldValue(props?.name, e.target.value);
 			}}
 		/>
 	);

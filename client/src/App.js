@@ -1,25 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import React, { useEffect , useState} from "react";
-
+import { refreshState } from "./redux/users/actions";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
 import Flight from "./pages/flight/Flight";
 import Footer from "./components/footer/Footer";
-// import React, {useState} from "react";
-//import AuthPage from "./pages/authPage/authPage";
 import ErrorPage from "./pages/errorPage/errorPage";
-// import Header from "./components/header/Header";
 import Navbar from "./components/navbar/Navbar";
-// import { ToastContainer } from "react-toastify";
 import Buses from "./pages/buses/Buses";
-import "react-toastify/dist/ReactToastify.css";
-// import AdminHome from "./pages/admin/AdminHome";
 import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
-// import AdminHome from "./pages/admin/home/AdminHome";
-import { refreshState } from "./redux/users/actions";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function App() {
   const dispatch = useDispatch();
