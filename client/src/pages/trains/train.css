@@ -1,11 +1,11 @@
-.busContainer {
+.trainContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
   }
   
-  .busWrapper {
+  .trainWrapper {
     width: 100%;
     max-width: 1024px;
     display: flex;
@@ -27,60 +27,60 @@
     cursor: pointer;
   }
   
-  .busTitle {
+  .trainTitle {
     font-size: 24px;
   }
   
-  .busAddress {
+  .trainAddress {
     font-size: 12px;
     display: flex;
     align-items: center;
     gap: 10px;
   }
   
-  .busClass {
+  .trainClass {
     color: #0071c2;
     font-weight: 500;
   }
   
-  .busPriceHighlight {
+  .trainPriceHighlight {
     color: #008009;
     font-weight: 500;
   }
   
-  .busImages {
+  .trainImages {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
   }
   
-  .busImgWrapper {
+  .trainImgWrapper {
     width: 33%;
   }
   
-  .busImg {
+  .trainImg {
     width: 100%;
     object-fit: cover;
     cursor: pointer;
   }
   
-  .busDetails {
+  .trainDetails {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     margin-top: 20px;
   }
   
-  .busDetailsTexts {
+  .trainDetailsTexts {
     flex: 3;
   }
   
-  .busDesc {
+  .trainDesc {
     font-size: 14px;
     margin-top: 20px;
   }
   
-  .busDetailsPrice {
+  .trainDetailsPrice {
     flex: 1;
     background-color: #ebf3ff;
     padding: 20px;
@@ -89,21 +89,21 @@
     gap: 20px;
   }
   
-  .busDetailsPrice > h1 {
+  .trainDetailsPrice > h1 {
     font-size: 18px;
     color: #555;
     
   }
-  .busDetailsPrice > span {
+  .trainDetailsPrice > span {
     font-size: 14px;
   }
-  .busDetailsPrice > h2 {
+  .trainDetailsPrice > h2 {
     font-weight: 300;
     text-align: center;
     /* 
      */
   }
-  .busDetailsPrice > button {
+  .trainDetailsPrice > button {
     border: none;
     padding: 10px 20px;
     background-color: #0071c2;

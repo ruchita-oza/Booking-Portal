@@ -16,7 +16,7 @@ import { selectBuses } from "../../redux/buses/selector";
 import toast from "react-hot-toast";
 const List = () => {
   const dispatch = useDispatch();
-  const { loading, error, flights, buses} = useSelector(selectFlights, selectBuses);
+  const { loading, error, flights, buses, trains } = useSelector(selectFlights, selectBuses);
   
 
   const location = useLocation();
@@ -32,6 +32,8 @@ const List = () => {
     if(window.location.pathname === '/flights')
       dispatch(getFlightSchedules(source, destination));
     if(window.location.pathname === '/buses')
+      dispatch(getBusSchedules(source, destination));
+    if(window.location.pathname === '/trains')
       dispatch(getBusSchedules(source, destination));
     
   }, [dispatch, error,source,destination]);
@@ -105,6 +107,7 @@ const List = () => {
           <div className="listResult">
             {window.location.pathname === '/flights' &&  <SearchItem  />}
             {window.location.pathname === '/buses' && <SearchItem />}
+            {window.location.pathname === '/trains' && <SearchItem />}
           </div>
         </div>
       </div>
