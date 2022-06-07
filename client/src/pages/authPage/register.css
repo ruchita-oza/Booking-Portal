@@ -12,18 +12,19 @@ form {
   grid-row: 1 / 2;
 }
 
-body, card {
+/* body, card {
   min-width: 100%;
   max-width: 100%;
 }
 
 .container-fluid {
   min-width: 575px;
-}
+} */
 
 body,
 input {
   font-family: "Poppins", sans-serif;
+  left: 200px;
 }
 
 form.sign-up-form {
@@ -35,4 +36,8 @@ form.sign-up-form {
   font-size: 2.2rem;
   color: #444;
   margin-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  
 }
