@@ -1,5 +1,4 @@
 import Header from "../../components/header/Header";
-// import Navbar from "../../components/navbar/Navbar";
 import Transport from "../../components/transport/Transport";
 import { faPlane, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
 

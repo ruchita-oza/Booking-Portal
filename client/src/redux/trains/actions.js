@@ -1,32 +1,34 @@
-import {
-  ALL_TRAINSCHEDULE_REQUEST,
-  ALL_TRAINSCHEDULE_SUCESS,
-  ALL_TRAINSCHEDULE_FAIL,
-  CLEAR_ERR,
+import {toast} from "react-hot-toast";
+import { 
+    ALL_TRAINSCHEDULE_REQUEST,
+    ALL_TRAINSCHEDULE_SUCCESS,
+    ALL_TRAINSCHEDULE_FAIL,
+    CLEAR_ERR,
 } from "./types";
 
-import {
-  getAllTrainsApi,
-  getTrainsWithLocationApi,
-  getTrainsWithLocationAndPriceApi,
+import { 
+    getAllTrainsApi,
+    getTrainsWithLocationApi,
+    getTrainsWithLocationAndPriceApi,
 } from "../../services/TrainServices";
 
 import { getCityApi } from "../../services/CityServices";
 
 export const fetchAllTrainScheduleRequst = () => {
-  return { type: ALL_TRAINSCHEDULE_REQUEST };
+    return { type: ALL_TRAINSCHEDULE_REQUEST };
 };
 export const fetchAllTrainScheduleSuccess = (trainSchedules) => {
-  return { type: ALL_TRAINSCHEDULE_SUCESS, payload: trainSchedules };
+    return { type: ALL_TRAINSCHEDULE_SUCCESS, payload: trainSchedules };
 };
 export const fetchAllTrainScheduleFail = (error) => {
-  return { type: ALL_TRAINSCHEDULE_FAIL, payload: error };
+    return { type: ALL_TRAINSCHEDULE_FAIL, payload: error };
 };
+
 //get trainSchedules
 export const getTrainSchedules =
-  (source, destination, minPrice, maxPrice) => async (dispatch) => {
+  ({source, destination, minPrice, maxPrice}) => async (dispatch) => {
     try {
-      // console.log("at fligth actions");
+      console.log("at train actions");
       dispatch(fetchAllTrainScheduleRequst());
       if (source & destination) {
         console.log("at source nd dest");
@@ -65,11 +67,11 @@ export const getTrainSchedules =
           }
         }
       } else {
-        // console.log("at else part");
+        console.log("at else part");
         let { data } = await getAllTrainsApi();
-        console.log(data);
+        console.log(data.data);
         if (data) {
-          dispatch(fetchAllTrainScheduleSuccess(data.trainSchedules));
+          dispatch(fetchAllTrainScheduleSuccess(data.data));
           return;
         } else {
           throw new Error();

@@ -9,6 +9,7 @@ import * as Yup from "yup";
 import "./register.css";
 import { toast } from "react-hot-toast";
 
+
 function Register() {
   const navigate = useNavigate();
   const validate = Yup.object().shape({
@@ -333,6 +334,7 @@ function Register() {
                           </label>
 
                           <Input
+                            placeholder="First Name"
                             name="first_name"
                             type="first_name"
                             label="lblFName"
@@ -360,6 +362,7 @@ function Register() {
                             Last Name
                           </label>
                           <Input
+                            placeholder="Last Name"
                             name="last_name"
                             type="last_name"
                             label="lblLName"
@@ -387,6 +390,7 @@ function Register() {
                             Email
                           </label>
                           <Input
+                            placeholder="Email"
                             name="email"
                             type="email"
                             label="lblEmail"
@@ -415,6 +419,7 @@ function Register() {
                             Password
                           </label>
                           <Input
+                            placeholder="Password"
                             name="password"
                             type="password"
                             label="lblPass"
@@ -443,6 +448,7 @@ function Register() {
                             Confirm Password
                           </label>
                           <Input
+                            placeholder="Confirm Password"
                             name="confPass"
                             type="password"
                             label="confPass"
@@ -469,7 +475,8 @@ function Register() {
                           >
                             Phone Number
                           </label>
-                          <Input
+                          
+                          <Input                            
                             name="phone_number"
                             type="phone_number"
                             label="lblphone_number"

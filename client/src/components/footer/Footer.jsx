@@ -13,30 +13,24 @@ const Footer = () => {
         <h3> BOOKING PORTAL </h3>
         <p>Enjoy your Journey through the best booking deals and service and even with the cheapest rates....!</p>       
         <ul className="socials">
-          <li>
-            <a href="/#">
+          <li>            
               <FontAwesomeIcon icon={faInstagram} />
-            </a>
           </li>
           <li>
-            <a href="/#">
-              <FontAwesomeIcon icon={faFacebook} />
-            </a>
+            <FontAwesomeIcon icon={faFacebook} />
           </li>
           <li>
-            <a href="/#">
               <FontAwesomeIcon icon={faTwitter} />
-            </a>
           </li>
           <li>
-            <a href="/#">
+            
               <FontAwesomeIcon icon={faGoogle} />
-            </a>
+            
           </li>
           <li>
-            <a href="/#">
+            
               <FontAwesomeIcon icon={faYoutube} />
-            </a>
+            
           </li>
         </ul>
       </div>

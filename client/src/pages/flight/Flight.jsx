@@ -106,14 +106,7 @@ const Flight = () => {
           </div>
           <div className="flightDetailsPrice">
             <div className="row">
-              <div className="col-md-3">
-              <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0oGFIP8Y_nTBbePyew82IyQf78mSArb19LQ&usqp=CAU" 
-                alt="true"
-                height="160px"
-              />
-              </div>
-              <div className="col-md-9">
+              <div className="col-md-12">
                 <h2>Indianapolis to Paris</h2>
                 <h5>ONEWAY FLIGHT</h5>
                 <br></br>
@@ -138,7 +131,8 @@ const Flight = () => {
                     </span>
                   </div>
                 </div>  
-                <br></br>  
+                <br></br> 
+                
                 <div className="row">
                   <div className="col-md-6">
                     <h5>
@@ -150,9 +144,22 @@ const Flight = () => {
                       <b> Economy </b> Rs 25000
                     </h5>
                   </div>
-                  <button>Reserve or Book Now!</button>  
-                </div>                            
+                  <div className="row">
+                  <div className="col-md-6">
+                    <span><b>Avaialible Seats: </b>90</span>
+                  </div>                  
+                  </div> 
+                  <br></br> 
+                  <div className="row">
+                    <div className="col-md-6">
+                    <span><b>Total Cost: </b>90</span>
+                  </div>                  
+                </div> 
+                <br></br>                           
               </div>
+                  <button>Reserve or Book Now!</button>  
+                </div>  
+                
             </div>
           </div>
           <div className="flightDetails">

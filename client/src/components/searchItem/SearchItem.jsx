@@ -3,7 +3,7 @@ import "./searchItem.css";
 
 const SearchItem = ({ data }) => {
   console.log(data);
-  console.log("at search Item");
+  
   return (
     <>
       <div className="searchItem">

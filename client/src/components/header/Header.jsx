@@ -1,5 +1,4 @@
 import {
-  faPlane,
   faCalendarDays,
   faPerson,
 } from "@fortawesome/free-solid-svg-icons";
@@ -64,7 +63,7 @@ const Header = (props) => {
             <h1 className='headerTitle pl-5'>{props.heading}</h1>
             <p className='headerDesc pl-5'>{props.description}</p>
             {!loggedInUser && (
-              <Link to="/auth/login">
+              <Link to="/auth/login" className="pl-5">
                 <button className="headerBtn"> Sign in / Register </button>
         </Link>
             )}
