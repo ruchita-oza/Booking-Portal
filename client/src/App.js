@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import { refreshState } from "./redux/users/actions";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
@@ -13,7 +13,7 @@ import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
 import "react-toastify/dist/ReactToastify.css";
-
+import UserProfile from "./pages/userProfile/UserProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +21,7 @@ function App() {
   // const [isSignUp, changeForm] = useState(false);
   const refreshStateHandler = () => {
     // const token = localStorage.getItem("token");
+    console.log(JSON.parse(localStorage.getItem("user")));
     const user = JSON.parse(localStorage.getItem("user")) || null;
     dispatch(refreshState({ user }));
   };
@@ -53,8 +54,9 @@ function App() {
         <Route path="/buses" element={<List />} />
         <Route path="/buses/:id" element={<Buses />} />
         <Route path="/trains" element={<List />} />
-
-        <Route component={ErrorPage} />
+        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="" element={<ErrorPage />} />
+        {/* <Route component={ErrorPage} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>

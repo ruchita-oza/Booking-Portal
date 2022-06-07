@@ -2,6 +2,11 @@
 const db = require("../models");
 const User = db.users;
 
+async function checkExistsUser(id) {
+  const users = await User.findAll({ where: { id } });
+  return users.length > 0 ? true : false;
+}
+
 const updateUser = async (req, res, next) => {
   try {
     const updateUser = await User.update(
@@ -14,7 +19,13 @@ const updateUser = async (req, res, next) => {
     }
     const user = await User.findOne({ where: { id: req.params.id } });
     const { password, isAdmin, ...otherDetails } = user.dataValues;
-    res.status(200).json({ user: { ...otherDetails }, success: true });
+    res
+      .status(200)
+      .json({
+        data: "User details updated successfully",
+        user: { ...otherDetails },
+        success: true,
+      });
   } catch (err) {
     next(err);
   }
@@ -31,10 +42,15 @@ const deleteUser = async (req, res, next) => {
 
 const getUser = async (req, res, next) => {
   try {
-    const user = await User.findOne({ where: { id: req.params.id } });
-    res.status(200).json(user);
-  } catch (err) {
-    next(err);
+    const userId = req.params.id;
+    const status = await checkExistsUser(userId);
+    if (status) {
+      const user = await User.findAll({ where: { id: userId } });
+      return res.json({ data: user, status: true });
+    }
+    return next(createError(422, "Error user does not exists"));
+  } catch (error) {
+    return next(createError(500, "Error while fetching user details " + error));
   }
 };
 const getUsers = async (req, res, next) => {
