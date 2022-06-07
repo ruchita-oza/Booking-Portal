@@ -7,7 +7,6 @@ import Input from "../../components/Input/Input";
 import "./login.css";
 import { fetchLoginUserThunkAction } from "../../redux/users/actions";
 import { selectUser } from "../../redux/users/selectors";
-import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/loader";
