@@ -20,6 +20,8 @@ import ResultNotFoundPage from "../errorPage/ResultNotFoundPage";
 import Loader from "../../components/loader/loader";
 import EmptyView from "../../components/emptyView/EmptyView";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -233,15 +235,18 @@ const List = () => {
               <h1 className="lsTitle">Search</h1>
               <div className="lsItem">
                 <label>Source</label>
-                <input
-                  placeholder="enter your source"
-                  type="text"
-                  value={source}
-                  onChange={(e) => {
-                    // console.log(e.target.value);
-                    SetSource(e.target.value);
-                  }}
-                ></input>
+                <div className="lsInput">
+                  <FontAwesomeIcon icon={faMagnifyingGlass} />
+                  <input
+                    placeholder="enter your source"
+                    type="text"
+                    value={source}
+                    onChange={(e) => {
+                      // console.log(e.target.value);
+                      SetSource(e.target.value);
+                    }}
+                  ></input>
+                </div>
               </div>
               <div className="lsItem">
                 <label>Destination</label>
