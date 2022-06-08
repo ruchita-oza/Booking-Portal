@@ -1,76 +1,93 @@
-import {toast} from "react-hot-toast";
-import { 
-    ALL_TRAINSCHEDULE_REQUEST,
-    ALL_TRAINSCHEDULE_SUCCESS,
-    ALL_TRAINSCHEDULE_FAIL,
-    CLEAR_ERR,
+import { toast } from "react-hot-toast";
+import {
+  ALL_TRAINSCHEDULE_REQUEST,
+  ALL_TRAINSCHEDULE_SUCCESS,
+  ALL_TRAINSCHEDULE_FAIL,
+  CLEAR_ERR,
 } from "./types";
 
-import { 
-    getAllTrainsApi,
-    getTrainsWithLocationApi,
-    getTrainsWithLocationAndPriceApi,
+import {
+  getAllTrainsApi,
+  getTrainsWithLocationPriceTimeApi,
+  getTrainsWithLocationPriceApi,
 } from "../../services/TrainServices";
 
 import { getCityApi } from "../../services/CityServices";
 
-export const fetchAllTrainScheduleRequst = () => {
-    return { type: ALL_TRAINSCHEDULE_REQUEST };
+export const fetchAllTrainScheduleRequest = () => {
+  return { type: ALL_TRAINSCHEDULE_REQUEST };
 };
 export const fetchAllTrainScheduleSuccess = (trainSchedules) => {
-    return { type: ALL_TRAINSCHEDULE_SUCCESS, payload: trainSchedules };
+  return { type: ALL_TRAINSCHEDULE_SUCCESS, payload: trainSchedules };
 };
 export const fetchAllTrainScheduleFail = (error) => {
-    return { type: ALL_TRAINSCHEDULE_FAIL, payload: error };
+  return { type: ALL_TRAINSCHEDULE_FAIL, payload: error };
 };
 
 //get trainSchedules
 export const getTrainSchedules =
-  ({source, destination, minPrice, maxPrice}) => async (dispatch) => {
+  ({ source, destination, minPrice, maxPrice, fromDate, toDate }, setResult) =>
+  async (dispatch) => {
     try {
-      console.log("at train actions");
-      dispatch(fetchAllTrainScheduleRequst());
-      if (source & destination) {
-        console.log("at source nd dest");
+      // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
+      dispatch(fetchAllTrainScheduleRequest());
+      // console.log(setResult);
+      setResult(true);
+      minPrice = minPrice ? minPrice : 0;
+      maxPrice = maxPrice ? maxPrice : 1000000;
+      // console.log(fromDate);
+      // console.log(toDate);
+      if (source && destination) {
+        console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
+        // console.log(sourceCity);
         if (
-          sourceCity.data.cities.length === 0 ||
-          destCity.data.cities.length === 0
-        )
-          throw new Error("Train not available");
-        // console.log(source, destination);
-        if (!minPrice && !maxPrice) {
-          let { data } = await getTrainsWithLocationApi(
-            sourceCity.data.cities[0].id,
-            destCity.data.cities[0].id
+          (sourceCity === undefined && destCity === undefined) ||
+          sourceCity.data.cities.count === 0 ||
+          destCity.data.cities.count === 0
+        ) {
+          throw new Error(
+            `bus on Schedule ${source} and ${destination} is not available`
           );
-          if (data) {
-            console.log(data);
-            dispatch(fetchAllTrainScheduleSuccess(data));
-            return;
-          } else {
-            throw new Error();
-          }
-        } else {
-          let { data } = await getTrainsWithLocationAndPriceApi(
-            sourceCity.data.cities[0].id,
-            destCity.data.cities[0].id,
+        }
+        if (!fromDate) {
+          let { data } = await getTrainsWithLocationPriceApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
             minPrice,
             maxPrice
           );
           if (data) {
-            dispatch(fetchAllTrainScheduleSuccess(data.trainSchedules));
+            if (data.data.count === 0) setResult(false);
+            dispatch(fetchAllTrainScheduleSuccess(data.data));
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (fromDate) {
+          let { data } = await getTrainsWithLocationPriceTimeApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
+            minPrice,
+            maxPrice,
+            fromDate,
+            toDate
+          );
+          if (data) {
+            if (data.data.count === 0) setResult(false);
+            dispatch(fetchAllTrainScheduleSuccess(data.data));
             return;
           } else {
             throw new Error();
           }
         }
       } else {
-        console.log("at else part");
-        let { data } = await getAllTrainsApi();
-        console.log(data.data);
+        let { data } = await getAllTrainsApi(minPrice, maxPrice);
+        console.log(data);
         if (data) {
+          console.log(data);
+          if (data.data.count === 0) setResult(false);
           dispatch(fetchAllTrainScheduleSuccess(data.data));
           return;
         } else {
@@ -79,8 +96,10 @@ export const getTrainSchedules =
       }
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error(error.message);
+      setResult(false);
       dispatch(fetchAllTrainScheduleFail(error));
+      // setResult(false);
     }
   };
 

@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 const FlightDetail = db.flight_details;
 const FlightSchedule = db.flight_schedule;
@@ -17,8 +18,12 @@ const findFlightScheduleById = async (flightScheduleId) => {
   });
 };
 
-const findAllFlightSchedules = async () => {
-  return FlightSchedule.findAll({
+const findAllFlightSchedules = async ({ queryCopy, priceQuery, timeQuery }) => {
+  console.log("at dio");
+  console.log(queryCopy, priceQuery, timeQuery);
+
+  const flights = FlightSchedule.findAndCountAll({
+    where: { [Op.and]: [queryCopy, priceQuery, timeQuery] },
     include: [
       {
         model: FlightDetail,
@@ -26,6 +31,7 @@ const findAllFlightSchedules = async () => {
       },
     ],
   });
+  return flights;
 };
 
 module.exports = {

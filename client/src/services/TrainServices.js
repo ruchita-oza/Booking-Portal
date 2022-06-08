@@ -1,15 +1,37 @@
+// import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
-export const getAllTrainsApi = () => axios.get("/train/schedule");
+export const getAllTrainsApi = (minPrice, maxPrice) =>
+  axios.get(`/train/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}`);
 
 export const getTrainsWithLocationApi = (sourceId, destId) =>
-  axios.get(`/train/schedule?source=${sourceId}&destination=${destId}`);
+  axios.get(`/train/Schedule?source=${sourceId}&destination=${destId}`);
 
-export const getTrainsWithLocationAndPriceApi = (
+export const getTrainsWithLocationPriceApi = (
   sourceId,
   destId,
   minPrice,
   maxPrice
 ) =>
   axios.get(
-    `/train/schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+    `/train/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+  );
+export const getTrainsWithLocationPriceTimeApi = (
+  sourceId,
+  destId,
+  minPrice,
+  maxPrice,
+  fromDate,
+  toDate
+) =>
+  axios.get(
+    `/train/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}`
+  );
+export const getTrainsWithLocationTimeApi = (
+  sourceId,
+  destId,
+  fromDate,
+  toDate
+) =>
+  axios.get(
+    `/train/Schedule?source=${sourceId}&destination=${destId}&fromDate=${fromDate}&toDate=${toDate}`
   );

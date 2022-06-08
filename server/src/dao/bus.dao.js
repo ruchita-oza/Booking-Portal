@@ -17,11 +17,16 @@ const findBusScheduleById = async (busScheduleId) => {
   });
 };
 
-const findAllBusSchedules = async ({ queryCopy, priceQuery, timeQuery }) => {
+const findAllBusSchedules = async ({
+  queryCopy,
+  priceQuery,
+  timeQuery,
+  ticketQuery,
+}) => {
   console.log("at dio");
-  console.log(queryCopy, priceQuery, timeQuery);
+  console.log(queryCopy, priceQuery, timeQuery, ticketQuery);
   const busSchedules = await BusSchedule.findAndCountAll({
-    where: { [Op.and]: [queryCopy, priceQuery, timeQuery] },
+    where: { [Op.and]: [queryCopy, priceQuery, timeQuery, ticketQuery] },
     include: [
       {
         model: BusDetail,

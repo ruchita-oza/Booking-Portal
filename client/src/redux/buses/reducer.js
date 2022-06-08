@@ -19,7 +19,7 @@ export const busReducer = (state = initialState, action) => {
     case ALL_BUSSCHEDULE_SUCESS:
       return { ...state, isLoading: false, buses: action.payload, error: null };
     case ALL_BUSSCHEDULE_FAIL:
-      toast.error(action.payload.message);
+      // toast.error(action.payload.message);
       console.log(action.payload.message);
       return {
         ...state,
