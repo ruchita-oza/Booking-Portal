@@ -10,7 +10,6 @@ const {
 
 router.get("/", getCities);
 router.post("/", createCity);
-
 router.put("/:id", updateCity);
 router.delete("/:id", deleteCity);
 router.get("/:id", getCity);

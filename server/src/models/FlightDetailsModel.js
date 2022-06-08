@@ -3,15 +3,24 @@ module.exports = (sequelize, DataTypes) => {
     "flight_details",
 
     {
+      id: {
+        type: DataTypes.STRING(10),
+        primaryKey: true,
+        autoIncrement: false,
+      },
       flight_name: {
         type: DataTypes.STRING(50),
       },
-      flight_number: {
-        type: DataTypes.STRING(10),
-      },
+      // flight_number: {
+      //   type: DataTypes.STRING(10),
+      // },
       flight_type: {
-        type: DataTypes.ENUM("economy", "premium economy", "business"),
-        default: "economy",
+        type: DataTypes.ENUM(
+          "First Class",
+          "Premium Economy",
+          "Business Class"
+        ),
+        default: "Economy",
       },
     },
     {

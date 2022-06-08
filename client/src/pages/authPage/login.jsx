@@ -10,6 +10,8 @@ import { selectUser } from "../../redux/users/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader/loader";
+
+
 function Login(props) {
   const { isLoading } = useSelector(selectUser);
   const navigate = useNavigate();
@@ -21,11 +23,28 @@ function Login(props) {
       .required("Password is required")
       .min(5, "Password must be at least 5 characters"),
   });
-  function handleLogin({ email, password }) {
-    console.log("at handle login");
+
+  const onSuccess = () => {
+    console.log("on success");
+    navigate("/");
+  };
+
+  const onError = (error) => {
+    console.log("error occured", error);
+  };
+  const fetchData = (email, password) => {
     console.log(email, password);
-    dispatch(fetchLoginUserThunkAction(email, password), navigate("/"));
+    dispatch(fetchLoginUserThunkAction(email, password, onSuccess, onError));
+  };
+  function handleLogin({ email, password }) {
+    fetchData(email, password);
+    // console.log("at handle login");
+    // console.log(email, password);
+    // dispatch(fetchLoginUserThunkAction(email, password), navigate("/"));
   }
+  // useEffect(() => {
+  //   if (loggedInUser) navigate("/");
+  // }, [error]);
 
   return (
     <>

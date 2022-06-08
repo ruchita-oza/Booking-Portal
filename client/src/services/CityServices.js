@@ -1,4 +1,5 @@
-import AxiosInstance from "./AxiosInstance";
+import axios from "axios";
+
 
 export const getCityApi = (cityName) =>
-  AxiosInstance.get(`/city/?city_name=${cityName}`);
+  axios.get(`city/?city_name=${cityName}`);

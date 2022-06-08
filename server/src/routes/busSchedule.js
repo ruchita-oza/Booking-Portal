@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   updateBusSchedule,
   deleteBusSchedule,
-  getBusSchedule,
+  getBusScheduleById,
   getBusSchedules,
   createBusSchedule,
 } = require("../controllers/busScheduleController");
@@ -13,6 +13,6 @@ router.post("/", createBusSchedule);
 
 router.put("/:id", updateBusSchedule);
 router.delete("/:id", deleteBusSchedule);
-router.get("/:id", getBusSchedule);
+router.get("/:id", getBusScheduleById);
 
 module.exports = router;

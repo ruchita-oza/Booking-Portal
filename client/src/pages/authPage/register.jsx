@@ -1,15 +1,15 @@
 /** @format */
+import { useNavigate, Link } from "react-router-dom";
+
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import Input from "../../components/Input/Input";
 import Button from "../../components/button/Button";
-// import { authenticationService } from "services";
 import { Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./register.css";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-hot-toast";
 
-function Register(props) {
+function Register() {
   const navigate = useNavigate();
   const validate = Yup.object().shape({
     first_name: Yup.string().required("First Name is required"),
@@ -31,48 +31,35 @@ function Register(props) {
       .length(10, "enter valid phone_number"),
   });
 
-  const handleRegister = ({
-    first_name,
-    last_name,
-    email,
-    password,
-    confPass,
-    phone_number,
-  }) => {
-    setTimeout(async () => {
-      if (password === confPass) {
-        console.log(first_name);
-        const res = await fetch("/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            first_name,
-            last_name,
-            email,
-            password,
-            phone_number,
-          }),
-        });
-        const data = await res.json();
-        if (!data) {
-          toast.error("something went wrong , Please try again later");
-        } else if (res.status === 401) {
-          // toast.error("error");
-          toast.error(`ERROR : ${res.status}  ${data.message}`);
-        } else if (res.status === 200) {
-          toast.success("Registration successful");
-          navigate("/");
-        } else {
-          window.alert("unknown error");
-          console.log("unknown error");
-        }
-      }
-    }, 500);
+  const handleRegister = (values) => async () => {
+    const { first_name, last_name, email, password, confPass, phone_number } =
+      values;
+    const res = await fetch("/authRoute/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        first_name,
+        last_name,
+        email,
+        password,
+        phone_number,
+      }),
+    });
+    const data = await res.json();
+    if (!data) {
+      toast.error("something went wrong , Please try again later");
+    } else if (res.status === 200) {
+      toast.success("Registration successful");
+      navigate("/auth/login");
+    } else {
+      console.log(data.success === false);
+      if (data.success === false) toast.error(data.message);
+      else toast.error("unknown error");
+    }
   };
 
   return (
     <div className="container">
-      <ToastContainer positive="top-right" autoClose={1500} />
       <div className="row">
         <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
           <div className="card border-0 shadow rounded-3 my-5">
@@ -106,7 +93,6 @@ function Register(props) {
                         {/* {console.log(values)} */}
                         <div className="row w-100 mb-3 form-floating ">
                           <label
-
                             htmlFor="first_name"
                             id="lblFName"
                             className="col-lg-4 col-md-4 col-sm-10"
@@ -115,6 +101,7 @@ function Register(props) {
                           </label>
 
                           <Input
+                            placeholder="First Name"
                             name="first_name"
                             type="first_name"
                             label="lblFName"
@@ -142,6 +129,7 @@ function Register(props) {
                             Last Name
                           </label>
                           <Input
+                            placeholder="Last Name"
                             name="last_name"
                             type="last_name"
                             label="lblLName"
@@ -169,6 +157,7 @@ function Register(props) {
                             Email
                           </label>
                           <Input
+                            placeholder="Email"
                             name="email"
                             type="email"
                             label="lblEmail"
@@ -197,6 +186,7 @@ function Register(props) {
                             Password
                           </label>
                           <Input
+                            placeholder="Password"
                             name="password"
                             type="password"
                             label="lblPass"
@@ -225,6 +215,7 @@ function Register(props) {
                             Confirm Password
                           </label>
                           <Input
+                            placeholder="Confirm Password"
                             name="confPass"
                             type="password"
                             label="confPass"
@@ -251,6 +242,7 @@ function Register(props) {
                           >
                             Phone Number
                           </label>
+
                           <Input
                             name="phone_number"
                             type="phone_number"
@@ -279,14 +271,9 @@ function Register(props) {
                           <Button
                             type="submit"
                             value="Sign up"
-                            onClick={() => {}}
+                            validationSchema={validate}
+                            onClick={handleRegister(values)}
                           ></Button>
-                          {/* {isSubmitting && (
-                            <img
-                              alt="load"
-                              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                            />
-                          )} */}
                         </div>
                         <hr className="my-4" />
                         <div className="w-100  ">
@@ -297,13 +284,9 @@ function Register(props) {
                             </div>
                           </div>
                           <div className="d-flex justify-content-center">
-                            <Button
-                              value="Sign In"
-                              type="button"
-                              onClick={() => {
-                                props.changeVal();
-                              }}
-                            ></Button>
+                            <Link to="/auth/login">
+                              <Button value="Sign In" type="button"></Button>
+                            </Link>
                           </div>
                         </div>
                       </Form>
@@ -314,7 +297,8 @@ function Register(props) {
             </div>
           </div>
         </div>
-        </div></div>
+      </div>
+    </div>
   );
 }
 

@@ -1,5 +1,4 @@
 import {
-  faPlane,
   faCalendarDays,
   faPerson,
 } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +13,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { selectUser } from "../../redux/users/selectors";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Header = (props) => {
   const [source, setSource] = useState("");
@@ -64,9 +63,9 @@ const Header = (props) => {
             <h1 className='headerTitle pl-5'>{props.heading}</h1>
             <p className='headerDesc pl-5'>{props.description}</p>
             {!loggedInUser && (
-              <Link to='/authPage'>
-                <button className='headerBtn ml-5'> Sign in / Register </button>
-              </Link>
+              <Link to="/auth/login" className="pl-5">
+                <button className="headerBtn"> Sign in / Register </button>
+        </Link>
             )}
             <div className='headerSearch'>
               <div className='headerSearchItem'>

@@ -4,73 +4,99 @@ import {
   ALL_BUSSCHEDULE_FAIL,
   CLEAR_ERR,
 } from "./types";
-
+// import axios from "axios";
 import {
   getAllBusesApi,
-  getBusesWithLocationApi,
-  getBusesWithLocationAndPriceApi,
+  // getBusesWithLocationApi,
+  // getBusesWithLocationTimeApi,
+  getBusesWithLocationPriceApi,
+  getBusesWithLocationPriceTimeApi,
 } from "../../services/BusServices";
 
 import { getCityApi } from "../../services/CityServices";
+import toast from "react-hot-toast";
 
-export const fetchAllBusScheduleRequst = () => {
+export const fetchAllBusScheduleRequest = () => {
   return { type: ALL_BUSSCHEDULE_REQUEST };
 };
-export const fetchAllBusScheduleSuccess = (busSchedules) => {
-  return { type: ALL_BUSSCHEDULE_SUCESS, payload: busSchedules };
+export const fetchAllBusScheduleSuccess = (busScheduleWithBuses) => {
+  return { type: ALL_BUSSCHEDULE_SUCESS, payload: busScheduleWithBuses };
 };
 export const fetchAllBusScheduleFail = (error) => {
   return { type: ALL_BUSSCHEDULE_FAIL, payload: error };
 };
 //get BusSchedules
 export const getBusSchedules =
-  (source, destination, minPrice, maxPrice) => async (dispatch) => {
+  ({ source, destination, minPrice, maxPrice, fromDate, toDate }, setResult) =>
+  async (dispatch) => {
     try {
-      dispatch(fetchAllBusScheduleRequst());
-      if (source & destination) {
+      dispatch(fetchAllBusScheduleRequest());
+      console.log(setResult);
+      setResult(true);
+      minPrice = minPrice ? minPrice : 0;
+      maxPrice = maxPrice ? maxPrice : 1000000;
+      // console.log(fromDate);
+      // console.log(toDate);
+      if (source && destination) {
+        console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
+        console.log(sourceCity);
         if (
-          sourceCity.data.cities.length === 0 ||
-          destCity.data.cities.length === 0
-        )
-          throw new Error("Bus not available");
-        if (!minPrice && !maxPrice) {
-          let { data } = await getBusesWithLocationApi(
-            sourceCity.data.cities[0].id,
-            destCity.data.cities[0].id
+          (sourceCity === undefined && destCity === undefined) ||
+          sourceCity.data.cities.count === 0 ||
+          destCity.data.cities.count === 0
+        ) {
+          throw new Error(
+            `bus on Schedule ${source} and ${destination} is not available`
           );
-          if (data) {
-            dispatch(fetchAllBusScheduleSuccess(data));
-            return;
-          } else {
-            throw new Error();
-          }
-        } else {
-          let { data } = await getBusesWithLocationAndPriceApi(
-            sourceCity.data.cities[0].id,
-            destCity.data.cities[0].id,
+        }
+        if (!fromDate) {
+          let { data } = await getBusesWithLocationPriceApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
             minPrice,
             maxPrice
           );
           if (data) {
-            dispatch(fetchAllBusScheduleSuccess(data.busSchedules));
+            if (data.busScheduleWithBuses.count === 0) setResult(false);
+            dispatch(fetchAllBusScheduleSuccess(data.busScheduleWithBuses));
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (fromDate) {
+          let { data } = await getBusesWithLocationPriceTimeApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
+            minPrice,
+            maxPrice,
+            fromDate,
+            toDate
+          );
+          if (data) {
+            if (data.busScheduleWithBuses.count === 0) setResult(false);
+            dispatch(fetchAllBusScheduleSuccess(data.busScheduleWithBuses));
             return;
           } else {
             throw new Error();
           }
         }
       } else {
-        let { data } = await getAllBusesApi();
+        let { data } = await getAllBusesApi(minPrice, maxPrice);
         if (data) {
-          dispatch(fetchAllBusScheduleSuccess(data.busSchedules));
+          if (data.busScheduleWithBuses.count === 0) setResult(false);
+          dispatch(fetchAllBusScheduleSuccess(data.busScheduleWithBuses));
           return;
         } else {
           throw new Error();
         }
       }
     } catch (error) {
+      console.log(error);
+      toast.error(error.message);
       dispatch(fetchAllBusScheduleFail(error));
+      // setResult(false);
     }
   };
 

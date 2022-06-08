@@ -1,0 +1,36 @@
+/* body { */
+/* background: rgb(99, 39, 120); */
+/* background: rgb(212, 244, 255); */
+/* } */
+
+.form-control:focus {
+  box-shadow: none;
+  /* border-color: #ba68c8; */
+  border-color: darkblue;
+}
+
+.profile-button {
+  /* background: rgb(99, 39, 120); */
+  background: rgb(0, 157, 255);
+  box-shadow: none;
+  border: none;
+}
+
+/* .profile-button:hover {
+  background: ;
+} */
+
+.profile-button:focus {
+  /* background: #682773; */
+  /* background: green; */
+  box-shadow: none;
+}
+
+.profile-button:active {
+  /* background: green; */
+  box-shadow: none;
+}
+
+.labels {
+  font-size: 11px;
+}

@@ -24,11 +24,12 @@ export const fetchAllFlightScheduleFail = (error) => {
 };
 //get flightSchedules
 export const getFlightSchedules =
-  (source, destination, minPrice, maxPrice) => async (dispatch) => {
+  ({ source, destination, minPrice, maxPrice }) =>
+  async (dispatch) => {
     try {
       console.log("at fligth actions");
       dispatch(fetchAllFlightScheduleRequst());
-      if (source & destination) {
+      if (source && destination) {
         console.log("at source nd dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);

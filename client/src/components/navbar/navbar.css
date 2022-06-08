@@ -1,11 +1,11 @@
-.navbar{
+.navbar {
   height: 50px;
   width:100%;
   min-width: 575px;
   background-color: #003580;
 }
 
-.navContainer{
+.navContainer {
   width: 100%;
   color: white;
   display: flex;
@@ -13,11 +13,11 @@
   justify-content: space-between;
 }
 
-.logo{
+.logo {
   font-weight: 500;
 }
 
-.navButton{
+.navButton {
   margin-left: 20px;
   border: none;
   padding: 5px 10px;
@@ -25,5 +25,3 @@
   color: #003580;
   border-radius: 3px;
 }
-
-

@@ -37,28 +37,32 @@ const Navbar = (props) => {
   return (
     <>
       <div>
-        <div className='navbar'>
-          <div className='navContainer'>
-            <Link to='/'>
-              <span className='logo' style={{ color: "white" }}>
+        <div className="navbar">
+          <div className="navContainer">
+            <Link to="/">
+              <span className="logo" style={{ color: "white" }}>
                 Skyline booking
               </span>
             </Link>
-            <div className='navItems'>
+            <div className="navItems">
               {!loggedInUser && (
-                <Link to='/authPage'>
-                  <button className='navButton'>Register</button>
-                  <button className='navButton'>Login</button>
-                </Link>
+                <>
+                  <Link to="/auth/register">
+                    <button className="navButton">Register</button>
+                  </Link>
+                  <Link to="/auth/login">
+                    <button className="navButton">Login</button>
+                  </Link>
+                </>
               )}
               {loggedInUser && (
-                <Link onClick={handleLogout} to='/'>
-                  <button className='navButton'>Logout</button>
+                <Link onClick={handleLogout} to="/">
+                  <button className="navButton">Logout</button>
                 </Link>
               )}
-              <Link to='/userProfile'>
-                <button className='navButton'>User Profile</button>
-              </Link>
+              {loggedInUser && (<Link to="/userProfile">
+                <button className="navButton">User Profile</button>
+              </Link>)}
             </div>
           </div>
         </div>

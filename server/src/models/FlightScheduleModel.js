@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
 
     {
       flight_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(10),
         // references: { model: "flightDetails", key: "id" },
         // onUpdate: "cascade",
         // onDelete: "cascade",
