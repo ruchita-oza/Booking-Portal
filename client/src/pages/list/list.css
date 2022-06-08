@@ -24,7 +24,8 @@
 }
 
 .lsTitle {
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 500;
   color: #000;
   margin-bottom: 10px;
 }
@@ -39,15 +40,26 @@
 
 .lsItem > label {
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 650;
   margin-bottom: 2px;
 }
-
+/* .font-icon {
+  vertical-align: middle;
+  max-width: 256px;
+  max-height: 256px;
+  overflow: hidden;
+} */
 .lsInput {
-  border: none;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-.lsInput > input {
+.lsIcon {
+  color: lightgray;
+  width: 15px;
+}
+.lsItem > input {
+  margin-bottom: 10px;
   height: 40px;
   position: static;
   top: auto;

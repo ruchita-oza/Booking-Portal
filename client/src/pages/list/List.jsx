@@ -227,6 +227,8 @@ const List = () => {
       {/* {isLoaded ? (
         <Loader />
       ) : ( */}
+
+
       <div>
         <Header type="list" />
         <div className="listContainer">
@@ -235,23 +237,23 @@ const List = () => {
               <h1 className="lsTitle">Search</h1>
               <div className="lsItem">
                 <label>Source</label>
-                <div className="lsInput">
-                  <FontAwesomeIcon icon={faMagnifyingGlass} />
-                  <input
-                    placeholder="enter your source"
-                    type="text"
-                    value={source}
-                    onChange={(e) => {
-                      // console.log(e.target.value);
-                      SetSource(e.target.value);
-                    }}
-                  ></input>
-                </div>
+                <input
+                  placeholder="&#xF002; Enter Your Source"
+                  class="lsSearchInput"
+                  type="text"
+                  value={source}
+                  style={{ "font-family": "FontAwesome" }}
+                  onChange={(e) => {
+                    // console.log(e.target.value);
+                    SetSource(e.target.value);
+                  }}
+                ></input>
               </div>
               <div className="lsItem">
                 <label>Destination</label>
                 <input
-                  placeholder="Enter your destination"
+                  style={{ "font-family": "FontAwesome" }}
+                  placeholder="&#xF002; Enter Your Destination"
                   type="text"
                   value={destination}
                   onChange={(e) => {
@@ -277,7 +279,7 @@ const List = () => {
                   />
                 )}
                 <div className="lsItem">
-                  <label>Options</label>
+                  <label className="mt-3 mb-3">Options</label>
                   <div className="lsOptions">
                     <div className="lsOptionItem mt-3">
                       <div className={classes.root}>
@@ -298,27 +300,15 @@ const List = () => {
                     <div className="lsOptionItem">
                       <span className="lsOptionText">person</span>
                       <input
+                        style={{ "font-family": "FontAwesome" }}
                         type="number"
                         min={1}
                         className="lsOptionInput"
                         placeholder={options.person}
                       />
                     </div>
-                    <div className="lsOptionItem">
-                      <span className="lsOptionText">Children</span>
-                      <input
-                        type="number"
-                        min={0}
-                        className="lsOptionInput"
-                        placeholder={options.children}
-                      />
-                    </div>
                   </div>
                 </div>
-
-                <button type="submit" onClick={handleSearch}>
-                  Search
-                </button>
               </div>
             </div>
             <div className="listResult">
