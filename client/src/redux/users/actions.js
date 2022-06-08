@@ -5,8 +5,14 @@ import {
   SET_LOGGEDIN_USER,
   SET_LOGGEDOUT_USER,
   SET_USER_SEARCH,
+  // USER_DETAIL_REQUEST,
+  // USER_DETAIL_SUCCESS,
+  // USER_DETAIL_FAIL,
 } from "./types";
-import { getLoggedInUserApi } from "../../services/UserService";
+import {
+  getLoggedInUserApi,
+  // getUserDetailApi,
+} from "../../services/UserService";
 import toast from "react-hot-toast";
 
 export const refreshState = ({ token, user }) => ({
@@ -79,6 +85,37 @@ export const fetchLoginUserThunkAction = (
     }
   };
 };
+
+// export const fetchUserDetailThunkAction = (user_id) => {
+//   return async (dispatch) => {
+//     try {
+//       // console.log("at login", email, password);
+//       dispatch(userDetailRequest());
+//       const { data } = await getUserDetailApi({ id:user_id });
+//       console.log(data);
+//       if (!data) {
+//         throw new Error(data);
+//       }
+//       toast.success("Logged in successfully.");
+//       console.log("user data: " + data);
+//       localStorage.setItem("user", JSON.stringify(data));
+//       dispatch(
+//         setLoggedInUser({
+//           // token: data.data.token,
+//           user: data,
+//         })
+//       );
+//       onSuccess();
+//     } catch (error) {
+//       onError(error.response.data.message || error?.message);
+//       dispatch(resetIsSigning());
+//       toast.error(
+//         `ERROR ${error.response.data.status} : ${error.response.data.message}`
+//       );
+//     }
+//   };
+// };
+
 export const loggingOutUserThunkAction = () => {
   return async (dispatch) => {
     try {

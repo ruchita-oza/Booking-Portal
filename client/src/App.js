@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import { refreshState } from "./redux/users/actions";
 import Home from "./pages/home/Home";
 import List from "./pages/list/List";
@@ -13,8 +13,7 @@ import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
 import "react-toastify/dist/ReactToastify.css";
-
-
+import "./App.css";
 function App() {
   const dispatch = useDispatch();
 
@@ -54,7 +53,7 @@ function App() {
         <Route path="/buses/:id" element={<Buses />} />
         <Route path="/trains" element={<List />} />
 
-        <Route component={ErrorPage} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

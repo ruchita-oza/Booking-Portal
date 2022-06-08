@@ -5,7 +5,7 @@ const createError = require("../utils/error");
 const { busSchema } = require("../utils/validationSchema");
 
 async function checkExists(bus_number) {
-  console.log(bus_number);
+  // console.log(bus_number);
   const bus = await Bus.findAll({
     where: { id: bus_number },
   });
@@ -15,7 +15,7 @@ async function checkExists(bus_number) {
 const createBus = async (req, res, next) => {
   try {
     const result = await busSchema.validateAsync(req.body);
-    console.log(result);
+    // console.log(result);
     const status = await checkExists(result.id);
     if (status)
       return next(
@@ -51,7 +51,7 @@ const updateBus = async (req, res, next) => {
     // res.status(200).json({ bus, success: true });
     // const busNumber = req.params.id;
     const result = await busSchema.validateAsync(req.body);
-    console.log(result);
+    // console.log(result);
 
     const status = await checkExists(result.id);
     if (status) {

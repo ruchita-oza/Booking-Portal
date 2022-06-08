@@ -1,9 +1,20 @@
 import React from "react";
 import "./searchItem.css";
+import toast from "react-hot-toast";
 
 const SearchItem = ({ data }) => {
-  console.log(data);
-  
+  // console.log(data);
+  const getCity = (cityId) => async () => {
+    const data = await fetch(`city/${cityId}`);
+    if (data) {
+      return data.city_name;
+    } else {
+      toast.error(`can't find city ${cityId}`);
+    }
+  };
+  const dept_time = data.departure_time.split("T")[1].split(".")[0];
+  const arrival_time = data.arrival_time.split("T")[1].split(".")[0];
+  console.log(dept_time);
   return (
     <>
       <div className="searchItem">
@@ -13,13 +24,12 @@ const SearchItem = ({ data }) => {
           className="siImg"
         />
         <div className="siDesc">
-          <h1 className="siTitle">{data.id}</h1>
-          <span className="siDistance">6E-2519</span>
+          <h1 className="siTitle">{data.bus_detail.bus_name}</h1>
+          <span className="siDistance">{data.bus_id}</span>
           <span className="siTaxiOp">View Fares</span>
           <span className="siSubtitle">Source to Destination</span>
           <span className="siFeatures">
-            {data.source} to {data.destination} ({data.departure_time} -{" "}
-            {data.arrival_time})
+            {data.source} to {data.destination} ({dept_time} - {arrival_time})
           </span>
           <span className="siCancelOp">Free cancellation </span>
           <span className="siCancelOpSubtitle">

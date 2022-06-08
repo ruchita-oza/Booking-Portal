@@ -11,7 +11,12 @@ export const SET_USER_SEARCH = "SET_USER_SEARCH";
 export const SET_IS_SIGNING = "SET_IS_SIGNING";
 export const RESET_IS_SIGNING = "RESET_IS_SIGNING";
 
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAIL = "LOGIN_FAIL";
-export const LOGOUT = "LOGOUT";
+// export const LOGIN_REQUEST = "LOGIN_REQUEST";
+// export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+// export const LOGIN_FAIL = "LOGIN_FAIL";
+// export const LOGOUT = "LOGOUT";
+
+
+// export const USER_DETAIL_REQUEST = "USER_DETAIL_REQUEST";
+// export const USER_DETAIL_SUCCESS = "USER_DETAIL_SUCCESS";
+// export const USER_DETAIL_FAIL = "USER_DETAIL_FAIL";

@@ -18,7 +18,9 @@ const findBusScheduleById = async (busScheduleId) => {
 };
 
 const findAllBusSchedules = async ({ queryCopy, priceQuery, timeQuery }) => {
-  return BusSchedule.findAll({
+  console.log("at dio");
+  console.log(queryCopy, priceQuery, timeQuery);
+  const busSchedules = await BusSchedule.findAndCountAll({
     where: { [Op.and]: [queryCopy, priceQuery, timeQuery] },
     include: [
       {
@@ -27,6 +29,7 @@ const findAllBusSchedules = async ({ queryCopy, priceQuery, timeQuery }) => {
       },
     ],
   });
+  return busSchedules;
 };
 
 module.exports = {
