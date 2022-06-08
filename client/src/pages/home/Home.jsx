@@ -5,6 +5,7 @@ import { faPlane, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
 
 import "./home.css";
 import React from "react";
+import IndiaList from "../../components/homeComponents/IndiaList/IndiaList";
 // import { useAlert } from "react-alert";
 // import { useSelector, useDispatch } from "react-redux";
 // import { getFlightSchedules } from "../../redux/flights/actions";
@@ -62,6 +63,8 @@ const Home = ({ type }) => {
         )}
         <div className="homeContainer">
           <Transport />
+          <h1 className="homeTitle">Explore India</h1>
+          <IndiaList />
         </div>
       </div>
       {/* )} */}
