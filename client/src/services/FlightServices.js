@@ -1,4 +1,4 @@
-import AxiosInstance from "./AxiosInstance";
+// import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
 export const getAllFlightsApi = () => axios.get("/flight/Schedule");
 

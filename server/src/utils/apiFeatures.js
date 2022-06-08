@@ -23,8 +23,8 @@ class Apifeatures {
   // }
   filter() {
     this.queryCopy = { ...this.queryStr };
-    console.log(this.query);
-    console.log(this.queryCopy);
+    // console.log(this.query);
+    // console.log(this.queryCopy);
     //remove somefield from catagory
     const removeFields = [
       "keyword",
@@ -36,8 +36,8 @@ class Apifeatures {
       "toDate",
     ];
     removeFields.forEach((key) => delete this.queryCopy[key]);
-    console.log("filter query");
-    console.log(this.queryCopy);
+    // console.log("filter query");
+    // console.log(this.queryCopy);
     const fromDate = this.queryStr.fromDate;
     const toDate = this.queryStr.toDate;
     this.query = this.query.findAndCountAll({
@@ -45,7 +45,7 @@ class Apifeatures {
         [Op.and]: [this.queryCopy, this.priceQuery, this.timeQuery],
       },
     });
-    console.log(this.timeFilter);
+    // console.log(this.timeFilter);
     // console.log(this.query);
     return this;
   }

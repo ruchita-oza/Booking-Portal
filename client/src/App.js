@@ -14,6 +14,7 @@ import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./pages/userProfile/UserProfile";
+import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function App() {
         <Route path="/userProfile" element={<UserProfile />} />
         <Route path="" element={<ErrorPage />} />
         {/* <Route component={ErrorPage} /> */}
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

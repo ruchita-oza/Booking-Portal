@@ -190,6 +190,9 @@ const getBusSchedules = async (req, res, next) => {
       .priceFilter()
       .timeFilter()
       .filter();
+
+    console.log("at bus schedule");
+    console.log(apiFeatures.priceQuery);
     let busSchedules = await apiFeatures.query;
     let busScheduleWithBuses = await findAllBusSchedules({
       queryCopy: apiFeatures.queryCopy,
@@ -199,6 +202,8 @@ const getBusSchedules = async (req, res, next) => {
     // let busSchedules = await findAllBusSchedules();
     // console.log(busScheduleWithBuses);
     res.status(200).json({ busSchedules });
+    //  console.log(busScheduleWithBuses);
+    // res.status(200).json({ busScheduleWithBuses });
   } catch (err) {
     next(err);
   }
