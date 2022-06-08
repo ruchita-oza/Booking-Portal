@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(50),
       },
       transport_id: {
-        type: DataTypes.INTEGER(50),
+        // type: DataTypes.INTEGER(50),
+        type: DataTypes.STRING(15),
       },
       total_ticket_count: {
         type: DataTypes.INTEGER(10),

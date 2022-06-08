@@ -22,7 +22,7 @@ function App() {
   // const [isSignUp, changeForm] = useState(false);
   const refreshStateHandler = () => {
     // const token = localStorage.getItem("token");
-    console.log(JSON.parse(localStorage.getItem("user")));
+    // console.log(JSON.parse(localStorage.getItem("user")));
     const user = JSON.parse(localStorage.getItem("user")) || null;
     dispatch(refreshState({ user }));
   };
