@@ -252,10 +252,28 @@ const viewBookingRecordById = async (req, res, next) => {
   }
 };
 
+const viewBookingRecordByUserId = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const userStatus = await checkExistsUser(userId);
+
+    if (!userStatus) {
+      return next(createError(422, "Error user does not exists"));
+    }
+    const bookingRecords = await BookingRecords.findAll({
+      where: { cust_id: userId },
+    });
+    return res.json({ data: bookingRecords, status: true });
+  } catch (error) {
+    return next(createError(500, "Error while fetching booking records"));
+  }
+};
+
 module.exports = {
   createBookingRecord,
   updateBookingRecord,
   deleteBookingRecord,
   viewAllBookingRecord,
   viewBookingRecordById,
+  viewBookingRecordByUserId,
 };

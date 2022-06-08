@@ -201,9 +201,9 @@ const getBusSchedules = async (req, res, next) => {
     });
     // let busSchedules = await findAllBusSchedules();
     // console.log(busScheduleWithBuses);
-    res.status(200).json({ busSchedules });
+    // res.status(200).json({ busSchedules });
     //  console.log(busScheduleWithBuses);
-    // res.status(200).json({ busScheduleWithBuses });
+    res.status(200).json({ busScheduleWithBuses });
   } catch (err) {
     next(err);
   }
