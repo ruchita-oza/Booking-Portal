@@ -7,7 +7,7 @@ const Apifeatures = require("../utils/apiFeatures");
 const { findBusScheduleById, findAllBusSchedules } = require("../dao/bus.dao");
 
 async function checkExistsBus(id) {
-  const buses = await Bus.findAll({ where: { id } });
+  const buses = await Bus.findAll({ where: { id: id } });
   return buses.length > 0 ? true : false;
 }
 
@@ -189,21 +189,18 @@ const getBusSchedules = async (req, res, next) => {
     const apiFeatures = new Apifeatures(BusSchedule, req.query)
       .priceFilter()
       .timeFilter()
+      .TicketFilter()
       .filter();
 
     console.log("at bus schedule");
-    console.log(apiFeatures.priceQuery);
-    let busSchedules = await apiFeatures.query;
+    console.log(apiFeatures.ticketQuery);
     let busScheduleWithBuses = await findAllBusSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
       timeQuery: apiFeatures.timeQuery,
+      ticketQuery: apiFeatures.ticketQuery,
     });
-    // let busSchedules = await findAllBusSchedules();
-    // console.log(busScheduleWithBuses);
-    res.status(200).json({ busSchedules });
-    //  console.log(busScheduleWithBuses);
-    // res.status(200).json({ busScheduleWithBuses });
+    res.status(200).json({ busScheduleWithBuses });
   } catch (err) {
     next(err);
   }

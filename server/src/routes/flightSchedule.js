@@ -4,7 +4,6 @@ const {
   updateFlightSchedule,
   deleteFlightSchedule,
   getFlightScheduleById,
-  getFlightSchedules,
   createFlightSchedule,
   getAllFlightSchedules,
 } = require("../controllers/flightScheduleController");

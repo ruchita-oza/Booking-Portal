@@ -20,7 +20,7 @@ const findTrainScheduleById = async (trainScheduleId) => {
 };
 
 const findAllTrainScheduls = async () => {
-  return TrainSchedule.findAll({
+  return TrainSchedule.findAndCountAll({
     include: [
       {
         model: TrainDetail,

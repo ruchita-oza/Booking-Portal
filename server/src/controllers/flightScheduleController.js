@@ -11,7 +11,9 @@ const {
 } = require("../dao/flight.dao");
 
 async function checkExistsFlight(id) {
-  const flights = await Flight.findAll({ where: { id } });
+  console.log(id);
+  const flights = await Flight.findAll({ where: { id: id } });
+  console.log(flights);
   return flights.length > 0 ? true : false;
 }
 
@@ -27,19 +29,19 @@ async function checkExistsCity(id) {
 
 const createFlightSchedule = async (req, res, next) => {
   try {
-    const flightId = req.body.flight_id;
+    const flight_id = req.body.flight_id;
     const source = req.body.source;
     const destination = req.body.destination;
-    const departureTime = req.body.departure_time;
-    const arrivalTime = req.body.arrival_time;
-    const totalAvailableSeats = req.body.total_available_seats;
-    const pricePerSeat = req.body.price_per_seat;
+    const departure_time = req.body.departure_time;
+    const arrival_time = req.body.arrival_time;
+    const total_available_seats = req.body.total_available_seats;
+    const price_per_seat = req.body.price_per_seat;
 
-    const flightStatus = await checkExistsFlight(flightId);
+    const flightStatus = await checkExistsFlight(flight_id);
     const sourceCityStatus = await checkExistsCity(source);
     const destinationCityStatus = await checkExistsCity(destination);
     if (!flightStatus) {
-      return next(createError(422, "Error flight number does not exists"));
+      return next(createError(422, "Error flight does not exists"));
     }
     if (!sourceCityStatus) {
       return next(createError(422, "Error source city does not exists"));
@@ -55,12 +57,12 @@ const createFlightSchedule = async (req, res, next) => {
         )
       );
     }
-    if (arrivalTime == departureTime) {
+    if (arrival_time == departure_time) {
       return next(
         createError(422, "Error arrival time and departure time cannot be same")
       );
     }
-    if (departureTime > arrivalTime) {
+    if (departure_time > arrival_time) {
       return next(
         createError(
           422,
@@ -68,28 +70,29 @@ const createFlightSchedule = async (req, res, next) => {
         )
       );
     }
-    if (totalAvailableSeats < 0) {
+    if (total_available_seats < 0) {
       return next(
         createError(422, "Error total available seats cannot be negative")
       );
     }
-    if (totalAvailableSeats == 0) {
+    if (total_available_seats == 0) {
       return next(
         createError(422, "Error total available seats cannot be zero")
       );
     }
-    if (pricePerSeat < 0) {
+    if (price_per_seat < 0) {
       return next(createError(422, "Error price per seat cannot be negative"));
     }
-    if (pricePerSeat == 0) {
+    if (price_per_seat == 0) {
       return next(createError(422, "Error price per seat cannot be zero"));
     }
-
+    console.log(req.body);
     const flightSchedule = await FlightSchedule.create(req.body);
     const data = await flightSchedule.save();
     return res.json({
-      data: "Flight schedule created successfully",
+      message: "Flight schedule created successfully",
       status: true,
+      data: data,
     });
   } catch (error) {
     return next(
@@ -207,13 +210,21 @@ const getFlightScheduleById = async (req, res, next) => {
 
 const getAllFlightSchedules = async (req, res, next) => {
   try {
-    // const flightSchedules = await FlightSchedule.findAll({});
-    const flightSchedules = await findAllFlightSchedules();
-    return res.json({ data: flightSchedules, status: true });
+    const apiFeatures = new Apifeatures(FlightSchedule, req.query)
+      .priceFilter()
+      .timeFilter()
+      .filter();
+
+    console.log("at flight schedule");
+    console.log(apiFeatures.priceQuery);
+    let flightScheduleWithflights = await findAllFlightSchedules({
+      queryCopy: apiFeatures.queryCopy,
+      priceQuery: apiFeatures.priceQuery,
+      timeQuery: apiFeatures.timeQuery,
+    });
+    res.status(200).json({ flightScheduleWithflights, success: true });
   } catch (error) {
-    return next(
-      createError(500, "Error fetching flight schedule details " + error)
-    );
+    return next(createError(500, error));
   }
 };
 
