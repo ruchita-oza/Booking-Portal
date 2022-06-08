@@ -79,9 +79,7 @@ export const fetchLoginUserThunkAction = (
     } catch (error) {
       onError(error.response.data.message || error?.message);
       dispatch(resetIsSigning());
-      toast.error(
-        `ERROR ${error.response.data.status} : ${error.response.data.message}`
-      );
+      toast.error(`ERROR  : ${error.response.data.message}`);
     }
   };
 };

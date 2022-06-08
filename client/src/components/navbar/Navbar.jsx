@@ -81,7 +81,7 @@ const Navbar = (props) => {
               </div>
               <div
                 className={
-                  props.type === "buses"
+                  props.type === "buses" 
                     ? "headerListItem active"
                     : "headerListItem "
                 }
