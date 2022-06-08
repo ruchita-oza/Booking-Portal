@@ -13,13 +13,16 @@ import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
 import "react-toastify/dist/ReactToastify.css";
+import UserProfile from "./pages/userProfile/UserProfile";
 import "./App.css";
+
 function App() {
   const dispatch = useDispatch();
 
   // const [isSignUp, changeForm] = useState(false);
   const refreshStateHandler = () => {
     // const token = localStorage.getItem("token");
+    console.log(JSON.parse(localStorage.getItem("user")));
     const user = JSON.parse(localStorage.getItem("user")) || null;
     dispatch(refreshState({ user }));
   };
@@ -52,7 +55,9 @@ function App() {
         <Route path="/buses" element={<List />} />
         <Route path="/buses/:id" element={<Buses />} />
         <Route path="/trains" element={<List />} />
-
+        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="" element={<ErrorPage />} />
+        {/* <Route component={ErrorPage} /> */}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

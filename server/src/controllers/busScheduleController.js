@@ -200,8 +200,10 @@ const getBusSchedules = async (req, res, next) => {
       timeQuery: apiFeatures.timeQuery,
     });
     // let busSchedules = await findAllBusSchedules();
+    // console.log(busScheduleWithBuses);
+    res.status(200).json({ busSchedules });
     //  console.log(busScheduleWithBuses);
-    res.status(200).json({ busScheduleWithBuses });
+    // res.status(200).json({ busScheduleWithBuses });
   } catch (err) {
     next(err);
   }
