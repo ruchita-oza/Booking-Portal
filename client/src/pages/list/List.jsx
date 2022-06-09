@@ -332,7 +332,7 @@ const List = () => {
                     <ResultNotFoundPage />
                   ) : (
                     <>
-                      {/* {console.log(flights)} */}
+                      {console.log(flights)}
                       {window.location.pathname === "/flights" &&
                         flights.rows &&
                         flights.rows.map((flight) => (
