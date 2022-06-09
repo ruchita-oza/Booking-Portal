@@ -28,26 +28,6 @@ const Transport = () => {
     }
   }
 
-  const showError = (error) => {
-    switch(error.code){
-      case error.PERMISSION_DENIED:
-        alert("User Denied the request for Geolocation");
-        break;
-      case error.PERMISSION_UNAVAILABLE:
-        alert("Location information unavailable");
-        break;
-      case error.TIMEOUT:
-        alert("The request to get user location times out");
-        break;
-      default:
-        alert("An unknown error occurred");
-        break;
-    }
-  }
-
-  
-
-  
   return (
     <div>
       <div className="row">
