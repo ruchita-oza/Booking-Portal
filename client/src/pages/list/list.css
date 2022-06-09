@@ -114,6 +114,11 @@
   cursor: pointer;
   border-radius: 5px;
 }
+.listSearch > button:hover {
+  background-color: #fff;
+  border-color: #0071c2;
+  color: #0071c2;
+}
 
 .listResult {
   flex: 3;

@@ -1,9 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../App.css";
+import { motion } from "framer-motion";
 function ErrorPage() {
   return (
-    <div id="notfound">
+    <motion.div
+      id="notfound"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="notfound">
         <div className="notfound-404">
           <h1>404</h1>
@@ -15,7 +21,7 @@ function ErrorPage() {
         </p>
         <Link to="/">Back to Home</Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

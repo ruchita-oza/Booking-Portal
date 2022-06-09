@@ -10,6 +10,7 @@ import { selectUser } from "../../redux/users/selectors";
 // import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import Loader from "../../components/loader/loader";
 function Login(props) {
   const { isLoading } = useSelector(selectUser);
@@ -50,7 +51,12 @@ function Login(props) {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="container">
+        <motion.div
+          className="container"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }} 
+        >
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
               <div className="card border-0 shadow my-5">
@@ -105,7 +111,8 @@ function Login(props) {
                                 <ErrorMessage
                                   name="email"
                                   component="div"
-                                  className="invalid-feedback  mb-3  " style={{left:"100px"}}
+                                  className="invalid-feedback  mb-3  "
+                                  style={{ left: "100px" }}
                                 />
                               </div>
                               <div className="row w-100  mb-3   form-floating">
@@ -148,12 +155,6 @@ function Login(props) {
                                   value="Login"
                                   onClick={() => {}}
                                 />
-                                {/* {isSubmitting && (
-                              <img
-                                alt="load"
-                                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-                              />
-                            )} */}
                               </div>
                               <div>
                                 <button type="button" className="btn btn-link">
@@ -188,7 +189,7 @@ function Login(props) {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </>
   );

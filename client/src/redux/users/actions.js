@@ -1,5 +1,6 @@
 import {
   REFRESH_STATE,
+  REFRESH_STATE_REQUEST,
   RESET_IS_SIGNING,
   SET_IS_SIGNING,
   SET_LOGGEDIN_USER,
@@ -25,6 +26,9 @@ import toast from "react-hot-toast";
 export const refreshState = ({ token, user }) => ({
   type: REFRESH_STATE,
   payload: { token, user },
+});
+export const refreshStateRequest = () => ({
+  type: REFRESH_STATE_REQUEST,
 });
 
 export const setLoggedInUser = (user) => {

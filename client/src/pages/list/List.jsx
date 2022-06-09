@@ -19,20 +19,24 @@ import Header from "../../components/header/Header";
 import ResultNotFoundPage from "../errorPage/ResultNotFoundPage";
 import Loader from "../../components/loader/loader";
 import EmptyView from "../../components/emptyView/EmptyView";
-
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 const useStyles = makeStyles({
   root: {
     width: "100%",
     margin: "10 10 10 10",
+    layout_width: "match_parent",
+    layout_height: "wrap_content",
+    contentDescription: "@string/slider_desc",
   },
   thumb: {
     color: "#000",
   },
   rail: {
-    color: `rgba(0, 0, 0, 0.26)`,
+    color: `rgba(1, 1, 1, 0.26)`,
   },
+  value_lable: { borderRadius: "0", cornerSize: "0%" },
   track: {
     color: "#000",
   },
@@ -43,9 +47,9 @@ const List = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const { loading: isFlightLoaded, flights } = useSelector(selectFlights);
-  const { loading: isBusLoaded, buses } = useSelector(selectBuses);
-  const { loading: isTrainLoaded, trains } = useSelector(selectTrains);
+  const { isLoading: isFlightLoaded, flights } = useSelector(selectFlights);
+  const { isLoading: isBusLoaded, buses } = useSelector(selectBuses);
+  const { isLoading: isTrainLoaded, trains } = useSelector(selectTrains);
 
   const isLoading = isFlightLoaded || isTrainLoaded || isBusLoaded;
   const location = useLocation();
@@ -68,7 +72,7 @@ const List = () => {
       person: 1,
     }
   );
-  const [isLoaded, setIsLoaded] = useState(false);
+
   const [selectedPrice, setSelectedPrice] = useState([1, 20000]);
   const [resultsFound, SetResultsFound] = useState(true);
 
@@ -94,11 +98,10 @@ const List = () => {
     // console.log(price);
     let minPrice = selectedPrice[0],
       maxPrice = selectedPrice[1];
-    console.log(minPrice, maxPrice, window.location.pathname);
+    // console.log(minPrice, maxPrice, window.location.pathname);
     // setResultsFound(true);
     switch (window.location.pathname) {
       case "/flights":
-        setIsLoaded(isFlightLoaded);
         dispatch(
           getFlightSchedules(
             {
@@ -115,7 +118,6 @@ const List = () => {
         break;
 
       case "/buses":
-        setIsLoaded(isBusLoaded);
         dispatch(
           getBusSchedules(
             {
@@ -153,12 +155,12 @@ const List = () => {
 
   React.useEffect(() => {
     window.addEventListener("load", () => {
-      console.log("reloaded");
+      // console.log("reloaded");
       navigate("/");
     });
     return () => {
       window.removeEventListener("load", () => {
-        console.log("reloaded");
+        // console.log("reloaded");
         navigate("/");
       });
     };
@@ -169,10 +171,9 @@ const List = () => {
     let toDate = convertDate(date[0].endDate);
     let minPrice = selectedPrice[0],
       maxPrice = selectedPrice[1];
-    console.log("at effect");
+    // console.log("at effect");
     switch (window.location.pathname) {
       case "/flights":
-        setIsLoaded(isFlightLoaded);
         dispatch(
           getFlightSchedules(
             {
@@ -188,8 +189,6 @@ const List = () => {
         );
         break;
       case "/buses":
-        setIsLoaded(isBusLoaded);
-
         // if (busError) toast.error(busError);
         // else
         dispatch(
@@ -224,12 +223,15 @@ const List = () => {
   // console.log(loading);
   return (
     <>
+      {console.log("Loading", isLoading)}{" "}
       {/* {isLoaded ? (
         <Loader />
       ) : ( */}
-
-
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <Header type="list" />
         <div className="listContainer">
           <div className="listWrapper">
@@ -288,10 +290,16 @@ const List = () => {
                           valueLabelDisplay="on"
                           min={1}
                           max={20000}
+                          layout_width="wrap_content"
+                          layout_height="wrap_content"
+                          layout_gravity="center"
+                          labelBehavior="withinBounds"
+                          value_lable="@style/tooltip"
                           classes={{
                             thumb: classes.thumb,
                             rail: classes.rail,
                             track: classes.track,
+                            value_lable: classes.value_lable,
                           }}
                           onChange={handleChangePrice}
                         />
@@ -310,11 +318,13 @@ const List = () => {
                   </div>
                 </div>
               </div>
+
+              <button onClick={handleSearch}>Search</button>
             </div>
             <div className="listResult">
-              {isLoaded ? (
+              {isLoading ? (
                 <>
-                  <Loader />
+                  {console.log("loading")} <EmptyView />
                 </>
               ) : (
                 <>
@@ -345,7 +355,7 @@ const List = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* )}{" "} */}
     </>
   );

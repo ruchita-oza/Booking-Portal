@@ -8,7 +8,7 @@ import { Form, Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./register.css";
 import { toast } from "react-hot-toast";
-
+import { motion } from "framer-motion";
 function Register() {
   const navigate = useNavigate();
   const validate = Yup.object().shape({
@@ -59,7 +59,12 @@ function Register() {
   };
 
   return (
-    <div className="container">
+    <motion.div
+      className="container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="row">
         <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
           <div className="card border-0 shadow rounded-3 my-5">
@@ -298,7 +303,7 @@ function Register() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

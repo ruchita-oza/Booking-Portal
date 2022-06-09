@@ -30,6 +30,9 @@
   font-size: 12px;
 }
 
+.siDistance > span {
+  margin-left: 3px;
+}
 .siTaxiOp {
   font-size: 12px;
   background-color: #008009;
@@ -38,14 +41,36 @@
   padding: 3px;
   border-radius: 5px;
 }
-
+.siTime,
+.siDate {
+  display: flex;
+}
 .siSubtitle {
   font-size: 12px;
   font-weight: bold;
+  margin-right: 15px;
 }
-
+.siTimeInner {
+  align-items: center;
+  flex: 1;
+  font-size: 18px;
+  font-weight: 800;
+}
+.siHoriLine {
+  background-image: url(../../images/arow_main.png);
+  background-repeat: no-repeat;
+  height: 6px;
+  max-width: 125px;
+}
+.siDateInner {
+  margin-left: 4px;
+  flex: 1;
+  font-size: 12px;
+}
 .siFeatures {
   font-size: 12px;
+  color: #222;
+  font-weight: 500;
 }
 
 .siCancelOp {
