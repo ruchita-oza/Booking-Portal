@@ -7,11 +7,12 @@ import Input from "../../components/Input/Input";
 import "./login.css";
 import { fetchLoginUserThunkAction } from "../../redux/users/actions";
 import { selectUser } from "../../redux/users/selectors";
-// import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Loader from "../../components/loader/loader";
+
+
 function Login(props) {
   const { isLoading } = useSelector(selectUser);
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ function Login(props) {
                           }) => (
                             <Form>
                               {console.log(values)}
-                              <div className="row w-100 mb-3  form-floating ">
+                              <div className="row w-100 mb-3 form-floating ">
                                 <label
                                   htmlFor="email"
                                   id="lblUser"
@@ -95,27 +96,29 @@ function Login(props) {
                                 >
                                   Email
                                 </label>
-                                <Input
-                                  name="email"
-                                  label="lblUser"
-                                  className={
-                                    "col-lg-7 col-md-7 col-sm-12 form-control" +
-                                    (errors.email && touched.email
-                                      ? " is-invalid"
-                                      : "")
-                                  }
-                                  value={values["email"]}
-                                  setFieldValue={setFieldValue}
-                                  // onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <ErrorMessage
-                                  name="email"
-                                  component="div"
-                                  className="invalid-feedback  mb-3  "
-                                  style={{ left: "100px" }}
-                                />
+                                
+                                  <Input
+                                    name="email"
+                                    label="lblUser"
+                                    className={
+                                      "col-lg-7 col-md-7 col-sm-12 form-control" +
+                                      (errors.email && touched.email
+                                        ? " is-invalid"
+                                        : "")
+                                    }
+                                    value={values["email"]}
+                                    setFieldValue={setFieldValue}
+                                    // onChange={(e) => setEmail(e.target.value)}
+                                  />
+                                
+                                  <div className="invalid-feedback form-floating col-lg-10 col-md-12 col-sm-12 d-flex justify-content-center">
+                                    <ErrorMessage
+                                      name="email"
+                                      component="div"
+                                    />
+                                  </div>
                               </div>
-                              <div className="row w-100  mb-3   form-floating">
+                              <div className="row w-100 mb-3 form-floating">
                                 <label
                                   htmlFor="password"
                                   id="lblPass"
@@ -138,11 +141,12 @@ function Login(props) {
                                   // onChange={(e) => setPassword(e.target.value)}
                                   setFieldValue={setFieldValue}
                                 />
-                                <ErrorMessage
-                                  name="password"
-                                  component="div"
-                                  className="invalid-feedback mb-3"
-                                />
+                                <div className="invalid-feedback form-floating col-lg-10 col-md-12 d-flex justify-content-center">
+                                  <ErrorMessage
+                                    name="password"
+                                    component="div"
+                                  />
+                                </div>
                               </div>
                               {status && (
                                 <div className={"alert alert-danger"}>

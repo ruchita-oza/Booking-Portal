@@ -119,11 +119,12 @@ function Register() {
                             value={values["first_name"]}
                             setFieldValue={setFieldValue}
                           />
-                          <ErrorMessage
-                            name="first_name"
-                            component="div"
-                            className="invalid-feedback form-floating mb-3 "
-                          />
+                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
+                            <ErrorMessage
+                              name="first_name"
+                              component="div"
+                            />
+                          </div>
                         </div>
                         <div className="row w-100 mb-3 form-floating ">
                           <label
@@ -147,11 +148,13 @@ function Register() {
                             value={values["last_name"]}
                             setFieldValue={setFieldValue}
                           />
-                          <ErrorMessage
-                            name="last_name"
-                            component="div"
-                            className="invalid-feedback form-floating mb-3 "
-                          />
+                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
+                            <ErrorMessage
+                              name="last_name"
+                              component="div"
+                            />
+                          </div>
+                          
                         </div>
                         <div className="row w-100 form-floating  mb-3">
                           <label
@@ -176,11 +179,12 @@ function Register() {
                             value={values["email"]}
                             setFieldValue={setFieldValue}
                           />
+                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
                           <ErrorMessage
                             name="email"
                             component="div"
-                            className="invalid-feedback form-floating mb-3"
                           />
+                          </div>
                         </div>
                         <div className="row w-100 form-floating mb-3 ">
                           <label
@@ -205,11 +209,12 @@ function Register() {
                             value={values["password"]}
                             setFieldValue={setFieldValue}
                           />
+                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
                           <ErrorMessage
                             name="password"
                             component="div"
-                            className="invalid-feedback form-floating mb-3 "
                           />
+                          </div>
                         </div>
                         <div className="row w-100 form-floating mb-3 ">
                           <label
@@ -233,11 +238,12 @@ function Register() {
                             value={values["confPass"]}
                             setFieldValue={setFieldValue}
                           />
+                          <div className="invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center">
                           <ErrorMessage
                             name="confPass"
                             component="div"
-                            className="invalid-feedback form-floating mb-3 "
                           />
+                          </div>
                         </div>
                         <div className="row w-100 mb-3 form-floating ">
                           <label
@@ -261,11 +267,12 @@ function Register() {
                             value={values["phone_number"]}
                             setFieldValue={setFieldValue}
                           />
-                          <ErrorMessage
-                            name="phone_number"
-                            component="div"
-                            className="invalid-feedback form-floating mb-3 "
-                          />
+                          <div className="invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center">
+                            <ErrorMessage
+                              name="phone_number"
+                              component="div"
+                            />
+                          </div>
                         </div>
                         {status && (
                           <div className={"alert alert-danger"}>
