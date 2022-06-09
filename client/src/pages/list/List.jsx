@@ -76,6 +76,19 @@ const List = () => {
   const [selectedPrice, setSelectedPrice] = useState([1, 20000]);
   const [resultsFound, SetResultsFound] = useState(true);
 
+  React.useEffect(() => {
+    window.addEventListener("load", () => {
+      // console.log("reloaded");
+      navigate("/");
+    });
+    return () => {
+      window.removeEventListener("load", () => {
+        // console.log("reloaded");
+        navigate("/");
+      });
+    };
+  }, []);
+
   const setResult = (value) => {
     console.log("result: ", value);
     SetResultsFound(value);
@@ -152,19 +165,6 @@ const List = () => {
         );
     }
   };
-
-  React.useEffect(() => {
-    window.addEventListener("load", () => {
-      // console.log("reloaded");
-      navigate("/");
-    });
-    return () => {
-      window.removeEventListener("load", () => {
-        // console.log("reloaded");
-        navigate("/");
-      });
-    };
-  }, []);
 
   useEffect(() => {
     let fromDate = convertDate(date[0].startDate);

@@ -31,7 +31,7 @@ const Home = ({ type }) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className="" style={{ height: "100vh" }}>
+        <div className="">
           {type === "flights" && (
             <Header
               type={type}
