@@ -13,7 +13,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material/styles";
-import { Grid } from "@mui/material";
+import { Grid, Chip } from "@mui/material";
 import { toast } from "react-hot-toast";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -23,8 +23,11 @@ import { refreshState } from "../../redux/users/actions";
 import { fetchUserBookingRecordsDetailThunkAction } from "../../redux/users/actions";
 import Loader from "../../components/loader/loader";
 import ParseDate from "../../Utilities/ParseDate";
+import dateFormat, { masks } from "dateformat";
 
 const axios = require("axios");
+// const DATE_FORMATER = require("dateformat");
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -106,6 +109,10 @@ function UserProfile() {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [allCompletedBookingRecords, setAllCompletedBookingRecords] =
+    useState(null);
+  const [allUpcomingBookingRecords, setAllUpcomingBookingRecords] =
+    useState(null);
 
   // useEffect(async () => {
   //   const user = JSON.parse(localStorage.getItem("user")) || null;
@@ -120,17 +127,20 @@ function UserProfile() {
   // console.log(userDetails[0]["first_name"]);
 
   const onSuccess = () => {
-    console.log("on success");
+    // console.log("on success");
+    toast.success("Success");
     // navigate("/");
   };
 
   const onError = (error) => {
-    console.log("error occured", error);
+    // console.log("error occured", error);
+    toast.error("Error : " + error);
   };
 
   const {
     loggedInUser: data,
     isLoading,
+    error,
     bookingRecords: data1,
   } = useSelector(selectUser);
 
@@ -144,9 +154,11 @@ function UserProfile() {
     }
   }, [dispatch, data]);
 
-  useEffect(() => {
-    setBookingDetails(data1?.data);
-  }, [data1]);
+  // useEffect(() => {
+  //   setBookingDetails(data1?.data);
+  //   setAllCompletedBookingRecords(completedBookingRecords)
+  //   setAllUpcomingBookingRecords(upcomingBookingRecords)
+  // }, [data1]);
   // console.log("first name: " + data?.id);
   // console.log(userDetails);
   // console.log(bookingDetails);
@@ -155,7 +167,74 @@ function UserProfile() {
 
   var allBookingRecords = [];
 
-  console.log("isLoading: " + isLoading);
+  var completedBookingRecords = [];
+
+  var upcomingBookingRecords = [];
+
+  // var todaysDate = new Date();
+
+  var todaysDate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss", true);
+  // console.log("todays date : " + todaysDate);
+
+  if (bookingDetails) {
+    var allBookingRecordsLength = bookingDetails.length;
+
+    // console.log("all booking details length : " + allBookingRecordsLength);
+    for (var i = 0; i < allBookingRecordsLength; i++) {
+      // console.log(
+      //   "current booking details : " + JSON.stringify(bookingDetails[i])
+      // );
+      // var currentBookingRecordDateTime = bookingDetails[i].journey_date;
+      var currentBookingRecordDateTime = new Date(
+        bookingDetails[i].journey_date
+      )
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+      // console.log(
+      //   "current booking record date and time : " + currentBookingRecordDateTime
+      // );
+      if (currentBookingRecordDateTime > todaysDate) {
+        // console.log(
+        //   "current booking record: " +
+        //     currentBookingRecordDateTime +
+        //     " > todays date: " +
+        //     todaysDate
+        // );
+        upcomingBookingRecords.push(bookingDetails[i]);
+      } else {
+        // console.log(
+        //   "current booking record: " +
+        //     currentBookingRecordDateTime +
+        //     " < todays date: " +
+        //     todaysDate
+        // );
+        completedBookingRecords.push(bookingDetails[i]);
+      }
+    }
+  }
+
+  // console.log("completed booking records : " + completedBookingRecords);
+  // console.log("upcoming booking records : " + upcomingBookingRecords);
+
+  useEffect(() => {
+    setBookingDetails(data1?.data);
+    setAllCompletedBookingRecords(completedBookingRecords);
+    setAllUpcomingBookingRecords(upcomingBookingRecords);
+  }, [dispatch, data1, isLoading, error]);
+
+  // useEffect(() => {}, []);
+
+  // useEffect(() => {}, []);
+
+  // console.log(
+  //   "completed booking records : " + JSON.stringify(allCompletedBookingRecords)
+  // );
+  // console.log(
+  //   "upcoming booking records : " + JSON.stringify(upcomingBookingRecords)
+  // );
+
+  // console.log("isLoading: " + isLoading);
 
   // if (!isLoading) {
   //   // allBookingRecords = JSON.stringify(data1?.data);
@@ -189,9 +268,110 @@ function UserProfile() {
     },
   });
 
+  const upcomingRecords = () => {
+    return allUpcomingBookingRecords.map((e) => (
+      <TabPanel value={value} index={0} dir={theme.direction}>
+        {/* ONE */}
+        <Card variant="outlined">
+          <CardContent>
+            <Typography variant="h5">
+              Journey Details
+              {" : "}
+              <Chip label={" " + e.booking_status} color="success" />
+            </Typography>
+            <br />
+            <Typography variant="body1">
+              Tranport type: {" " + e.transport_type}
+              <br />
+              Journey date: {" " + ParseDate.ParseDate(e.journey_date, true)}
+              <br />
+              Total tickets: {" " + e.total_ticket_count}
+              <br />
+              Total fare: {" " + e.total_fare}
+              {/* <br />
+          Booking status:{" "}
+          <Chip
+            label={" " + e.booking_status}
+            color="success"
+          /> */}
+            </Typography>
+          </CardContent>
+        </Card>
+        <br />
+      </TabPanel>
+    ));
+  };
+
+  const completedRecords = () => {
+    return allCompletedBookingRecords.map((e) => (
+      <TabPanel value={value} index={1} dir={theme.direction}>
+        {/* ONE */}
+        <Card variant="outlined">
+          <CardContent>
+            <Typography variant="h5">
+              Journey Details{" "}
+              <Chip label={" " + e.booking_status} color="success" />
+            </Typography>
+            <br />
+            <Typography variant="body1">
+              Tranport type: {" " + e.transport_type}
+              <br />
+              Journey date: {" " + ParseDate.ParseDate(e.journey_date, true)}
+              <br />
+              Total tickets: {" " + e.total_ticket_count}
+              <br />
+              Total fare: {" " + e.total_fare}
+              {/* <br />
+                Booking status:
+                <Chip
+                  label={" " + e.booking_status}
+                  color="success"
+                /> */}
+            </Typography>
+          </CardContent>
+        </Card>
+        <br />
+      </TabPanel>
+    ));
+  };
+
+  const allRecords = () => {
+    return bookingDetails.map((e) => (
+      <TabPanel value={value} index={1} dir={theme.direction}>
+        {/* ONE */}
+        <Card variant="outlined">
+          <CardContent>
+            <Typography variant="h5">
+              Journey Details{" "}
+              <Chip label={" " + e.booking_status} color="success" />
+            </Typography>
+            <br />
+            <Typography variant="body1">
+              Tranport type: {" " + e.transport_type}
+              <br />
+              Journey date: {" " + ParseDate.ParseDate(e.journey_date, true)}
+              <br />
+              Total tickets: {" " + e.total_ticket_count}
+              <br />
+              Total fare: {" " + e.total_fare}
+              {/* <br />
+                Booking status:
+                <Chip
+                  label={" " + e.booking_status}
+                  color="success"
+                /> */}
+            </Typography>
+          </CardContent>
+        </Card>
+        <br />
+      </TabPanel>
+    ));
+  };
+
   // console.log("booking details: " + bookingDetails);
   return (
     <>
+      {/* {console.log(isLoading)} */}
       {isLoading ? (
         <Loader />
       ) : (
@@ -423,6 +603,8 @@ function UserProfile() {
                     textColor="inherit"
                     variant="fullWidth"
                     aria-label="full width tabs example"
+                    TabIndicatorProps={{ style: { background: "red" } }}
+                    style={{ background: "#003580" }}
                   >
                     <Tab
                       label="Upcoming"
@@ -551,19 +733,133 @@ function UserProfile() {
                   index={value}
                   onChangeIndex={handleChangeIndex}
                 >
-                  <TabPanel value={value} index={0} dir={theme.direction}>
-                    {/* ONE */}
-                  </TabPanel>
-                  <TabPanel value={value} index={1} dir={theme.direction}>
-                    {/* TWO */}
-                  </TabPanel>
+                  {allUpcomingBookingRecords.length === 0 ? (
+                    <TabPanel value={value} index={0} dir={theme.direction}>
+                      <Card variant="outlined">
+                        <CardContent>
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Typography variant="h5">
+                              NO BOOKING RECORDS FOUND
+                            </Typography>
+                          </Grid>
+                        </CardContent>
+                      </Card>
+                    </TabPanel>
+                  ) : (
+                    // upcomingRecords()
+                    <>
+                      {allUpcomingBookingRecords.map((e) => (
+                        <TabPanel value={value} index={0} dir={theme.direction}>
+                          {/* ONE */}
+                          <Card variant="outlined">
+                            <CardContent>
+                              <Typography variant="h5">
+                                Journey Details
+                                {" : "}
+                                <Chip
+                                  label={" " + e.booking_status}
+                                  color="success"
+                                />
+                              </Typography>
+                              <br />
+                              <Typography variant="body1">
+                                Tranport type: {" " + e.transport_type}
+                                <br />
+                                Journey date:{" "}
+                                {" " +
+                                  ParseDate.ParseDate(e.journey_date, true)}
+                                <br />
+                                Total tickets: {" " + e.total_ticket_count}
+                                <br />
+                                Total fare: {" " + e.total_fare}
+                                {/* <br />
+                                Booking status:{" "}
+                                <Chip
+                                  label={" " + e.booking_status}
+                                  color="success"
+                                /> */}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                          <br />
+                        </TabPanel>
+                      ))}
+                    </>
+                  )}
+                  {allCompletedBookingRecords.length === 0 ? (
+                    <TabPanel value={value} index={1} dir={theme.direction}>
+                      <Card variant="outlined">
+                        <CardContent>
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Typography variant="h5">
+                              NO BOOKING RECORDS FOUND
+                            </Typography>
+                          </Grid>
+                        </CardContent>
+                      </Card>
+                    </TabPanel>
+                  ) : (
+                    // completedRecords()
+                    <>
+                      {allCompletedBookingRecords.map((e) => (
+                        <TabPanel value={value} index={1} dir={theme.direction}>
+                          {/* ONE */}
+                          <Card variant="outlined">
+                            <CardContent>
+                              <Typography variant="h5">
+                                Journey Details{" "}
+                                <Chip
+                                  label={" " + e.booking_status}
+                                  color="success"
+                                />
+                              </Typography>
+                              <br />
+                              <Typography variant="body1">
+                                Tranport type: {" " + e.transport_type}
+                                <br />
+                                Journey date:{" "}
+                                {" " +
+                                  ParseDate.ParseDate(e.journey_date, true)}
+                                <br />
+                                Total tickets: {" " + e.total_ticket_count}
+                                <br />
+                                Total fare: {" " + e.total_fare}
+                                {/* <br />
+                                Booking status:
+                                <Chip
+                                  label={" " + e.booking_status}
+                                  color="success"
+                                /> */}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                          <br />
+                        </TabPanel>
+                      ))}
+                    </>
+                  )}
+                  {/* {allRecords()} */}
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>
                         <Card variant="outlined">
                           <CardContent>
                             <Typography variant="h5">
-                              Journey Details
+                              Journey Details{" "}
+                              <Chip
+                                label={" " + e.booking_status}
+                                color="success"
+                              />
                             </Typography>
                             <br />
                             <Typography variant="body1">
@@ -575,8 +871,6 @@ function UserProfile() {
                               Total tickets: {" " + e.total_ticket_count}
                               <br />
                               Total fare: {" " + e.total_fare}
-                              <br />
-                              Booking status: {" " + e.booking_status}
                             </Typography>
                           </CardContent>
                         </Card>

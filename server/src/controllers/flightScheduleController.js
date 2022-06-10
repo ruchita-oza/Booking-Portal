@@ -197,7 +197,14 @@ const getFlightScheduleById = async (req, res, next) => {
     if (status) {
       // const flightSchedule = await FlightSchedule.findAll({ where: { id } });
       const flightSchedule = await findFlightScheduleById(id);
-      return res.json({ data: flightSchedule, status: true });
+
+      let flight_schedule_data = JSON.parse(JSON.stringify(flightSchedule[0]));
+      flight_schedule_data.source_name =
+        flight_schedule_data.source_name?.city_name;
+      flight_schedule_data.destination_name =
+        flight_schedule_data.destination_name?.city_name;
+
+      return res.json({ data: flight_schedule_data, status: true });
     } else {
       return next(createError(422, "Error flight schedule does not exists"));
     }
@@ -222,6 +229,19 @@ const getAllFlightSchedules = async (req, res, next) => {
       priceQuery: apiFeatures.priceQuery,
       timeQuery: apiFeatures.timeQuery,
     });
+
+    // let data = [];
+    // let flight_schedule_data = JSON.parse(
+    //   JSON.stringify(flightScheduleWithflights)
+    // );
+    // console.log(flight_schedule_data);
+    // flight_schedule_data.forEach((element) => {
+    //   let flight_schedule = [...element];
+    //   flight_schedule.source_name = element.source_name[0]?.city_name;
+    //   flight_schedule.destination_name = element.destination_name[0]?.city_name;
+    //   data.push(flight_schedule);
+    // });
+
     res.status(200).json({ flightScheduleWithflights, success: true });
   } catch (error) {
     return next(createError(500, error));

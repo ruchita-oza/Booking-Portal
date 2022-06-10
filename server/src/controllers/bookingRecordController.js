@@ -5,6 +5,7 @@ const BusSchedule = db.bus_schedule;
 const TrainSchedule = db.train_schedules;
 const FlightSchedule = db.flight_schedule;
 const createError = require("../utils/error");
+const { findBookingRecordsByUserId } = require("../dao/bookingRecord.dao");
 
 async function checkExistsBookingRecord(id) {
   const bookingrecords = await BookingRecords.findAll({ where: { id } });
@@ -260,12 +261,13 @@ const viewBookingRecordByUserId = async (req, res, next) => {
     if (!userStatus) {
       return next(createError(422, "Error user does not exists"));
     }
-    const bookingRecords = await BookingRecords.findAll({
-      where: { cust_id: userId },
-    });
+    let bookingRecords = await findBookingRecordsByUserId(userId);
+
     return res.json({ data: bookingRecords, status: true });
   } catch (error) {
-    return next(createError(500, "Error while fetching booking records"));
+    return next(
+      createError(500, "Error while fetching booking records " + error)
+    );
   }
 };
 
