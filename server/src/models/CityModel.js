@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       city_name: {
         type: DataTypes.STRING(50),
       },
+      state_name: { type: DataTypes.STRING(50) },
     },
     {
       timestamps: true,

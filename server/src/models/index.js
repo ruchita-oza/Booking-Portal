@@ -27,6 +27,7 @@ db.cities = require("./CityModel")(sequelize, DataTypes);
 db.flight_details = require("./FlightDetailsModel")(sequelize, DataTypes);
 db.flight_schedule = require("./FlightScheduleModel")(sequelize, DataTypes);
 db.passenger_details = require("./PassengerDetailsModel")(sequelize, DataTypes);
+db.states = require("./StateModel")(sequelize, DataTypes);
 db.train_details = require("./TrainDetailsModel")(sequelize, DataTypes);
 db.train_schedules = require("./TrainScheduleModel")(sequelize, DataTypes);
 db.users = require("./UsersModel")(sequelize, DataTypes);
