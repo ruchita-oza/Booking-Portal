@@ -1,17 +1,21 @@
-import React, {useState}from "react";
+import React, {useState, useEffect}from "react";
+import {useDispatch } from "react-redux";
+import {getCityApi} from "../../services/CityServices";
 import "./transport.css";
-import axios from 'axios';
 import goa from "../../images/india/goa.png";
 import delhi from "../../images/india/delhi.png";
 import Bangalore from "../../images/india/Bangalore.png";
 import Lonavala from "../../images/india/Lonavala.png";
 
+
 const Transport = () => {
   
-
+  const dispatch = useDispatch();
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [status, setStatus] = useState(null);
+  const [sources, setSources] = useState(null);
+  const [destination, setDestination] = useState(null);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -21,33 +25,40 @@ const Transport = () => {
       navigator.geolocation.getCurrentPosition((position) => {
         setStatus(null);
         setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);        
+        setLongitude(position.coords.longitude);       
+         
       }, () => {
         setStatus('Unable to retrieve your location');
       });
     }
   }
 
-  const showError = (error) => {
-    switch(error.code){
-      case error.PERMISSION_DENIED:
-        alert("User Denied the request for Geolocation");
-        break;
-      case error.PERMISSION_UNAVAILABLE:
-        alert("Location information unavailable");
-        break;
-      case error.TIMEOUT:
-        alert("The request to get user location times out");
-        break;
-      default:
-        alert("An unknown error occurred");
-        break;
-    }
+  const fetchData = () => {
+    console.log('Fetching data');
+    dispatch(
+      getCityApi(
+        {
+          destination
+        },
+      )
+    );
   }
 
-  
+  useEffect (() => {
+    dispatch(
+      getCityApi(
+        {
+          destination
+        },
+      )
+    );
+  }, [dispatch, destination]);
 
-  
+  const handleSearch = () => {
+    fetchData();
+  };
+
+
   return (
     <div>
       <div className="row">
@@ -63,7 +74,7 @@ const Transport = () => {
                   <p>{status}</p>
                   {latitude && <p>Latitude: {latitude}</p>}
                   {longitude && <p>Longitude: {longitude}</p>}
-                  <h5 class="card-title">Goa - Tourist Place</h5>                  
+                  <h5 class="card-title">{destination}</h5>                  
                 </div>
               </div>
               <div class="card d-none d-md-block">
