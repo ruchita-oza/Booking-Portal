@@ -27,7 +27,10 @@ export const fetchAllBusScheduleFail = (error) => {
 };
 //get BusSchedules
 export const getBusSchedules =
-  ({ source, destination, minPrice, maxPrice, fromDate, toDate , personCount }, setResult) =>
+  (
+    { source, destination, minPrice, maxPrice, fromDate, toDate, personCount },
+    setResult
+  ) =>
   async (dispatch) => {
     try {
       // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
@@ -36,6 +39,7 @@ export const getBusSchedules =
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
+      personCount = personCount ? personCount : 1;
       // console.log(fromDate);
       // console.log(toDate);
       if (source && destination) {
@@ -57,7 +61,8 @@ export const getBusSchedules =
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
             minPrice,
-            maxPrice
+            maxPrice,
+            personCount
           );
           if (data) {
             if (data.busScheduleWithBuses.count === 0) setResult(false);
@@ -73,7 +78,8 @@ export const getBusSchedules =
             minPrice,
             maxPrice,
             fromDate,
-            toDate
+            toDate,
+            personCount
           );
           if (data) {
             if (data.busScheduleWithBuses.count === 0) setResult(false);
@@ -84,7 +90,7 @@ export const getBusSchedules =
           }
         }
       } else {
-        let { data } = await getAllBusesApi(minPrice, maxPrice);
+        let { data } = await getAllBusesApi(minPrice, maxPrice, personCount);
         if (data) {
           // console.log(data);
           if (data.busScheduleWithBuses.count === 0) setResult(false);

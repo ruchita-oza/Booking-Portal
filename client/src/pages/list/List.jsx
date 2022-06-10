@@ -67,7 +67,7 @@ const List = () => {
     ]
   );
   const [openDate, setOpenDate] = useState(false);
-  const [options] = useState(
+  const [options, setOptions] = useState(
     location?.state?.options || {
       person: 1,
     }
@@ -78,19 +78,16 @@ const List = () => {
 
   React.useEffect(() => {
     window.addEventListener("load", () => {
-      // console.log("reloaded");
       navigate("/");
     });
     return () => {
       window.removeEventListener("load", () => {
-        // console.log("reloaded");
         navigate("/");
       });
     };
   }, []);
 
   const setResult = (value) => {
-    console.log("result: ", value);
     SetResultsFound(value);
   };
   const handleChangePrice = (event, value) => {
@@ -105,14 +102,10 @@ const List = () => {
   };
 
   const fetchData = () => {
-    console.log("at fetch");
     let fromDate = convertDate(date[0].startDate);
     let toDate = convertDate(date[0].endDate);
-    // console.log(price);
     let minPrice = selectedPrice[0],
       maxPrice = selectedPrice[1];
-    // console.log(minPrice, maxPrice, window.location.pathname);
-    // setResultsFound(true);
     switch (window.location.pathname) {
       case "/flights":
         dispatch(
@@ -124,6 +117,7 @@ const List = () => {
               toDate,
               minPrice,
               maxPrice,
+              personCount: options.person,
             },
             setResult
           )
@@ -140,14 +134,11 @@ const List = () => {
               toDate,
               minPrice,
               maxPrice,
+              personCount: options.person,
             },
             setResult
           )
         );
-        // console.log(buses.count);
-        // if (buses.count === 0) SetResultsFound(false);
-        // else SetResultsFound(true);
-        // }
         break;
       default:
         dispatch(
@@ -159,6 +150,7 @@ const List = () => {
               toDate,
               minPrice,
               maxPrice,
+              personCount: options.person,
             },
             setResult
           )
@@ -171,7 +163,6 @@ const List = () => {
     let toDate = convertDate(date[0].endDate);
     let minPrice = selectedPrice[0],
       maxPrice = selectedPrice[1];
-    // console.log("at effect");
     switch (window.location.pathname) {
       case "/flights":
         dispatch(
@@ -183,17 +174,24 @@ const List = () => {
               toDate,
               minPrice,
               maxPrice,
+              personCount: options.person,
             },
             setResult
           )
         );
         break;
       case "/buses":
-        // if (busError) toast.error(busError);
-        // else
         dispatch(
           getBusSchedules(
-            { source, destination, fromDate, toDate, minPrice, maxPrice },
+            {
+              source,
+              destination,
+              fromDate,
+              toDate,
+              minPrice,
+              maxPrice,
+              personCount: options.person,
+            },
             setResult
           )
         );
@@ -210,6 +208,7 @@ const List = () => {
               toDate,
               minPrice,
               maxPrice,
+              personCount: options.person,
             },
             setResult
           )
@@ -220,13 +219,8 @@ const List = () => {
   const handleSearch = () => {
     fetchData();
   };
-  // console.log(loading);
   return (
     <>
-      {console.log("Loading", isLoading)}{" "}
-      {/* {isLoaded ? (
-        <Loader />
-      ) : ( */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -246,7 +240,6 @@ const List = () => {
                   value={source}
                   style={{ "font-family": "FontAwesome" }}
                   onChange={(e) => {
-                    // console.log(e.target.value);
                     SetSource(e.target.value);
                   }}
                 ></input>
@@ -308,11 +301,14 @@ const List = () => {
                     <div className="lsOptionItem">
                       <span className="lsOptionText">person</span>
                       <input
-                        style={{ "font-family": "FontAwesome" }}
+                        style={{ "font-family": "FontAwesome"}}
                         type="number"
                         min={1}
                         className="lsOptionInput"
-                        placeholder={options.person}
+                        value={options.person}
+                        onChange={(e) => {
+                          setOptions({ person: e.target.value });
+                        }}
                       />
                     </div>
                   </div>
@@ -324,7 +320,7 @@ const List = () => {
             <div className="listResult">
               {isLoading ? (
                 <>
-                  {console.log("loading")} <EmptyView />
+                  <EmptyView />
                 </>
               ) : (
                 <>
@@ -332,7 +328,6 @@ const List = () => {
                     <ResultNotFoundPage />
                   ) : (
                     <>
-                      {console.log(flights)}
                       {window.location.pathname === "/flights" &&
                         flights.rows &&
                         flights.rows.map((flight) => (

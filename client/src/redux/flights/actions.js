@@ -25,7 +25,10 @@ export const fetchAllFlightScheduleFail = (error) => {
 };
 //get flightSchedules
 export const getFlightSchedules =
-  ({ source, destination, minPrice, maxPrice, fromDate, toDate }, setResult) =>
+  (
+    { source, destination, minPrice, maxPrice, fromDate, toDate, personCount },
+    setResult
+  ) =>
   async (dispatch) => {
     try {
       // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
@@ -34,6 +37,7 @@ export const getFlightSchedules =
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
+      personCount = personCount ? personCount : 1;
       // console.log(fromDate);
       // console.log(toDate);
       if (source && destination) {
@@ -55,7 +59,8 @@ export const getFlightSchedules =
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
             minPrice,
-            maxPrice
+            maxPrice,
+            personCount
           );
           if (data) {
             if (data.flightScheduleWithflights.count === 0) setResult(false);
@@ -73,7 +78,8 @@ export const getFlightSchedules =
             minPrice,
             maxPrice,
             fromDate,
-            toDate
+            toDate,
+            personCount
           );
           if (data) {
             if (data.flightScheduleWithflights.count === 0) setResult(false);
@@ -86,7 +92,7 @@ export const getFlightSchedules =
           }
         }
       } else {
-        let { data } = await getAllFlightsApi(minPrice, maxPrice);
+        let { data } = await getAllFlightsApi(minPrice, maxPrice, personCount);
         if (data) {
           console.log(data);
           if (data.flightScheduleWithflights.count === 0) setResult(false);

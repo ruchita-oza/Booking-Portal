@@ -220,6 +220,7 @@ const getAllFlightSchedules = async (req, res, next) => {
     const apiFeatures = new Apifeatures(FlightSchedule, req.query)
       .priceFilter()
       .timeFilter()
+      .TicketFilter()
       .filter();
 
     console.log("at flight schedule");
@@ -228,6 +229,7 @@ const getAllFlightSchedules = async (req, res, next) => {
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
       timeQuery: apiFeatures.timeQuery,
+      ticketQuery: apiFeatures.ticketQuery,
     });
 
     // let data = [];

@@ -1,19 +1,24 @@
 // import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
-export const getAllTrainsApi = (minPrice, maxPrice) =>
-  axios.get(`/train/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+export const getAllTrainsApi = (minPrice, maxPrice, personCount) =>
+  axios.get(
+    `/train/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}`
+  );
 
-export const getTrainsWithLocationApi = (sourceId, destId) =>
-  axios.get(`/train/Schedule?source=${sourceId}&destination=${destId}`);
+export const getTrainsWithLocationApi = (sourceId, destId, personCount) =>
+  axios.get(
+    `/train/Schedule?source=${sourceId}&destination=${destId}&personCount=${personCount}`
+  );
 
 export const getTrainsWithLocationPriceApi = (
   sourceId,
   destId,
   minPrice,
-  maxPrice
+  maxPrice,
+  personCount
 ) =>
   axios.get(
-    `/train/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+    `/train/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}`
   );
 export const getTrainsWithLocationPriceTimeApi = (
   sourceId,
@@ -21,17 +26,19 @@ export const getTrainsWithLocationPriceTimeApi = (
   minPrice,
   maxPrice,
   fromDate,
-  toDate
+  toDate,
+  personCount
 ) =>
   axios.get(
-    `/train/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}`
+    `/train/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}&personCount=${personCount}`
   );
 export const getTrainsWithLocationTimeApi = (
   sourceId,
   destId,
   fromDate,
-  toDate
+  toDate,
+  personCount
 ) =>
   axios.get(
-    `/train/Schedule?source=${sourceId}&destination=${destId}&fromDate=${fromDate}&toDate=${toDate}`
+    `/train/Schedule?source=${sourceId}&destination=${destId}&fromDate=${fromDate}&toDate=${toDate}&personCount=${personCount}`
   );

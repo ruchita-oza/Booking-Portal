@@ -39,7 +39,7 @@
 }
 
 .lsItem > label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 650;
   margin-bottom: 2px;
 }
@@ -94,14 +94,29 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  color: #555;
-  font-size: 12px;
+  height: 30px;
+  color: #000;
+  font-size: 14px;
   border-radius: 5px;
+  font-weight: 700;
 }
 
 .lsOptionInput {
   width: 50px;
   border-radius: 3px;
+  -moz-appearance: textfield;
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  border: none;
+  margin-right: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
 .listSearch > button {

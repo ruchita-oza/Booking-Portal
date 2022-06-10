@@ -85,11 +85,7 @@ class Apifeatures {
   TicketFilter() {
     if (this.queryStr.personCount) {
       const personCount = this.queryStr.personCount;
-      this.ticketQuery = Sequelize.where(
-        Sequelize.fn("number", Sequelize.col("total_available_seats")),
-        ">=",
-        personCount
-      );
+      this.ticketQuery = { total_available_seats: { [Op.gte]: personCount } };
     }
     return this;
   }

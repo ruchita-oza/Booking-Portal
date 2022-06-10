@@ -43,9 +43,16 @@ const findTrainScheduleById = async (trainScheduleId) => {
   });
 };
 
-const findAllTrainSchedules = async ({ queryCopy, priceQuery }) => {
+const findAllTrainSchedules = async ({
+  queryCopy,
+  priceQuery,
+  timeQuery,
+  ticketQuery,
+}) => {
+  console.log(ticketQuery);
+  console.log("object");
   const trainSchedules = await TrainSchedule.findAndCountAll({
-    where: { [Op.and]: [queryCopy, priceQuery] },
+    where: { [Op.and]: [queryCopy, priceQuery, timeQuery, ticketQuery] },
     include: [
       {
         model: TrainDetail,

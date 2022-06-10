@@ -1,7 +1,9 @@
 // import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
-export const getAllBusesApi = (minPrice, maxPrice) =>
-  axios.get(`/bus/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+export const getAllBusesApi = (minPrice, maxPrice, personCount) =>
+  axios.get(
+    `/bus/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}`
+  );
 
 // export const getBusesWithLocationApi = (sourceId, destId) =>
 //   axios.get(`/bus/Schedule?source=${sourceId}&destination=${destId}`);
@@ -10,10 +12,11 @@ export const getBusesWithLocationPriceApi = (
   sourceId,
   destId,
   minPrice,
-  maxPrice
+  maxPrice,
+  personCount
 ) =>
   axios.get(
-    `/bus/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}`
+    `/bus/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}`
   );
 export const getBusesWithLocationPriceTimeApi = (
   sourceId,
@@ -21,10 +24,11 @@ export const getBusesWithLocationPriceTimeApi = (
   minPrice,
   maxPrice,
   fromDate,
-  toDate
+  toDate,
+  personCount
 ) =>
   axios.get(
-    `/bus/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}`
+    `/bus/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}&personCount=${personCount}`
   );
 // export const getBusesWithLocationTimeApi = (
 //   sourceId,

@@ -3,23 +3,17 @@ import "./searchItem.css";
 import toast from "react-hot-toast";
 import bus from "../../images/bus.gif";
 import train from "../../images/train.gif";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/users/selectors";
 
 const SearchItem = ({ data }) => {
-  // console.log(data);
-  // const getCity = (cityId) => async () => {
-  //   const data = await fetch(`city/${cityId}`);
-  //   if (data) {
-  //     return data?.city_name;
-  //   } else {
-  //     toast.error(`can't find city ${cityId}`);
-  //   }
-  // };
   const location = useLocation();
-  // console.log(data?.departure_time);
+  const navigate = useNavigate();
+  const { loggedInUser } = useSelector(selectUser);
   const getMonth = (month) => {
     switch (month) {
       case "01":
@@ -52,7 +46,7 @@ const SearchItem = ({ data }) => {
   };
   if (data.departure_time) {
     // var date = DateTime.Parse(data.departure_time);
-    console.log(data.departure_time);
+    // console.log(data.departure_time);
     var dept_date = `${
       data?.departure_time.split("T")[0].split("-")[2]
     } ${getMonth(data?.departure_time.split("T")[0].split("-")[1])}`;
@@ -66,6 +60,13 @@ const SearchItem = ({ data }) => {
       data?.arrival_time.split("T")[1].split(".")[0].split(":")[0]
     }:${data?.arrival_time.split("T")[1].split(".")[0].split(":")[1]}`;
   } // console.log(dept_time);
+  const handleClick = () => {
+    if (loggedInUser) {
+    } else {
+      toast.error("Please login first");
+      navigate("/auth/login");
+    }
+  };
   return (
     <>
       <motion.div
@@ -179,7 +180,9 @@ const SearchItem = ({ data }) => {
           <div className="siDetailTexts">
             <span className="siPrice">${data?.price_per_seat}</span>
             <span className="siFlight">Includes taxes and fees</span>
-            <button className="siCheckButton">See availability</button>
+            <button className="siCheckButton" onClick={handleClick}>
+              Book now !
+            </button>
           </div>
         </div>
       </motion.div>

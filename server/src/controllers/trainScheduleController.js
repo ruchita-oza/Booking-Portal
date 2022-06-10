@@ -196,11 +196,15 @@ const viewTrainSchedules = async (req, res, next) => {
   try {
     const apiFeatures = new ApiFeatures(TrainSchedule, req.query)
       .priceFilter()
+      .timeFilter()
+      .TicketFilter()
       .filter();
     // let trainschedules = await apiFeatures.query;
     let trainschedules = await findAllTrainSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
+      timeQuery: apiFeatures.timeQuery,
+      ticketQuery: apiFeatures.ticketQuery,
     });
     return res.json({ data: trainschedules, status: true });
   } catch (error) {

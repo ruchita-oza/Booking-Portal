@@ -26,7 +26,10 @@ export const fetchAllTrainScheduleFail = (error) => {
 
 //get trainSchedules
 export const getTrainSchedules =
-  ({ source, destination, minPrice, maxPrice, fromDate, toDate }, setResult) =>
+  (
+    { source, destination, minPrice, maxPrice, fromDate, toDate, personCount },
+    setResult
+  ) =>
   async (dispatch) => {
     try {
       // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
@@ -35,6 +38,7 @@ export const getTrainSchedules =
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
+      personCount = personCount ? personCount : 1;
       // console.log(fromDate);
       // console.log(toDate);
       if (source && destination) {
@@ -56,7 +60,8 @@ export const getTrainSchedules =
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
             minPrice,
-            maxPrice
+            maxPrice,
+            personCount
           );
           if (data) {
             if (data.data.count === 0) setResult(false);
@@ -72,7 +77,8 @@ export const getTrainSchedules =
             minPrice,
             maxPrice,
             fromDate,
-            toDate
+            toDate,
+            personCount
           );
           if (data) {
             if (data.data.count === 0) setResult(false);
@@ -83,7 +89,7 @@ export const getTrainSchedules =
           }
         }
       } else {
-        let { data } = await getAllTrainsApi(minPrice, maxPrice);
+        let { data } = await getAllTrainsApi(minPrice, maxPrice, personCount);
         console.log(data);
         if (data) {
           console.log(data);
