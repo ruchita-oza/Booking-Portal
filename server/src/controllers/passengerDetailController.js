@@ -116,7 +116,7 @@ const getAllPassengerDetailsByBookingId = async (req, res, next) => {
     const bookingId = req.params.id;
     const status = await checkExistsBookingRecord(bookingId);
     if (status) {
-      const passengerDetails = await PassengerDetails.findAll({
+      const passengerDetails = await PassengerDetails.findAndCountAll({
         where: { booking_id: bookingId },
       });
       return res.json({ data: passengerDetails, status: true });
