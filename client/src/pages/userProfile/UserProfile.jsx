@@ -13,7 +13,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { createTheme } from "@mui/material/styles";
-import { Grid, Chip } from "@mui/material";
+import { Grid, Chip, Divider } from "@mui/material";
 import { toast } from "react-hot-toast";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -24,6 +24,7 @@ import { fetchUserBookingRecordsDetailThunkAction } from "../../redux/users/acti
 import Loader from "../../components/loader/loader";
 import ParseDate from "../../Utilities/ParseDate";
 import dateFormat, { masks } from "dateformat";
+import { withStyles } from "@material-ui/core/styles";
 
 const axios = require("axios");
 // const DATE_FORMATER = require("dateformat");
@@ -93,6 +94,14 @@ const card = (
     </CardActions> */}
   </React.Fragment>
 );
+
+const StyleChip = withStyles({
+  root: {
+    // backgroundColor:'salmon'
+    height: "25px",
+    // padding: "1px",
+  },
+})(Chip);
 
 function UserProfile() {
   const theme = useTheme();
@@ -217,11 +226,18 @@ function UserProfile() {
   // console.log("completed booking records : " + completedBookingRecords);
   // console.log("upcoming booking records : " + upcomingBookingRecords);
 
-  useEffect(() => {
-    setBookingDetails(data1?.data);
-    setAllCompletedBookingRecords(completedBookingRecords);
-    setAllUpcomingBookingRecords(upcomingBookingRecords);
-  }, [dispatch, data1, isLoading, error]);
+  // useEffect(() => {
+  //   setBookingDetails(data1?.data);
+  //   setAllCompletedBookingRecords(completedBookingRecords);
+  //   setAllUpcomingBookingRecords(upcomingBookingRecords);
+  // }, [
+  //   dispatch,
+  //   data1,
+  //   isLoading,
+  //   error,
+  //   completedBookingRecords,
+  //   upcomingBookingRecords,
+  // ]);
 
   // useEffect(() => {}, []);
 
@@ -277,7 +293,7 @@ function UserProfile() {
             <Typography variant="h5">
               Journey Details
               {" : "}
-              <Chip label={" " + e.booking_status} color="success" />
+              <StyleChip label={"  " + e.booking_status} color="success" />
             </Typography>
             <br />
             <Typography variant="body1">
@@ -290,7 +306,7 @@ function UserProfile() {
               Total fare: {" " + e.total_fare}
               {/* <br />
           Booking status:{" "}
-          <Chip
+          <StyleChip
             label={" " + e.booking_status}
             color="success"
           /> */}
@@ -310,7 +326,7 @@ function UserProfile() {
           <CardContent>
             <Typography variant="h5">
               Journey Details{" "}
-              <Chip label={" " + e.booking_status} color="success" />
+              <StyleChip label={"  " + e.booking_status} color="success" />
             </Typography>
             <br />
             <Typography variant="body1">
@@ -323,7 +339,7 @@ function UserProfile() {
               Total fare: {" " + e.total_fare}
               {/* <br />
                 Booking status:
-                <Chip
+                <StyleChip
                   label={" " + e.booking_status}
                   color="success"
                 /> */}
@@ -343,7 +359,7 @@ function UserProfile() {
           <CardContent>
             <Typography variant="h5">
               Journey Details{" "}
-              <Chip label={" " + e.booking_status} color="success" />
+              <StyleChip label={"  " + e.booking_status} color="success" />
             </Typography>
             <br />
             <Typography variant="body1">
@@ -356,7 +372,7 @@ function UserProfile() {
               Total fare: {" " + e.total_fare}
               {/* <br />
                 Booking status:
-                <Chip
+                <StyleChip
                   label={" " + e.booking_status}
                   color="success"
                 /> */}
@@ -454,51 +470,7 @@ function UserProfile() {
                             }}
                           />
                         </div>
-                        {/* <div class="col-md-12">
-                  <label class="labels">Address Line 1</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="enter address line 1"
-                    value=""
-                  />
-                </div>
-                <div class="col-md-12">
-                  <label class="labels">Address Line 2</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="enter address line 2"
-                    value=""
-                  />
-                </div>
-                <div class="col-md-12">
-                  <label class="labels">Postcode</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="enter address line 2"
-                    value=""
-                  />
-                </div>
-                <div class="col-md-12">
-                  <label class="labels">State</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="enter address line 2"
-                    value=""
-                  />
-                </div>
-                <div class="col-md-12">
-                  <label class="labels">Area</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="enter address line 2"
-                    value=""
-                  />
-                </div> */}
+
                         <div class="col-md-12">
                           <label class="labels">Email ID</label>
                           <input
@@ -516,26 +488,7 @@ function UserProfile() {
                           />
                         </div>
                       </div>
-                      {/* <div class="row mt-3">
-                <div class="col-md-6">
-                  <label class="labels">Country</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="country"
-                    value=""
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label class="labels">State/Region</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    value=""
-                    placeholder="state"
-                  />
-                </div>
-              </div> */}
+
                       <div class="mt-5 text-center">
                         <button
                           class="btn btn-primary profile-button"
@@ -547,36 +500,6 @@ function UserProfile() {
                       </div>
                     </div>
                   </div>
-                  {/* <div class="col-md-4">
-            <div class="p-3 py-5">
-              <div class="d-flex justify-content-between align-items-center experience">
-                <span>Edit Experience</span>
-                <span class="border px-3 p-1 add-experience">
-                  <i class="fa fa-plus"></i>&nbsp;Experience
-                </span>
-              </div>
-              <br />
-              <div class="col-md-12">
-                <label class="labels">Experience in Designing</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="experience"
-                  value=""
-                />
-              </div>
-              <br />
-              <div class="col-md-12">
-                <label class="labels">Additional Details</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="additional details"
-                  value=""
-                />
-              </div>
-            </div>
-          </div> */}
                 </div>
               </div>
             </>
@@ -633,7 +556,12 @@ function UserProfile() {
                   onChangeIndex={handleChangeIndex}
                 >
                   <TabPanel value={value} index={0} dir={theme.direction}>
-                    <Card variant="outlined">
+                    <Card
+                      variant="outlined"
+                      sx={{
+                        boxShadow: 3,
+                      }}
+                    >
                       <CardContent>
                         <Grid
                           container
@@ -642,14 +570,19 @@ function UserProfile() {
                           justifyContent="center"
                         >
                           <Typography variant="h5">
-                            NO BOOKING RECORDS FOUND
+                            <b>NO BOOKING RECORDS FOUND</b>
                           </Typography>
                         </Grid>
                       </CardContent>
                     </Card>
                   </TabPanel>
                   <TabPanel value={value} index={1} dir={theme.direction}>
-                    <Card variant="outlined">
+                    <Card
+                      variant="outlined"
+                      sx={{
+                        boxShadow: 3,
+                      }}
+                    >
                       <CardContent>
                         <Grid
                           container
@@ -658,14 +591,19 @@ function UserProfile() {
                           justifyContent="center"
                         >
                           <Typography variant="h5">
-                            NO BOOKING RECORDS FOUND
+                            <b>NO BOOKING RECORDS FOUND</b>
                           </Typography>
                         </Grid>
                       </CardContent>
                     </Card>
                   </TabPanel>
                   <TabPanel value={value} index={2} dir={theme.direction}>
-                    <Card variant="outlined">
+                    <Card
+                      variant="outlined"
+                      sx={{
+                        boxShadow: 3,
+                      }}
+                    >
                       <CardContent>
                         <Grid
                           container
@@ -674,7 +612,7 @@ function UserProfile() {
                           justifyContent="center"
                         >
                           <Typography variant="h5">
-                            NO BOOKING RECORDS FOUND
+                            <b>NO BOOKING RECORDS FOUND</b>
                           </Typography>
                         </Grid>
                       </CardContent>
@@ -735,7 +673,12 @@ function UserProfile() {
                 >
                   {allUpcomingBookingRecords.length === 0 ? (
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                      <Card variant="outlined">
+                      <Card
+                        variant="outlined"
+                        sx={{
+                          boxShadow: 3,
+                        }}
+                      >
                         <CardContent>
                           <Grid
                             container
@@ -744,7 +687,7 @@ function UserProfile() {
                             justifyContent="center"
                           >
                             <Typography variant="h5">
-                              NO BOOKING RECORDS FOUND
+                              <b>NO BOOKING RECORDS FOUND</b>
                             </Typography>
                           </Grid>
                         </CardContent>
@@ -752,21 +695,49 @@ function UserProfile() {
                     </TabPanel>
                   ) : (
                     // upcomingRecords()
-                    <>
+                    <TabPanel value={value} index={0} dir={theme.direction}>
                       {allUpcomingBookingRecords.map((e) => (
-                        <TabPanel value={value} index={0} dir={theme.direction}>
+                        <>
                           {/* ONE */}
-                          <Card variant="outlined">
+                          <Card
+                            variant="outlined"
+                            sx={{
+                              boxShadow: 3,
+                            }}
+                          >
                             <CardContent>
                               <Typography variant="h5">
-                                Journey Details
-                                {" : "}
-                                <Chip
-                                  label={" " + e.booking_status}
+                                {e.transport_type == "flight"
+                                  ? e.flight_schedule?.source_name?.city_name +
+                                    " to " +
+                                    e.flight_schedule?.destination_name
+                                      ?.city_name +
+                                    " "
+                                  : e.transport_type == "bus"
+                                  ? e.bus_schedule?.source_name?.city_name +
+                                    " to " +
+                                    e.bus_schedule?.destination_name
+                                      ?.city_name +
+                                    " "
+                                  : e.train_schedule?.source_name?.city_name +
+                                    " to " +
+                                    e.train_schedule?.destination_name
+                                      ?.city_name +
+                                    " "}
+                                <StyleChip
+                                  label={"  " + e.booking_status}
                                   color="success"
                                 />
                               </Typography>
-                              <br />
+                              {/* <br /> */}
+                              <Divider
+                                // variant="absolute"
+                                style={{
+                                  marginTop: "5px",
+                                  marginBottom: "5px",
+                                  // height: "100%",
+                                }}
+                              />
                               <Typography variant="body1">
                                 Tranport type: {" " + e.transport_type}
                                 <br />
@@ -779,7 +750,7 @@ function UserProfile() {
                                 Total fare: {" " + e.total_fare}
                                 {/* <br />
                                 Booking status:{" "}
-                                <Chip
+                                <StyleChip
                                   label={" " + e.booking_status}
                                   color="success"
                                 /> */}
@@ -787,13 +758,18 @@ function UserProfile() {
                             </CardContent>
                           </Card>
                           <br />
-                        </TabPanel>
+                        </>
                       ))}
-                    </>
+                    </TabPanel>
                   )}
                   {allCompletedBookingRecords.length === 0 ? (
                     <TabPanel value={value} index={1} dir={theme.direction}>
-                      <Card variant="outlined">
+                      <Card
+                        variant="outlined"
+                        sx={{
+                          boxShadow: 3,
+                        }}
+                      >
                         <CardContent>
                           <Grid
                             container
@@ -802,7 +778,7 @@ function UserProfile() {
                             justifyContent="center"
                           >
                             <Typography variant="h5">
-                              NO BOOKING RECORDS FOUND
+                              <b>NO BOOKING RECORDS FOUND</b>
                             </Typography>
                           </Grid>
                         </CardContent>
@@ -810,20 +786,49 @@ function UserProfile() {
                     </TabPanel>
                   ) : (
                     // completedRecords()
-                    <>
+                    <TabPanel value={value} index={1} dir={theme.direction}>
                       {allCompletedBookingRecords.map((e) => (
-                        <TabPanel value={value} index={1} dir={theme.direction}>
+                        <>
                           {/* ONE */}
-                          <Card variant="outlined">
+                          <Card
+                            variant="outlined"
+                            sx={{
+                              boxShadow: 3,
+                            }}
+                          >
                             <CardContent>
                               <Typography variant="h5">
-                                Journey Details{" "}
-                                <Chip
-                                  label={" " + e.booking_status}
+                                {e.transport_type == "flight"
+                                  ? e.flight_schedule?.source_name?.city_name +
+                                    " to " +
+                                    e.flight_schedule?.destination_name
+                                      ?.city_name +
+                                    " "
+                                  : e.transport_type == "bus"
+                                  ? e.bus_schedule?.source_name?.city_name +
+                                    " to " +
+                                    e.bus_schedule?.destination_name
+                                      ?.city_name +
+                                    " "
+                                  : e.train_schedule?.source_name?.city_name +
+                                    " to " +
+                                    e.train_schedule?.destination_name
+                                      ?.city_name +
+                                    " "}
+                                <StyleChip
+                                  label={"  " + e.booking_status}
                                   color="success"
                                 />
                               </Typography>
-                              <br />
+                              {/* <br /> */}
+                              <Divider
+                                // variant="absolute"
+                                style={{
+                                  marginTop: "5px",
+                                  marginBottom: "5px",
+                                  // height: "100%",
+                                }}
+                              />
                               <Typography variant="body1">
                                 Tranport type: {" " + e.transport_type}
                                 <br />
@@ -836,7 +841,7 @@ function UserProfile() {
                                 Total fare: {" " + e.total_fare}
                                 {/* <br />
                                 Booking status:
-                                <Chip
+                                <StyleChip
                                   label={" " + e.booking_status}
                                   color="success"
                                 /> */}
@@ -844,24 +849,51 @@ function UserProfile() {
                             </CardContent>
                           </Card>
                           <br />
-                        </TabPanel>
+                        </>
                       ))}
-                    </>
+                    </TabPanel>
                   )}
                   {/* {allRecords()} */}
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>
-                        <Card variant="outlined">
+                        <Card
+                          variant="outlined"
+                          sx={{
+                            boxShadow: 3,
+                          }}
+                        >
                           <CardContent>
                             <Typography variant="h5">
-                              Journey Details{" "}
-                              <Chip
-                                label={" " + e.booking_status}
+                              {e.transport_type == "flight"
+                                ? e.flight_schedule?.source_name?.city_name +
+                                  " to " +
+                                  e.flight_schedule?.destination_name
+                                    ?.city_name +
+                                  " "
+                                : e.transport_type == "bus"
+                                ? e.bus_schedule?.source_name?.city_name +
+                                  " to " +
+                                  e.bus_schedule?.destination_name?.city_name +
+                                  " "
+                                : e.train_schedule?.source_name?.city_name +
+                                  " to " +
+                                  e.train_schedule?.destination_name
+                                    ?.city_name +
+                                  " "}
+                              <StyleChip
+                                label={"  " + e.booking_status}
                                 color="success"
                               />
                             </Typography>
-                            <br />
+                            <Divider
+                              // variant="absolute"
+                              style={{
+                                marginTop: "5px",
+                                marginBottom: "5px",
+                                // height: "100%",
+                              }}
+                            />
                             <Typography variant="body1">
                               Tranport type: {" " + e.transport_type}
                               <br />
