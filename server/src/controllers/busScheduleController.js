@@ -175,7 +175,13 @@ const getBusScheduleById = async (req, res, next) => {
     const busScheduleStatus = await checkExistsBusSchedule(busScheduleId);
     if (busScheduleStatus) {
       const busSchedule = await findBusScheduleById(busScheduleId);
-      return res.json({ data: busSchedule, status: true });
+
+      let bus_schedule_data = JSON.parse(JSON.stringify(busSchedule[0]));
+      bus_schedule_data.source_name = bus_schedule_data.source_name?.city_name;
+      bus_schedule_data.destination_name =
+        bus_schedule_data.destination_name?.city_name;
+
+      return res.json({ data: bus_schedule_data, status: true });
     } else {
       return next(createError(422, "Error bus schedule does not exists"));
     }
@@ -192,8 +198,8 @@ const getBusSchedules = async (req, res, next) => {
       .TicketFilter()
       .filter();
 
-    console.log("at bus schedule");
-    console.log(apiFeatures.ticketQuery);
+    // console.log("at bus schedule");
+    // console.log(apiFeatures.ticketQuery);
     let busScheduleWithBuses = await findAllBusSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,

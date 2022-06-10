@@ -13,7 +13,7 @@ const {
 router.post("/", createTrainSchedule);
 router.post("/:id", updateTrainSchedule);
 router.delete("/:id", deleteTrainSchedule);
-router.get("/", viewAllTrainSchedule);
+// router.get("/", viewAllTrainSchedule);
 router.get("/:id", viewTrainScheduleById);
 router.get("/", viewTrainSchedules);
 
