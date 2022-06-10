@@ -226,18 +226,11 @@ function UserProfile() {
   // console.log("completed booking records : " + completedBookingRecords);
   // console.log("upcoming booking records : " + upcomingBookingRecords);
 
-  // useEffect(() => {
-  //   setBookingDetails(data1?.data);
-  //   setAllCompletedBookingRecords(completedBookingRecords);
-  //   setAllUpcomingBookingRecords(upcomingBookingRecords);
-  // }, [
-  //   dispatch,
-  //   data1,
-  //   isLoading,
-  //   error,
-  //   completedBookingRecords,
-  //   upcomingBookingRecords,
-  // ]);
+  useEffect(() => {
+    setBookingDetails(data1?.data);
+    setAllCompletedBookingRecords(completedBookingRecords);
+    setAllUpcomingBookingRecords(upcomingBookingRecords);
+  }, [isLoading, error, bookingDetails]);
 
   // useEffect(() => {}, []);
 

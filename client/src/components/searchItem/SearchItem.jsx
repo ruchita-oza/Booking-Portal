@@ -93,7 +93,10 @@ const SearchItem = ({ data }) => {
               ? data?.flight_detail.flight_name
               : data.train_detail.train_name}
           </h1>
-          <span className="siDistance">
+          <span
+            className="siDistance"
+            style={{ marginTop: "-10px", marginBottom: "15px" }}
+          >
             <span>
               {window.location.pathname === "/buses"
                 ? data?.bus_id
@@ -115,16 +118,32 @@ const SearchItem = ({ data }) => {
           {/* <span className="siDistance"> </span> */}
           {/* <span className="siTaxiOp">View Fares</span> */}
           <span className="siSubtitle">
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faLocationDot}
               style={{ marginRight: "10px" }}
-            ></FontAwesomeIcon>
-            <span className="siFeatures">
-              {data?.source} to {data?.destination}{" "}
+            ></FontAwesomeIcon> */}
+            <span
+              className="siFeatures"
+              style={{
+                display: "flex",
+                marginBottom: "-10px",
+                fontWeight: "bold",
+                placeItems: "center",
+              }}
+            >
+              <span className="siSource" style={{ flex: 1, marginLeft: "4px" }}>
+                {data?.source_name?.city_name}
+              </span>
+              <span style={{ flex: 1, marginLeft: "15px" }}>
+                {data?.destination_name?.city_name}
+              </span>{" "}
             </span>
           </span>
           <span className="siDateTime">
-            <span className="siTime">
+            <span
+              className="siTime"
+              style={{ marginBottom: "-5px", marginTop: "2px" }}
+            >
               <span className="siTimeInner">{dept_time}</span>
               <span className="siTimeInner"> {arrival_time}</span>
             </span>
@@ -134,7 +153,10 @@ const SearchItem = ({ data }) => {
               <span className="col-3"></span>
             </span>
 
-            <span className="siDate">
+            <span
+              className="siDate"
+              style={{ marginTop: "-5px", marginBottom: "20px" }}
+            >
               <span className="siDateInner">
                 {dept_time ? `${dept_date} ` : "Start"}
               </span>
