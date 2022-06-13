@@ -10,7 +10,7 @@ import { faLocationDot, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/users/selectors";
 
-const SearchItem = ({ data }) => {
+const SearchItem = ({ data, personCount }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { loggedInUser } = useSelector(selectUser);
@@ -62,6 +62,12 @@ const SearchItem = ({ data }) => {
   } // console.log(dept_time);
   const handleClick = () => {
     if (loggedInUser) {
+      if (window.location.pathname === "/buses")
+        navigate(`/bus/book/${data?.id}?person=${personCount}`);
+      else if (window.location.pathname === "/flights")
+        navigate(`/flight/book/${data?.id}?person=${personCount}`);
+      else if (window.location.pathname === "/trains")
+        navigate(`/train/book/${data?.id}?person=${personCount}`);
     } else {
       toast.error("Please login first");
       navigate("/auth/login");

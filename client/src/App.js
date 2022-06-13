@@ -14,8 +14,10 @@ import Buses from "./pages/buses/Buses";
 import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
+import UserPrivateRoute from "./components/PrivateRoute/UserPrivateRoute";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./pages/userProfile/UserProfile";
+import BookingPage from "./pages/bookingPage/BookingPage";
 // import "./App.css";
 import { AnimatePresence } from "framer-motion";
 
@@ -50,9 +52,13 @@ function App() {
             {/* <Route path="/admin">{routing} </Route> */}
             {/* <Route path="/authPage" element={<AuthPage />} /> */}
             <Route path="/buses" element={<List />} />
+
             <Route path="/buses/:id" element={<Buses />} />
             <Route path="/trains" element={<List />} />
-            <Route path="/userProfile" element={<UserProfile />} />
+            <Route path="/userProfile" element={<UserPrivateRoute />}>
+              <Route path="/userProfile" element={<UserProfile />} />
+            </Route>
+            <Route path=":transport_type/book/:id" element={<BookingPage />} />
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

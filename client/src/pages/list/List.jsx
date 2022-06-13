@@ -301,7 +301,7 @@ const List = () => {
                     <div className="lsOptionItem">
                       <span className="lsOptionText">person</span>
                       <input
-                        style={{ "font-family": "FontAwesome"}}
+                        style={{ "font-family": "FontAwesome" }}
                         type="number"
                         min={1}
                         className="lsOptionInput"
@@ -331,17 +331,29 @@ const List = () => {
                       {window.location.pathname === "/flights" &&
                         flights.rows &&
                         flights.rows.map((flight) => (
-                          <SearchItem data={flight} key={flight.id} />
+                          <SearchItem
+                            data={flight}
+                            key={flight.id}
+                            personCount={options.person}
+                          />
                         ))}
                       {window.location.pathname === "/buses" &&
                         buses.rows &&
                         buses.rows.map((bus) => (
-                          <SearchItem data={bus} key={bus.id} />
+                          <SearchItem
+                            data={bus}
+                            key={bus.id}
+                            personCount={options.person}
+                          />
                         ))}
                       {window.location.pathname === "/trains" &&
                         trains.rows &&
                         trains.rows.map((train) => (
-                          <SearchItem key={train.id} data={train} />
+                          <SearchItem
+                            key={train.id}
+                            data={train}
+                            personCount={options.person}
+                          />
                         ))}
                     </>
                   )}

@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
-form {
+.authform {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,12 +22,12 @@ form {
 } */
 
 body,
-input {
+.authLogin {
   font-family: "Poppins", sans-serif;
   left: 200px;
 }
 
-form.sign-up-form {
+.authform.sign-up-form {
   opacity: 0;
   z-index: 1;
 }
@@ -39,5 +39,4 @@ form.sign-up-form {
 }
 
 @media screen and (min-width: 768px) {
-  
 }

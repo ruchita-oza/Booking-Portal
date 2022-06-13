@@ -60,34 +60,38 @@ const Navbar = (props) => {
                   <button className="navButton">Logout</button>
                 </Link>
               )}
-              {loggedInUser && (<Link to="/userProfile">
-                <button className="navButton">User Profile</button>
-              </Link>)}
+              {loggedInUser && (
+                <Link to="/userProfile">
+                  <button className="navButton">User Profile</button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
-        <div className='header'>
-          <div className='headerContainer listMode'>
-            <div className='headerList'>
+        <div className="header">
+          <div className="headerContainer listMode">
+            <div className="headerList">
               <div
                 className={
                   props.type === "flights"
                     ? "headerListItem active"
                     : "headerListItem "
                 }
-                onClick={() => doChanges("flights")}>
+                onClick={() => doChanges("flights")}
+              >
                 <FontAwesomeIcon icon={faPlane} />
                 <span>Flight</span>
               </div>
               <div
                 className={
-                  props.type === "buses" 
+                  props.type === "buses"
                     ? "headerListItem active"
                     : "headerListItem "
                 }
                 onClick={() => {
                   doChanges("buses");
-                }}>
+                }}
+              >
                 <FontAwesomeIcon icon={faBus} />
                 <span>Bus</span>
               </div>
@@ -99,7 +103,8 @@ const Navbar = (props) => {
                 }
                 onClick={() => {
                   doChanges("trains");
-                }}>
+                }}
+              >
                 <FontAwesomeIcon icon={faTrain} />
                 <span>Train</span>
               </div>
