@@ -27,7 +27,6 @@ import dateFormat, { masks } from "dateformat";
 import { withStyles } from "@material-ui/core/styles";
 
 const axios = require("axios");
-// const DATE_FORMATER = require("dateformat");
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,30 +70,6 @@ const bull = (
   </Box>
 );
 
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-        Journey Details
-      </Typography>
-      <Typography variant="h5" component="div">
-        be{bull}nev{bull}o{bull}lent
-      </Typography>
-      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        Journey Details
-      </Typography>
-      <Typography variant="body1">
-        Journey Details
-        <br />
-        {'"vadodara to ahmedabad"'}
-      </Typography>
-    </CardContent>
-    {/* <CardActions>
-      <Button size="small">Learn More</Button>
-    </CardActions> */}
-  </React.Fragment>
-);
-
 const StyleChip = withStyles({
   root: {
     // backgroundColor:'salmon'
@@ -123,26 +98,11 @@ function UserProfile() {
   const [allUpcomingBookingRecords, setAllUpcomingBookingRecords] =
     useState(null);
 
-  // useEffect(async () => {
-  //   const user = JSON.parse(localStorage.getItem("user")) || null;
-  //   dispatch(refreshState({ user }));
-  //   // const response = await fetch("/user/" + userId, { method: "GET" });
-  //   // // console.log("response : " + response);
-  //   // let data1 = await response.json();
-  //   // console.log("data1 : " + JSON.stringify(data1["data"]));
-  //   // setUserDetails(data1["data"]);
-  //   // console.log("user details : " + JSON.stringify(userDetails));
-  // }, [dispatch]);
-  // console.log(userDetails[0]["first_name"]);
-
   const onSuccess = () => {
-    // console.log("on success");
     toast.success("Success");
-    // navigate("/");
   };
 
   const onError = (error) => {
-    // console.log("error occured", error);
     toast.error("Error : " + error);
   };
 
@@ -163,68 +123,32 @@ function UserProfile() {
     }
   }, [dispatch, data]);
 
-  // useEffect(() => {
-  //   setBookingDetails(data1?.data);
-  //   setAllCompletedBookingRecords(completedBookingRecords)
-  //   setAllUpcomingBookingRecords(upcomingBookingRecords)
-  // }, [data1]);
-  // console.log("first name: " + data?.id);
-  // console.log(userDetails);
-  // console.log(bookingDetails);
-
-  // console.log("booking details : " + JSON.stringify(data1?.data));
-
   var allBookingRecords = [];
 
   var completedBookingRecords = [];
 
   var upcomingBookingRecords = [];
 
-  // var todaysDate = new Date();
-
   var todaysDate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss", true);
-  // console.log("todays date : " + todaysDate);
 
   if (bookingDetails) {
     var allBookingRecordsLength = bookingDetails.length;
 
-    // console.log("all booking details length : " + allBookingRecordsLength);
     for (var i = 0; i < allBookingRecordsLength; i++) {
-      // console.log(
-      //   "current booking details : " + JSON.stringify(bookingDetails[i])
-      // );
-      // var currentBookingRecordDateTime = bookingDetails[i].journey_date;
       var currentBookingRecordDateTime = new Date(
         bookingDetails[i].journey_date
       )
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-      // console.log(
-      //   "current booking record date and time : " + currentBookingRecordDateTime
-      // );
+
       if (currentBookingRecordDateTime > todaysDate) {
-        // console.log(
-        //   "current booking record: " +
-        //     currentBookingRecordDateTime +
-        //     " > todays date: " +
-        //     todaysDate
-        // );
         upcomingBookingRecords.push(bookingDetails[i]);
       } else {
-        // console.log(
-        //   "current booking record: " +
-        //     currentBookingRecordDateTime +
-        //     " < todays date: " +
-        //     todaysDate
-        // );
         completedBookingRecords.push(bookingDetails[i]);
       }
     }
   }
-
-  // console.log("completed booking records : " + completedBookingRecords);
-  // console.log("upcoming booking records : " + upcomingBookingRecords);
 
   useEffect(() => {
     setBookingDetails(data1?.data);
@@ -232,41 +156,19 @@ function UserProfile() {
     setAllUpcomingBookingRecords(upcomingBookingRecords);
   }, [isLoading, error, bookingDetails]);
 
-  // useEffect(() => {}, []);
-
-  // useEffect(() => {}, []);
-
-  // console.log(
-  //   "completed booking records : " + JSON.stringify(allCompletedBookingRecords)
-  // );
-  // console.log(
-  //   "upcoming booking records : " + JSON.stringify(upcomingBookingRecords)
-  // );
-
-  // console.log("isLoading: " + isLoading);
-
-  // if (!isLoading) {
-  //   // allBookingRecords = JSON.stringify(data1?.data);
-  //   allBookingRecords = bookingDetails;
-  //   // console.log("booking records : " + allBookingRecords[0]["transport_type"]);
-  // }
-
   async function handleSubmit() {
     const response = await UsePut(
       "/user/" + userDetails?.id,
       userDetails,
-      "PUT"
+      "put"
     );
     if (response?.success) {
-      // console.log("hell yes");
       localStorage.removeItem("user");
       localStorage.setItem("user", JSON.stringify(userDetails));
       const user = JSON.parse(localStorage.getItem("user"));
-      // console.log("user details : " + user);
       dispatch(refreshState({ user }));
       toast.success(response?.data);
     } else {
-      // console.log("hell nooo : " + response?.message);
       toast.error(response?.message);
     }
   }
@@ -280,7 +182,6 @@ function UserProfile() {
   const upcomingRecords = () => {
     return allUpcomingBookingRecords.map((e) => (
       <TabPanel value={value} index={0} dir={theme.direction}>
-        {/* ONE */}
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h5">
@@ -297,12 +198,6 @@ function UserProfile() {
               Total tickets: {" " + e.total_ticket_count}
               <br />
               Total fare: {" " + e.total_fare}
-              {/* <br />
-          Booking status:{" "}
-          <StyleChip
-            label={" " + e.booking_status}
-            color="success"
-          /> */}
             </Typography>
           </CardContent>
         </Card>
@@ -314,7 +209,6 @@ function UserProfile() {
   const completedRecords = () => {
     return allCompletedBookingRecords.map((e) => (
       <TabPanel value={value} index={1} dir={theme.direction}>
-        {/* ONE */}
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h5">
@@ -330,12 +224,6 @@ function UserProfile() {
               Total tickets: {" " + e.total_ticket_count}
               <br />
               Total fare: {" " + e.total_fare}
-              {/* <br />
-                Booking status:
-                <StyleChip
-                  label={" " + e.booking_status}
-                  color="success"
-                /> */}
             </Typography>
           </CardContent>
         </Card>
@@ -347,7 +235,6 @@ function UserProfile() {
   const allRecords = () => {
     return bookingDetails.map((e) => (
       <TabPanel value={value} index={1} dir={theme.direction}>
-        {/* ONE */}
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h5">
@@ -363,12 +250,6 @@ function UserProfile() {
               Total tickets: {" " + e.total_ticket_count}
               <br />
               Total fare: {" " + e.total_fare}
-              {/* <br />
-                Booking status:
-                <StyleChip
-                  label={" " + e.booking_status}
-                  color="success"
-                /> */}
             </Typography>
           </CardContent>
         </Card>
@@ -377,10 +258,8 @@ function UserProfile() {
     ));
   };
 
-  // console.log("booking details: " + bookingDetails);
   return (
     <>
-      {/* {console.log(isLoading)} */}
       {isLoading ? (
         <Loader />
       ) : (
@@ -398,13 +277,10 @@ function UserProfile() {
                         width="150px"
                         src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                       />
-                      {/* <span class="font-weight-bold">Rikin Chauhan</span> */}
                       <span class="font-weight-bold">
                         {userDetails?.first_name + " " + userDetails?.last_name}
                       </span>
-                      {/* <span class="text-black-50">rikin01@gmail.com</span> */}
                       <span class="text-black-50">{userDetails?.email}</span>
-                      {/* <span></span> */}
                     </div>
                   </div>
                   <div class="col-md-9 border-right">
@@ -418,8 +294,6 @@ function UserProfile() {
                           <input
                             type="text"
                             class="form-control"
-                            // placeholder="First name"
-                            // placeholder="Rikin"
                             value={userDetails?.first_name}
                             onChange={(e) => {
                               setUserDetails({
@@ -434,8 +308,6 @@ function UserProfile() {
                           <input
                             type="text"
                             class="form-control"
-                            // placeholder="Last name"
-                            // placeholder="Chauhan"
                             value={userDetails?.last_name}
                             onChange={(e) => {
                               setUserDetails({
@@ -452,8 +324,6 @@ function UserProfile() {
                           <input
                             type="text"
                             class="form-control"
-                            // placeholder="Mobile number"
-                            // placeholder="1234567890"
                             value={userDetails?.phone_number}
                             onChange={(e) => {
                               setUserDetails({
@@ -469,8 +339,6 @@ function UserProfile() {
                           <input
                             type="text"
                             class="form-control"
-                            // placeholder="Email id"
-                            // placeholder="rikin01@gmail.com"
                             value={userDetails?.email}
                             onChange={(e) => {
                               setUserDetails({
@@ -505,7 +373,6 @@ function UserProfile() {
               alignItems="center"
               justifyContent="center"
             >
-              {/* <Typography>Center Center</Typography> */}
               <Box
                 justifyContent="center"
                 alignItems="center"
@@ -526,20 +393,17 @@ function UserProfile() {
                       label="Upcoming"
                       {...a11yProps(0)}
                       style={{ fontWeight: "bolder" }}
-                      // onClick={() => console.log("upcoming")}
                     />
 
                     <Tab
                       label="Completed"
                       {...a11yProps(1)}
                       style={{ fontWeight: "bolder" }}
-                      // onClick={() => console.log("completed")}
                     />
                     <Tab
                       label="All bookings"
                       {...a11yProps(2)}
                       style={{ fontWeight: "bolder" }}
-                      // onClick={() => console.log("all booking")}
                     />
                   </Tabs>
                 </AppBar>
@@ -622,7 +486,6 @@ function UserProfile() {
               alignItems="center"
               justifyContent="center"
             >
-              {/* <Typography>Center Center</Typography> */}
               <Box
                 justifyContent="center"
                 alignItems="center"
@@ -632,7 +495,6 @@ function UserProfile() {
                   <Tabs
                     value={value}
                     onChange={handleChange}
-                    // indicatorColor="secondary"
                     textColor="inherit"
                     variant="fullWidth"
                     aria-label="full width tabs example"
@@ -643,19 +505,16 @@ function UserProfile() {
                       label="Upcoming"
                       {...a11yProps(0)}
                       style={{ fontWeight: "bolder" }}
-                      // onClick={() => console.log("upcoming")}
                     />
                     <Tab
                       label="Completed"
                       {...a11yProps(1)}
                       style={{ fontWeight: "bolder" }}
-                      // onClick={() => console.log("completed")}
                     />
                     <Tab
                       label="All bookings"
                       {...a11yProps(2)}
                       style={{ fontWeight: "bolder" }}
-                      // onClick={() => console.log("all booking")}
                     />
                   </Tabs>
                 </AppBar>
@@ -687,11 +546,9 @@ function UserProfile() {
                       </Card>
                     </TabPanel>
                   ) : (
-                    // upcomingRecords()
                     <TabPanel value={value} index={0} dir={theme.direction}>
                       {allUpcomingBookingRecords.map((e) => (
                         <>
-                          {/* ONE */}
                           <Card
                             variant="outlined"
                             sx={{
@@ -722,7 +579,6 @@ function UserProfile() {
                                   color="success"
                                 />
                               </Typography>
-                              {/* <br /> */}
                               <Divider
                                 // variant="absolute"
                                 style={{
@@ -741,12 +597,6 @@ function UserProfile() {
                                 Total tickets: {" " + e.total_ticket_count}
                                 <br />
                                 Total fare: {" " + e.total_fare}
-                                {/* <br />
-                                Booking status:{" "}
-                                <StyleChip
-                                  label={" " + e.booking_status}
-                                  color="success"
-                                /> */}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -778,11 +628,9 @@ function UserProfile() {
                       </Card>
                     </TabPanel>
                   ) : (
-                    // completedRecords()
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {allCompletedBookingRecords.map((e) => (
                         <>
-                          {/* ONE */}
                           <Card
                             variant="outlined"
                             sx={{
@@ -813,7 +661,6 @@ function UserProfile() {
                                   color="success"
                                 />
                               </Typography>
-                              {/* <br /> */}
                               <Divider
                                 // variant="absolute"
                                 style={{
@@ -832,12 +679,6 @@ function UserProfile() {
                                 Total tickets: {" " + e.total_ticket_count}
                                 <br />
                                 Total fare: {" " + e.total_fare}
-                                {/* <br />
-                                Booking status:
-                                <StyleChip
-                                  label={" " + e.booking_status}
-                                  color="success"
-                                /> */}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -846,7 +687,6 @@ function UserProfile() {
                       ))}
                     </TabPanel>
                   )}
-                  {/* {allRecords()} */}
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>

@@ -28,13 +28,13 @@ const Convert24To12Time = function (dt) {
 };
 
 const ParseDate = function (date, time_required = false) {
-  var new_date = new Date(date);
+  let new_date = new Date(date);
   try {
-    var return_date = "";
-    var parse_date = date.split("T");
-    var date_part = parse_date[0];
-    var time_part = parse_date[1];
-    var date_splitted = date_part.split("-");
+    let return_date = "";
+    let parse_date = date.split("T");
+    let date_part = parse_date[0];
+    let time_part = parse_date[1];
+    let date_splitted = date_part.split("-");
     return_date +=
       PadZeros(new_date.getDate()) +
       "/" +
@@ -42,7 +42,7 @@ const ParseDate = function (date, time_required = false) {
       "/" +
       new_date.getFullYear();
     if (time_required) {
-      var time_splitted = time_part.split(":");
+      let time_splitted = time_part.split(":");
       return_date += " " + Convert24To12Time(new_date);
     }
 
@@ -54,7 +54,7 @@ const ParseDate = function (date, time_required = false) {
 
 const getYear = function (date) {
   try {
-    var parse_date = date.split("T")[0].split("-");
+    let parse_date = date.split("T")[0].split("-");
     return parse_date[0];
   } catch (e) {
     console.log(e.toString());
@@ -71,7 +71,7 @@ const dateWithDay = function (date) {
     "Friday",
     "Saturday",
   ];
-  var months = [
+  let months = [
     "January",
     "February",
     "March",
@@ -85,7 +85,7 @@ const dateWithDay = function (date) {
     "November",
     "December",
   ];
-  var new_date = new Date(date);
+  let new_date = new Date(date);
   return (
     days[new_date.getDay()] +
     ", " +
