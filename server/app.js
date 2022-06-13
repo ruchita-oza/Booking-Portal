@@ -19,8 +19,11 @@ const passengerDetailsRoutes = require("./src/routes/PassengerDetailsRoutes");
 
 const bodyParser = require("body-parser");
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //create express route
 const router = express.Router();
