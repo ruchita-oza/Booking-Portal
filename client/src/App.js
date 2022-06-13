@@ -16,6 +16,7 @@ import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./pages/userProfile/UserProfile";
+import Transport from "./pages/transportDetails/Transport";
 // import "./App.css";
 import { AnimatePresence } from "framer-motion";
 
@@ -53,6 +54,7 @@ function App() {
             <Route path="/buses/:id" element={<Buses />} />
             <Route path="/trains" element={<List />} />
             <Route path="/userProfile" element={<UserProfile />} />
+            <Route path="/transportDetailAndSchedule" element={<Transport />} />
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

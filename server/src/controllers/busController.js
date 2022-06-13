@@ -21,7 +21,7 @@ const createBus = async (req, res, next) => {
       return next(
         createError(
           401,
-          `${result.id} already exist please use another busNumber`
+          `${result.id} already exists please use another busNumber`
         )
       );
     const newBus = await Bus.create({
@@ -30,7 +30,7 @@ const createBus = async (req, res, next) => {
       bus_type: result.bus_type,
     });
     await newBus.save();
-    res.status(200).send("Bus added successfully");
+    return res.json({ data: "Bus added successfully", status: true });
   } catch (err) {
     if (err.isJoi) err.status = 422;
     next(err);
