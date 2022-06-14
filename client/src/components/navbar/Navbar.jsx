@@ -39,7 +39,7 @@ const Navbar = (props) => {
       <div>
         <div className="navbar">
           <div className="navContainer">
-            <Link to="/">
+            <Link to="/" style={{ textDecoration: "none" }}>
               <span className="logo" style={{ color: "white" }}>
                 Skyline booking
               </span>

@@ -18,6 +18,7 @@ import UserPrivateRoute from "./components/PrivateRoute/UserPrivateRoute";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./pages/userProfile/UserProfile";
 import BookingPage from "./pages/bookingPage/BookingPage";
+import Transport from "./pages/transportDetails/Transport";
 // import "./App.css";
 import { AnimatePresence } from "framer-motion";
 
@@ -59,6 +60,7 @@ function App() {
               <Route path="/userProfile" element={<UserProfile />} />
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
+            <Route path="/transportDetailAndSchedule" element={<Transport />} />
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

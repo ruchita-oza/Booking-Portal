@@ -1,15 +1,32 @@
-const UsePut = async (url, data, method = "PUT") => {
+import axios from "axios";
+
+// const UsePut = async (url, data, method = "PUT") => {
+//   try {
+//     let response = await fetch(url, {
+//       method: method,
+//       headers: {
+//         Accept: "application/json",
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(data),
+//     });
+//     let result = await response.json();
+//     return result;
+//   } catch (error) {
+//     console.log(error.toString());
+//   }
+// };
+
+const UsePut = async (url, data, method = "put") => {
   try {
-    let response = await fetch(url, {
-      method: method,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    let result = await response.json();
-    return result;
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+
+    const response = await axios.put(url, data, { headers });
+
+    return response?.data;
   } catch (error) {
     console.log(error.toString());
   }
