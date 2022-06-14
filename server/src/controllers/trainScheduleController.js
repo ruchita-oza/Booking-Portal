@@ -194,7 +194,7 @@ const viewTrainScheduleById = async (req, res, next) => {
 
 const viewTrainSchedules = async (req, res, next) => {
   try {
-    const resultPerPage = 5;
+    const resultPerPage = 4;
     const apiFeatures = new ApiFeatures(TrainSchedule, req.query)
       .priceFilter()
       .timeFilter()
@@ -207,9 +207,15 @@ const viewTrainSchedules = async (req, res, next) => {
       priceQuery: apiFeatures.priceQuery,
       timeQuery: apiFeatures.timeQuery,
       ticketQuery: apiFeatures.ticketQuery,
-      skip: apiFeatures.skip,resultPerPage,
+      skip: apiFeatures.skip,
+      resultPerPage,
     });
-    return res.json({ data: trainschedules, status: true });
+    return res.json({
+      data: trainschedules,
+      status: true,
+      filteredPerCount: trainschedules.rows.length,
+      resultPerPage,
+    });
   } catch (error) {
     return next(createError(500, "Error fetching train schedule" + error));
   }

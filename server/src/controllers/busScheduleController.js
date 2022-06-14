@@ -210,8 +210,9 @@ const getBusSchedules = async (req, res, next) => {
       skip: apiFeatures.skip,
       resultPerPage,
     });
-    let filteredPerCount = busScheduleWithBuses.length;
-    res.status(200).json({ busScheduleWithBuses, filteredPerCount });
+    let filteredPerCount = busScheduleWithBuses.rows.length;
+    // console.log(busScheduleWithBuses.rows.length);
+    res.status(200).json({ busScheduleWithBuses, filteredPerCount , resultPerPage });
   } catch (err) {
     next(err);
   }

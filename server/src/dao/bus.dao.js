@@ -69,6 +69,7 @@ const findAllBusSchedules = async ({
       },
     ],
   })
+  // console.log(busSchedules.rows.length)
   return busSchedules;
 };
 

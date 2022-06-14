@@ -217,7 +217,7 @@ const getFlightScheduleById = async (req, res, next) => {
 
 const getAllFlightSchedules = async (req, res, next) => {
   try {
-    const resultPerPage = 5;
+    const resultPerPage = 4;
     const apiFeatures = new Apifeatures(FlightSchedule, req.query)
       .priceFilter()
       .timeFilter()
@@ -236,19 +236,12 @@ const getAllFlightSchedules = async (req, res, next) => {
       resultPerPage,
     });
 
-    // let data = [];
-    // let flight_schedule_data = JSON.parse(
-    //   JSON.stringify(flightScheduleWithflights)
-    // );
-    // console.log(flight_schedule_data);
-    // flight_schedule_data.forEach((element) => {
-    //   let flight_schedule = [...element];
-    //   flight_schedule.source_name = element.source_name[0]?.city_name;
-    //   flight_schedule.destination_name = element.destination_name[0]?.city_name;
-    //   data.push(flight_schedule);
-    // });
-
-    res.status(200).json({ flightScheduleWithflights, success: true });
+    res.status(200).json({
+      flightScheduleWithflights,
+      success: true,
+      filteredPerCount: flightScheduleWithflights.rows.length,
+      resultPerPage,
+    });
   } catch (error) {
     return next(createError(500, error));
   }
