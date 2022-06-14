@@ -1,13 +1,23 @@
 // import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
-export const getAllFlightsApi = (minPrice, maxPrice, personCount) =>
+export const getAllFlightsApi = (
+  minPrice,
+  maxPrice,
+  personCount,
+  currentPage
+) =>
   axios.get(
-    `/flight/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}`
+    `/flight/Schedule?minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}&page=${currentPage}`
   );
 
-export const getFlightsWithLocationApi = (sourceId, destId, personCount) =>
+export const getFlightsWithLocationApi = (
+  sourceId,
+  destId,
+  personCount,
+  currentPage
+) =>
   axios.get(
-    `/flight/Schedule?source=${sourceId}&destination=${destId}$personCount=${personCount}`
+    `/flight/Schedule?source=${sourceId}&destination=${destId}$personCount=${personCount}&page=${currentPage}`
   );
 
 export const getFlightsWithLocationPriceApi = (
@@ -15,10 +25,11 @@ export const getFlightsWithLocationPriceApi = (
   destId,
   minPrice,
   maxPrice,
-  personCount
+  personCount,
+  currentPage
 ) =>
   axios.get(
-    `/flight/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}`
+    `/flight/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&personCount=${personCount}&page=${currentPage}`
   );
 export const getFlightsWithLocationPriceTimeApi = (
   sourceId,

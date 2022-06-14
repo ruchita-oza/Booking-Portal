@@ -22,6 +22,7 @@ import EmptyView from "../../components/emptyView/EmptyView";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "react-js-pagination";
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -47,12 +48,38 @@ const List = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-  const { isLoading: isFlightLoaded, flights } = useSelector(selectFlights);
-  const { isLoading: isBusLoaded, buses } = useSelector(selectBuses);
-  const { isLoading: isTrainLoaded, trains } = useSelector(selectTrains);
-
+  const {
+    isLoading: isFlightLoaded,
+    flights,
+    filteredPerCount: flightFilterCount,
+    resultPerPage: flightResultPerPage,
+  } = useSelector(selectFlights);
+  const {
+    isLoading: isBusLoaded,
+    buses,
+    filteredPerCount: busFilterCount,
+    resultPerPage: busResultPerPage,
+  } = useSelector(selectBuses);
+  const {
+    isLoading: isTrainLoaded,
+    trains,
+    filteredPerCount: trainFilterCount,
+    resultPerPage: trainResultPerPage,
+  } = useSelector(selectTrains);
+  // var filteredPerCount = null;
+  // const SetfilteredPerCount = () => {
+  //   filteredPerCount =
+  //     location.path === "/buses"
+  //       ? busFilterCount
+  //       : location.pathname === "/trains"
+  //       ? trainFilterCount
+  //       : flightFilterCount;
+  //   console.log(filteredPerCount);
+  // };
+  // console.log(filteredPerCount);
   const isLoading = isFlightLoaded || isTrainLoaded || isBusLoaded;
   const location = useLocation();
+  // const [filteredPerCount, SetFilteredPerCount] = useState(null);
   const [source, SetSource] = useState(location?.state?.source || "");
   const [destination, SetDestination] = useState(
     location?.state?.destination || ""
@@ -73,9 +100,13 @@ const List = () => {
     }
   );
 
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedPrice, setSelectedPrice] = useState([1, 20000]);
   const [resultsFound, SetResultsFound] = useState(true);
-
+  const setCurrentPageNo = (e) => {
+    setCurrentPage(e);
+    console.log(currentPage);
+  };
   React.useEffect(() => {
     window.addEventListener("load", () => {
       navigate("/");
@@ -118,10 +149,12 @@ const List = () => {
               minPrice,
               maxPrice,
               personCount: options.person,
+              currentPage,
             },
             setResult
           )
         );
+        // SetFilteredPerCount(flightFilterCount);
         break;
 
       case "/buses":
@@ -135,10 +168,12 @@ const List = () => {
               minPrice,
               maxPrice,
               personCount: options.person,
+              currentPage,
             },
             setResult
           )
         );
+        // SetFilteredPerCount(busFilterCount);
         break;
       default:
         dispatch(
@@ -151,13 +186,15 @@ const List = () => {
               minPrice,
               maxPrice,
               personCount: options.person,
+              currentPage,
             },
             setResult
           )
         );
+      // SetFilteredPerCount(trainFilterCount);
     }
+    // SetfilteredPerCount();
   };
-
   useEffect(() => {
     let fromDate = convertDate(date[0].startDate);
     let toDate = convertDate(date[0].endDate);
@@ -175,10 +212,12 @@ const List = () => {
               minPrice,
               maxPrice,
               personCount: options.person,
+              currentPage,
             },
             setResult
           )
         );
+        // SetFilteredPerCount(flightFilterCount);
         break;
       case "/buses":
         dispatch(
@@ -191,11 +230,12 @@ const List = () => {
               minPrice,
               maxPrice,
               personCount: options.person,
+              currentPage,
             },
             setResult
           )
         );
-
+        // SetFilteredPerCount(busFilterCount);
         break;
 
       default:
@@ -209,12 +249,14 @@ const List = () => {
               minPrice,
               maxPrice,
               personCount: options.person,
+              currentPage,
             },
             setResult
           )
         );
+      // SetFilteredPerCount(trainFilterCount);
     }
-  }, [dispatch, location.pathname]);
+  }, [dispatch, location.pathname, currentPage]);
 
   const handleSearch = () => {
     fetchData();
@@ -235,10 +277,10 @@ const List = () => {
                 <label>Source</label>
                 <input
                   placeholder="&#xF002; Enter Your Source"
-                  class="lsSearchInput"
+                  className="lsSearchInput"
                   type="text"
                   value={source}
-                  style={{ "font-family": "FontAwesome" }}
+                  style={{ fontFamily: "FontAwesome" }}
                   onChange={(e) => {
                     SetSource(e.target.value);
                   }}
@@ -247,7 +289,7 @@ const List = () => {
               <div className="lsItem">
                 <label>Destination</label>
                 <input
-                  style={{ "font-family": "FontAwesome" }}
+                  style={{ fontFamily: "FontAwesome" }}
                   placeholder="&#xF002; Enter Your Destination"
                   type="text"
                   value={destination}
@@ -286,13 +328,13 @@ const List = () => {
                           layout_width="wrap_content"
                           layout_height="wrap_content"
                           layout_gravity="center"
-                          labelBehavior="withinBounds"
-                          value_lable="@style/tooltip"
+                          labelbehavior="withinBounds"
+                          valuelabel="@style/tooltip"
                           classes={{
                             thumb: classes.thumb,
                             rail: classes.rail,
                             track: classes.track,
-                            value_lable: classes.value_lable,
+                            valueLabel: classes.value_lable,
                           }}
                           onChange={handleChangePrice}
                         />
@@ -301,7 +343,7 @@ const List = () => {
                     <div className="lsOptionItem">
                       <span className="lsOptionText">person</span>
                       <input
-                        style={{ "font-family": "FontAwesome" }}
+                        style={{ fontFamily: "FontAwesome" }}
                         type="number"
                         min={1}
                         className="lsOptionInput"
@@ -328,6 +370,7 @@ const List = () => {
                     <ResultNotFoundPage />
                   ) : (
                     <>
+                      {/* {console.log(filteredPerCount)} */}
                       {window.location.pathname === "/flights" &&
                         flights.rows &&
                         flights.rows.map((flight) => (
@@ -337,6 +380,7 @@ const List = () => {
                             personCount={options.person}
                           />
                         ))}
+
                       {window.location.pathname === "/buses" &&
                         buses.rows &&
                         buses.rows.map((bus) => (
@@ -355,6 +399,58 @@ const List = () => {
                             personCount={options.person}
                           />
                         ))}
+                      {window.location.pathname === "/flights" ? (
+                        <div className="paginationBox">
+                          <Pagination
+                            activePage={currentPage}
+                            itemsCountPerPage={flightResultPerPage}
+                            totalItemsCount={flights.count}
+                            onChange={setCurrentPageNo}
+                            nextPageText="Next"
+                            prevPageText="Prev"
+                            firstPageText="1st"
+                            lastPageText="Last"
+                            itemClass="page-item"
+                            linkClass="page-link"
+                            activeClass="pageItemActive"
+                            activeLinkClass="pageLinkActive"
+                          ></Pagination>
+                        </div>
+                      ) : window.location.pathname === "/buses" ? (
+                        <div className="paginationBox">
+                          <Pagination
+                            activePage={currentPage}
+                            itemsCountPerPage={busResultPerPage}
+                            totalItemsCount={buses.count}
+                            onChange={setCurrentPageNo}
+                            nextPageText="Next"
+                            prevPageText="Prev"
+                            firstPageText="1st"
+                            lastPageText="Last"
+                            itemClass="page-item"
+                            linkClass="page-link"
+                            activeClass="pageItemActive"
+                            activeLinkClass="pageLinkActive"
+                          ></Pagination>
+                        </div>
+                      ) : (
+                        <div className="paginationBox">
+                          <Pagination
+                            activePage={currentPage}
+                            itemsCountPerPage={trainFilterCount}
+                            totalItemsCount={trains.count}
+                            onChange={setCurrentPageNo}
+                            nextPageText="Next"
+                            prevPageText="Prev"
+                            firstPageText="1st"
+                            lastPageText="Last"
+                            itemClass="page-item"
+                            linkClass="page-link"
+                            activeClass="pageItemActive"
+                            activeLinkClass="pageLinkActive"
+                          ></Pagination>
+                        </div>
+                      )}
                     </>
                   )}
                 </>

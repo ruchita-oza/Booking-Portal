@@ -42,7 +42,7 @@ export const getTrainSchedules =
       // console.log(fromDate);
       // console.log(toDate);
       if (source && destination) {
-        console.log("at source dest");
+        // console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
         // console.log(sourceCity);
@@ -65,7 +65,7 @@ export const getTrainSchedules =
           );
           if (data) {
             if (data.data.count === 0) setResult(false);
-            dispatch(fetchAllTrainScheduleSuccess(data.data));
+            dispatch(fetchAllTrainScheduleSuccess(data));
             return;
           } else {
             throw new Error();
@@ -82,7 +82,7 @@ export const getTrainSchedules =
           );
           if (data) {
             if (data.data.count === 0) setResult(false);
-            dispatch(fetchAllTrainScheduleSuccess(data.data));
+            dispatch(fetchAllTrainScheduleSuccess(data));
             return;
           } else {
             throw new Error();
@@ -90,18 +90,18 @@ export const getTrainSchedules =
         }
       } else {
         let { data } = await getAllTrainsApi(minPrice, maxPrice, personCount);
-        console.log(data);
+        // console.log(data);
         if (data) {
-          console.log(data);
+          // console.log(data);
           if (data.data.count === 0) setResult(false);
-          dispatch(fetchAllTrainScheduleSuccess(data.data));
+          dispatch(fetchAllTrainScheduleSuccess(data));
           return;
         } else {
           throw new Error();
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllTrainScheduleFail(error));
