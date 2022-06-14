@@ -1,16 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-  const Cities = sequelize.define(
-    "cities",
+  const States = sequelize.define(
+    "states",
     {
-      city_name: {
+      state_name: {
         type: DataTypes.STRING(50),
       },
-      state_name: { type: DataTypes.STRING(50) },
     },
     {
       timestamps: true,
       paranoid: true,
     }
   );
-  return Cities;
+  return States;
 };

@@ -7,7 +7,7 @@ const Apifeatures = require("../utils/apiFeatures");
 const { findBusScheduleById, findAllBusSchedules } = require("../dao/bus.dao");
 
 async function checkExistsBus(id) {
-  const buses = await Bus.findAll({ where: { id } });
+  const buses = await Bus.findAll({ where: { id: id } });
   return buses.length > 0 ? true : false;
 }
 
@@ -175,7 +175,13 @@ const getBusScheduleById = async (req, res, next) => {
     const busScheduleStatus = await checkExistsBusSchedule(busScheduleId);
     if (busScheduleStatus) {
       const busSchedule = await findBusScheduleById(busScheduleId);
-      return res.json({ data: busSchedule, status: true });
+
+      let bus_schedule_data = JSON.parse(JSON.stringify(busSchedule[0]));
+      bus_schedule_data.source_name = bus_schedule_data.source_name?.city_name;
+      bus_schedule_data.destination_name =
+        bus_schedule_data.destination_name?.city_name;
+
+      return res.json({ data: bus_schedule_data, status: true });
     } else {
       return next(createError(422, "Error bus schedule does not exists"));
     }
@@ -189,21 +195,18 @@ const getBusSchedules = async (req, res, next) => {
     const apiFeatures = new Apifeatures(BusSchedule, req.query)
       .priceFilter()
       .timeFilter()
+      .TicketFilter()
       .filter();
 
-    console.log("at bus schedule");
-    console.log(apiFeatures.priceQuery);
-    let busSchedules = await apiFeatures.query;
+    // console.log("at bus schedule");
+    // console.log(apiFeatures.ticketQuery);
     let busScheduleWithBuses = await findAllBusSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
       timeQuery: apiFeatures.timeQuery,
+      ticketQuery: apiFeatures.ticketQuery,
     });
-    // let busSchedules = await findAllBusSchedules();
-    // console.log(busScheduleWithBuses);
-    res.status(200).json({ busSchedules });
-    //  console.log(busScheduleWithBuses);
-    // res.status(200).json({ busScheduleWithBuses });
+    res.status(200).json({ busScheduleWithBuses });
   } catch (err) {
     next(err);
   }

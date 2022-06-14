@@ -5,11 +5,34 @@ const { citySchema } = require("../utils/validationSchema");
 const db = require("../models");
 const City = db.cities;
 const Apifeatures = require("../utils/apiFeatures");
+const States = db.states;
 
+const checkStateStatus = async (state_name) => {
+  const state = await States.findAll({ where: { state_name: state_name } });
+  return state.length > 0 ? true : false;
+};
+const checkCityExists = async (city_name) => {
+  const city = await City.findAll({ where: { city_name: city_name } });
+  return city.length > 0 ? true : false;
+};
 const createCity = async (req, res, next) => {
   try {
     const result = await citySchema.validateAsync(req.body);
-    const newCity = await City.create({ city_name: result.city_name });
+    const status = await checkStateStatus(result.state_name);
+    if (status === false)
+      return next(
+        createError(
+          401,
+          `${result.state_name} does not exist .. please Enter valid state`
+        )
+      );
+    const checkCity = await checkCityExists(result.city_name);
+    if (checkCity)
+      return next(createError(401, `${result.city_name} already exists`));
+    const newCity = await City.create({
+      city_name: result.city_name,
+      state_name: result.state_name,
+    });
     await newCity.save();
     res.status(200).send("City added successfully");
   } catch (err) {
@@ -38,7 +61,7 @@ const updateCity = async (req, res, next) => {
 const deleteCity = async (req, res, next) => {
   try {
     await City.destroy({ where: { id: req.params.id } });
-    res.status(200).json("Bus has been deleted");
+    res.status(200).json("City has been deleted");
   } catch (err) {
     next(err);
   }

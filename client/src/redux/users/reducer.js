@@ -5,6 +5,10 @@ import {
   SET_LOGGEDIN_USER,
   SET_LOGGEDOUT_USER,
   REFRESH_STATE,
+  REFRESH_STATE_REQUEST,
+  USER_BOOKING_RECORD_REQUEST,
+  USER_BOOKING_RECORD_SUCCESS,
+  USER_BOOKING_RECORD_FAIL,
 } from "./types";
 
 const initialState = {
@@ -13,6 +17,7 @@ const initialState = {
   isLoading: false,
   error: "",
   isSigning: false,
+  bookingRecords: [],
   //   reportedUsers: [],
   //   forgetEmail: "",
   //   search: "",
@@ -44,10 +49,35 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isSigning: false,
       };
+    case REFRESH_STATE_REQUEST:
+      return { ...state, isLoading: true };
     case REFRESH_STATE:
       return {
         ...state,
         loggedInUser: action.payload.user,
+        isLoading: false,
+      };
+
+    case USER_BOOKING_RECORD_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+
+    case USER_BOOKING_RECORD_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        bookingRecords: action.payload,
+        error: "",
+      };
+
+    case USER_BOOKING_RECORD_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        bookingRecords: [],
+        error: action.payload,
       };
     // case CLEAR_ERR:
     //   return { ...state, error: null };

@@ -7,6 +7,7 @@ class Apifeatures {
     this.priceQuery = "";
     this.timeQuery = "";
     this.queryCopy = "";
+    this.ticketQuery = "";
   }
   // search() {
   //   const keyword = this.queryStr.keyword
@@ -34,6 +35,7 @@ class Apifeatures {
       "maxPrice",
       "fromDate",
       "toDate",
+      "personCount",
     ];
     removeFields.forEach((key) => delete this.queryCopy[key]);
     // console.log("filter query");
@@ -77,6 +79,17 @@ class Apifeatures {
           ),
         ],
       };
+    }
+    return this;
+  }
+  TicketFilter() {
+    if (this.queryStr.personCount) {
+      const personCount = this.queryStr.personCount;
+      this.ticketQuery = Sequelize.where(
+        Sequelize.fn("number", Sequelize.col("total_available_seats")),
+        ">=",
+        personCount
+      );
     }
     return this;
   }

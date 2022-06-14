@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       transport_id: {
         type: DataTypes.INTEGER(50),
+        // type: DataTypes.STRING(15),
       },
       total_ticket_count: {
         type: DataTypes.INTEGER(10),

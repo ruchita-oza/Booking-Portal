@@ -16,6 +16,11 @@
   animation: loadingRotate 800ms linear infinite;
 }
 
+@keyframes loadingRotate {
+  to {
+    transform: rotateZ(-360deg);
+  }
+}
 /* for error page */
 #notfound {
   position: relative;
@@ -86,7 +91,7 @@
   font-size: 14px;
   text-decoration: none;
   text-transform: uppercase;
-  background: #189cf0;
+  background: #003580;
   display: inline-block;
   padding: 16px 38px;
   border: 2px solid transparent;
@@ -99,8 +104,8 @@
 
 .notfound a:hover {
   background-color: #fff;
-  border-color: #189cf0;
-  color: #189cf0;
+  border-color: #003580;
+  color: #003580;
 }
 @media only screen and (max-width: 480px) {
   .notfound .notfound-404 h1 {

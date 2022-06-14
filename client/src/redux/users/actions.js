@@ -1,5 +1,6 @@
 import {
   REFRESH_STATE,
+  REFRESH_STATE_REQUEST,
   RESET_IS_SIGNING,
   SET_IS_SIGNING,
   SET_LOGGEDIN_USER,
@@ -8,16 +9,26 @@ import {
   // USER_DETAIL_REQUEST,
   // USER_DETAIL_SUCCESS,
   // USER_DETAIL_FAIL,
+  USER_BOOKING_RECORD_REQUEST,
+  USER_BOOKING_RECORD_SUCCESS,
+  USER_BOOKING_RECORD_FAIL,
 } from "./types";
+
 import {
   getLoggedInUserApi,
   // getUserDetailApi,
+  getUserBookingRecordsDetailApi,
 } from "../../services/UserService";
+
 import toast from "react-hot-toast";
+// import { dispatch } from "react-hot-toast/dist/core/store";
 
 export const refreshState = ({ token, user }) => ({
   type: REFRESH_STATE,
   payload: { token, user },
+});
+export const refreshStateRequest = () => ({
+  type: REFRESH_STATE_REQUEST,
 });
 
 export const setLoggedInUser = (user) => {
@@ -51,6 +62,26 @@ export const resetIsSigning = () => {
     type: RESET_IS_SIGNING,
   };
 };
+
+export const fetchUserBookingRecordRequest = () => {
+  return {
+    type: USER_BOOKING_RECORD_REQUEST,
+  };
+};
+
+export const fetchUserBookingRecordSuccess = (data) => {
+  return {
+    type: USER_BOOKING_RECORD_SUCCESS,
+    payload: data,
+  };
+};
+
+export const fetchUserBookingRecordFail = () => {
+  return {
+    type: USER_BOOKING_RECORD_FAIL,
+  };
+};
+
 export const fetchLoginUserThunkAction = (
   email,
   password,
@@ -79,6 +110,29 @@ export const fetchLoginUserThunkAction = (
     } catch (error) {
       onError(error.response.data.message || error?.message);
       dispatch(resetIsSigning());
+      toast.error(`ERROR  : ${error.response.data.message}`);
+    }
+  };
+};
+
+export const fetchUserBookingRecordsDetailThunkAction = (
+  id,
+  onError,
+  onSuccess
+) => {
+  return async (dispatch) => {
+    try {
+      // console.log("data id: " + id);
+      dispatch(fetchUserBookingRecordRequest());
+      const { data } = await getUserBookingRecordsDetailApi(id);
+      if (data) {
+        // console.log(data);
+        dispatch(fetchUserBookingRecordSuccess(data));
+      }
+    } catch (error) {
+      // console.log("errrorrrr: " + error);
+      onError(error.response.data.message || error?.message);
+      dispatch(fetchUserBookingRecordFail(error));
       toast.error(
         `ERROR ${error.response.data.status} : ${error.response.data.message}`
       );

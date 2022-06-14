@@ -64,11 +64,17 @@ trainSchema = Joi.object({
 });
 //city schema
 citySchema = Joi.object({
-  city_name: Joi.string().required(),
+  city_name: Joi.string().required().lowercase(),
+  state_name: Joi.string().required().lowercase(),
 });
+stateSchema = Joi.object({
+  state_name: Joi.string().required().lowercase(),
+});
+
 module.exports = {
   authSchema,
   busSchema,
+  stateSchema,
   flightSchema,
   citySchema,
   trainSchema,

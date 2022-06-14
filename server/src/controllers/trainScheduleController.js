@@ -6,7 +6,7 @@ const TrainSchedule = db.train_schedules;
 const ApiFeatures = require("../utils/apiFeatures");
 const {
   findTrainScheduleById,
-  findAllTrainScheduls,
+  findAllTrainSchedules,
 } = require("../dao/train.dao");
 
 async function checkExistsTrain(id) {
@@ -137,17 +137,26 @@ const deleteTrainSchedule = async (req, res, next) => {
   }
 };
 
-const viewAllTrainSchedule = async (req, res, next) => {
-  try {
-    // const trainschedules = await TrainSchedule.findAll({});
-    const trainschedules = await findAllTrainScheduls();
-    return res.json({ data: trainschedules, status: true });
-  } catch (error) {
-    return next(
-      createError(500, "Error while fetching train schedule " + error)
-    );
-  }
-};
+// const viewAllTrainSchedule = async (req, res, next) => {
+//   try {
+//     // const trainschedules = await TrainSchedule.findAll({});
+//     const trainschedules = await findAllTrainSchedules();
+//     // let data = [];
+//     // trainschedules.forEach((element) => {
+//     //   let train_schedule_data = [...element];
+//     //   train_schedule_data.source_name = element.source_name[0]?.city_name;
+//     //   train_schedule_data.destination_name =
+//     //     element.destination_name[0]?.city_name;
+//     //   data.push(train_schedule_data);
+//     // });
+//     // console.log(data);
+//     return res.json({ data: trainschedules, status: true });
+//   } catch (error) {
+//     return next(
+//       createError(500, "Error while fetching train schedule " + error)
+//     );
+//   }
+// };
 
 const viewTrainScheduleById = async (req, res, next) => {
   try {
@@ -159,7 +168,20 @@ const viewTrainScheduleById = async (req, res, next) => {
       // });
       const trainschedule = await findTrainScheduleById(trainScheduleId);
       // console.log("train schedule: " + trainschedule);
-      return res.json({ data: trainschedule, status: true });
+      // let data = [];
+      // trainschedule.forEach(element => {
+      //   let train_schedule_data = [...element];
+      //   train_schedule_data.source_name = element.source_name[0]?.city_name
+      //   train_schedule_data.destination_name = element.source_name[0]?.city_name;
+      //   data.push(train_schedule_data)
+      // });
+      let train_schedule_data = JSON.parse(JSON.stringify(trainschedule[0]));
+      // console.log(train_schedule_data);
+      train_schedule_data.source_name =
+        train_schedule_data.source_name?.city_name;
+      train_schedule_data.destination_name =
+        train_schedule_data.destination_name?.city_name;
+      return res.json({ data: train_schedule_data, status: true });
     } else {
       return next(createError(500, "Error while fetching train schedule"));
     }
@@ -175,7 +197,11 @@ const viewTrainSchedules = async (req, res, next) => {
     const apiFeatures = new ApiFeatures(TrainSchedule, req.query)
       .priceFilter()
       .filter();
-    let trainschedules = await apiFeatures.query;
+    // let trainschedules = await apiFeatures.query;
+    let trainschedules = await findAllTrainSchedules({
+      queryCopy: apiFeatures.queryCopy,
+      priceQuery: apiFeatures.priceQuery,
+    });
     return res.json({ data: trainschedules, status: true });
   } catch (error) {
     return next(createError(500, "Error fetching train schedule" + error));
@@ -186,7 +212,7 @@ module.exports = {
   createTrainSchedule,
   updateTrainSchedule,
   deleteTrainSchedule,
-  viewAllTrainSchedule,
+  // viewAllTrainSchedule,
   viewTrainScheduleById,
   viewTrainSchedules,
 };

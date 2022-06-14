@@ -16,9 +16,8 @@ import { Link } from "react-router-dom";
 import { selectUser } from "../../redux/users/selectors";
 import { useSelector } from "react-redux";
 
-const Header = (props) => {
-  const [source, setSource] = useState("");
-  const [destination, setDestination] = useState("");
+const Header = ({heading,description,icon,type,source,setSource,destination,setDestination}) => {
+
   const [openDate, setOpenDate] = useState(false);
   const [isOpen, setIsOpen ] = useState(false);
 
@@ -41,7 +40,6 @@ const Header = (props) => {
   const [options, setOptions] = useState({
     person: 1,
   });
-
   const navigate = useNavigate();
 
   // console.log(props.heading);
@@ -54,44 +52,46 @@ const Header = (props) => {
     });
   };
 
-  const handleSearch = (name, operation) => {
-    navigate(`/${props.type}`, {
+  const handleSearch = () => {
+    navigate(`/${type}`, {
       state: { source, destination, date, options },
     });
   };
 
   return (
-    <div className='header'>
+    <div className="header">
       <div
         className={
-          props.type === "list" ? "headerContainer listMode" : "headerContainer"
-        }>
-        {props.type !== "list" && (
+          type === "list" ? "headerContainer listMode" : "headerContainer"
+        }
+      >
+        {type !== "list" && (
           <>
-            <h1 className='headerTitle pl-5'>{props.heading}</h1>
-            <p className='headerDesc pl-5'>{props.description}</p>
+            <h1 className="headerTitle pl-5">{heading}</h1>
+            <p className="headerDesc pl-5">{description}</p>
             {!loggedInUser && (
               <Link to="/auth/login" className="pl-5">
                 <button className="headerBtn"> Sign in / Register </button>
-        </Link>
+              </Link>
             )}
             <div className='headerSearch'>
               <div className='headerSearchItem'>
-                <FontAwesomeIcon icon={props.icon} className='m-2 headerIcon' />
+                <FontAwesomeIcon icon={icon} className='m-2 headerIcon' />
                 <input                   
                   type='text'
                   placeholder='Source'
                   className='headerSearchInput'
                   onChange={(e) => setSource(e.target.value)}
+                  value = {source}
                 />
               </div>
-              <div className='headerSearchItem'>
+              <div className="headerSearchItem">
                 <input
                   type='text'                  
                   placeholder='Destination'                  
                   className='headerSearchInput'
                   onChange={(e) => setDestination(e.target.value)}
-                  
+                  value = {destination}
                 />
               </div>
 
@@ -103,7 +103,8 @@ const Header = (props) => {
                 <FontAwesomeIcon icon={faCalendar} className='headerIcon' />
                 <span
                   onClick={() => setOpenDate(!openDate)}
-                  className='headerSearchText'>
+                  className="headerSearchText"
+                >
                   {" "}
                   {format(date[0]?.startDate, "MM/dd/yyyy")} to{" "}
                   {format(date[0]?.endDate, "MM/dd/yyyy")}

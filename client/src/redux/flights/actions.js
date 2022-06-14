@@ -4,16 +4,17 @@ import {
   ALL_FLIGHTSCHEDULE_FAIL,
   CLEAR_ERR,
 } from "./types";
-
+import toast from "react-hot-toast";
 import {
   getAllFlightsApi,
   getFlightsWithLocationApi,
-  getFlightsWithLocationAndPriceApi,
+  getFlightsWithLocationPriceApi,
+  getFlightsWithLocationPriceTimeApi,
 } from "../../services/FlightServices";
 
 import { getCityApi } from "../../services/CityServices";
 
-export const fetchAllFlightScheduleRequst = () => {
+export const fetchAllFlightScheduleRequest = () => {
   return { type: ALL_FLIGHTSCHEDULE_REQUEST };
 };
 export const fetchAllFlightScheduleSuccess = (flightSchedules) => {
@@ -24,61 +25,85 @@ export const fetchAllFlightScheduleFail = (error) => {
 };
 //get flightSchedules
 export const getFlightSchedules =
-  ({ source, destination, minPrice, maxPrice }) =>
+  ({ source, destination, minPrice, maxPrice, fromDate, toDate }, setResult) =>
   async (dispatch) => {
     try {
-      console.log("at fligth actions");
-      dispatch(fetchAllFlightScheduleRequst());
+      // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
+      dispatch(fetchAllFlightScheduleRequest());
+      // console.log(setResult);
+      setResult(true);
+      minPrice = minPrice ? minPrice : 0;
+      maxPrice = maxPrice ? maxPrice : 1000000;
+      // console.log(fromDate);
+      // console.log(toDate);
       if (source && destination) {
-        console.log("at source nd dest");
+        console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
+        console.log(sourceCity);
         if (
-          sourceCity.data.cities.length === 0 ||
-          destCity.data.cities.length === 0
-        )
-          throw new Error("Flight not available");
-        console.log(source, destination);
-        if (!minPrice && !maxPrice) {
-          let { data } = await getFlightsWithLocationApi(
-            sourceCity.data.cities[0].id,
-            destCity.data.cities[0].id
+          (sourceCity === undefined && destCity === undefined) ||
+          sourceCity.data.cities.count === 0 ||
+          destCity.data.cities.count === 0
+        ) {
+          throw new Error(
+            `bus on Schedule ${source} and ${destination} is not available`
           );
-          if (data) {
-            console.log(data);
-            dispatch(fetchAllFlightScheduleSuccess(data));
-            return;
-          } else {
-            throw new Error();
-          }
-        } else {
-          let { data } = await getFlightsWithLocationAndPriceApi(
-            sourceCity.data.cities[0].id,
-            destCity.data.cities[0].id,
+        }
+        if (!fromDate) {
+          let { data } = await getFlightsWithLocationPriceApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
             minPrice,
             maxPrice
           );
           if (data) {
-            dispatch(fetchAllFlightScheduleSuccess(data.flightSchedules));
+            if (data.flightScheduleWithflights.count === 0) setResult(false);
+            dispatch(
+              fetchAllFlightScheduleSuccess(data.flightScheduleWithflights)
+            );
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (fromDate) {
+          let { data } = await getFlightsWithLocationPriceTimeApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
+            minPrice,
+            maxPrice,
+            fromDate,
+            toDate
+          );
+          if (data) {
+            if (data.flightScheduleWithflights.count === 0) setResult(false);
+            dispatch(
+              fetchAllFlightScheduleSuccess(data.flightScheduleWithflights)
+            );
             return;
           } else {
             throw new Error();
           }
         }
       } else {
-        console.log("at else part");
-        let { data } = await getAllFlightsApi();
-        console.log(data);
+        let { data } = await getAllFlightsApi(minPrice, maxPrice);
         if (data) {
-          dispatch(fetchAllFlightScheduleSuccess(data.flightSchedules));
+          console.log(data);
+          if (data.flightScheduleWithflights.count === 0) setResult(false);
+          dispatch(
+            fetchAllFlightScheduleSuccess(data.flightScheduleWithflights)
+          );
           return;
         } else {
           throw new Error();
         }
       }
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
+      toast.error(error.message);
+      setResult(false);
       dispatch(fetchAllFlightScheduleFail(error));
+      // setResult(false);
     }
   };
 

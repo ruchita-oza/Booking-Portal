@@ -1,265 +1,269 @@
-import React, {useState, useEffect}from "react";
-import {useDispatch } from "react-redux";
-import {getCityApi} from "../../services/CityServices";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate} from "react-router-dom";
 import "./transport.css";
 import goa from "../../images/india/goa.png";
 import delhi from "../../images/india/delhi.png";
 import Bangalore from "../../images/india/Bangalore.png";
 import Lonavala from "../../images/india/Lonavala.png";
+import one from "../../images/india/1.png";
+import two from "../../images/india/2.png";
+import three from "../../images/india/3.png";
+import four from "../../images/india/4.png";
+import five from "../../images/india/5.png";
+
+const Transport = ({
+  data,
+  source,
+  setSource,
+  destination,
+  setDestination,
+}) => {
+  const [city, setCity] = useState(null);
+  const [state, setState] = useState(null);
+  // // Step 1: Get user coordinates
+  // function getCoordintes() {
+  //   var options = {
+  //     enableHighAccuracy: true,
+  //     timeout: 5000,
+  //     maximumAge: 0,
+  //   };
+
+  //   function success(pos) {
+  //     var crd = pos.coords;
+  //     var lat = crd.latitude.toString();
+  //     var lng = crd.longitude.toString();
+  //     var coordinates = [lat, lng];
+  //     // console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+  //     getCity(coordinates);
+  //     return;
+  //   }
+
+  //   function error(err) {
+  //     // console.warn(`ERROR(${err.code}): ${err.message}`);
+  //   }
+  //   navigator.geolocation.getCurrentPosition(success, error, options);
+  // }
+
+  // // Step 2: Get city name
+  // function getCity(coordinates) {
+  //   var xhr = new XMLHttpRequest();
+  //   var lat = coordinates[0];
+  //   var lng = coordinates[1];
+
+  //   // Paste your LocationIQ token below.
+  //   xhr.open(
+  //     "GET",
+  //     "https://us1.locationiq.com/v1/reverse.php?key=pk.17d0cbca19dd9c109e5d5f13ede954be&lat=" +
+  //       lat +
+  //       "&lon=" +
+  //       lng +
+  //       "&format=json",
+  //     true
+  //   );
+  //   xhr.send();
+  //   xhr.onreadystatechange = processRequest;
+  //   xhr.addEventListener("readystatechange", processRequest, false);
+
+  //   function processRequest(e) {
+  //     if (xhr.readyState == 4 && xhr.status == 200) {
+  //       var response = JSON.parse(xhr.responseText);
+  //       var city = response.address.city;
+  //       // console.log(city);
+  //       return;
+  //     }
+  //   }
+  // }
+
+  // getCoordintes();
 
 
-const Transport = () => {
-  
-  const dispatch = useDispatch();
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [sources, setSources] = useState(null);
-  const [destination, setDestination] = useState(null);
+  async function getStates() {
+    let url = "https://ipinfo.io/json?token=779eae9e88d5b2";
+    let response = await fetch(url);
+    let data = await response.json();
+    // console.log(data);
+    setState(data.region);
+    // console.log(state);
+  }
+  getStates();
 
-  const getLocation = () => {
-    if (!navigator.geolocation) {
-      setStatus('Geolocation is not supported by your browser');
-    } else {
-      setStatus('Locating...');
-      navigator.geolocation.getCurrentPosition((position) => {
-        setStatus(null);
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);       
-         
-      }, () => {
-        setStatus('Unable to retrieve your location');
-      });
+  const navigate = useNavigate();
+
+  const handleSearch = (name, operation) => {
+    navigate(`/buses`, {
+      state: { source, destination },
+    });
+  };
+  // const handleCardClick = ({name} , e)=>{ 
+  //   e.preventDefault();
+  //   setDestination(name);
+  //   console.log("dest" ,destination);
+  //   handleSearch();
+  // }
+  useEffect(() => {
+    if (state) {
+      const getCity = async () => {
+        const res = await fetch(`/city?state_name=${state}`);
+        const getdata = await res.json();
+        setCity(getdata.cities.rows);
+        console.log(getdata);
+      };
+      getCity();
     }
-  }
+  }, [state]);
 
-  const fetchData = () => {
-    console.log('Fetching data');
-    dispatch(
-      getCityApi(
-        {
-          destination
-        },
-      )
-    );
-  }
+  const renderCityCarouselItem = (index) => {
+    if (index < city.length) {
+      const data = city[index];
+      let cardClass = index % 5 === 0 ? "card" : "card d-none d-md-block";
 
-  useEffect (() => {
-    dispatch(
-      getCityApi(
-        {
-          destination
-        },
-      )
-    );
-  }, [dispatch, destination]);
-
-  const handleSearch = () => {
-    fetchData();
+      return (
+        <div className={cardClass} key={data?.id}>
+          
+            <img
+              id='img-id'
+              src={
+                index % 5 === 0
+                  ? one
+                  : index % 5 === 1
+                  ? two
+                  : index % 5 === 2
+                  ? three
+                  : index % 5 === 3
+                  ? four
+                  : five
+              }
+              className='card-img-top'
+              alt='...'
+              onClick={(e)=>{setDestination(data.city_name);
+              handleSearch();}}
+            />
+            
+          
+          <div className='card-body'>
+            <h5 className='card-title'>{data?.city_name}</h5>
+          </div>
+        </div>
+      );
+    }
   };
 
 
+  const renderCityCarousel = () => {
+    if (!city.length) {
+      return <div></div>;
+    }
+    const items = [];
+    console.log("length = ");
+    console.log(parseInt(city.length / 5));
+    let length = parseInt(city.length / 5) * 5;
+    for (let i = 0; i < length; i += 5) {
+      items.push(
+        <div className={`carousel-item ${(i === 0 && "active") || ""}`}>
+          <div className='cards-wrapper'>
+            {renderCityCarouselItem(i)}
+            {renderCityCarouselItem(i + 1)}
+            {renderCityCarouselItem(i + 2)}
+            {renderCityCarouselItem(i + 3)}
+            {renderCityCarouselItem(i + 4)}
+          </div>
+        </div>
+      );
+    }
+
+    return items;
+  };
+
   return (
     <div>
-      <div className="row">
-        <h1 align="left">Popular Cities</h1>
+      <div className='row'>
+        <h1 align='left'>Popular Cities</h1>
       </div>
-      <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="cards-wrapper">
-              <div class="card">
-                <img src={goa} class="card-img-top" alt="..."  onClick={getLocation} />
-                <div class="card-body">
-                  <p>{status}</p>
-                  {latitude && <p>Latitude: {latitude}</p>}
-                  {longitude && <p>Longitude: {longitude}</p>}
-                  <h5 class="card-title">{destination}</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={delhi} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Delhi - Capital of india</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Lonavala} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Gandhinagar - Cpital of Gujarat</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Bangalore} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Banglore - The IT Industry</h5>                  
-                </div>
-              </div>
+      <div
+        id='carouselExampleControls'
+        className='carousel slide'
+        data-ride='carousel'>
+        <div className='carousel-inner'>
+        <div className='carousel-item active'>
+        <div className='cards-wrapper'>
+          <div className="card d-none d-md-block">
+            <img src={goa} className='card-img-top' alt='...' />
+            <div className='card-body'>
+              <h5 className='card-title'>Goa - The Tourist Place</h5>
             </div>
           </div>
-          <div class="carousel-item">
-            <div class="cards-wrapper">
-              <div class="card">
-                <img src={goa} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Goa - Tourist Place</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={delhi} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Delhi - Capital of India</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Lonavala} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Gandhinagar - Cpital of Gujarat</h5>                                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Bangalore} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Banglore - The IT Industry</h5>                                  
-                </div>
-              </div>
+
+          <div className='card d-none d-md-block'>
+            <img src={delhi} className='card-img-top' alt='...' />
+            <div className='card-body'>
+              <h5 className='card-title'>Delhi - Capital of india</h5>
             </div>
           </div>
-          <div class="carousel-item">
-            <div class="cards-wrapper">
-              <div class="card">
-                <img src={goa} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Goa - Tourist Place</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={delhi} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Delhi - Capital of India</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Lonavala} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Gandhinagar - Capital of Gujarat</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Bangalore} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Bagnlore - The IT Industry</h5>                  
-                </div>
-              </div>
+          <div className='card d-none d-md-block'>
+            <img src={Lonavala} className='card-img-top' alt='...' />
+            <div className='card-body'>
+              <h5 className='card-title'>Gandhinagar - Capital of Gujarat</h5>
+            </div>
+          </div>
+          <div className='card d-none d-md-block'>
+            <img src={Bangalore} className='card-img-top' alt='...' />
+            <div className='card-body'>
+              <h5 className='card-title'>Banglore - The IT Industry</h5>
             </div>
           </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
       </div>
-      <div className="row">
-        <h1>Nearby  Cities</h1>
-      </div>
-      <div id="carouselExampleControlsNearbyCities" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="cards-wrapper">
-              <div class="card">
-                <img src={goa} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Goa - Tourist Place</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={delhi} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Delhi - Capital of india</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Lonavala} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Gandhinagar - Cpital of Gujarat</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Bangalore} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Banglore - The IT Industry</h5>                  
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="cards-wrapper">
-              <div class="card">
-                <img src={goa} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Goa - Tourist Place</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={delhi} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Delhi - Capital of India</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Lonavala} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Gandhinagar - Cpital of Gujarat</h5>                                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Bangalore} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Banglore - The IT Industry</h5>                                  
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="cards-wrapper">
-              <div class="card">
-                <img src={goa} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Goa - Tourist Place</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={delhi} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Delhi - Capital of India</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Lonavala} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Gandhinagar - Capital of Gujarat</h5>                  
-                </div>
-              </div>
-              <div class="card d-none d-md-block">
-                <img src={Bangalore} class="card-img-top" alt="..." />
-                <div class="card-body">
-                  <h5 class="card-title">Bagnlore - The IT Industry</h5>                  
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControlsNearbyCities" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
+        <a
+          className='carousel-control-prev'
+          href='#carouselExampleControls'
+          role='button'
+          data-slide='prev'>
+          <span
+            className='carousel-control-prev-icon'
+            aria-hidden='true'></span>
+          <span className='sr-only'>Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleControlsNearbyCities" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
+        <a
+          className='carousel-control-next'
+          href='#carouselExampleControls'
+          role='button'
+          data-slide='next'>
+          <span
+            className='carousel-control-next-icon'
+            aria-hidden='true'></span>
+          <span className='sr-only'>Next</span>
+        </a>
+      </div>
+      <div className='row'>
+        <h1>Nearby Cities</h1>
+      </div>
+      <div
+        id='carouselExampleControlsNearbyCities'
+        className='carousel slide'
+        ride='carousel'>
+        <div className='carousel-inner'>
+          {(city && renderCityCarousel()) || null}          
+        </div>
+        <a
+          className='carousel-control-prev'
+          href='#carouselExampleControlsNearbyCities'
+          role='button'
+          data-slide='prev'>
+          <span
+            className='carousel-control-prev-icon'
+            aria-hidden='true'></span>
+          <span className='sr-only'>Previous</span>
+        </a>
+        <a
+          className='carousel-control-next'
+          href='#carouselExampleControlsNearbyCities'
+          role='button'
+          data-slide='next'>
+          <span
+            className='carousel-control-next-icon'
+            aria-hidden='true'></span>
+          <span className='sr-only'>Next</span>
         </a>
       </div>
     </div>
