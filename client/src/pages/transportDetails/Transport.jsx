@@ -13,6 +13,8 @@ import "./Transport.css";
 import { toast } from "react-hot-toast";
 import UsePost from "../../Utilities/UsePost";
 import AddIcon from "@mui/icons-material/Add";
+import { v4 as uuidv4 } from "uuid";
+import TransportScheduleCard from "../../components/cards/TransportScheduleCard";
 
 function Transport() {
   const [transportDetails, setTransportDetails] = useState({
@@ -22,6 +24,21 @@ function Transport() {
   });
 
   const [transportMode, setTransportMode] = useState(null);
+
+  const [components, setComponents] = useState([]);
+
+  function addComponent(data) {
+    setComponents([...components, data]);
+  }
+
+  console.log("component", components);
+
+  function deleteComponent(id) {
+    console.log("delete component idddd : ", id);
+    setComponents((previousData) =>
+      previousData.filter((element) => element.id !== id)
+    );
+  }
 
   let types = [
     { value: "train", label: "Train" },
@@ -190,10 +207,31 @@ function Transport() {
               justifyContent="end"
               style={{ marginTop: "20px" }}
             >
-              <Button variant="contained">
+              <Button
+                variant="contained"
+                onClick={() =>
+                  addComponent({
+                    id: uuidv4(),
+                    transportId: "",
+                    source: "",
+                    destination: "",
+                    arrivalTime: "",
+                    departureTime: "",
+                    totalAvailableSeats: "",
+                    pricePerSeat: "",
+                  })
+                }
+              >
                 <AddIcon fontSize="large" />
               </Button>
             </Grid>
+            <br />
+            {components.map((i) => (
+              <TransportScheduleCard
+                deleteComponent={deleteComponent}
+                data={i}
+              />
+            ))}
             {/* <Grid container justifyContent="center">
               <Button
                 variant="contained"

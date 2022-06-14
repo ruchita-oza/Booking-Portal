@@ -60,7 +60,10 @@ function App() {
               <Route path="/userProfile" element={<UserProfile />} />
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
-            <Route path="/transportDetailAndSchedule" element={<Transport />} />
+            <Route
+              path="/admin/transportDetailAndSchedule"
+              element={<Transport />}
+            />
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}
