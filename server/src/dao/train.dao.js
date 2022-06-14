@@ -48,10 +48,14 @@ const findAllTrainSchedules = async ({
   priceQuery,
   timeQuery,
   ticketQuery,
+  skip,
+  resultPerPage,
 }) => {
   console.log(ticketQuery);
   console.log("object");
   const trainSchedules = await TrainSchedule.findAndCountAll({
+    offset: skip,
+    limit: resultPerPage,
     where: { [Op.and]: [queryCopy, priceQuery, timeQuery, ticketQuery] },
     include: [
       {

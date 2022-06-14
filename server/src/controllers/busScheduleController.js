@@ -192,10 +192,12 @@ const getBusScheduleById = async (req, res, next) => {
 
 const getBusSchedules = async (req, res, next) => {
   try {
+    const resultPerPage = 4;
     const apiFeatures = new Apifeatures(BusSchedule, req.query)
       .priceFilter()
       .timeFilter()
       .TicketFilter()
+      .pagination(resultPerPage)
       .filter();
 
     // console.log("at bus schedule");
@@ -205,8 +207,11 @@ const getBusSchedules = async (req, res, next) => {
       priceQuery: apiFeatures.priceQuery,
       timeQuery: apiFeatures.timeQuery,
       ticketQuery: apiFeatures.ticketQuery,
+      skip: apiFeatures.skip,
+      resultPerPage,
     });
-    res.status(200).json({ busScheduleWithBuses });
+    let filteredPerCount = busScheduleWithBuses.length;
+    res.status(200).json({ busScheduleWithBuses, filteredPerCount });
   } catch (err) {
     next(err);
   }

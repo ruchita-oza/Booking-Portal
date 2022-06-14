@@ -8,6 +8,7 @@ class Apifeatures {
     this.timeQuery = "";
     this.queryCopy = "";
     this.ticketQuery = "";
+    this.skip = "";
   }
   // search() {
   //   const keyword = this.queryStr.keyword
@@ -28,7 +29,6 @@ class Apifeatures {
     // console.log(this.queryCopy);
     //remove somefield from catagory
     const removeFields = [
-      "keyword",
       "page",
       "limit",
       "minPrice",
@@ -89,12 +89,12 @@ class Apifeatures {
     }
     return this;
   }
-  //   pagination(resultPerPage) {
-  //     const currentPage = Number(this.queryStr.page) || 1;
-  //     const skip = resultPerPage * (currentPage - 1);
-  //     this.query = this.query.limit(resultPerPage).skip(skip);
-  //     return this;
-  //   }
+  pagination(resultPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1;
+    this.skip = resultPerPage * (currentPage - 1);
+    // this.query = this.query.limit(resultPerPage).skip(skip);
+    return this;
+  }
 }
 
 module.exports = Apifeatures;
