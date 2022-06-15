@@ -27,14 +27,78 @@ function Transport() {
 
   const [components, setComponents] = useState([]);
 
-  function addComponent(data) {
-    setComponents([...components, data]);
+  const transportId = transportDetails?.id;
+
+  const todaysDate = new Date();
+  // console.log("transport id : ", transportId);
+
+  let allScheduleData = [];
+
+  const [scheduleData, setScheduleData] = useState({
+    id: transportId,
+    source: "",
+    destination: "",
+    departure_time: todaysDate,
+    arrival_time: todaysDate,
+    total_available_seats: "",
+    price_per_seat: "",
+  });
+
+  function handleSourceData(id, sourceData) {
+    const selectedSchedule = components.find((item) => item.id == id);
+    // console.log("selected schedule : ", selectedSchedule.id);
+    selectedSchedule.source = sourceData;
   }
 
-  console.log("component", components);
+  function handleDestinationData(id, destinationData) {
+    const selectedSchedule = components.find((item) => item.id == id);
+    // console.log("selected schedule : ", selectedSchedule.id);
+    selectedSchedule.destination = destinationData;
+  }
+
+  function handleDepartureTimeData(id, departureTimeData) {
+    const selectedSchedule = components.find((item) => item.id == id);
+    // console.log("selected schedule : ", selectedSchedule.id);
+    selectedSchedule.departure_time = departureTimeData;
+  }
+
+  function handleArrivalTimeData(id, arrivalTimeData) {
+    const selectedSchedule = components.find((item) => item.id == id);
+    // console.log("selected schedule : ", selectedSchedule.id);
+    selectedSchedule.arrival_time = arrivalTimeData;
+  }
+
+  function handleTotalAvailableSeats(id, totalAvailableSeatsData) {
+    const selectedSchedule = components.find((item) => item.id == id);
+    // console.log("selected schedule : ", selectedSchedule.id);
+    selectedSchedule.total_available_seats = totalAvailableSeatsData;
+  }
+
+  function handlePricePerSeat(id, pricePerSeatData) {
+    const selectedSchedule = components.find((item) => item.id == id);
+    // console.log("selected schedule : ", selectedSchedule.id);
+    selectedSchedule.price_per_seat = pricePerSeatData;
+  }
+
+  allScheduleData.push(components);
+
+  // useEffect(() => {
+  //   allScheduleData.push(scheduleData);
+  // }, [scheduleData]);
+
+  // console.log("all schedule data : ", allScheduleData);
+
+  function addComponent(data) {
+    setComponents([
+      ...components,
+      { ...data, transportId: transportDetails?.id },
+    ]);
+  }
+
+  // console.log("component", components);
 
   function deleteComponent(id) {
-    console.log("delete component idddd : ", id);
+    // console.log("delete component id : ", id);
     setComponents((previousData) =>
       previousData.filter((element) => element.id !== id)
     );
@@ -54,6 +118,41 @@ function Transport() {
   }
 
   async function handleAdd() {
+    if (components.length > 0) {
+      var scheduleData = [...components];
+
+      for (let i = 0; i < scheduleData.length; i++) {
+        delete scheduleData[i].id;
+        if (transportMode === "train") {
+          // scheduleData[i].transportId = scheduleData[i]["train_id"];
+          scheduleData = scheduleData.map(
+            ({ transportId: train_id, ...rest }) => ({
+              train_id,
+              ...rest,
+            })
+          );
+        } else if (transportMode === "bus") {
+          // scheduleData[i].transportId = scheduleData[i]["bus_id"];
+          scheduleData = scheduleData.map(
+            ({ transportId: bus_id, ...rest }) => ({
+              bus_id,
+              ...rest,
+            })
+          );
+        } else if (transportMode === "flight") {
+          // scheduleData[i].transportId = scheduleData[i]["flight_id"];
+          scheduleData = scheduleData.map(
+            ({ transportId: flight_id, ...rest }) => ({
+              flight_id,
+              ...rest,
+            })
+          );
+        }
+      }
+
+      // console.log("schedule data : ", transportMode, scheduleData);
+    }
+
     if (transportMode == null) {
       toast.error("Select transport mode");
     } else if (transportMode === "train") {
@@ -69,8 +168,23 @@ function Transport() {
       );
       // console.log("train response  : ", response);
       if (response?.data?.status) {
-        toast.success(response?.data?.data);
-        document.getElementById("add-transport-details").reset();
+        if (components.length == 0) {
+          toast.success(response?.data?.data);
+          document.getElementById("add-transport-details").reset();
+        } else {
+          const response1 = await UsePost(
+            // "/bus/schedule/createBusSchedules"
+            "/train/schedule/createTrainSchedules",
+            components,
+            "post"
+          );
+          if (response1?.data?.status) {
+            toast.success("Train details and " + response1?.data?.data);
+            document.getElementById("add-transport-details").reset();
+          }
+        }
+        // toast.success(response?.data?.data);
+        // document.getElementById("add-transport-details").reset();
       } else {
         toast.error(response?.response?.data?.message);
       }
@@ -83,8 +197,22 @@ function Transport() {
       const response = await UsePost("/bus/details", busRequestBody, "post");
       // console.log("bus response  : ", response);
       if (response?.data?.status) {
-        toast.success(response?.data?.data);
-        document.getElementById("add-transport-details").reset();
+        if (components.length == 0) {
+          toast.success(response?.data?.data);
+          document.getElementById("add-transport-details").reset();
+        } else {
+          const response1 = await UsePost(
+            "/bus/schedule/createBusSchedules",
+            scheduleData,
+            "post"
+          );
+          if (response1?.data?.status) {
+            toast.success("Bus details and " + response1?.data?.data);
+            document.getElementById("add-transport-details").reset();
+          }
+        }
+        // toast.success(response?.data?.data);
+        // document.getElementById("add-transport-details").reset();
       } else {
         toast.error(response?.response?.data?.message);
       }
@@ -99,10 +227,25 @@ function Transport() {
         flightRequestBody,
         "post"
       );
-      // console.log("flight response  : ", response);
+      // console.log("flight response  : ", response?.data?.status);
       if (response?.data?.status) {
-        toast.success(response?.data?.data);
-        document.getElementById("add-transport-details").reset();
+        // console.log(scheduleData, scheduleData.length, "check here");
+        if (scheduleData.length == 0) {
+          toast.success(response?.data?.data);
+          document.getElementById("add-transport-details").reset();
+        } else {
+          const response1 = await UsePost(
+            "/flight/schedule/createFlightSchedules",
+            scheduleData,
+            "post"
+          );
+          if (response1?.data?.status) {
+            toast.success("Flight details and " + response1?.data?.data);
+            document.getElementById("add-transport-details").reset();
+          }
+        }
+        // toast.success(response?.data?.data);
+        // document.getElementById("add-transport-details").reset();
       } else {
         toast.error(response?.response?.data?.message);
       }
@@ -163,6 +306,10 @@ function Transport() {
                     ...transportDetails,
                     id: e.target.value,
                   });
+                  // setComponents({
+                  //   ...components,
+                  //   transportId: e.target.value,
+                  // });
                 }}
                 //   defaultValue="Enter transport number / id"
               />
@@ -215,10 +362,10 @@ function Transport() {
                     transportId: "",
                     source: "",
                     destination: "",
-                    arrivalTime: "",
-                    departureTime: "",
-                    totalAvailableSeats: "",
-                    pricePerSeat: "",
+                    departure_time: "",
+                    arrival_time: "",
+                    total_available_seats: "",
+                    price_per_seat: "",
                   })
                 }
               >
@@ -230,6 +377,14 @@ function Transport() {
               <TransportScheduleCard
                 deleteComponent={deleteComponent}
                 data={i}
+                // {...transportDetails}
+                // {...scheduleData}
+                handleSourceData={handleSourceData}
+                handleDestinationData={handleDestinationData}
+                handleDepartureTimeData={handleDepartureTimeData}
+                handleArrivalTimeData={handleArrivalTimeData}
+                handleTotalAvailableSeats={handleTotalAvailableSeats}
+                handlePricePerSeat={handlePricePerSeat}
               />
             ))}
             {/* <Grid container justifyContent="center">
