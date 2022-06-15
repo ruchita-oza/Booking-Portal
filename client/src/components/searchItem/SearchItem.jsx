@@ -3,23 +3,15 @@ import "./searchItem.css";
 import toast from "react-hot-toast";
 import bus from "../../images/bus.gif";
 import train from "../../images/train.gif";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faCalendar } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/users/selectors";
 
-const SearchItem = ({ data }) => {
-  // console.log(data);
-  // const getCity = (cityId) => async () => {
-  //   const data = await fetch(`city/${cityId}`);
-  //   if (data) {
-  //     return data?.city_name;
-  //   } else {
-  //     toast.error(`can't find city ${cityId}`);
-  //   }
-  // };
+const SearchItem = ({ data, personCount }) => {
   const location = useLocation();
-  // console.log(data?.departure_time);
+  const navigate = useNavigate();
+  const { loggedInUser } = useSelector(selectUser);
   const getMonth = (month) => {
     switch (month) {
       case "01":
@@ -52,7 +44,7 @@ const SearchItem = ({ data }) => {
   };
   if (data.departure_time) {
     // var date = DateTime.Parse(data.departure_time);
-    console.log(data.departure_time);
+    // console.log(data.departure_time);
     var dept_date = `${
       data?.departure_time.split("T")[0].split("-")[2]
     } ${getMonth(data?.departure_time.split("T")[0].split("-")[1])}`;
@@ -66,6 +58,19 @@ const SearchItem = ({ data }) => {
       data?.arrival_time.split("T")[1].split(".")[0].split(":")[0]
     }:${data?.arrival_time.split("T")[1].split(".")[0].split(":")[1]}`;
   } // console.log(dept_time);
+  const handleClick = () => {
+    if (loggedInUser) {
+      if (window.location.pathname === "/buses")
+        navigate(`/bus/book/${data?.id}?person=${personCount}`);
+      else if (window.location.pathname === "/flights")
+        navigate(`/flight/book/${data?.id}?person=${personCount}`);
+      else if (window.location.pathname === "/trains")
+        navigate(`/train/book/${data?.id}?person=${personCount}`);
+    } else {
+      toast.error("Please login first");
+      navigate("/auth/login");
+    }
+  };
   return (
     <>
       <motion.div
@@ -74,9 +79,11 @@ const SearchItem = ({ data }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {window.location.pathname === "/buses" ? (
+        {window.location.pathname === "/buses" ||
+        window.location.pathname.split("/")[1] === "bus" ? (
           <img src={bus} alt="" className="siImg" />
-        ) : window.location.pathname === "/trains" ? (
+        ) : window.location.pathname === "/trains" ||
+          window.location.pathname.split("/")[1] === "train" ? (
           <img src={train} alt="" className="siImg" />
         ) : (
           <img
@@ -87,17 +94,24 @@ const SearchItem = ({ data }) => {
         )}
         <div className="siDesc">
           <h1 className="siTitle">
-            {window.location.pathname === "/buses"
+            {window.location.pathname === "/buses" ||
+            window.location.pathname.split("/")[1] === "bus"
               ? data?.bus_detail.bus_name
-              : window.location.pathname === "/flights"
+              : window.location.pathname === "/flights" ||
+                window.location.pathname.split("/")[1] === "flight"
               ? data?.flight_detail.flight_name
               : data.train_detail.train_name}
           </h1>
-          <span className="siDistance">
+          <span
+            className="siDistance"
+            style={{ marginTop: "-10px", marginBottom: "15px" }}
+          >
             <span>
-              {window.location.pathname === "/buses"
+              {window.location.pathname === "/buses" ||
+              window.location.pathname.split("/")[1] === "bus"
                 ? data?.bus_id
-                : window.location.pathname === "/flights"
+                : window.location.pathname === "/flights" ||
+                  window.location.pathname.split("/")[1] === "flight"
                 ? data?.flight_id
                 : data.train_id}
               {/* {data?.bus_id} */}
@@ -105,9 +119,11 @@ const SearchItem = ({ data }) => {
             {" - "}
             <span>
               {" "}
-              {window.location.pathname === "/buses"
+              {window.location.pathname === "/buses" ||
+              window.location.pathname.split("/")[1] === "bus"
                 ? data?.bus_detail.bus_type
-                : window.location.pathname === "/flights"
+                : window.location.pathname === "/flights" ||
+                  window.location.pathname.split("/")[1] === "flight"
                 ? data?.flight_detail.flight_type
                 : data.train_detail.train_type}
             </span>
@@ -115,16 +131,32 @@ const SearchItem = ({ data }) => {
           {/* <span className="siDistance"> </span> */}
           {/* <span className="siTaxiOp">View Fares</span> */}
           <span className="siSubtitle">
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faLocationDot}
               style={{ marginRight: "10px" }}
-            ></FontAwesomeIcon>
-            <span className="siFeatures">
-              {data?.source} to {data?.destination}{" "}
+            ></FontAwesomeIcon> */}
+            <span
+              className="siFeatures"
+              style={{
+                display: "flex",
+                marginBottom: "-10px",
+                fontWeight: "bold",
+                placeItems: "center",
+              }}
+            >
+              <span className="siSource" style={{ flex: 1, marginLeft: "4px" }}>
+                {data?.source_name?.city_name}
+              </span>
+              <span style={{ flex: 1, marginLeft: "15px" }}>
+                {data?.destination_name?.city_name}
+              </span>{" "}
             </span>
           </span>
           <span className="siDateTime">
-            <span className="siTime">
+            <span
+              className="siTime"
+              style={{ marginBottom: "-5px", marginTop: "2px" }}
+            >
               <span className="siTimeInner">{dept_time}</span>
               <span className="siTimeInner"> {arrival_time}</span>
             </span>
@@ -134,7 +166,10 @@ const SearchItem = ({ data }) => {
               <span className="col-3"></span>
             </span>
 
-            <span className="siDate">
+            <span
+              className="siDate"
+              style={{ marginTop: "-5px", marginBottom: "20px" }}
+            >
               <span className="siDateInner">
                 {dept_time ? `${dept_date} ` : "Start"}
               </span>
@@ -157,7 +192,19 @@ const SearchItem = ({ data }) => {
           <div className="siDetailTexts">
             <span className="siPrice">${data?.price_per_seat}</span>
             <span className="siFlight">Includes taxes and fees</span>
-            <button className="siCheckButton">See availability</button>
+            <button
+              className="siCheckButton"
+              disabled={
+                window.location.pathname === "/flights" ||
+                window.location.pathname === "/buses" ||
+                window.location.pathname === "/trains"
+                  ? false
+                  : true
+              }
+              onClick={handleClick}
+            >
+              Book now !
+            </button>
           </div>
         </div>
       </motion.div>

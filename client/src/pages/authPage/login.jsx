@@ -56,7 +56,7 @@ function Login(props) {
           className="container"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }} 
+          exit={{ opacity: 0 }}
         >
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
@@ -86,7 +86,7 @@ function Login(props) {
                             status,
                             touched,
                           }) => (
-                            <Form>
+                            <Form class="authform">
                               {console.log(values)}
                               <div className="row w-100 mb-3 form-floating ">
                                 <label
@@ -96,27 +96,24 @@ function Login(props) {
                                 >
                                   Email
                                 </label>
-                                
-                                  <Input
-                                    name="email"
-                                    label="lblUser"
-                                    className={
-                                      "col-lg-7 col-md-7 col-sm-12 form-control" +
-                                      (errors.email && touched.email
-                                        ? " is-invalid"
-                                        : "")
-                                    }
-                                    value={values["email"]}
-                                    setFieldValue={setFieldValue}
-                                    // onChange={(e) => setEmail(e.target.value)}
-                                  />
-                                
-                                  <div className="invalid-feedback form-floating col-lg-10 col-md-12 col-sm-12 d-flex justify-content-center">
-                                    <ErrorMessage
-                                      name="email"
-                                      component="div"
-                                    />
-                                  </div>
+
+                                <Input
+                                  name="email"
+                                  label="lblUser"
+                                  className={
+                                    "col-lg-7 col-md-7 col-sm-12 form-control  authLogin" +
+                                    (errors.email && touched.email
+                                      ? " is-invalid"
+                                      : "")
+                                  }
+                                  value={values["email"]}
+                                  setFieldValue={setFieldValue}
+                                  // onChange={(e) => setEmail(e.target.value)}
+                                />
+
+                                <div className="invalid-feedback form-floating col-lg-10 col-md-12 col-sm-12 d-flex justify-content-center">
+                                  <ErrorMessage name="email" component="div" />
+                                </div>
                               </div>
                               <div className="row w-100 mb-3 form-floating">
                                 <label
@@ -132,7 +129,7 @@ function Login(props) {
                                   type="password"
                                   label="lblPass"
                                   className={
-                                    "col-mg-7 col-md-7  col-sm-12 form-control" +
+                                    "col-mg-7 col-md-7  col-sm-12 form-control authLogin" +
                                     (errors.password && touched.password
                                       ? " is-invalid"
                                       : "")

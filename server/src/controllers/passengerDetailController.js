@@ -23,7 +23,8 @@ const createPassengerDetails = async (req, res, next) => {
     const passengerDetails = await PassengerDetails.create(req.body);
     return res.json({
       data: "Passenger details added successfully",
-      status: true,
+      status: 200,
+      success: true,
     });
   } catch (error) {
     return next(
@@ -116,7 +117,7 @@ const getAllPassengerDetailsByBookingId = async (req, res, next) => {
     const bookingId = req.params.id;
     const status = await checkExistsBookingRecord(bookingId);
     if (status) {
-      const passengerDetails = await PassengerDetails.findAll({
+      const passengerDetails = await PassengerDetails.findAndCountAll({
         where: { booking_id: bookingId },
       });
       return res.json({ data: passengerDetails, status: true });

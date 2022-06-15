@@ -39,6 +39,7 @@ function Register() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         first_name,
+        
         last_name,
         email,
         password,
@@ -106,7 +107,7 @@ function Register() {
                             type="first_name"
                             label="lblFName"
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
                               (errors.first_name && touched.first_name
                                 ? " is-invalid"
                                 : "")
@@ -115,10 +116,7 @@ function Register() {
                             setFieldValue={setFieldValue}
                           />
                           <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage
-                              name="first_name"
-                              component="div"
-                            />
+                            <ErrorMessage name="first_name" component="div" />
                           </div>
                         </div>
                         <div className="row w-100 mb-3 form-floating ">
@@ -135,7 +133,7 @@ function Register() {
                             type="last_name"
                             label="lblLName"
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
                               (errors.last_name && touched.last_name
                                 ? " is-invalid"
                                 : "")
@@ -144,12 +142,8 @@ function Register() {
                             setFieldValue={setFieldValue}
                           />
                           <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage
-                              name="last_name"
-                              component="div"
-                            />
+                            <ErrorMessage name="last_name" component="div" />
                           </div>
-                          
                         </div>
                         <div className="row w-100 form-floating  mb-3">
                           <label
@@ -166,7 +160,7 @@ function Register() {
                             label="lblEmail"
                             icon={faEnvelope}
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
                               (errors.email && touched.email
                                 ? " is-invalid"
                                 : "")
@@ -175,10 +169,7 @@ function Register() {
                             setFieldValue={setFieldValue}
                           />
                           <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                          <ErrorMessage
-                            name="email"
-                            component="div"
-                          />
+                            <ErrorMessage name="email" component="div" />
                           </div>
                         </div>
                         <div className="row w-100 form-floating mb-3 ">
@@ -196,7 +187,7 @@ function Register() {
                             label="lblPass"
                             autocomplete="on"
                             className={
-                              " col-lg-7 col-md-7 col-sm-12 form-control" +
+                              " col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
                               (errors.password && touched.password
                                 ? " is-invalid"
                                 : "")
@@ -205,10 +196,7 @@ function Register() {
                             setFieldValue={setFieldValue}
                           />
                           <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                          <ErrorMessage
-                            name="password"
-                            component="div"
-                          />
+                            <ErrorMessage name="password" component="div" />
                           </div>
                         </div>
                         <div className="row w-100 form-floating mb-3 ">
@@ -225,7 +213,7 @@ function Register() {
                             type="password"
                             label="confPass"
                             className={
-                              " col-lg-7 col-md-7 col-sm-12 form-control" +
+                              " col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
                               (errors.confPass && touched.confPass
                                 ? " is-invalid"
                                 : "")
@@ -234,10 +222,7 @@ function Register() {
                             setFieldValue={setFieldValue}
                           />
                           <div className="invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center">
-                          <ErrorMessage
-                            name="confPass"
-                            component="div"
-                          />
+                            <ErrorMessage name="confPass" component="div" />
                           </div>
                         </div>
                         <div className="row w-100 mb-3 form-floating ">
@@ -254,7 +239,7 @@ function Register() {
                             type="phone_number"
                             label="lblphone_number"
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
                               (errors.first_name && touched.first_name
                                 ? " is-invalid"
                                 : "")
@@ -263,10 +248,7 @@ function Register() {
                             setFieldValue={setFieldValue}
                           />
                           <div className="invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage
-                              name="phone_number"
-                              component="div"
-                            />
+                            <ErrorMessage name="phone_number" component="div" />
                           </div>
                         </div>
                         {status && (

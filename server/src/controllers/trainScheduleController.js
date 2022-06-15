@@ -194,17 +194,110 @@ const viewTrainScheduleById = async (req, res, next) => {
 
 const viewTrainSchedules = async (req, res, next) => {
   try {
+    const resultPerPage = 4;
     const apiFeatures = new ApiFeatures(TrainSchedule, req.query)
       .priceFilter()
+      .timeFilter()
+      .TicketFilter()
+      .pagination(resultPerPage)
       .filter();
     // let trainschedules = await apiFeatures.query;
     let trainschedules = await findAllTrainSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
+      timeQuery: apiFeatures.timeQuery,
+      ticketQuery: apiFeatures.ticketQuery,
+      skip: apiFeatures.skip,
+      resultPerPage,
     });
-    return res.json({ data: trainschedules, status: true });
+    return res.json({
+      data: trainschedules,
+      status: true,
+      filteredPerCount: trainschedules.rows.length,
+      resultPerPage,
+    });
   } catch (error) {
     return next(createError(500, "Error fetching train schedule" + error));
+  }
+};
+
+const createTrainScheduleFromArray = async (req, res, next) => {
+  try {
+    let scheduleData = req.body;
+    for (let i = 0; i < scheduleData.length; i++) {
+      try {
+        const trainId = scheduleData[i]?.train_id;
+        const source = scheduleData[i]?.source;
+        const destination = scheduleData[i]?.destination;
+        const arrivalTime = scheduleData[i]?.arrival_time;
+        const departureTime = scheduleData[i]?.departure_time;
+        const totalAvailableSeats = scheduleData[i]?.total_available_seats;
+        const pricePerSeat = scheduleData[i]?.price_per_seat;
+
+        const trainExistsStatus = await checkExistsTrain(trainId);
+        const sourceCityStatus = await checkExistsCity(source);
+        const destinationCityStatus = await checkExistsCity(destination);
+
+        if (!trainExistsStatus) {
+          return next(createError(422, "Error train does not exists"));
+        }
+
+        if (!sourceCityStatus) {
+          return next(createError(422, "Error source city does not exists"));
+        }
+
+        if (!destinationCityStatus) {
+          return next(
+            createError(422, "Error destination city does not exists")
+          );
+        }
+
+        if (arrivalTime == departureTime) {
+          return next(
+            createError(
+              422,
+              "Error arrival time and departure time cannot be same"
+            )
+          );
+        }
+
+        if (departureTime > arrivalTime) {
+          return next(
+            createError(
+              422,
+              "Error departure time cannot be greater than arrival time"
+            )
+          );
+        }
+
+        if (totalAvailableSeats == 0) {
+          return next(
+            createError(422, "Error total available seat cannot be zero")
+          );
+        }
+
+        if (pricePerSeat == 0) {
+          return next(createError(422, "Error price per seat cannot be zero"));
+        }
+
+        if (pricePerSeat < 0) {
+          return next(
+            createError(422, "Error price per seat cannot be less than zero")
+          );
+        }
+
+        const trainSchedule = await TrainSchedule.create(scheduleData[i]);
+        await trainSchedule.save();
+      } catch (error) {
+        throw error;
+      }
+    }
+    return res.json({
+      data: "Train schedule created successfully",
+      status: true,
+    });
+  } catch (error) {
+    return next(createError(500, "Error adding train schedule " + error));
   }
 };
 
@@ -215,4 +308,5 @@ module.exports = {
   // viewAllTrainSchedule,
   viewTrainScheduleById,
   viewTrainSchedules,
+  createTrainScheduleFromArray,
 };

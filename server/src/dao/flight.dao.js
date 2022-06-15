@@ -38,11 +38,20 @@ const findFlightScheduleById = async (flightScheduleId) => {
   });
 };
 
-const findAllFlightSchedules = async ({ queryCopy, priceQuery, timeQuery }) => {
+const findAllFlightSchedules = async ({
+  queryCopy,
+  priceQuery,
+  timeQuery,
+  ticketQuery,
+  skip,
+  resultPerPage,
+}) => {
   console.log(queryCopy, priceQuery, timeQuery);
 
   const flights = FlightSchedule.findAndCountAll({
-    where: { [Op.and]: [queryCopy, priceQuery, timeQuery] },
+    offset: skip,
+    limit: resultPerPage,
+    where: { [Op.and]: [queryCopy, priceQuery, timeQuery, ticketQuery] },
     include: [
       {
         model: FlightDetail,
