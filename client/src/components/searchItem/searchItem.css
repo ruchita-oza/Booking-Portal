@@ -132,7 +132,13 @@
   cursor: pointer;
   border-radius: 5px;
 }
-.siCheckButton :hover {
+.siCheckButton :disabled,
+.siCheckButton[disabled] {
+  background-color: #222;
+  opacity: 50%;
+}
+.siCheckButton :hover,
+.siCheckButton[hover] {
   background-color: #fff;
   border-color: #0071c2;
   color: #0071c2;

@@ -3,13 +3,16 @@ import {
   ALL_FLIGHTSCHEDULE_SUCESS,
   ALL_FLIGHTSCHEDULE_FAIL,
   CLEAR_ERR,
+  GET_FLIGHTSCHEDULE_REQUEST,
+  GET_FLIGHTSCHEDULE_SUCCESS,
+  GET_FLIGHTSCHEDULE_FAIL,
 } from "./types";
 import toast from "react-hot-toast";
 import {
   getAllFlightsApi,
-  getFlightsWithLocationApi,
   getFlightsWithLocationPriceApi,
   getFlightsWithLocationPriceTimeApi,
+  getFlightWithId,
 } from "../../services/FlightServices";
 
 import { getCityApi } from "../../services/CityServices";
@@ -127,4 +130,18 @@ export const getFlightSchedules =
 //clearing all errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERR });
+};
+
+export const getFlightScheduleById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_FLIGHTSCHEDULE_REQUEST });
+    const data = await getFlightWithId(id);
+    if (data) {
+      console.log(data);
+      dispatch({ type: GET_FLIGHTSCHEDULE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: GET_FLIGHTSCHEDULE_FAIL, payload: error });
+  }
 };

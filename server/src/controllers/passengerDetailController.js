@@ -23,7 +23,8 @@ const createPassengerDetails = async (req, res, next) => {
     const passengerDetails = await PassengerDetails.create(req.body);
     return res.json({
       data: "Passenger details added successfully",
-      status: true,
+      status: 200,
+      success: true,
     });
   } catch (error) {
     return next(

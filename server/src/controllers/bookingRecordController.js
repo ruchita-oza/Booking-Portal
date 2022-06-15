@@ -55,6 +55,7 @@ async function updateBusScheduleDetail(id, data) {
 
 const createBookingRecord = async (req, res, next) => {
   try {
+    console.log("Creating booking record");
     const user_id = req.body.cust_id;
     const transportId = req.body.transport_id;
     const userStatus = await checkExistsUser(user_id);
@@ -163,13 +164,16 @@ const createBookingRecord = async (req, res, next) => {
       const bookingRecord = await BookingRecords.create(req.body);
       await bookingRecord.save();
       return res.json({
+        id: bookingRecord.id,
         data: "Booking record created successfully",
-        status: true,
+        status: 200,
+        success: true,
       });
     } else {
       return next(createError(500, "Error user does not exists"));
     }
   } catch (error) {
+    console.log(error);
     return next(
       createError(500, "Error while creating booking record " + error)
     );
@@ -293,7 +297,8 @@ const updateBookingRecord = async (req, res, next) => {
         });
         return res.json({
           data: "Booking record updated successfully",
-          status: true,
+          success: true,
+          status: 201,
         });
       } else {
         return next(createError(500, "Error user does not exists"));

@@ -3,6 +3,9 @@ import {
   ALL_TRAINSCHEDULE_SUCCESS,
   ALL_TRAINSCHEDULE_FAIL,
   CLEAR_ERR,
+  GET_TRAINSCHEDULE_REQUEST,
+  GET_TRAINSCHEDULE_SUCCESS,
+  GET_TRAINSCHEDULE_FAIL,
 } from "./types";
 
 const initialState = {
@@ -12,6 +15,7 @@ const initialState = {
   filteredPerCount: null,
   resultPerPage: null,
 };
+const initialTrainState = { isLoading: false, train: [], error: null };
 
 export const trainScheduleReducer = (state = initialState, action) => {
   console.log(action.type);
@@ -35,6 +39,30 @@ export const trainScheduleReducer = (state = initialState, action) => {
         resultPerPage: null,
         trains: [],
         filteredPerCount: null,
+        error: action.payload,
+      };
+    case CLEAR_ERR:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+export const trainScheduleByIdReducer = (state = initialTrainState, action) => {
+  switch (action.type) {
+    case GET_TRAINSCHEDULE_REQUEST:
+      return { ...state, isLoading: true };
+    case GET_TRAINSCHEDULE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        train: action.payload.data,
+        error: null,
+      };
+    case GET_TRAINSCHEDULE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        train: [],
         error: action.payload,
       };
     case CLEAR_ERR:
