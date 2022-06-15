@@ -224,6 +224,11 @@ const viewTrainSchedules = async (req, res, next) => {
 const createTrainScheduleFromArray = async (req, res, next) => {
   try {
     let scheduleData = req.body;
+
+    if (scheduleData.length == 0) {
+      return next(createError(422, "Error no train schedule data entered"));
+    }
+
     for (let i = 0; i < scheduleData.length; i++) {
       try {
         const trainId = scheduleData[i]?.train_id;
@@ -249,6 +254,12 @@ const createTrainScheduleFromArray = async (req, res, next) => {
         if (!destinationCityStatus) {
           return next(
             createError(422, "Error destination city does not exists")
+          );
+        }
+
+        if (source == destination) {
+          return next(
+            createError(422, "Error source and destination city cannot be same")
           );
         }
 
@@ -292,6 +303,7 @@ const createTrainScheduleFromArray = async (req, res, next) => {
         throw error;
       }
     }
+
     return res.json({
       data: "Train schedule created successfully",
       status: true,

@@ -46,7 +46,7 @@ const findAllFlightSchedules = async ({
   skip,
   resultPerPage,
 }) => {
-  console.log(queryCopy, priceQuery, timeQuery);
+  // console.log(queryCopy, priceQuery, timeQuery);
 
   const flights = FlightSchedule.findAndCountAll({
     offset: skip,
