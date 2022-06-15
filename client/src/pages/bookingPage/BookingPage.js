@@ -5,44 +5,236 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import { useDispatch, useSelector } from "react-redux";
 import "./BookingPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard, faUser } from "@fortawesome/free-regular-svg-icons";
+import { v4 as uuidv4 } from "uuid";
 import SearchItem from "../../components/searchItem/SearchItem";
+import IconButton from "@material-ui/core/IconButton";
+import RemoveIcon from "@material-ui/icons/Remove";
+import AddIcon from "@material-ui/icons/Add";
+import { selectUser } from "../../redux/users/selectors";
+import { getFlightScheduleById } from "../../redux/flights/actions";
+import { getBusScheduleById } from "../../redux/buses/actions";
+import { getTrainScheduleById } from "../../redux/trains/actions";
+import toast from "react-hot-toast";
+import axios from "axios";
+// import { dispatch } from "react-hot-toast/dist/core/store";
 function BookingPage({ match }) {
+  const { loggedInUser } = useSelector(selectUser);
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: flightData } = useSelector((state) => state.flight.flight);
+  const { data: busData } = useSelector((state) => state.bus.bus);
+  const { data: trainData } = useSelector((state) => state.train.train);
   const { searchParams } = useSearchParams();
   const transport_type = location?.pathname?.split("/")[1];
   const transport_id = location?.pathname?.split("/")[3];
-  const person = searchParams?.get("person") || 1;
-  //   React.useEffect(() => {
-  //     window.addEventListener("load", () => {
-  //       navigate("/");
-  //     });
-  //     return () => {
-  //       window.removeEventListener("load", () => {
-  //         navigate("/");
-  //       });
-  //     };
-  //   }, []);
-  const data = {
-    id: 1,
-    train_id: "G8-322",
-    source: 2,
-    destination: 1,
-    departure_time: "2022-06-23T03:30:00.000Z",
-    arrival_time: "2022-06-23T14:30:00.000Z",
-    total_available_seats: 40,
-    price_per_seat: 4030,
-    createdAt: "2022-06-10T05:47:18.000Z",
-    updatedAt: "2022-06-10T05:47:18.000Z",
-    deletedAt: null,
-    train_detail: { train_name: "express", train_type: "non ac sleeper" },
-    source_name: { city_name: "source" },
-    destination_name: { city_name: "dest" },
+  const search = location.search;
+  const person = new URLSearchParams(search).get("person") || 1;
+  const [passengerDetails, setPassengerDetails] = useState([
+    {
+      id: uuidv4(),
+      passenger_name: "",
+      passenger_gender: "male",
+      passenger_age: "",
+    },
+  ]);
+  const [booking, setBooking] = useState({
+    cust_id: "",
+    cust_email: "",
+    cust_phoneNumber: "",
+    transport_type,
+    transport_id,
+    total_ticket_count: person,
+    journey_date: "2022-06-24 09:00:00",
+    total_fare: "5000",
+    booking_status: "confirm",
+  });
+  const handlePassengerChange = (id, event) => {
+    const newPassenger = passengerDetails.map((i) => {
+      if (id === i.id) {
+        i[event.target.name] = event.target.value;
+      }
+      return i;
+    });
+    setPassengerDetails(newPassenger);
   };
+
+  const handleAddFields = () => {
+    setPassengerDetails([
+      ...passengerDetails,
+      {
+        id: uuidv4(),
+        passenger_name: "",
+        passenger_gender: "",
+        passenger_age: "",
+      },
+    ]);
+  };
+  const handleRemoveFields = (id) => {
+    const values = [...passengerDetails];
+    values.splice(
+      values.findIndex((value) => value.id === id),
+      1
+    );
+    setPassengerDetails(values);
+  };
+  const handleRemoveAllFields = () => {
+    setPassengerDetails([]);
+  };
+  let name, value;
+  const handleBookingInput = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setBooking({ ...booking, [name]: value });
+  };
+  let total_fare =
+    (transport_type === "flight"
+      ? flightData?.price_per_seat
+      : transport_type === "bus"
+      ? busData?.price_per_seat
+      : trainData?.price_per_seat) * person;
+  let journey_date =
+    transport_type === "flight"
+      ? flightData?.departure_time
+      : transport_type === "bus"
+      ? busData?.departure_time
+      : trainData?.departure_time;
+  const addBookingRecord = async () => {
+    try {
+      // const headers = {
+      //   Accept: "application/json",
+      //   "Content-Type": "application/json",
+      // };
+      console.log(booking);
+      // const response = await axios.post(`/booking/record`, booking, {
+      //   headers,
+      // });
+      const res = await fetch("/booking/record", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cust_id: loggedInUser.id,
+          cust_email: booking.cust_email,
+          cust_phoneNumber: booking.cust_phoneNumber,
+          transport_type: booking.transport_type,
+          transport_id: booking.transport_id,
+          total_ticket_count: booking.total_ticket_count,
+          journey_date: journey_date,
+          total_fare: total_fare,
+          booking_status: "confirm",
+        }),
+      });
+      const data = await res.json();
+      if (!data) {
+        throw new Error("message");
+      }
+      if (data.success === false) {
+        throw new Error(`success false with error ${data.message}`);
+      }
+
+      console.log("res:  ", data);
+      return data;
+    } catch (error) {
+      toast.error(error);
+      console.log(error.toString());
+      return error;
+    }
+  };
+  const addPassengerDetails = async (person, id) => {
+    try {
+      const headers = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+
+      const response = await axios.post(
+        `/passenger/details`,
+        {
+          booking_id: id,
+          name: person.passenger_name,
+          gender: person.passenger_gender,
+          age: person.passenger_age,
+        },
+        {
+          headers,
+        }
+      );
+      if (!response) {
+        throw new Error("something went wrong!");
+      }
+      if (response.success === false) {
+        throw new Error(
+          `Error while adding ${person.passenger_name} , error: ${response.error}`
+        );
+      }
+      return response;
+    } catch (error) {
+      toast.error(error);
+      console.log(error.toString());
+      return error;
+    }
+  };
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+    if (passengerDetails.length != person) {
+      toast.error(`Please Enter ${person} Passenger Details`);
+    } else {
+      let total_fare =
+        (transport_type === "flight"
+          ? flightData?.price_per_seat
+          : transport_type === "bus"
+          ? busData?.price_per_seat
+          : trainData?.price_per_seat) * person;
+      const journey_date =
+        transport_type === "flight"
+          ? flightData?.departure_time
+          : transport_type === "bus"
+          ? busData?.departure_time
+          : trainData?.departure_time;
+      console.log("id : ", loggedInUser.id);
+      setBooking({
+        ...booking,
+        cust_id: loggedInUser.id,
+        journey_date: journey_date,
+        total_fare: total_fare,
+      });
+      console.log("before call");
+      const bookingResult = await addBookingRecord();
+      console.log("after call", bookingResult);
+      if (bookingResult.success === true) {
+        passengerDetails.forEach(async (person) => {
+          const passengerResult = await addPassengerDetails(
+            person,
+            bookingResult.id
+          );
+        });
+        toast.success("booking confirmed");
+        navigate("/");
+        console.log("bookingResult");
+      } else {
+        toast.error("in else part");
+      }
+      // console.log("booking details :", booking);
+      // console.log("person details");
+    }
+  };
+  React.useEffect(() => {
+    console.log(transport_type);
+    switch (transport_type) {
+      case "flight":
+        dispatch(getFlightScheduleById(transport_id));
+        break;
+      case "bus":
+        dispatch(getBusScheduleById(transport_id));
+        break;
+      default:
+        dispatch(getTrainScheduleById(transport_id));
+    }
+  }, []);
   return (
     <main
       className="container-fluid pad-sm-bottom"
@@ -67,7 +259,7 @@ function BookingPage({ match }) {
               <h3 className="box-title bold grad" style={{ width: "66%" }}>
                 <FontAwesomeIcon
                   icon={faClipboard}
-                  class="fontIcon-clipboard pull-left"
+                  className="fontIcon-clipboard pull-left"
                 ></FontAwesomeIcon>{" "}
                 <div
                   className="pull-left i-b pt5 ng-binding"
@@ -84,12 +276,16 @@ function BookingPage({ match }) {
                 Change {transport_type}
               </Link>
               <div className="box-content itin-padd">
-                <div class="cancel-free">
+                <div className="cancel-free">
                   <span className="content">"Same Day Free cancellation"</span>
                 </div>
                 <div className="accordion-sm">
                   <div className="acc-content">
-                    <SearchItem data={data} />
+                    {transport_type === "flight"
+                      ? flightData && <SearchItem data={flightData} />
+                      : transport_type === "train"
+                      ? trainData && <SearchItem data={trainData} />
+                      : busData && <SearchItem data={busData} />}
                   </div>
                 </div>
               </div>
@@ -100,7 +296,7 @@ function BookingPage({ match }) {
               <h3 className="box-title bold grad" style={{ width: "66%" }}>
                 <FontAwesomeIcon
                   icon={faUser}
-                  class="fontIcon-clipboard pull-left"
+                  className="fontIcon-clipboard pull-left"
                 ></FontAwesomeIcon>{" "}
                 <div
                   className="pull-left i-b pt5 ng-binding"
@@ -116,7 +312,11 @@ function BookingPage({ match }) {
               >
                 Change {transport_type}
               </Link>
-              <form name="travellerForm" id="travellerForm">
+              <form
+                name="travellerForm"
+                id="travellerForm"
+                onSubmit={handleBookingSubmit}
+              >
                 <div className="box">
                   <div className="box-content itin-padd">
                     <artical className="no-gutter clearfix gt-sm-space-down">
@@ -126,20 +326,26 @@ function BookingPage({ match }) {
                       <div className="col-md-4 col-md-offset-0 mb-05">
                         <input
                           type="text"
-                          class="bookingInputText"
+                          className="bookingInputText"
                           name="cust_email"
-                          Placeholder="Email ID"
-                          required
+                          value={booking.email}
+                          onChange={(e) => handleBookingInput(e)}
+                          placeholder="Email ID"
+                          required={true}
                         />
                       </div>
                       <div className="col-md-4 col-md-offset-0 align-width">
                         <input
                           type="text"
-                          placeHolder="Mobile Number"
+                          placeholder="Mobile Number"
                           className="bookingInputText"
-                          name="cust_phone"
-                          required="true"
-                          minlength="10"
+                          name="cust_phoneNumber"
+                          value={booking.cust_phoneNumber}
+                          onChange={(e) => {
+                            handleBookingInput(e);
+                          }}
+                          required={true}
+                          minLength="10"
                           maxLength="10"
                         />
                       </div>
@@ -158,7 +364,9 @@ function BookingPage({ match }) {
                       <div className="traveller-list ng-scope">
                         {" "}
                         <p className="col-md-offset-2 col-md-10 col-xs-12">
-                          <span class="fs-18 bold">Passenger Information</span>
+                          <span className="fs-18 bold">
+                            Passenger Information
+                          </span>
                         </p>
                       </div>
                       <div className="passport-note clearfix">
@@ -169,7 +377,7 @@ function BookingPage({ match }) {
                               backgroundColor: "#fffcc7",
                               padding: "5px",
                             }}
-                            class="bold"
+                            className="bold"
                           >
                             Important Note:
                           </span>
@@ -179,55 +387,101 @@ function BookingPage({ match }) {
                           </span>
                         </div>
                       </div>
-                      <artical
-                        class="no-gutter clearfix gt-sm-space-down md-pad-botm ng-scope "
-                        style={{ marginTop: "30px" }}
-                      >
-                        <div className="col-md-2 col-md-offset-0 trav-labl bold">
-                          Adult - 1
-                        </div>
-                        <div className="col-md-2 col-md-offset-0 ">
-                          <span className="ui-select">
-                            <select name="gender" required>
-                              <option value="" className="bookingOption">
-                                Gender
-                              </option>
-                              <option value="male" className="bookingOption">
-                                Mr
-                              </option>{" "}
-                              <option value="female" className="bookingOption">
-                                Ms/Mrs
-                              </option>
-                            </select>
-                          </span>
-                        </div>
+                      {passengerDetails.map((passenger, index) => {
+                        return (
+                          <artical
+                            className="no-gutter clearfix gt-sm-space-down md-pad-botm ng-scope "
+                            style={{ marginTop: "30px" }}
+                            key={passenger.id}
+                          >
+                            <div className="col-md-2 col-md-offset-0 trav-labl bold">
+                              Passenger -{index + 1}
+                            </div>
+                            <div className="col-md-2 col-md-offset-0 ">
+                              <span className="ui-select">
+                                <select
+                                  name="passenger_gender"
+                                  value={
+                                    passenger.passenger_gender
+                                      ? passenger.passenger_gender
+                                      : "male"
+                                  }
+                                  onChange={(e) =>
+                                    handlePassengerChange(passenger.id, e)
+                                  }
+                                  required={true}
+                                >
+                                  <option
+                                    value="male"
+                                    className="bookingOption"
+                                  >
+                                    Mr
+                                  </option>{" "}
+                                  <option
+                                    value="female"
+                                    className="bookingOption"
+                                  >
+                                    Ms/Mrs
+                                  </option>
+                                </select>
+                              </span>
+                            </div>
 
-                        <div className="col-md-4 col-md-offset-0">
-                          <input
-                            type="text"
-                            autocomplete="none"
-                            id="passenger_name"
-                            pattern="/^[A-Za-z\s]+$"
-                            className="bookingInputText"
-                            Placeholder="Passenger Name"
-                            required
-                          />
-                        </div>
-                        <div className="col-md-4 col-lg-3 col-md-offset-0">
-                          <input
-                            type="number"
-                            autocomplete="none"
-                            id="passenger_Age"
-                            pattern="/^[0-9\s]+$"
-                            className="bookingInputText"
-                            Placeholder="Passenger Age"
-                            required
-                          />
-                        </div>
-                      </artical>
+                            <div className="col-md-3 col-md-offset-0">
+                              <input
+                                type="text"
+                                autoComplete="none"
+                                id="passenger_name"
+                                name="passenger_name"
+                                onChange={(e) =>
+                                  handlePassengerChange(passenger.id, e)
+                                }
+                                value={passenger.passenger_name}
+                                className="bookingInputText"
+                                placeholder="Passenger Name"
+                                required={true}
+                              />
+                            </div>
+                            <div className="col-md-3 col-lg-3 col-md-offset-0">
+                              <input
+                                type="number"
+                                autoComplete="none"
+                                id="passenger_age"
+                                name="passenger_age"
+                                className="bookingInputText"
+                                placeholder="Passenger Age"
+                                value={passenger.passenger_age}
+                                onChange={(e) =>
+                                  handlePassengerChange(passenger.id, e)
+                                }
+                                required={true}
+                              />
+                            </div>
+                            <IconButton
+                              disabled={passengerDetails.length === 1}
+                              onClick={() => handleRemoveFields(passenger.id)}
+                            >
+                              <RemoveIcon />
+                            </IconButton>
+                            <IconButton
+                              onClick={handleAddFields}
+                              disabled={passengerDetails.length >= person}
+                            >
+                              <AddIcon />
+                            </IconButton>
+                          </artical>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
+                <button
+                  type="submit"
+                  className="bkButton "
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  Confirm your booking!
+                </button>
               </form>
             </div>
           </div>
@@ -259,16 +513,17 @@ function BookingPage({ match }) {
                       </span>
                       <span className="pull-right tr">
                         {" "}
-                        <span>9999</span>
+                        <span>{total_fare} ₹</span>
                       </span>
                     </li>
                   </ul>
                 </div>
                 <div className=" full-spread pr" style={{ top: "50px" }}>
                   <button
-                    type="submit"
+                    // type="submit"
                     className="bkButton "
                     style={{ width: "100%", height: "100%" }}
+                    onClick={handleBookingSubmit}
                   >
                     Confirm your booking!
                   </button>

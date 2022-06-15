@@ -5,8 +5,6 @@ import bus from "../../images/bus.gif";
 import train from "../../images/train.gif";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/users/selectors";
 
@@ -81,9 +79,11 @@ const SearchItem = ({ data, personCount }) => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {window.location.pathname === "/buses" ? (
+        {window.location.pathname === "/buses" ||
+        window.location.pathname.split("/")[1] === "bus" ? (
           <img src={bus} alt="" className="siImg" />
-        ) : window.location.pathname === "/trains" ? (
+        ) : window.location.pathname === "/trains" ||
+          window.location.pathname.split("/")[1] === "train" ? (
           <img src={train} alt="" className="siImg" />
         ) : (
           <img
@@ -94,9 +94,11 @@ const SearchItem = ({ data, personCount }) => {
         )}
         <div className="siDesc">
           <h1 className="siTitle">
-            {window.location.pathname === "/buses"
+            {window.location.pathname === "/buses" ||
+            window.location.pathname.split("/")[1] === "bus"
               ? data?.bus_detail.bus_name
-              : window.location.pathname === "/flights"
+              : window.location.pathname === "/flights" ||
+                window.location.pathname.split("/")[1] === "flight"
               ? data?.flight_detail.flight_name
               : data.train_detail.train_name}
           </h1>
@@ -105,9 +107,11 @@ const SearchItem = ({ data, personCount }) => {
             style={{ marginTop: "-10px", marginBottom: "15px" }}
           >
             <span>
-              {window.location.pathname === "/buses"
+              {window.location.pathname === "/buses" ||
+              window.location.pathname.split("/")[1] === "bus"
                 ? data?.bus_id
-                : window.location.pathname === "/flights"
+                : window.location.pathname === "/flights" ||
+                  window.location.pathname.split("/")[1] === "flight"
                 ? data?.flight_id
                 : data.train_id}
               {/* {data?.bus_id} */}
@@ -115,9 +119,11 @@ const SearchItem = ({ data, personCount }) => {
             {" - "}
             <span>
               {" "}
-              {window.location.pathname === "/buses"
+              {window.location.pathname === "/buses" ||
+              window.location.pathname.split("/")[1] === "bus"
                 ? data?.bus_detail.bus_type
-                : window.location.pathname === "/flights"
+                : window.location.pathname === "/flights" ||
+                  window.location.pathname.split("/")[1] === "flight"
                 ? data?.flight_detail.flight_type
                 : data.train_detail.train_type}
             </span>
@@ -186,7 +192,17 @@ const SearchItem = ({ data, personCount }) => {
           <div className="siDetailTexts">
             <span className="siPrice">${data?.price_per_seat}</span>
             <span className="siFlight">Includes taxes and fees</span>
-            <button className="siCheckButton" onClick={handleClick}>
+            <button
+              className="siCheckButton"
+              disabled={
+                window.location.pathname === "/flights" ||
+                window.location.pathname === "/buses" ||
+                window.location.pathname === "/trains"
+                  ? false
+                  : true
+              }
+              onClick={handleClick}
+            >
               Book now !
             </button>
           </div>

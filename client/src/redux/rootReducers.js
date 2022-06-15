@@ -1,11 +1,20 @@
 import { combineReducers } from "redux";
-import { busReducer } from "./buses/reducer";
-import { trainScheduleReducer } from "./trains/reducer";
-import { flightScheduleReducer } from "./flights/reducer";
+import { busReducer, busScheduleByIdReducer } from "./buses/reducer";
+import {
+  trainScheduleReducer,
+  trainScheduleByIdReducer,
+} from "./trains/reducer";
+import {
+  flightScheduleReducer,
+  flightScheduleByIdReducer,
+} from "./flights/reducer";
 import { authReducer } from "./users/reducer";
 export const rootReducer = combineReducers({
+  user: authReducer,
   busesAvailable: busReducer,
   trainsAvailable: trainScheduleReducer,
   flightsAvailable: flightScheduleReducer,
-  user: authReducer,
+  flight: flightScheduleByIdReducer,
+  bus: busScheduleByIdReducer,
+  train: trainScheduleByIdReducer,
 });

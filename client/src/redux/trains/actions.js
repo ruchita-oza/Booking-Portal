@@ -4,12 +4,16 @@ import {
   ALL_TRAINSCHEDULE_SUCCESS,
   ALL_TRAINSCHEDULE_FAIL,
   CLEAR_ERR,
+  GET_TRAINSCHEDULE_REQUEST,
+  GET_TRAINSCHEDULE_SUCCESS,
+  GET_TRAINSCHEDULE_FAIL,
 } from "./types";
 
 import {
   getAllTrainsApi,
   getTrainsWithLocationPriceTimeApi,
   getTrainsWithLocationPriceApi,
+  getTrainWithId,
 } from "../../services/TrainServices";
 
 import { getCityApi } from "../../services/CityServices";
@@ -112,4 +116,18 @@ export const getTrainSchedules =
 //clearing all errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERR });
+};
+
+export const getTrainScheduleById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_TRAINSCHEDULE_REQUEST });
+    const data = await getTrainWithId(id);
+    if (data) {
+      console.log(data);
+      dispatch({ type: GET_TRAINSCHEDULE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: GET_TRAINSCHEDULE_FAIL, payload: error });
+  }
 };

@@ -3,14 +3,15 @@ import {
   ALL_BUSSCHEDULE_SUCESS,
   ALL_BUSSCHEDULE_FAIL,
   CLEAR_ERR,
+  GET_BUSSCHEDULE_REQUEST,
+  GET_BUSSCHEDULE_SUCCESS,
+  GET_BUSSCHEDULE_FAIL,
 } from "./types";
-// import axios from "axios";
 import {
   getAllBusesApi,
-  // getBusesWithLocationApi,
-  // getBusesWithLocationTimeApi,
   getBusesWithLocationPriceApi,
   getBusesWithLocationPriceTimeApi,
+  getBusWithId,
 } from "../../services/BusServices";
 
 import { getCityApi } from "../../services/CityServices";
@@ -129,4 +130,18 @@ export const getBusSchedules =
 //clearing all errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERR });
+};
+
+export const getBusScheduleById = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_BUSSCHEDULE_REQUEST });
+    const data = await getBusWithId(id);
+    if (data) {
+      console.log(data);
+      dispatch({ type: GET_BUSSCHEDULE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: GET_BUSSCHEDULE_FAIL, payload: error });
+  }
 };

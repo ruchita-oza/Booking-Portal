@@ -32,12 +32,4 @@ export const getBusesWithLocationPriceTimeApi = (
   axios.get(
     `/bus/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}&personCount=${personCount}&page=${currentPage}`
   );
-// export const getBusesWithLocationTimeApi = (
-//   sourceId,
-//   destId,
-//   fromDate,
-//   toDate
-// ) =>
-//   axios.get(
-//     `/bus/Schedule?source=${sourceId}&destination=${destId}&fromDate=${fromDate}&toDate=${toDate}`
-//   );
+export const getBusWithId = (id) => axios.get(`/bus/schedule/${id}`);
