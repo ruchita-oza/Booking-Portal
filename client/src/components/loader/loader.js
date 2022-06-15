@@ -3,7 +3,7 @@ import "../../App.css";
 function Loader() {
   return (
     <div className="loading">
-      <div></div>
+      <div />
     </div>
   );
 }

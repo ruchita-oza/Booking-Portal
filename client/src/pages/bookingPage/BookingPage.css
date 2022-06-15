@@ -1,0 +1,473 @@
+/* *,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+div {
+  display: block;
+}
+body {
+  font-family: "Rubik-Regular", "Arial, Helvetica, sans-serif";
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  background-color: #e2e2e2;
+}
+.gutter-md-15 {
+  margin-left: -0.4687rem;
+  margin-right: -0.4687rem;
+  margin-top: 28px;
+}
+.gutter-md-15 > .col-md-9,
+.gutter-md-15 > .col-md-3 {
+  padding-left: 0.4687rem;
+  padding-right: 0.4687rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}*/
+main {
+  box-sizing: inherit;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+.pt5 {
+  padding-top: 5px;
+}
+.pull-left {
+  float: left !important;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+.box-title [class^="fontIcon-"],
+.box-title [class*="fontIcon-"] {
+  -webkit-text-fill-color: #333;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.fontIcon-clipboard,
+.fontIcon-insured {
+  position: relative;
+  top: 3px;
+  line-height: 37px;
+  height: 30px;
+  color: #43264e;
+}
+.box-title {
+  margin: 0 0 0.7143rem 0;
+  padding: 0;
+  font-size: 1.429rem;
+  text-decoration: double;
+  letter-spacing: -0.2px;
+  text-align: left;
+  display: inline-block;
+  color: #333;
+  font-weight: normal;
+  font-family: "Rubik-Medium";
+}
+.grad,
+.overlay.tranq-overlay .overlay-header,
+.fontIcon-traveller:before,
+.fontIcon-clipboard :before,
+.fontIcon-upselled:before,
+.fontIcon-insured:before,
+.fontIcon-ssr:before,
+.grad-icon:before {
+  background-color: #fff;
+  background-image: linear-gradient(to right, darkblue, lightskyblue);
+  -webkit-background-clip: text;
+
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.under-link {
+  position: relative;
+}
+.link,
+.under-link {
+  color: #666;
+} /*
+.change-flt-btn {
+  font-size: 12px;
+  margin: 18px 16px 0 0;
+}*/
+.color-blue {
+  color: #4197cd !important;
+}
+.pull-right {
+  float: right !important;
+}
+
+Link {
+  text-decoration: none;
+}
+Link:-webkit-any-link {
+  color: -webkit-link;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.box > .box-content.itin-padd {
+  padding: 1.571rem;
+  overflow-x: hidden;
+}
+.box > .box-content {
+  background: #fff;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 2px 4px 0 #c8c8c8;
+  -moz-box-shadow: 0 2px 4px 0 #c8c8c8;
+  box-shadow: 0 2px 4px 0 #c8c8c8;
+  padding: 2.143rem 3.214rem;
+}
+/**/
+.cancel-free {
+  right: 13px;
+  top: 30px;
+  position: absolute;
+  float: right;
+  z-index: 2;
+
+  background: linear-gradient(
+    to right,
+    #02cb66 80%,
+    #07c466 85%,
+    #14c166 87%,
+    #1aaf64
+  );
+  color: #fff;
+  margin-top: 5px;
+  padding: 5px 8px 5px 15px;
+  border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px;
+}
+.cancel-free .content {
+  position: relative;
+}
+.trip-time {
+  position: absolute;
+  right: -5px;
+  top: -10px;
+  font-size: 13px;
+}
+.box {
+  border-radius: 2px;
+}
+#rightBox {
+  margin-bottom: 20px;
+}
+.box .half-width {
+  width: 50%;
+}
+aside .box-title {
+  width: 100%;
+}
+.fs-md {
+  font-size: 1.143rem;
+}
+.pd-tp {
+  padding-top: 13px;
+}
+.box > .box-content.aside-box-content {
+  padding: 1.429rem;
+}
+/* fare details */
+.fare-detail .box-content {
+  padding-top: 10px !important;
+}
+/* ul */
+.list {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+  list-style: none;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+.fareBox .review-title > li {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.list.list-border > li:first-child {
+  padding-top: 0;
+}
+.list.list-border > li {
+  padding: 0.1rem 0;
+}
+.list > li {
+  display: block;
+}
+.gray {
+  color: #666;
+}
+.fs-13 {
+  font-size: 0.9286rem;
+}
+p,
+li {
+  font-size: 0.9286rem;
+}
+.gray-light {
+  color: #999;
+}
+.fs-sm {
+  font-size: 0.8571rem;
+}
+.pr {
+  position: relative;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+/* farebox review */
+/* you'll pay */
+.box > .box-content.aside-box-content .full-spread {
+  margin-left: -1.429rem;
+  margin-right: -1.429rem;
+}
+.fare-detail .final-breakup {
+  padding: 0.5rem 1.429rem;
+  margin-top: 5px;
+}
+.brdr-btm {
+  border-bottom: 1px solid #e4e4e4;
+}
+.brdr-tp {
+  border-top: 1px solid #e4e4e4;
+}
+.grey-bg {
+  background: #f4f4f4;
+}
+.clearfix,
+.form-field {
+  *zoom: 1;
+}
+.fs-18 {
+  font-size: 1.286rem;
+}
+.text-left {
+  text-align: left;
+}
+.gray-dark {
+  color: #333;
+}
+.fs-24 {
+  font-size: 1.714rem;
+}
+.ib {
+  display: inline-block;
+}
+strong,
+.bold {
+  font-family: "Rubik-Medium";
+  font-weight: 900;
+}
+.bkButton {
+  background-color: #0071c2;
+  color: white;
+  font-weight: bold;
+  padding: 10px 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.bkButton :hover {
+  background-color: #fff;
+  border-color: #0071c2;
+  color: #0071c2;
+}
+/* traveller detail */
+.no-gutter > [class*="col-"] {
+  padding-left: 0.5355rem;
+  padding-right: 0.5355rem;
+}
+.bookingInputText {
+  background-image: -webkit-linear-gradient(#333, #333);
+  background-image: linear-gradient(#333333, #333333);
+  background-size: 0 1px;
+  background-repeat: no-repeat;
+  background-position: center bottom, center calc(100% - 1px);
+  -webkit-transition: background 0.3s ease-out;
+  transition: background 0.3s ease-out;
+}
+.bookingInputText {
+  border: 1px solid #a3a3a3;
+  color: #333;
+  font: normal 1rem / normal "Rubik-Regular", "Arial, Helvetica, sans-serif";
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 2px;
+}
+.bookingInputText {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+input [class="booking"],
+button [class="booking"],
+select [class="booking"],
+textarea [class="booking"] {
+  margin: 0;
+  line-height: inherit;
+}
+input [class="booking"] {
+  line-height: normal;
+}
+.box + .box {
+  margin-top: 1.286rem;
+}
+.trav-labl {
+  font-family: "Rubik-Regular", "Arial, Helvetica, sans-serif";
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  text-align: right;
+  padding-right: 10px !important;
+  top: 8px;
+  font-family: "Rubik-Medium";
+}
+.txt2 {
+  margin-top: 2px;
+  padding-bottom: 2px;
+  margin-bottom: 2px !important;
+  border-bottom: 2px solid #e4e4e4;
+}
+.traveller-list {
+  overflow: hidden;
+}
+.joint {
+  position: relative;
+}
+.joint .sel-joined {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 82px;
+  margin-left: 0.5355rem;
+}
+.joint .sel-joined .ui-select {
+  border: none;
+}
+.ui-select {
+  border: 1px solid #a3a3a3;
+  border-radius: 2px;
+  color: #999;
+  display: inline-block;
+  font: normal 1rem / normal "Rubik-Regular", "Arial, Helvetica, sans-serif";
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.ui-select > select {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 0.74rem 0.3rem;
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 1px;
+  text-overflow: "";
+  width: 100%;
+  z-index: 9999;
+  color: #333;
+  white-space: nowrap;
+}
+
+l .bookingoption {
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+  min-height: 1.2em;
+  padding: 0px 2px 1px;
+}
+.joint .input-joined input {
+  padding-left: 90px;
+}
+.autocomplete-holder {
+  position: relative;
+}
+.clearfix:after,
+.form-field:after {
+  clear: both;
+}
+.clearfix:before,
+.form-field:before,
+.clearfix:after,
+.form-field:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after,
+.form-field:after {
+  clear: both;
+}
+.clearfix:before,
+.form-field:before,
+.clearfix:after,
+.form-field:after {
+  content: " ";
+  display: table;
+}
+@media only screen and (min-width: 768px) {
+  .md-padd-botm {
+    padding-bottom: 18px;
+  }
+}
+@media (min-width: 48em) {
+  .col-md-offset-2 {
+    margin-left: 16.66667%;
+  }
+
+  .col-md-10 {
+    width: 83.33333%;
+  }
+
+  .col-md-1,
+  .col-md-2,
+  .col-md-3,
+  .col-md-4,
+  .col-md-5,
+  .col-md-6,
+  .col-md-7,
+  .col-md-8,
+  .col-md-9,
+  .col-md-10,
+  .col-md-11,
+  .col-md-12 {
+    float: left;
+  }
+}

@@ -32,6 +32,27 @@ async function checkExistsFlightSchedule(id) {
   return flightSchedules.length > 0 ? true : false;
 }
 
+async function updateFlightScheduleDetail(id, data) {
+  return await FlightSchedule.update(
+    { total_available_seats: data },
+    { where: { id } }
+  );
+}
+
+async function updateTrainScheduleDetail(id, data) {
+  return await TrainSchedule.update(
+    { total_available_seats: data },
+    { where: { id } }
+  );
+}
+
+async function updateBusScheduleDetail(id, data) {
+  return await BusSchedule.update(
+    { total_available_seats: data },
+    { where: { id } }
+  );
+}
+
 const createBookingRecord = async (req, res, next) => {
   try {
     const user_id = req.body.cust_id;
@@ -49,25 +70,55 @@ const createBookingRecord = async (req, res, next) => {
         if (!busScheduleStatus) {
           return next(createError(422, "Error bus schedule does not exists"));
         }
-        let pricePerTicket = await BusSchedule.findAll({
+        let busScheduleDetail = await BusSchedule.findAll({
           where: { id: transportId },
-          attributes: ["price_per_seat"],
+          attributes: ["price_per_seat", "total_available_seats"],
           raw: true,
         });
-        pricePerTicket = pricePerTicket[0]?.price_per_seat;
-        totalCalculatedFare = totalTicketCount * pricePerTicket;
+
+        const totalAvailableTicket =
+          busScheduleDetail[0]?.total_available_seats;
+
+        if (totalTicketCount > totalAvailableTicket) {
+          return next(createError(422, "Error total ticket count"));
+        }
+
+        busScheduleDetail = busScheduleDetail[0]?.price_per_seat;
+        totalCalculatedFare = totalTicketCount * busScheduleDetail;
+
+        const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+        const updateSchedule = await updateBusScheduleDetail(
+          transportId,
+          updatedTicketCount
+        );
       } else if (transportType === "train") {
         const trainScheduleStatus = await checkExistsTrainSchedule(transportId);
         if (!trainScheduleStatus) {
           return next(createError(422, "Error train schedule does not exists"));
         }
-        let pricePerTicket = await TrainSchedule.findAll({
+        let trainScheduleDetail = await TrainSchedule.findAll({
           where: { id: transportId },
-          attributes: ["price_per_seat"],
+          attributes: ["price_per_seat", "total_available_seats"],
           raw: true,
         });
-        pricePerTicket = pricePerTicket[0]?.price_per_seat;
-        totalCalculatedFare = totalTicketCount * pricePerTicket;
+
+        const totalAvailableTicket =
+          trainScheduleDetail[0]?.total_available_seats;
+
+        if (totalTicketCount > totalAvailableTicket) {
+          return next(createError(422, "Error total ticket count"));
+        }
+
+        trainScheduleDetail = trainScheduleDetail[0]?.price_per_seat;
+        totalCalculatedFare = totalTicketCount * trainScheduleDetail;
+
+        const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+        const updateSchedule = await updateTrainScheduleDetail(
+          transportId,
+          updatedTicketCount
+        );
       } else if (transportType === "flight") {
         const flightScheduleStatus = await checkExistsFlightSchedule(
           transportId
@@ -77,15 +128,31 @@ const createBookingRecord = async (req, res, next) => {
             createError(422, "Error flight schedule does not exists")
           );
         }
-        let pricePerTicket = await FlightSchedule.findAll({
+
+        let flightScheduleDetail = await FlightSchedule.findAll({
           where: { id: transportId },
-          attributes: ["price_per_seat"],
+          attributes: ["price_per_seat", "total_available_seats"],
           raw: true,
         });
-        pricePerTicket = pricePerTicket[0]?.price_per_seat;
-        totalCalculatedFare = totalTicketCount * pricePerTicket;
-      } else if (transportType == "") {
-        return next(createError(422, "Error transport type cannot be empty"));
+
+        const totalAvailableTicket =
+          flightScheduleDetail[0]?.total_available_seats;
+
+        if (totalTicketCount > totalAvailableTicket) {
+          return next(createError(422, "Error total ticket count"));
+        }
+
+        flightScheduleDetail = flightScheduleDetail[0]?.price_per_seat;
+        totalCalculatedFare = totalTicketCount * flightScheduleDetail;
+
+        const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+        const updateSchedule = await updateFlightScheduleDetail(
+          transportId,
+          updatedTicketCount
+        );
+      } else {
+        return next(createError(422, "Error transport type not found"));
       }
       if (totalTicketCount == 0) {
         return next(createError(422, "Error ticket count cannot be zero"));
@@ -128,13 +195,28 @@ const updateBookingRecord = async (req, res, next) => {
           if (!busScheduleStatus) {
             return next(createError(422, "Error bus schedule does not exists"));
           }
-          let pricePerTicket = await BusSchedule.findAll({
+          let busScheduleDetail = await BusSchedule.findAll({
             where: { id: transportId },
-            attributes: ["price_per_seat"],
+            attributes: ["price_per_seat", "total_available_seats"],
             raw: true,
           });
-          pricePerTicket = pricePerTicket[0]?.price_per_seat;
-          totalCalculatedFare = totalTicketCount * pricePerTicket;
+
+          const totalAvailableSeats =
+            busScheduleDetail[0]?.total_available_seats;
+
+          if (totalTicketCount > totalAvailableSeats) {
+            return next(createError(422, "Error total ticket count"));
+          }
+
+          busScheduleDetail = busScheduleDetail[0]?.price_per_seat;
+          totalCalculatedFare = totalTicketCount * busScheduleDetail;
+
+          const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+          const updateSchedule = await updateBusScheduleDetail(
+            transportId,
+            updatedTicketCount
+          );
         } else if (transportType === "train") {
           const trainScheduleStatus = await checkExistsTrainSchedule(
             transportId
@@ -144,13 +226,28 @@ const updateBookingRecord = async (req, res, next) => {
               createError(422, "Error train schedule does not exists")
             );
           }
-          let pricePerTicket = await TrainSchedule.findAll({
+          let trainScheduleDetail = await TrainSchedule.findAll({
             where: { id: transportId },
-            attributes: ["price_per_seat"],
+            attributes: ["price_per_seat", "total_available_seats"],
             raw: true,
           });
-          pricePerTicket = pricePerTicket[0]?.price_per_seat;
-          totalCalculatedFare = totalTicketCount * pricePerTicket;
+
+          const totalAvailableSeats =
+            trainScheduleDetail[0]?.total_available_seats;
+
+          if (totalTicketCount > totalAvailableSeats) {
+            return next(createError(422, "Error total ticket count"));
+          }
+
+          trainScheduleDetail = trainScheduleDetail[0]?.price_per_seat;
+          totalCalculatedFare = totalTicketCount * trainScheduleDetail;
+
+          const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+          const updateSchedule = await updateTrainScheduleDetail(
+            transportId,
+            updatedTicketCount
+          );
         } else if (transportType === "flight") {
           const flightScheduleStatus = await checkExistsFlightSchedule(
             transportId
@@ -160,15 +257,30 @@ const updateBookingRecord = async (req, res, next) => {
               createError(422, "Error flight schedule does not exists")
             );
           }
-          let pricePerTicket = await FlightSchedule.findAll({
+          let flightScheduleDetail = await FlightSchedule.findAll({
             where: { id: transportId },
-            attributes: ["price_per_seat"],
+            attributes: ["price_per_seat", "total_available_seats"],
             raw: true,
           });
-          pricePerTicket = pricePerTicket[0]?.price_per_seat;
-          totalCalculatedFare = totalTicketCount * pricePerTicket;
+
+          const totalAvailableSeats =
+            flightScheduleDetail[0]?.total_available_seats;
+
+          if (totalTicketCount > totalAvailableSeats) {
+            return next(createError(422, "Error total ticket count"));
+          }
+
+          flightScheduleDetail = flightScheduleDetail[0]?.price_per_seat;
+          totalCalculatedFare = totalTicketCount * flightScheduleDetail;
+
+          const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+          const updateSchedule = await updateFlightScheduleDetail(
+            transportId,
+            updatedTicketCount
+          );
         } else if (transportType == "") {
-          return next(createError(422, "Error transport type cannot be empty"));
+          return next(createError(422, "Error transport type not found"));
         }
         if (totalTicketCount == 0) {
           return next(createError(422, "Error ticket count cannot be zero"));

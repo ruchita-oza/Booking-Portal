@@ -28,7 +28,7 @@ const createFlight = async (req, res, next) => {
       flight_type: result.flight_type,
     });
     await newFlight.save();
-    res.status(200).send("Flight added successfully");
+    return res.json({ data: "Flight added successfully", status: true });
   } catch (err) {
     if (err.isJoi) err.status = 422;
     next(err);

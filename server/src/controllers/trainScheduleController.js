@@ -194,15 +194,28 @@ const viewTrainScheduleById = async (req, res, next) => {
 
 const viewTrainSchedules = async (req, res, next) => {
   try {
+    const resultPerPage = 4;
     const apiFeatures = new ApiFeatures(TrainSchedule, req.query)
       .priceFilter()
+      .timeFilter()
+      .TicketFilter()
+      .pagination(resultPerPage)
       .filter();
     // let trainschedules = await apiFeatures.query;
     let trainschedules = await findAllTrainSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
+      timeQuery: apiFeatures.timeQuery,
+      ticketQuery: apiFeatures.ticketQuery,
+      skip: apiFeatures.skip,
+      resultPerPage,
     });
-    return res.json({ data: trainschedules, status: true });
+    return res.json({
+      data: trainschedules,
+      status: true,
+      filteredPerCount: trainschedules.rows.length,
+      resultPerPage,
+    });
   } catch (error) {
     return next(createError(500, "Error fetching train schedule" + error));
   }

@@ -27,7 +27,19 @@ export const fetchAllBusScheduleFail = (error) => {
 };
 //get BusSchedules
 export const getBusSchedules =
-  ({ source, destination, minPrice, maxPrice, fromDate, toDate , personCount }, setResult) =>
+  (
+    {
+      source,
+      destination,
+      minPrice,
+      maxPrice,
+      fromDate,
+      toDate,
+      personCount,
+      currentPage,
+    },
+    setResult
+  ) =>
   async (dispatch) => {
     try {
       // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
@@ -36,13 +48,15 @@ export const getBusSchedules =
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
+      personCount = personCount ? personCount : 1;
+      currentPage = currentPage ? currentPage : 1;
       // console.log(fromDate);
       // console.log(toDate);
       if (source && destination) {
-        console.log("at source dest");
+        // console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
-        console.log(sourceCity);
+        // console.log(sourceCity);
         if (
           (sourceCity === undefined && destCity === undefined) ||
           sourceCity.data.cities.count === 0 ||
@@ -57,11 +71,13 @@ export const getBusSchedules =
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
             minPrice,
-            maxPrice
+            maxPrice,
+            personCount,
+            currentPage
           );
           if (data) {
             if (data.busScheduleWithBuses.count === 0) setResult(false);
-            dispatch(fetchAllBusScheduleSuccess(data.busScheduleWithBuses));
+            dispatch(fetchAllBusScheduleSuccess(data));
             return;
           } else {
             throw new Error();
@@ -73,29 +89,36 @@ export const getBusSchedules =
             minPrice,
             maxPrice,
             fromDate,
-            toDate
+            toDate,
+            personCount,
+            currentPage
           );
           if (data) {
             if (data.busScheduleWithBuses.count === 0) setResult(false);
-            dispatch(fetchAllBusScheduleSuccess(data.busScheduleWithBuses));
+            dispatch(fetchAllBusScheduleSuccess(data));
             return;
           } else {
             throw new Error();
           }
         }
       } else {
-        let { data } = await getAllBusesApi(minPrice, maxPrice);
+        let { data } = await getAllBusesApi(
+          minPrice,
+          maxPrice,
+          personCount,
+          currentPage
+        );
         if (data) {
           // console.log(data);
           if (data.busScheduleWithBuses.count === 0) setResult(false);
-          dispatch(fetchAllBusScheduleSuccess(data.busScheduleWithBuses));
+          dispatch(fetchAllBusScheduleSuccess(data));
           return;
         } else {
           throw new Error();
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllBusScheduleFail(error));
