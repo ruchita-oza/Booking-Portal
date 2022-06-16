@@ -10,7 +10,6 @@ import Loader from "../../components/loader/loader";
 import { selectUser } from "../../redux/users/selectors";
 
 const Home = ({ type }) => {
-
   const { isLoading } = useSelector(selectUser);
   const [source, setSource] = useState();
   const [destination, setDestination] = useState("");
@@ -23,7 +22,15 @@ const Home = ({ type }) => {
     var lng = coordinates[1];
 
     // Paste your LocationIQ token below.
-    xhr.open('GET', "https://us1.locationiq.com/v1/reverse.php?key=pk.17d0cbca19dd9c109e5d5f13ede954be&lat=" + lat + "&lon=" + lng + "&format=json", true);
+    xhr.open(
+      "GET",
+      "https://us1.locationiq.com/v1/reverse.php?key=pk.17d0cbca19dd9c109e5d5f13ede954be&lat=" +
+        lat +
+        "&lon=" +
+        lng +
+        "&format=json",
+      true
+    );
     xhr.send();
     xhr.onreadystatechange = processRequest;
     xhr.addEventListener("readystatechange", processRequest, false);
@@ -37,43 +44,61 @@ const Home = ({ type }) => {
       }
     }
   }
-  
+
   // get state name
   async function getStates() {
-    let url = 'https://ipinfo.io/json?token=779eae9e88d5b2';
+    let url = "https://ipinfo.io/json?token=779eae9e88d5b2";
     let response = await fetch(url);
     let data = await response.json();
-    // console.log(data);
-     setCurrentState(data.region);
-    // console.log(currentState);
+    setCurrentState(data.region);
   }
   getStates();
 
+  useEffect(() => {
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
 
-  useEffect(()=>{
-      var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
-  
-      function success(pos) {
-        var crd = pos.coords;
-        var lat = crd.latitude.toString();
-        var lng = crd.longitude.toString();
-        var coordinates = [lat, lng];
-       getCity(coordinates);       
-        // console.log("at home effect"+city);
-        // setSource(city);
-        return ;
+    function success(pos) {
+      var crd = pos.coords;
+      var lat = crd.latitude.toString();
+      var lng = crd.longitude.toString();
+      var coordinates = [lat, lng];
+      getCity(coordinates);
+      return;
+    }
+
+    function error(err) {
+      console.warn(`ERROR(${err.code}): ${err.message}`); 
+      switch (err.code) {
+        case err.PERMISSION_DENIED:
+          alert("You denied the request for Geolocation.");
+          document.getElementById('nearbyCities').classList.add('d-none')
+          break;
+
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.");
+          document.getElementById('nearbyCities').classList.add('d-none')
+          break;
+
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.");
+          document.getElementById('nearbyCities').classList.add('d-none')
+          break;
+
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred.");
+          document.getElementById('nearbyCities').classList.add('d-none')
+          break;
+
+        default:
       }
-  
-      function error(err) {
-        console.warn(`ERROR(${err.code}): ${err.message}`);
-      }  
-      navigator.geolocation.getCurrentPosition(success, error, options);
-  },[])
-  
+    }
+    navigator.geolocation.getCurrentPosition(success, error, options);
+  }, []);
+
   return (
     <>
       {isLoading ? (
@@ -124,9 +149,9 @@ const Home = ({ type }) => {
           )}
           <div className='homeContainer'>
             <Transport
+              source={source}
               destination={destination}
-              setDestination={(val) => {
-                setDestination(val)}}
+              setDestination={setDestination}
             />
           </div>
         </div>

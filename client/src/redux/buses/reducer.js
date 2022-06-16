@@ -29,6 +29,7 @@ export const busReducer = (state = initialState, action) => {
         filteredPerCount: action.payload.filteredPerCount,
         resultPerPage: action.payload.resultPerPage,
         error: null,
+
       };
     case ALL_BUSSCHEDULE_FAIL:
       console.log(action.payload.message);

@@ -5,6 +5,8 @@ import bus from "../../images/bus.gif";
 import train from "../../images/train.gif";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot, faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/users/selectors";
 
@@ -46,17 +48,17 @@ const SearchItem = ({ data, personCount }) => {
     // var date = DateTime.Parse(data.departure_time);
     // console.log(data.departure_time);
     var dept_date = `${
-      data?.departure_time.split("T")[0].split("-")[2]
-    } ${getMonth(data?.departure_time.split("T")[0].split("-")[1])}`;
+      data?.departure_time?.split("T")[0]?.split("-")[2]
+    } ${getMonth(data?.departure_time?.split("T")[0]?.split("-")[1])}`;
     var dept_time = `${
-      data?.departure_time.split("T")[1].split(".")[0].split(":")[0]
-    }:${data?.departure_time.split("T")[1].split(".")[0].split(":")[1]}`;
+      data?.departure_time?.split("T")[1]?.split(".")[0]?.split(":")[0]
+    }:${data?.departure_time?.split("T")[1]?.split(".")[0]?.split(":")[1]}`;
     var arrival_date = `${
-      data?.arrival_time.split("T")[0].split("-")[2]
-    } ${getMonth(data?.arrival_time.split("T")[0].split("-")[1])}`;
+      data?.arrival_time?.split("T")[0]?.split("-")[2]
+    } ${getMonth(data?.arrival_time?.split("T")[0]?.split("-")[1])}`;
     var arrival_time = `${
-      data?.arrival_time.split("T")[1].split(".")[0].split(":")[0]
-    }:${data?.arrival_time.split("T")[1].split(".")[0].split(":")[1]}`;
+      data?.arrival_time?.split("T")[1]?.split(".")[0]?.split(":")[0]
+    }:${data?.arrival_time?.split("T")[1]?.split(".")[0]?.split(":")[1]}`;
   } // console.log(dept_time);
   const handleClick = () => {
     if (loggedInUser) {
