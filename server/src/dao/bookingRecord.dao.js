@@ -12,19 +12,28 @@ TrainSchedule.hasMany(BookingRecord, {
   // as: "train_schedule",
   foreignKey: "transport_id",
 });
-BookingRecord.belongsTo(TrainSchedule, { foreignKey: "transport_id" });
+BookingRecord.belongsTo(TrainSchedule, {
+  // as: "train_schedule",
+  foreignKey: "transport_id",
+});
 
 BusSchedule.hasMany(BookingRecord, {
   // as: "bus_schedule",
   foreignKey: "transport_id",
 });
-BookingRecord.belongsTo(BusSchedule, { foreignKey: "transport_id" });
-
-FlightSchedule.hasMany(BookingRecord, {
-  //   as: "flight_schedule",
+BookingRecord.belongsTo(BusSchedule, {
+  // as: "bus_schedule",
   foreignKey: "transport_id",
 });
-BookingRecord.belongsTo(FlightSchedule, { foreignKey: "transport_id" });
+
+FlightSchedule.hasMany(BookingRecord, {
+  // as: "flight_schedule",
+  foreignKey: "transport_id",
+});
+BookingRecord.belongsTo(FlightSchedule, {
+  // as: "flight_schedule",
+  foreignKey: "transport_id",
+});
 
 const findBookingRecordsByUserId = async (userId) => {
   let flightBookingRecords = await BookingRecord.findAll({

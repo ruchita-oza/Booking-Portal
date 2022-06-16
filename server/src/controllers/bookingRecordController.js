@@ -55,7 +55,7 @@ async function updateBusScheduleDetail(id, data) {
 
 const createBookingRecord = async (req, res, next) => {
   try {
-    console.log("Creating booking record");
+    console.log("Creating booking record : ", req.body);
     const user_id = req.body.cust_id;
     const transportId = req.body.transport_id;
     const userStatus = await checkExistsUser(user_id);
@@ -65,6 +65,7 @@ const createBookingRecord = async (req, res, next) => {
 
     const totalFare = req.body.total_fare;
     const transportType = req.body.transport_type.toLowerCase();
+
     if (userStatus) {
       if (transportType === "bus") {
         const busScheduleStatus = await checkExistsBusSchedule(transportId);
@@ -77,15 +78,44 @@ const createBookingRecord = async (req, res, next) => {
           raw: true,
         });
 
+        console.log("bus schedule detail : ", busScheduleDetail);
+
         const totalAvailableTicket =
           busScheduleDetail[0]?.total_available_seats;
+
+        busScheduleDetail = busScheduleDetail[0]?.price_per_seat;
+
+        totalCalculatedFare = totalTicketCount * busScheduleDetail;
+
+        if (totalTicketCount == 0) {
+          return next(createError(422, "Error ticket count cannot be zero"));
+        }
+
+        console.log(
+          "totalTicketCount : ",
+          totalTicketCount,
+          " totalAvailableTicket : ",
+          totalAvailableTicket
+        );
 
         if (totalTicketCount > totalAvailableTicket) {
           return next(createError(422, "Error total ticket count"));
         }
 
-        busScheduleDetail = busScheduleDetail[0]?.price_per_seat;
-        totalCalculatedFare = totalTicketCount * busScheduleDetail;
+        console.log(
+          "totalFare : ",
+          totalFare,
+          " totalCalculatedFare : ",
+          totalCalculatedFare
+        );
+
+        if (totalFare != totalCalculatedFare) {
+          return next(createError(422, "Error in total fare"));
+        }
+
+        const bookingRecord = await BookingRecords.create(req.body);
+
+        await bookingRecord.save();
 
         const updatedTicketCount = totalAvailableTicket - totalTicketCount;
 
@@ -93,11 +123,20 @@ const createBookingRecord = async (req, res, next) => {
           transportId,
           updatedTicketCount
         );
+
+        return res.json({
+          id: bookingRecord.id,
+          data: "Booking record created successfully",
+          status: 200,
+          success: true,
+        });
       } else if (transportType === "train") {
         const trainScheduleStatus = await checkExistsTrainSchedule(transportId);
+
         if (!trainScheduleStatus) {
           return next(createError(422, "Error train schedule does not exists"));
         }
+
         let trainScheduleDetail = await TrainSchedule.findAll({
           where: { id: transportId },
           attributes: ["price_per_seat", "total_available_seats"],
@@ -107,19 +146,39 @@ const createBookingRecord = async (req, res, next) => {
         const totalAvailableTicket =
           trainScheduleDetail[0]?.total_available_seats;
 
+        if (totalTicketCount == 0) {
+          return next(createError(422, "Error ticket count cannot be zero"));
+        }
+
         if (totalTicketCount > totalAvailableTicket) {
           return next(createError(422, "Error total ticket count"));
         }
 
         trainScheduleDetail = trainScheduleDetail[0]?.price_per_seat;
+
         totalCalculatedFare = totalTicketCount * trainScheduleDetail;
 
+        if (totalFare != totalCalculatedFare) {
+          return next(createError(422, "Error in total fare"));
+        }
+
         const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+        const bookingRecord = await BookingRecords.create(req.body);
+
+        await bookingRecord.save();
 
         const updateSchedule = await updateTrainScheduleDetail(
           transportId,
           updatedTicketCount
         );
+
+        return res.json({
+          id: bookingRecord.id,
+          data: "Booking record created successfully",
+          status: 200,
+          success: true,
+        });
       } else if (transportType === "flight") {
         const flightScheduleStatus = await checkExistsFlightSchedule(
           transportId
@@ -136,39 +195,51 @@ const createBookingRecord = async (req, res, next) => {
           raw: true,
         });
 
+        if (!flightScheduleDetail) {
+          return next(
+            createError(422, "Error flight schedule does not exists")
+          );
+        }
+
         const totalAvailableTicket =
           flightScheduleDetail[0]?.total_available_seats;
+        flightScheduleDetail = flightScheduleDetail[0]?.price_per_seat;
+
+        totalCalculatedFare = totalTicketCount * flightScheduleDetail;
+
+        if (totalTicketCount == 0) {
+          return next(createError(422, "Error ticket count cannot be zero"));
+        }
 
         if (totalTicketCount > totalAvailableTicket) {
           return next(createError(422, "Error total ticket count"));
         }
 
-        flightScheduleDetail = flightScheduleDetail[0]?.price_per_seat;
-        totalCalculatedFare = totalTicketCount * flightScheduleDetail;
+        if (totalFare != totalCalculatedFare) {
+          return next(createError(422, "Error in total fare"));
+        }
 
         const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+
+        console.log("req.body : ", req.body);
+        const bookingRecord = await BookingRecords.create(req.body);
+
+        await bookingRecord.save();
 
         const updateSchedule = await updateFlightScheduleDetail(
           transportId,
           updatedTicketCount
         );
+
+        return res.json({
+          id: bookingRecord.id,
+          data: "Booking record created successfully",
+          status: 200,
+          success: true,
+        });
       } else {
         return next(createError(422, "Error transport type not found"));
       }
-      if (totalTicketCount == 0) {
-        return next(createError(422, "Error ticket count cannot be zero"));
-      }
-      if (totalFare != totalCalculatedFare) {
-        return next(createError(422, "Error in total fare"));
-      }
-      const bookingRecord = await BookingRecords.create(req.body);
-      await bookingRecord.save();
-      return res.json({
-        id: bookingRecord.id,
-        data: "Booking record created successfully",
-        status: 200,
-        success: true,
-      });
     } else {
       return next(createError(500, "Error user does not exists"));
     }

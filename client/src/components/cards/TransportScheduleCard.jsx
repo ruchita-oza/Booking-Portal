@@ -241,7 +241,7 @@ function TransportScheduleCard({
                   fullWidth
                   label="Departure Time"
                   // value={value}
-                  // value={scheduleData["departure_time"]}
+                  value={data?.departure_time}
                   // onChange={handleChange}
                   onChange={(e) => {
                     // setScheduleData({
@@ -260,7 +260,7 @@ function TransportScheduleCard({
                 <DateTimePicker
                   label="Arrival Time"
                   // value={value}
-                  // value={scheduleData["arrival_time"]}
+                  value={data?.arrival_time}
                   // onChange={handleChange}
                   onChange={(e) => {
                     // setScheduleData({
