@@ -212,7 +212,9 @@ const getBusSchedules = async (req, res, next) => {
     });
     let filteredPerCount = busScheduleWithBuses.rows.length;
     // console.log(busScheduleWithBuses.rows.length);
-    res.status(200).json({ busScheduleWithBuses, filteredPerCount , resultPerPage });
+    res
+      .status(200)
+      .json({ busScheduleWithBuses, filteredPerCount, resultPerPage });
   } catch (err) {
     next(err);
   }
@@ -221,6 +223,10 @@ const getBusSchedules = async (req, res, next) => {
 const createBusScheduleFromArray = async (req, res, next) => {
   try {
     let scheduleData = req.body;
+
+    if (scheduleData.length == 0) {
+      return next(createError(422, "Error no bus schedule data entered"));
+    }
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {
@@ -247,6 +253,12 @@ const createBusScheduleFromArray = async (req, res, next) => {
         if (!destinationCityStatus) {
           return next(
             createError(422, "Error destination city does not exists")
+          );
+        }
+
+        if (source == destination) {
+          return next(
+            createError(422, "Error source and destination city cannot be same")
           );
         }
 
@@ -290,6 +302,7 @@ const createBusScheduleFromArray = async (req, res, next) => {
         throw error;
       }
     }
+
     return res.json({
       data: "Bus schedule created successfully",
       status: true,
