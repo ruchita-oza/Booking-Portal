@@ -26,7 +26,7 @@ const Transport = ({ source, destination, setDestination }) => {
   const navigate = useNavigate();
 
   const handleSearch = (name, operation) => {
-    navigate(`/buses`, {
+    navigate(`/flights`, {
       state: { source, destination },
     });
   };
@@ -71,6 +71,9 @@ const Transport = ({ source, destination, setDestination }) => {
             }
             className='card-img-top'
             alt='...'
+            onClick={() => {
+              setDestination(data?.city_name);
+            }}
           />
 
           <div className='card-body'>
@@ -117,7 +120,7 @@ const Transport = ({ source, destination, setDestination }) => {
         <div className='carousel-inner'>
           <div className='carousel-item active'>
             <div className='cards-wrapper'>
-              <div className='card d-none d-md-block'>
+              <div className='card'>
                 <img
                   src="https://images.unsplash.com/photo-1606240639706-dbd343433c32?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=812&q=80"
                   className='card-img-top'

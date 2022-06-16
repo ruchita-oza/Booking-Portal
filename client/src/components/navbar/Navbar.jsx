@@ -64,6 +64,10 @@ const Navbar = (props) => {
                 <Link to="/userProfile">
                   <button className="navButton">User Profile</button>
                 </Link>
+              )}{loggedInUser?.is_admin==="Admin" && (
+                <Link to="/admin/transportDetailAndSchedule">
+                  <button className="navButton">Trasnport</button>
+                </Link>
               )}
             </div>
           </div>

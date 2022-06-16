@@ -40,21 +40,30 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
     if (!user) return next(createError(404, "invalid credential"));
+    if(user.is_admin==="User"){
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
       user.password
     );
-
     if (!isPasswordCorrect) return next(createError(400, "invalid credential"));
     const token = jwt.sign(
       { id: user.id, is_admin: user.is_admin },
       process.env.JWT_SECRET
     );
-    const { password, is_admin, ...otherDetails } = user.dataValues;
+    const { password, ...otherDetails } = user.dataValues;
     res
       .cookie("access_token", token, { httpOnly: true })
       .status(200)
-      .json({ ...otherDetails, success: true });
+      .json({ ...otherDetails, success: true });}else{
+        if(user.password===req.body.password){
+          const {password, ...otherDetails} = user.dataValues;
+          const token = jwt.sign(
+            { id: user.id, is_admin: user.is_admin },
+            process.env.JWT_SECRET
+          );
+          res.cookie("access_token", token, { httpOnly: true}).status(200).json({ ...otherDetails, success: true})
+        }else{return next(createError(400,"invalid credential"));}
+      }
   } catch (err) {
     next(err);
   }

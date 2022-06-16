@@ -15,12 +15,13 @@ import Login from "./pages/authPage/login";
 import Register from "./pages/authPage/register";
 import AuthRoute from "./pages/authPage/AuthRoute";
 import UserPrivateRoute from "./components/PrivateRoute/UserPrivateRoute";
+import AdminPrivateRoute from "./components/PrivateRoute/AdminPrivateRoute";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./pages/userProfile/UserProfile";
 import BookingPage from "./pages/bookingPage/BookingPage";
 import Transport from "./pages/transportDetails/Transport";
-// import "./App.css";
 import { AnimatePresence } from "framer-motion";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,11 @@ function App() {
     setCategory(newCategory);
   };
 
+  // const [isAdmin, setIsAdmin] = useState(false);
+  // useEffect(() => {
+  //   setIsAdmin(Role.Admin);
+  // }, [isAdmin]);
+
   return (
     <>
       <BrowserRouter>
@@ -44,26 +50,22 @@ function App() {
         <AnimatePresence>
           <Routes>
             <Route path="/" element={<Home type={category} />} />
-            <Route path="/flights" element={<List />} />
-            <Route path="/fligh ts/:id" element={<Flight />} />
             <Route path="/auth" element={<AuthRoute />}>
               <Route path="/auth/register" element={<Register />} />
               <Route path="/auth/login" element={<Login />} />
             </Route>
-            {/* <Route path="/admin">{routing} </Route> */}
-            {/* <Route path="/authPage" element={<AuthPage />} /> */}
+            <Route path="/flights" element={<List />} />
+            <Route path="/fligh ts/:id" element={<Flight />} />
             <Route path="/buses" element={<List />} />
-
             <Route path="/buses/:id" element={<Buses />} />
             <Route path="/trains" element={<List />} />
             <Route path="/userProfile" element={<UserPrivateRoute />}>
               <Route path="/userProfile" element={<UserProfile />} />
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
-            <Route
-              path="/admin/transportDetailAndSchedule"
-              element={<Transport />}
-            />
+            <Route path="/admin" element={<AdminPrivateRoute />}>
+            <Route path="/admin/transportDetailAndSchedule" element={<Transport />}
+            /></Route>
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

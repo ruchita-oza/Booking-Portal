@@ -18,7 +18,7 @@ const updateUser = async (req, res, next) => {
       return next(createError(404, "User not found"));
     }
     const user = await User.findOne({ where: { id: req.params.id } });
-    const { password, isAdmin, ...otherDetails } = user.dataValues;
+    const { password, ...otherDetails } = user.dataValues;
     res
       .status(200)
       .json({
@@ -46,7 +46,8 @@ const getUser = async (req, res, next) => {
     const status = await checkExistsUser(userId);
     if (status) {
       const user = await User.findAll({ where: { id: userId } });
-      return res.json({ data: user, status: true });
+      const {password , ...otherDetails} = user;
+      return res.json({ data: otherDetails, status: true });
     }
     return next(createError(422, "Error user does not exists"));
   } catch (error) {
@@ -56,7 +57,8 @@ const getUser = async (req, res, next) => {
 const getUsers = async (req, res, next) => {
   try {
     const users = await User.findAndCountAll({ where: { is_admin: "User" } });
-    res.status(200).json({ users });
+    // const {...otherDetails} = users
+    res.status(200).json({ users});
   } catch (err) {
     next(err);
   }
