@@ -18,10 +18,10 @@ import UserPrivateRoute from "./components/PrivateRoute/UserPrivateRoute";
 import AdminPrivateRoute from "./components/PrivateRoute/AdminPrivateRoute";
 import "react-toastify/dist/ReactToastify.css";
 import UserProfile from "./pages/userProfile/UserProfile";
+import UserBooking from "./pages/userProfile/UserBooking";
 import BookingPage from "./pages/bookingPage/BookingPage";
 import Transport from "./pages/transportDetails/Transport";
 import { AnimatePresence } from "framer-motion";
-
 
 function App() {
   const dispatch = useDispatch();
@@ -37,12 +37,6 @@ function App() {
   const changeCategory = (newCategory) => {
     setCategory(newCategory);
   };
-
-  // const [isAdmin, setIsAdmin] = useState(false);
-  // useEffect(() => {
-  //   setIsAdmin(Role.Admin);
-  // }, [isAdmin]);
-
   return (
     <>
       <BrowserRouter>
@@ -61,11 +55,18 @@ function App() {
             <Route path="/trains" element={<List />} />
             <Route path="/userProfile" element={<UserPrivateRoute />}>
               <Route path="/userProfile" element={<UserProfile />} />
+              <Route
+                path="/userProfile/Bookings/:id"
+                element={<UserBooking />}
+              />
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
             <Route path="/admin" element={<AdminPrivateRoute />}>
-            <Route path="/admin/transportDetailAndSchedule" element={<Transport />}
-            /></Route>
+              <Route
+                path="/admin/transportDetailAndSchedule"
+                element={<Transport />}
+              />
+            </Route>
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

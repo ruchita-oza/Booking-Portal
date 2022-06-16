@@ -7,24 +7,33 @@ import { selectUser } from "../../redux/users/selectors";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Masonry from "@mui/lab/Masonry";
 import { createTheme } from "@mui/material/styles";
-import { Grid, Chip, Divider } from "@mui/material";
 import { toast } from "react-hot-toast";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import { refreshState } from "../../redux/users/actions";
 import { fetchUserBookingRecordsDetailThunkAction } from "../../redux/users/actions";
 import Loader from "../../components/loader/loader";
 import ParseDate from "../../Utilities/ParseDate";
 import dateFormat, { masks } from "dateformat";
 import { withStyles } from "@material-ui/core/styles";
+import {
+  Grid,
+  Chip,
+  Divider,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  Typography,
+  Tab,
+  Tabs,
+  AppBar,
+  Box,
+} from "@mui/material";
+
+import UserBooking from "./UserBooking";
+import BookingDetailCard from "./BookingDetailCard";
+import NoRecord from "./NoRecord";
 
 const axios = require("axios");
 
@@ -149,7 +158,6 @@ function UserProfile() {
       }
     }
   }
-
   useEffect(() => {
     setBookingDetails(data1?.data);
     setAllCompletedBookingRecords(completedBookingRecords);
@@ -173,11 +181,11 @@ function UserProfile() {
     }
   }
 
-  const styles = (theme) => ({
-    indicator: {
-      backgroundColor: "red",
-    },
-  });
+  // const styles = (theme) => ({
+  //   indicator: {
+  //     backgroundColor: "red",
+  //   },
+  // });
 
   const upcomingRecords = () => {
     return allUpcomingBookingRecords.map((e) => (
@@ -188,6 +196,7 @@ function UserProfile() {
               Journey Details
               {" : "}
               <StyleChip label={"  " + e.booking_status} color="success" />
+              <button className="pull-right">Text</button>
             </Typography>
             <br />
             <Typography variant="body1">
@@ -413,67 +422,13 @@ function UserProfile() {
                   onChangeIndex={handleChangeIndex}
                 >
                   <TabPanel value={value} index={0} dir={theme.direction}>
-                    <Card
-                      variant="outlined"
-                      sx={{
-                        boxShadow: 3,
-                      }}
-                    >
-                      <CardContent>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography variant="h5">
-                            <b>NO BOOKING RECORDS FOUND</b>
-                          </Typography>
-                        </Grid>
-                      </CardContent>
-                    </Card>
+                    <NoRecord />
                   </TabPanel>
                   <TabPanel value={value} index={1} dir={theme.direction}>
-                    <Card
-                      variant="outlined"
-                      sx={{
-                        boxShadow: 3,
-                      }}
-                    >
-                      <CardContent>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography variant="h5">
-                            <b>NO BOOKING RECORDS FOUND</b>
-                          </Typography>
-                        </Grid>
-                      </CardContent>
-                    </Card>
+                    <NoRecord />
                   </TabPanel>
                   <TabPanel value={value} index={2} dir={theme.direction}>
-                    <Card
-                      variant="outlined"
-                      sx={{
-                        boxShadow: 3,
-                      }}
-                    >
-                      <CardContent>
-                        <Grid
-                          container
-                          direction="row"
-                          alignItems="center"
-                          justifyContent="center"
-                        >
-                          <Typography variant="h5">
-                            <b>NO BOOKING RECORDS FOUND</b>
-                          </Typography>
-                        </Grid>
-                      </CardContent>
-                    </Card>
+                    <NoRecord />
                   </TabPanel>
                 </SwipeableViews>
               </Box>
@@ -525,81 +480,13 @@ function UserProfile() {
                 >
                   {allUpcomingBookingRecords.length === 0 ? (
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                      <Card
-                        variant="outlined"
-                        sx={{
-                          boxShadow: 3,
-                        }}
-                      >
-                        <CardContent>
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography variant="h5">
-                              <b>NO BOOKING RECORDS FOUND</b>
-                            </Typography>
-                          </Grid>
-                        </CardContent>
-                      </Card>
+                      <NoRecord />
                     </TabPanel>
                   ) : (
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                      {allUpcomingBookingRecords.map((e) => (
+                      {allUpcomingBookingRecords.map((booking) => (
                         <>
-                          <Card
-                            variant="outlined"
-                            sx={{
-                              boxShadow: 3,
-                            }}
-                          >
-                            <CardContent>
-                              <Typography variant="h5">
-                                {e.transport_type == "flight"
-                                  ? e.flight_schedule?.source_name?.city_name +
-                                    " to " +
-                                    e.flight_schedule?.destination_name
-                                      ?.city_name +
-                                    " "
-                                  : e.transport_type == "bus"
-                                  ? e.bus_schedule?.source_name?.city_name +
-                                    " to " +
-                                    e.bus_schedule?.destination_name
-                                      ?.city_name +
-                                    " "
-                                  : e.train_schedule?.source_name?.city_name +
-                                    " to " +
-                                    e.train_schedule?.destination_name
-                                      ?.city_name +
-                                    " "}
-                                <StyleChip
-                                  label={"  " + e.booking_status}
-                                  color="success"
-                                />
-                              </Typography>
-                              <Divider
-                                // variant="absolute"
-                                style={{
-                                  marginTop: "5px",
-                                  marginBottom: "5px",
-                                  // height: "100%",
-                                }}
-                              />
-                              <Typography variant="body1">
-                                Tranport type: {" " + e.transport_type}
-                                <br />
-                                Journey date:{" "}
-                                {" " +
-                                  ParseDate.ParseDate(e.journey_date, true)}
-                                <br />
-                                Total tickets: {" " + e.total_ticket_count}
-                                <br />
-                                Total fare: {" " + e.total_fare}
-                              </Typography>
-                            </CardContent>
-                          </Card>
+                          <BookingDetailCard booking={booking} />
                           <br />
                         </>
                       ))}
@@ -607,82 +494,13 @@ function UserProfile() {
                   )}
                   {allCompletedBookingRecords.length === 0 ? (
                     <TabPanel value={value} index={1} dir={theme.direction}>
-                      <Card
-                        variant="outlined"
-                        sx={{
-                          boxShadow: 3,
-                        }}
-                      >
-                        <CardContent>
-                          <Grid
-                            container
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="center"
-                          >
-                            <Typography variant="h5">
-                              <b>NO BOOKING RECORDS FOUND</b>
-                            </Typography>
-                          </Grid>
-                        </CardContent>
-                      </Card>
+                      <NoRecord />
                     </TabPanel>
                   ) : (
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {allCompletedBookingRecords.map((e) => (
                         <>
-                          <Card
-                            variant="outlined"
-                            sx={{
-                              boxShadow: 3,
-                            }}
-                          >
-                            <CardContent>
-                              <Typography variant="h5">
-                                {e.transport_type == "flight"
-                                  ? e.flight_schedule?.source_name?.city_name +
-                                    " to " +
-                                    e.flight_schedule?.destination_name
-                                      ?.city_name +
-                                    " "
-                                  : e.transport_type == "bus"
-                                  ? e.bus_schedule?.source_name?.city_name +
-                                    " to " +
-                                    e.bus_schedule?.destination_name
-                                      ?.city_name +
-                                    " "
-                                  : e.train_schedule?.source_name?.city_name +
-                                    " to " +
-                                    e.train_schedule?.destination_name
-                                      ?.city_name +
-                                    " "}
-                                <StyleChip
-                                  label={"  " + e.booking_status}
-                                  color="success"
-                                />
-                              </Typography>
-                              <Divider
-                                // variant="absolute"
-                                style={{
-                                  marginTop: "5px",
-                                  marginBottom: "5px",
-                                  // height: "100%",
-                                }}
-                              />
-                              <Typography variant="body1">
-                                Tranport type: {" " + e.transport_type}
-                                <br />
-                                Journey date:{" "}
-                                {" " +
-                                  ParseDate.ParseDate(e.journey_date, true)}
-                                <br />
-                                Total tickets: {" " + e.total_ticket_count}
-                                <br />
-                                Total fare: {" " + e.total_fare}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                          <br />
+                          <BookingDetailCard booking={e} /> <br />
                         </>
                       ))}
                     </TabPanel>
@@ -690,55 +508,7 @@ function UserProfile() {
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>
-                        <Card
-                          variant="outlined"
-                          sx={{
-                            boxShadow: 3,
-                          }}
-                        >
-                          <CardContent>
-                            <Typography variant="h5">
-                              {e.transport_type == "flight"
-                                ? e.flight_schedule?.source_name?.city_name +
-                                  " to " +
-                                  e.flight_schedule?.destination_name
-                                    ?.city_name +
-                                  " "
-                                : e.transport_type == "bus"
-                                ? e.bus_schedule?.source_name?.city_name +
-                                  " to " +
-                                  e.bus_schedule?.destination_name?.city_name +
-                                  " "
-                                : e.train_schedule?.source_name?.city_name +
-                                  " to " +
-                                  e.train_schedule?.destination_name
-                                    ?.city_name +
-                                  " "}
-                              <StyleChip
-                                label={"  " + e.booking_status}
-                                color="success"
-                              />
-                            </Typography>
-                            <Divider
-                              // variant="absolute"
-                              style={{
-                                marginTop: "5px",
-                                marginBottom: "5px",
-                                // height: "100%",
-                              }}
-                            />
-                            <Typography variant="body1">
-                              Tranport type: {" " + e.transport_type}
-                              <br />
-                              Journey date:{" "}
-                              {" " + ParseDate.ParseDate(e.journey_date, true)}
-                              <br />
-                              Total tickets: {" " + e.total_ticket_count}
-                              <br />
-                              Total fare: {" " + e.total_fare}
-                            </Typography>
-                          </CardContent>
-                        </Card>
+                        <BookingDetailCard booking={e} />
                         <br />
                       </>
                     ))}
