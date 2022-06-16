@@ -282,13 +282,13 @@ const createFlightScheduleFromArray = async (req, res, next) => {
         const totalAvailableSeats = scheduleData[i]?.total_available_seats;
         const pricePerSeat = scheduleData[i]?.price_per_seat;
 
-        // const flightExistsStatus = await checkExistsFlight(flightId);
+        const flightExistsStatus = await checkExistsFlight(flightId);
         const sourceCityStatus = await checkExistsCity(source);
         const destinationCityStatus = await checkExistsCity(destination);
 
-        // if (!flightExistsStatus) {
-        //   return next(createError(422, "Error flight does not exists"));
-        // }
+        if (!flightExistsStatus) {
+          return next(createError(422, "Error flight does not exists"));
+        }
 
         if (!sourceCityStatus) {
           return next(createError(422, "Error source city does not exists"));

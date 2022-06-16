@@ -229,6 +229,8 @@ const createTrainScheduleFromArray = async (req, res, next) => {
       return next(createError(422, "Error no train schedule data entered"));
     }
 
+    // console.log("train schedule data : ", scheduleData)
+
     for (let i = 0; i < scheduleData.length; i++) {
       try {
         const trainId = scheduleData[i]?.train_id;
