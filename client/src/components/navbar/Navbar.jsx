@@ -37,52 +37,63 @@ const Navbar = (props) => {
   return (
     <>
       <div>
-        <div className="navbar">
-          <div className="navContainer">
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <span className="logo" style={{ color: "white" }}>
+        <div className='navbar'>
+          <div className='navContainer'>
+            <Link to='/' style={{ textDecoration: "none" }}>
+              <span className='logo' style={{ color: "white" }}>
                 Skyline booking
               </span>
             </Link>
-            <div className="navItems">
+            <div className='navItems'>
               {!loggedInUser && (
                 <>
-                  <Link to="/auth/register">
-                    <button className="navButton">Register</button>
+                  <Link to='/auth/register'>
+                    <button className='navButton'>Register</button>
                   </Link>
-                  <Link to="/auth/login">
-                    <button className="navButton">Login</button>
+                  <Link to='/auth/login'>
+                    <button className='navButton'>Login</button>
                   </Link>
                 </>
               )}
               {loggedInUser && (
-                <Link onClick={handleLogout} to="/">
-                  <button className="navButton">Logout</button>
+                <Link onClick={handleLogout} to='/'>
+                  <button className='navButton'>Logout</button>
                 </Link>
               )}
               {loggedInUser && (
-                <Link to="/userProfile">
-                  <button className="navButton">User Profile</button>
+                <Link to='/userProfile'>
+                  <button className='navButton'>User Profile</button>
                 </Link>
-              )}{loggedInUser?.is_admin==="Admin" && (
-                <Link to="/admin/transportDetailAndSchedule">
-                  <button className="navButton">Trasnport</button>
-                </Link>
+              )}
+              {loggedInUser?.is_admin === "Admin" && (
+                <>
+                  <Link to='/admin/transportDetailAndSchedule'>
+                    <button className='navButton'>Trasnport</button>
+                  </Link>
+                  <Link to='/admin/busList'>
+                    <button className='navButton'>Bus List</button>
+                  </Link>
+                  <Link to='/admin/flightList'>
+                    <button className='navButton'>Flight List</button>
+                  </Link>
+                  <Link to='/admin/trainList'>
+                    <button className='navButton'>Train List</button>
+                  </Link>
+                </>
               )}
             </div>
           </div>
         </div>
-        <div className="header">
-          <div className="headerContainer listMode">
-            <div className="headerList">
+        <div className='header'>
+          <div className='headerContainer listMode'>
+            <div className='headerList'>
               <div
                 className={
                   props.type === "flights"
                     ? "headerListItem active"
                     : "headerListItem "
                 }
-                onClick={() => doChanges("flights")}
-              >
+                onClick={() => doChanges("flights")}>
                 <FontAwesomeIcon icon={faPlane} />
                 <span>Flight</span>
               </div>
@@ -94,8 +105,7 @@ const Navbar = (props) => {
                 }
                 onClick={() => {
                   doChanges("buses");
-                }}
-              >
+                }}>
                 <FontAwesomeIcon icon={faBus} />
                 <span>Bus</span>
               </div>
@@ -107,8 +117,7 @@ const Navbar = (props) => {
                 }
                 onClick={() => {
                   doChanges("trains");
-                }}
-              >
+                }}>
                 <FontAwesomeIcon icon={faTrain} />
                 <span>Train</span>
               </div>

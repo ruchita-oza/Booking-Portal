@@ -145,3 +145,17 @@ export const getFlightScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_FLIGHTSCHEDULE_FAIL, payload: error });
   }
 };
+
+export const getAllFlightSchedule = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_FLIGHTSCHEDULE_REQUEST });
+    const data = await getAllFlightSchedule();
+    if (data) {
+      console.log(data);
+      dispatch({ type: ALL_FLIGHTSCHEDULE_SUCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: ALL_FLIGHTSCHEDULE_FAIL, payload: error });
+  }
+};
