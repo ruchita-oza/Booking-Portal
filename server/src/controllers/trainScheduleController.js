@@ -7,6 +7,7 @@ const ApiFeatures = require("../utils/apiFeatures");
 const {
   findTrainScheduleById,
   findAllTrainSchedules,
+  findAllTrainSchedulesByTrainId,
 } = require("../dao/train.dao");
 
 async function checkExistsTrain(id) {
@@ -33,26 +34,50 @@ const createTrainSchedule = async (req, res, next) => {
     const departureTime = req.body.departure_time;
     const arrivalTime = req.body.arrival_time;
     const totalAvailableSeats = req.body.total_available_seats;
+    const pricePerSeat = req.body.price_per_seat;
     const trainStatus = await checkExistsTrain(train_number);
     const sourceCityStatus = await checkExistsCity(source);
     const destinationCityStatus = await checkExistsCity(destination);
 
     if (!trainStatus) {
-      return next(createError(422, "Train number does not exists"));
+      return next(createError(422, "Error Train number does not exists"));
     } else if (!sourceCityStatus) {
-      return next(createError(422, "Source city does not exists"));
+      return next(createError(422, "Error Source city does not exists"));
     } else if (!destinationCityStatus) {
-      return next(createError(422, "Destination city does not exists"));
+      return next(createError(422, "Error Destination city does not exists"));
     } else if (source == destination) {
       return next(
-        createError(422, "Source city and destination city should not be same")
+        createError(
+          422,
+          "Error Source city and destination city should not be same"
+        )
       );
     } else if (departureTime == arrivalTime) {
       return next(
-        createError(422, "Arrival time and departure time should not be same")
+        createError(
+          422,
+          "Error Arrival time and departure time should not be same"
+        )
+      );
+    } else if (departureTime > arrivalTime) {
+      return next(
+        createError(
+          422,
+          "Error departure time of source city cannot be greater than arrival time of destination city"
+        )
       );
     } else if (totalAvailableSeats == 0) {
-      return next(createError(422, "Total available seats cannot be zero"));
+      return next(
+        createError(422, "Error total available seats cannot be zero")
+      );
+    } else if (totalAvailableSeats < 0) {
+      return next(
+        createError(422, "Error total available seats cannot be negative")
+      );
+    } else if (pricePerSeat == 0) {
+      return next(createError(422, "Error price per seat cannot be zero"));
+    } else if (pricePerSeat < 0) {
+      return next(createError(422, "Error price per seat cannot be negative"));
     } else {
       console.log(req.body);
       const train = await TrainSchedule.create(req.body);
@@ -76,28 +101,51 @@ const updateTrainSchedule = async (req, res, next) => {
     const destination = req.body.destination;
     const departureTime = req.body.departure_time;
     const arrivalTime = req.body.arrival_time;
+    const totalAvailableSeats = req.body.total_available_seats;
+    const pricePerSeat = req.body.price_per_seat;
     const trainScheduleStatus = await checkExistsTrainSchedule(trainScheduleId);
     const trainStatus = await checkExistsTrain(req.body.train_id);
     const sourceCityStatus = await checkExistsCity(req.body.source);
     const destinationCityStatus = await checkExistsCity(req.body.destination);
 
     if (!trainScheduleStatus) {
-      return next(createError(422, "Train schedule does not exists"));
+      return next(createError(422, "Error Train schedule does not exists"));
     }
     if (!trainStatus) {
-      return next(createError(422, "Train number does not exists"));
+      return next(createError(422, "Error Train number does not exists"));
     } else if (!sourceCityStatus) {
-      return next(createError(422, "Source city does not exists"));
+      return next(createError(422, "Error Source city does not exists"));
     } else if (!destinationCityStatus) {
-      return next(createError(422, "Destination city does not exists"));
+      return next(createError(422, "Error Destination city does not exists"));
     } else if (source == destination) {
       return next(
-        createError(422, "Source city and destination city should not be same")
+        createError(
+          422,
+          "Error Source city and destination city should not be same"
+        )
       );
     } else if (departureTime == arrivalTime) {
       return next(
-        createError(422, "Arrival time and departure time should not be same")
+        createError(
+          422,
+          "Error Arrival time and departure time should not be same"
+        )
       );
+    } else if (departureTime > arrivalTime) {
+      return next(
+        createError(
+          422,
+          "Error departure time of source city cannot be greater than arrival time of destination city"
+        )
+      );
+    } else if (totalAvailableSeats < 0) {
+      return next(
+        createError(422, "Error total available seats cannot be negative")
+      );
+    } else if (pricePerSeat == 0) {
+      return next(createError(422, "Error price per seat cannot be zero"));
+    } else if (pricePerSeat < 0) {
+      return next(createError(422, "Error price per seat cannot be negative"));
     } else {
       const trainschedule = await TrainSchedule.update(req.body, {
         where: { id: trainScheduleId },
@@ -278,14 +326,20 @@ const createTrainScheduleFromArray = async (req, res, next) => {
           return next(
             createError(
               422,
-              "Error departure time cannot be greater than arrival time"
+              "Error departure time of source city cannot be greater than arrival time of destination city"
             )
           );
         }
 
         if (totalAvailableSeats == 0) {
           return next(
-            createError(422, "Error total available seat cannot be zero")
+            createError(422, "Error total available seats cannot be zero")
+          );
+        }
+
+        if (totalAvailableSeats < 0) {
+          return next(
+            createError(422, "Error total available seats cannot be negative")
           );
         }
 
@@ -315,6 +369,16 @@ const createTrainScheduleFromArray = async (req, res, next) => {
   }
 };
 
+const getAllTrainSchedulesByTrainId = async (req, res, next) => {
+  try {
+    const trainId = req.params.id;
+    const trainSchedules = await findAllTrainSchedulesByTrainId(trainId);
+    return res.json({ data: trainSchedules, status: true });
+  } catch (error) {
+    return next(createError(500, "Error while fetching train schedules"));
+  }
+};
+
 module.exports = {
   createTrainSchedule,
   updateTrainSchedule,
@@ -323,4 +387,5 @@ module.exports = {
   viewTrainScheduleById,
   viewTrainSchedules,
   createTrainScheduleFromArray,
+  getAllTrainSchedulesByTrainId,
 };

@@ -8,6 +8,7 @@ const Apifeatures = require("../utils/apiFeatures");
 const {
   findFlightScheduleById,
   findAllFlightSchedules,
+  findAllFlightSchedulesByFlightId,
 } = require("../dao/flight.dao");
 
 async function checkExistsFlight(id) {
@@ -66,10 +67,11 @@ const createFlightSchedule = async (req, res, next) => {
       return next(
         createError(
           422,
-          "Error departure time cannot be greater than arrival time"
+          "Error departure time of source city cannot be greater than arrival time of destination city"
         )
       );
     }
+
     if (total_available_seats < 0) {
       return next(
         createError(422, "Error total available seats cannot be negative")
@@ -140,7 +142,7 @@ const updateFlightSchedule = async (req, res, next) => {
       return next(
         createError(
           422,
-          "Error departure time cannot be greater than arrival time"
+          "Error departure time of source city cannot be greater than arrival time of destination city"
         )
       );
     }
@@ -319,7 +321,7 @@ const createFlightScheduleFromArray = async (req, res, next) => {
           return next(
             createError(
               422,
-              "Error departure time cannot be greater than arrival time"
+              "Error departure time of source city cannot be greater than arrival time of destination city"
             )
           );
         }
@@ -327,6 +329,12 @@ const createFlightScheduleFromArray = async (req, res, next) => {
         if (totalAvailableSeats == 0) {
           return next(
             createError(422, "Error total available seat cannot be zero")
+          );
+        }
+
+        if (totalAvailableSeats < 0) {
+          return next(
+            createError(422, "Error total available seats cannot be negative")
           );
         }
 
@@ -358,6 +366,16 @@ const createFlightScheduleFromArray = async (req, res, next) => {
   }
 };
 
+const getAllFlightSchedulesByFlightId = async (req, res, next) => {
+  try {
+    const flightId = req.params.id;
+    const flightSchedules = await findAllFlightSchedulesByFlightId(flightId);
+    return res.json({ data: flightSchedules, status: true });
+  } catch (error) {
+    return next(createError(500, "Error while fetching flight schedules"));
+  }
+};
+
 module.exports = {
   createFlightSchedule,
   updateFlightSchedule,
@@ -366,4 +384,5 @@ module.exports = {
   getFlightSchedules,
   getAllFlightSchedules,
   createFlightScheduleFromArray,
+  getAllFlightSchedulesByFlightId,
 };

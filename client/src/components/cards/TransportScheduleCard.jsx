@@ -117,7 +117,7 @@ function TransportScheduleCard({
                 required
                 select
                 id="source"
-                label="Source"
+                label="Source City"
                 SelectProps={{ MenuProps: MenuProps }}
                 // value={data["source"]}
                 onChange={(e) => {
@@ -133,37 +133,6 @@ function TransportScheduleCard({
                     {option.label}
                   </MenuItem>
                 ))}
-                {/* <MenuItem value={1}>Mumbai</MenuItem>
-                <MenuItem value={2}>Goa</MenuItem>
-                <MenuItem value={3}>Pune</MenuItem>
-                <MenuItem value={4}>Panjim</MenuItem>
-                <MenuItem value={5}>Rajasthan</MenuItem>
-                <MenuItem value={6}>Udaipur</MenuItem>
-                <MenuItem value={7}>Rajkot</MenuItem>
-                <MenuItem value={8}>Surat</MenuItem>
-                <MenuItem value={9}>Vadodara</MenuItem>
-                <MenuItem value={10}>Delhi</MenuItem>
-                <MenuItem value={11}>Bangalore</MenuItem>
-                <MenuItem value={12}>Hyderabad</MenuItem>
-                <MenuItem value={13}>Ahmedabad</MenuItem>
-                <MenuItem value={14}>Chennai</MenuItem>
-                <MenuItem value={15}>Kolkata</MenuItem>
-                <MenuItem value={16}>Jaipur</MenuItem>
-                <MenuItem value={17}>Lucknow</MenuItem>
-                <MenuItem value={18}>Kanpur</MenuItem>
-                <MenuItem value={19}>Nagpur</MenuItem>
-                <MenuItem value={20}>Indore</MenuItem>
-                <MenuItem value={21}>Thane</MenuItem>
-                <MenuItem value={22}>Bhopal</MenuItem>
-                <MenuItem value={23}>Patna</MenuItem>
-                <MenuItem value={24}>Agra</MenuItem>
-                <MenuItem value={25}>Nashik</MenuItem>
-                <MenuItem value={26}>Faridabad</MenuItem>
-                <MenuItem value={27}>Varanasi</MenuItem>
-                <MenuItem value={28}>Meerut</MenuItem>
-                <MenuItem value={29}>Aurangabad</MenuItem>
-                <MenuItem value={30}>Srinagar</MenuItem>
-                <MenuItem value={31}>Dhanbad</MenuItem> */}
               </TextField>
             </Grid>
             <br />
@@ -173,7 +142,7 @@ function TransportScheduleCard({
                 required
                 select
                 id="destination"
-                label="Destination"
+                label="Destination City"
                 SelectProps={{ MenuProps: MenuProps }}
                 // value={data["destination"]}
                 onChange={(e) => {
@@ -189,37 +158,6 @@ function TransportScheduleCard({
                     {option.label}
                   </MenuItem>
                 ))}
-                {/* <MenuItem value={1}>Mumbai</MenuItem>
-                <MenuItem value={2}>Goa</MenuItem>
-                <MenuItem value={3}>Pune</MenuItem>
-                <MenuItem value={4}>Panjim</MenuItem>
-                <MenuItem value={5}>Rajasthan</MenuItem>
-                <MenuItem value={6}>Udaipur</MenuItem>
-                <MenuItem value={7}>Rajkot</MenuItem>
-                <MenuItem value={8}>Surat</MenuItem>
-                <MenuItem value={9}>Vadodara</MenuItem>
-                <MenuItem value={10}>Delhi</MenuItem>
-                <MenuItem value={11}>Bangalore</MenuItem>
-                <MenuItem value={12}>Hyderabad</MenuItem>
-                <MenuItem value={13}>Ahmedabad</MenuItem>
-                <MenuItem value={14}>Chennai</MenuItem>
-                <MenuItem value={15}>Kolkata</MenuItem>
-                <MenuItem value={16}>Jaipur</MenuItem>
-                <MenuItem value={17}>Lucknow</MenuItem>
-                <MenuItem value={18}>Kanpur</MenuItem>
-                <MenuItem value={19}>Nagpur</MenuItem>
-                <MenuItem value={20}>Indore</MenuItem>
-                <MenuItem value={21}>Thane</MenuItem>
-                <MenuItem value={22}>Bhopal</MenuItem>
-                <MenuItem value={23}>Patna</MenuItem>
-                <MenuItem value={24}>Agra</MenuItem>
-                <MenuItem value={25}>Nashik</MenuItem>
-                <MenuItem value={26}>Faridabad</MenuItem>
-                <MenuItem value={27}>Varanasi</MenuItem>
-                <MenuItem value={28}>Meerut</MenuItem>
-                <MenuItem value={29}>Aurangabad</MenuItem>
-                <MenuItem value={30}>Srinagar</MenuItem>
-                <MenuItem value={31}>Dhanbad</MenuItem> */}
               </TextField>
             </Grid>
             <Grid item xs={12} md={0.7}>
@@ -239,7 +177,7 @@ function TransportScheduleCard({
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   fullWidth
-                  label="Departure Time"
+                  label="Departure Time of Source City"
                   // value={value}
                   value={data?.departure_time}
                   // onChange={handleChange}
@@ -258,7 +196,7 @@ function TransportScheduleCard({
             <Grid item xs={12} md={6}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
-                  label="Arrival Time"
+                  label="Arrival Time of Destination City"
                   // value={value}
                   value={data?.arrival_time}
                   // onChange={handleChange}
