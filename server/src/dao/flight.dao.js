@@ -72,7 +72,30 @@ const findAllFlightSchedules = async ({
   return flights;
 };
 
+const findAllFlightSchedulesByFlightId = async (flightId) => {
+  return FlightSchedule.findAndCountAll({
+    where: { flight_id: flightId },
+    include: [
+      {
+        model: FlightDetail,
+        attributes: ["id", "flight_name", "flight_type"],
+      },
+      {
+        model: City,
+        as: "source_name",
+        attributes: ["city_name"],
+      },
+      {
+        model: City,
+        as: "destination_name",
+        attributes: ["city_name"],
+      },
+    ],
+  });
+};
+
 module.exports = {
   findFlightScheduleById,
   findAllFlightSchedules,
+  findAllFlightSchedulesByFlightId,
 };

@@ -49,7 +49,7 @@ function App() {
               <Route path="/auth/login" element={<Login />} />
             </Route>
             <Route path="/flights" element={<List />} />
-            <Route path="/fligh ts/:id" element={<Flight />} />
+            <Route path="/flights/:id" element={<Flight />} />
             <Route path="/buses" element={<List />} />
             <Route path="/buses/:id" element={<Buses />} />
             <Route path="/trains" element={<List />} />

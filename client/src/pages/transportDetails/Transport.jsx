@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  Grid,
-  Box,
-  Button,
-  MenuItem,
-} from "@mui/material";
+import { TextField, Grid, Box, Button, MenuItem } from "@mui/material";
 import "./Transport.css";
 import { toast } from "react-hot-toast";
 import UsePost from "../../Utilities/UsePost";
@@ -150,7 +144,7 @@ function Transport() {
     ]);
   }
 
-  console.log("component", components);
+  // console.log("component", components);
 
   function deleteComponent(id) {
     // console.log("delete component id : ", id);
@@ -175,6 +169,11 @@ function Transport() {
   async function handleAdd() {
     if (components.length > 0) {
       var scheduleData = [...components];
+
+      scheduleData = scheduleData.map((item) => ({
+        ...item,
+        transportId: transportDetails?.id,
+      }));
 
       for (let i = 0; i < components.length; i++) {
         delete scheduleData[i].id;
@@ -222,7 +221,7 @@ function Transport() {
         "post"
       );
       if (response?.data?.status) {
-        console.log("train schedule data : ", scheduleData);
+        // console.log("train schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.success(response?.data?.data);
           document.getElementById("add-transport-details").reset();
@@ -234,6 +233,7 @@ function Transport() {
           );
           if (response1?.data?.status) {
             toast.success("Train details and " + response1?.data?.data);
+            setComponents([]);
             document.getElementById("add-transport-details").reset();
           }
         }
@@ -241,7 +241,7 @@ function Transport() {
         // document.getElementById("add-transport-details").reset();
       } else {
         // toast.error(response?.response?.data?.message);
-        console.log("train schedule data : ", scheduleData);
+        // console.log("train schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
           // document.getElementById("add-transport-details").reset();
@@ -252,12 +252,13 @@ function Transport() {
             "post"
           );
           if (response1?.data?.status) {
-            console.log("transportDetails?.id : ", transportDetails?.id);
+            // console.log("transportDetails?.id : ", transportDetails?.id);
             toast.success(
               response1?.data?.data +
                 " for train number : " +
                 transportDetails?.id
             );
+            setComponents([]);
             document.getElementById("add-transport-details").reset();
           } else {
             // console.log(
@@ -277,7 +278,7 @@ function Transport() {
       const response = await UsePost("/bus/details", busRequestBody, "post");
       // console.log("bus response  : ", response);
       if (response?.data?.status) {
-        console.log("bus schedule data : ", scheduleData);
+        // console.log("bus schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.success(response?.data?.data);
           document.getElementById("add-transport-details").reset();
@@ -289,13 +290,14 @@ function Transport() {
           );
           if (response1?.data?.status) {
             toast.success("Bus details and " + response1?.data?.data);
+            setComponents([]);
             document.getElementById("add-transport-details").reset();
           }
         }
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        console.log("bus schedule data : ", scheduleData);
+        // console.log("bus schedule data : ", scheduleData);
         // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
@@ -312,6 +314,7 @@ function Transport() {
                 " for bus number : " +
                 transportDetails?.id
             );
+            setComponents([]);
             document.getElementById("add-transport-details").reset();
           } else {
             // console.log(
@@ -335,7 +338,7 @@ function Transport() {
       );
       // console.log("flight response  : ", response?.data?.status);
       if (response?.data?.status) {
-        console.log("flight schedule data : ", scheduleData);
+        // console.log("flight schedule data : ", scheduleData);
         // console.log(scheduleData, components.length, "check here");
         if (components.length == 0) {
           toast.success(response?.data?.data);
@@ -348,13 +351,14 @@ function Transport() {
           );
           if (response1?.data?.status) {
             toast.success("Flight details and " + response1?.data?.data);
+            setComponents([]);
             document.getElementById("add-transport-details").reset();
           }
         }
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        console.log("flight schedule data : ", scheduleData);
+        // console.log("flight schedule data : ", scheduleData);
         // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
@@ -372,6 +376,7 @@ function Transport() {
                 " for flight number : " +
                 transportDetails?.id
             );
+            setComponents([]);
             document.getElementById("add-transport-details").reset();
           } else {
             // console.log(

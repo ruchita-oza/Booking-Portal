@@ -68,12 +68,35 @@ const findAllBusSchedules = async ({
         attributes: ["city_name"],
       },
     ],
-  })
+  });
   // console.log(busSchedules.rows.length)
   return busSchedules;
+};
+
+const findAllBusSchedulesByBusId = async (busId) => {
+  return BusSchedule.findAndCountAll({
+    where: { bus_id: busId },
+    include: [
+      {
+        model: BusDetail,
+        attributes: ["id", "bus_name", "bus_type"],
+      },
+      {
+        model: City,
+        as: "source_name",
+        attributes: ["city_name"],
+      },
+      {
+        model: City,
+        as: "destination_name",
+        attributes: ["city_name"],
+      },
+    ],
+  });
 };
 
 module.exports = {
   findBusScheduleById,
   findAllBusSchedules,
+  findAllBusSchedulesByBusId,
 };

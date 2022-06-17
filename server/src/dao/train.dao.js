@@ -77,7 +77,30 @@ const findAllTrainSchedules = async ({
   return trainSchedules;
 };
 
+const findAllTrainSchedulesByTrainId = async (trainId) => {
+  return TrainSchedule.findAndCountAll({
+    where: { train_id: trainId },
+    include: [
+      {
+        model: TrainDetail,
+        attributes: ["id", "train_name", "train_type"],
+      },
+      {
+        model: City,
+        as: "source_name",
+        attributes: ["city_name"],
+      },
+      {
+        model: City,
+        as: "destination_name",
+        attributes: ["city_name"],
+      },
+    ],
+  });
+};
+
 module.exports = {
   findTrainScheduleById,
   findAllTrainSchedules,
+  findAllTrainSchedulesByTrainId,
 };

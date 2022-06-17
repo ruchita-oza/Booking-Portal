@@ -4,7 +4,11 @@ const City = db.cities;
 const createError = require("../utils/error");
 const BusSchedule = db.bus_schedule;
 const Apifeatures = require("../utils/apiFeatures");
-const { findBusScheduleById, findAllBusSchedules } = require("../dao/bus.dao");
+const {
+  findBusScheduleById,
+  findAllBusSchedules,
+  findAllBusSchedulesByBusId,
+} = require("../dao/bus.dao");
 
 async function checkExistsBus(id) {
   const buses = await Bus.findAll({ where: { id: id } });
@@ -61,7 +65,7 @@ const createBusSchedule = async (req, res, next) => {
       return next(
         createError(
           422,
-          "Error departure time cannot be greater than arrival time"
+          "Error departure time of source city cannot be greater than arrival time of destination city"
         )
       );
     }
@@ -100,11 +104,13 @@ const updateBusSchedule = async (req, res, next) => {
     const destination = req.body.destination;
     const arrivalTime = req.body.arrival_time;
     const departureTime = req.body.departure_time;
+    const totalAvailableSeats = req.body.total_available_seats;
     const pricePerSeat = req.body.price_per_seat;
     const busScheduleStatus = await checkExistsBusSchedule(busScheduleId);
     const busStatus = await checkExistsBus(busId);
     const sourceCityStatus = await checkExistsCity(source);
     const destinationCityStatus = await checkExistsCity(destination);
+
     if (!busScheduleStatus) {
       return next(createError(422, "Error bus schedule does not exists"));
     }
@@ -125,14 +131,32 @@ const updateBusSchedule = async (req, res, next) => {
         )
       );
     }
+
+    if (departureTime > arrivalTime) {
+      return next(
+        createError(
+          422,
+          "Error departure time of source city cannot be greater than arrival time of destination city"
+        )
+      );
+    }
+
     if (arrivalTime == departureTime) {
       return next(
         createError(422, "Error arrival time and departure time cannot be same")
       );
     }
+
+    if (totalAvailableSeats < 0) {
+      return next(
+        createError(422, "Error total available seats cannot be negative")
+      );
+    }
+
     if (pricePerSeat == 0) {
       return next(createError(422, "Error price per seat cannot be zero"));
     }
+
     if (pricePerSeat < 0) {
       return next(createError(422, "Error price per seat cannot be negative"));
     }
@@ -275,7 +299,7 @@ const createBusScheduleFromArray = async (req, res, next) => {
           return next(
             createError(
               422,
-              "Error departure time cannot be greater than arrival time"
+              "Error departure time of source city cannot be greater than arrival time of destination city"
             )
           );
         }
@@ -283,6 +307,12 @@ const createBusScheduleFromArray = async (req, res, next) => {
         if (totalAvailableSeats == 0) {
           return next(
             createError(422, "Error total available seat cannot be zero")
+          );
+        }
+
+        if (totalAvailableSeats < 0) {
+          return next(
+            createError(422, "Error total available seats cannot be negative")
           );
         }
 
@@ -312,6 +342,16 @@ const createBusScheduleFromArray = async (req, res, next) => {
   }
 };
 
+const getAllBusSchedulesByBusId = async (req, res, next) => {
+  try {
+    const busId = req.params.id;
+    const busSchedules = await findAllBusSchedulesByBusId(busId);
+    return res.json({ data: busSchedules, status: true });
+  } catch (error) {
+    return next(createError(500, "Error while fetching bus schedules"));
+  }
+};
+
 module.exports = {
   createBusSchedule,
   updateBusSchedule,
@@ -319,4 +359,5 @@ module.exports = {
   getBusScheduleById,
   getBusSchedules,
   createBusScheduleFromArray,
+  getAllBusSchedulesByBusId,
 };
