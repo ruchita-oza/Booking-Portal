@@ -12,6 +12,9 @@ import {
   USER_BOOKING_RECORD_REQUEST,
   USER_BOOKING_RECORD_SUCCESS,
   USER_BOOKING_RECORD_FAIL,
+  GET_PASSENGER_DETAILS_REQUEST,
+  GET_PASSENGER_DETAILS_SUCCESS,
+  GET_PASSENGER_DETAILS_FAIL,
 } from "./types";
 
 import {
@@ -19,7 +22,13 @@ import {
   // getUserDetailApi,
   getUserBookingRecordsDetailApi,
 } from "../../services/UserService";
-
+import { getBusWithId } from "../../services/BusServices";
+import { getTrainWithId } from "../../services/TrainServices";
+import { getFlightWithId } from "../../services/FlightServices";
+import {
+  getBookingDetailWithIdApi,
+  getAllPassengerDetailsWithBookingIdApi,
+} from "../../services/BookingService";
 import toast from "react-hot-toast";
 // import { dispatch } from "react-hot-toast/dist/core/store";
 
@@ -181,3 +190,85 @@ export const loggingOutUserThunkAction = () => {
     } catch (error) {}
   };
 };
+
+export const userBookingRecieptThunkAction =
+  (booking_id) => async (dispatch) => {
+    try {
+      console.log("at action", booking_id);
+      dispatch({ type: GET_PASSENGER_DETAILS_REQUEST });
+      const bookingData = await getBookingDetailWithIdApi(booking_id);
+      // console.log(bookingData.data);
+      if (!bookingData.data)
+        throw new Error(
+          `ERROR : something went wrong while getting booking detail`
+        );
+      else if (bookingData.data.status != true)
+        throw new Error(`ERROR: ${bookingData.data.message}`);
+      else {
+        // console.log(bookingData.data);
+        const passengers = await getAllPassengerDetailsWithBookingIdApi(
+          booking_id
+        );
+        if (!passengers) {
+          throw new Error(`ERROR: while getting all passenger details`);
+        } else if (!passengers.data.status == true)
+          throw new Error(`ERROR:${passengers.data.message}`);
+        // console.log(passengers);
+        if (bookingData.data.data[0].transport_type === "bus") {
+          const transport = await getBusWithId(
+            bookingData.data.data[0].transport_id
+          );
+          // console.log(transport);
+          if (!transport) throw new Error(`ERROR : while getting transport`);
+          if (transport.data.status != true)
+            throw new Error(`ERROR :${transport.data.message}`);
+          console.log(transport.data.status);
+          dispatch({
+            type: GET_PASSENGER_DETAILS_SUCCESS,
+            payload: {
+              booking: bookingData.data.data[0],
+              passengers: passengers.data.data,
+              transport: transport.data.data,
+            },
+          });
+        } else if (bookingData.data.data[0].transport_type === "flight") {
+          const transport = await getFlightWithId(
+            bookingData.data.data[0].transport_id
+          );
+          // console.log(transport);
+          if (!transport) throw new Error(`ERROR : while getting transport`);
+          if (transport.data.status != true)
+            throw new Error(`ERROR :${transport.data.message}`);
+          console.log(transport.data.status);
+          dispatch({
+            type: GET_PASSENGER_DETAILS_SUCCESS,
+            payload: {
+              booking: bookingData.data.data[0],
+              passengers: passengers.data.data,
+              transport: transport.data.data,
+            },
+          });
+        } else {
+          const transport = await getTrainWithId(
+            bookingData.data.data[0].transport_id
+          );
+          // console.log(transport);
+          if (!transport) throw new Error(`ERROR : while getting transport`);
+          if (transport.data.status != true)
+            throw new Error(`ERROR :${transport.data.message}`);
+          console.log(transport.data.status);
+          dispatch({
+            type: GET_PASSENGER_DETAILS_SUCCESS,
+            payload: {
+              booking: bookingData.data.data[0],
+              passengers: passengers.data.data,
+              transport: transport.data.data,
+            },
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: GET_PASSENGER_DETAILS_FAIL, payload: error });
+    }
+  };

@@ -24,7 +24,7 @@ function BookingDetailCard({ booking }) {
   })(Chip);
   const [editOpen, setEditOpen] = useState(false);
   const handleBookingClick = (e, booking) => {
-    console.log(booking);
+    console.log(booking, booking.id);
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
   return (

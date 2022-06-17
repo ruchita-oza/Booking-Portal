@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400;700&display=swap");
+
 /* for loading */
 .loading {
   width: 100vw;
@@ -114,4 +116,8 @@
   .notfound h2 {
     font-size: 26px;
   }
+}
+/* bookingReciept */
+.bookingFont {
+  font-family: "Reem Kufi", sans-serif;
 }

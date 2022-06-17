@@ -18,7 +18,7 @@ const Navbar = (props) => {
   const handleLogout = () => {
     dispatch(loggingOutUserThunkAction());
   };
-
+  const firstPath = window.location.pathname.split("/")[1];
   function doChanges(newtype) {
     props.changeType(newtype);
 
@@ -41,7 +41,7 @@ const Navbar = (props) => {
           <div className="navContainer">
             <Link to="/" style={{ textDecoration: "none" }}>
               <span className="logo" style={{ color: "white" }}>
-                Skyline booking
+                Safar booking
               </span>
             </Link>
             <div className="navItems">
@@ -55,6 +55,7 @@ const Navbar = (props) => {
                   </Link>
                 </>
               )}
+              {!loggedInUser}
               {loggedInUser && (
                 <Link onClick={handleLogout} to="/">
                   <button className="navButton">Logout</button>
@@ -64,7 +65,8 @@ const Navbar = (props) => {
                 <Link to="/userProfile">
                   <button className="navButton">User Profile</button>
                 </Link>
-              )}{loggedInUser?.is_admin==="Admin" && (
+              )}
+              {loggedInUser?.is_admin === "Admin" && (
                 <Link to="/admin/transportDetailAndSchedule">
                   <button className="navButton">Trasnport</button>
                 </Link>
@@ -72,49 +74,56 @@ const Navbar = (props) => {
             </div>
           </div>
         </div>
-        <div className="header">
-          <div className="headerContainer listMode">
-            <div className="headerList">
-              <div
-                className={
-                  props.type === "flights"
-                    ? "headerListItem active"
-                    : "headerListItem "
-                }
-                onClick={() => doChanges("flights")}
-              >
-                <FontAwesomeIcon icon={faPlane} />
-                <span>Flight</span>
-              </div>
-              <div
-                className={
-                  props.type === "buses"
-                    ? "headerListItem active"
-                    : "headerListItem "
-                }
-                onClick={() => {
-                  doChanges("buses");
-                }}
-              >
-                <FontAwesomeIcon icon={faBus} />
-                <span>Bus</span>
-              </div>
-              <div
-                className={
-                  props.type === "trains"
-                    ? "headerListItem active"
-                    : "headerListItem "
-                }
-                onClick={() => {
-                  doChanges("trains");
-                }}
-              >
-                <FontAwesomeIcon icon={faTrain} />
-                <span>Train</span>
+        {firstPath === "" ||
+        firstPath === "buses" ||
+        firstPath === "flights" ||
+        firstPath === "trains" ? (
+          <div className="header">
+            <div className="headerContainer listMode">
+              <div className="headerList">
+                <div
+                  className={
+                    props.type === "flights"
+                      ? "headerListItem active"
+                      : "headerListItem "
+                  }
+                  onClick={() => doChanges("flights")}
+                >
+                  <FontAwesomeIcon icon={faPlane} />
+                  <span>Flight</span>
+                </div>
+                <div
+                  className={
+                    props.type === "buses"
+                      ? "headerListItem active"
+                      : "headerListItem "
+                  }
+                  onClick={() => {
+                    doChanges("buses");
+                  }}
+                >
+                  <FontAwesomeIcon icon={faBus} />
+                  <span>Bus</span>
+                </div>
+                <div
+                  className={
+                    props.type === "trains"
+                      ? "headerListItem active"
+                      : "headerListItem "
+                  }
+                  onClick={() => {
+                    doChanges("trains");
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrain} />
+                  <span>Train</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

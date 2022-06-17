@@ -1,6 +1,6 @@
 .navbar {
   height: 50px;
-  width:100%;
+  width: 100%;
   min-width: 575px;
   background-color: #003580;
 }
@@ -22,6 +22,7 @@
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+  background-color: white;
   color: #003580;
   border-radius: 3px;
 }

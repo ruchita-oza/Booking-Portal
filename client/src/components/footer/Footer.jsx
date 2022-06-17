@@ -12,7 +12,7 @@ import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
-    <footer>
+    <footer className="footer" id="mainfooter">
       <div className="footer-container">
         <h3> BOOKING PORTAL </h3>
         <p>
