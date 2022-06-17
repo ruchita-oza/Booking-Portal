@@ -9,20 +9,16 @@ import { getTrainSchedules } from "../../redux/trains/actions";
 import { selectFlights } from "../../redux/flights/selector";
 import { selectBuses } from "../../redux/buses/selector";
 import { selectTrains } from "../../redux/trains/selector";
-import toast from "react-hot-toast";
 import { makeStyles } from "@material-ui/core/styles";
 import { Slider } from "@material-ui/core";
-
 import "./list.css";
 import SearchItem from "../../components/searchItem/SearchItem";
 import Header from "../../components/header/Header";
 import ResultNotFoundPage from "../errorPage/ResultNotFoundPage";
-import Loader from "../../components/loader/loader";
 import EmptyView from "../../components/emptyView/EmptyView";
 import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "react-js-pagination";
+
 const useStyles = makeStyles({
   root: {
     width: "100%",

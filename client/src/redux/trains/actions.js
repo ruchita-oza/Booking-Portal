@@ -131,3 +131,17 @@ export const getTrainScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_TRAINSCHEDULE_FAIL, payload: error });
   }
 };
+
+export const getAllTrainSchedule = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_TRAINSCHEDULE_REQUEST });
+    const data = await getAllTrainSchedule();
+    if (data) {
+      console.log(data);
+      dispatch({ type: ALL_TRAINSCHEDULE_SUCCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: ALL_TRAINSCHEDULE_FAIL, payload: error });
+  }
+};

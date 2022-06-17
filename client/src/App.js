@@ -21,6 +21,9 @@ import UserProfile from "./pages/userProfile/UserProfile";
 import UserBooking from "./pages/userProfile/UserBooking";
 import BookingPage from "./pages/bookingPage/BookingPage";
 import Transport from "./pages/transportDetails/Transport";
+import BusList from "./admin/pages/Bus/Buses";
+import TrainList from "./admin/pages/Train/Trains";
+import FlightList from "./admin/pages/Flight/Flights";
 import { AnimatePresence } from "framer-motion";
 
 function App() {
@@ -62,11 +65,11 @@ function App() {
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
             <Route path="/admin" element={<AdminPrivateRoute />}>
-              <Route
-                path="/admin/transportDetailAndSchedule"
-                element={<Transport />}
-              />
-            </Route>
+              <Route path="/admin/transportDetailAndSchedule" element={<Transport />} />
+              <Route path="/admin/busList" element={<BusList />} />
+              <Route path="/admin/trainList" element={<TrainList />} />
+              <Route path="/admin/flightList" element={<FlightList />} />   
+                       </Route>
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

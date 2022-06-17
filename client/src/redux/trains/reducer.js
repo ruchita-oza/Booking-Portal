@@ -71,3 +71,27 @@ export const trainScheduleByIdReducer = (state = initialTrainState, action) => {
       return state;
   }
 };
+export const trainAllScheduleReducer = (state = initialTrainState, action) => {
+  switch (action.type) {
+    case ALL_TRAINSCHEDULE_REQUEST:
+      return { ...state, isLoading: true };
+    case ALL_TRAINSCHEDULE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        train: action.payload.data,
+        error: null,
+      };
+    case ALL_TRAINSCHEDULE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        train: [],
+        error: action.payload,
+      };
+    case CLEAR_ERR:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};

@@ -8,9 +8,10 @@ import {
   flightScheduleReducer,
   flightScheduleByIdReducer,
 } from "./flights/reducer";
-import { authReducer } from "./users/reducer";
+import { authReducer, passengerReducer } from "./users/reducer";
 export const rootReducer = combineReducers({
   user: authReducer,
+  passenger: passengerReducer,
   busesAvailable: busReducer,
   trainsAvailable: trainScheduleReducer,
   flightsAvailable: flightScheduleReducer,

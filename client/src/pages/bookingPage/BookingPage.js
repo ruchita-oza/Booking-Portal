@@ -69,7 +69,7 @@ function BookingPage({ match }) {
       {
         id: uuidv4(),
         passenger_name: "",
-        passenger_gender: "",
+        passenger_gender: "male",
         passenger_age: "",
       },
     ]);
