@@ -44,32 +44,43 @@ const Navbar = (props) => {
                 Safar booking
               </span>
             </Link>
-            <div className="navItems">
+            <div className='navItems'>
               {!loggedInUser && (
                 <>
-                  <Link to="/auth/register">
-                    <button className="navButton">Register</button>
+                  <Link to='/auth/register'>
+                    <button className='navButton'>Register</button>
                   </Link>
-                  <Link to="/auth/login">
-                    <button className="navButton">Login</button>
+                  <Link to='/auth/login'>
+                    <button className='navButton'>Login</button>
                   </Link>
                 </>
               )}
               {!loggedInUser}
               {loggedInUser && (
-                <Link onClick={handleLogout} to="/">
-                  <button className="navButton">Logout</button>
+                <Link onClick={handleLogout} to='/'>
+                  <button className='navButton'>Logout</button>
                 </Link>
               )}
               {loggedInUser && (
-                <Link to="/userProfile">
-                  <button className="navButton">User Profile</button>
+                <Link to='/userProfile'>
+                  <button className='navButton'>User Profile</button>
                 </Link>
               )}
               {loggedInUser?.is_admin === "Admin" && (
-                <Link to="/admin/transportDetailAndSchedule">
-                  <button className="navButton">Trasnport</button>
-                </Link>
+                <>
+                  <Link to='/admin/transportDetailAndSchedule'>
+                    <button className='navButton'>Trasnport</button>
+                  </Link>
+                  <Link to='/admin/busList'>
+                    <button className='navButton'>Bus List</button>
+                  </Link>
+                  <Link to='/admin/flightList'>
+                    <button className='navButton'>Flight List</button>
+                  </Link>
+                  <Link to='/admin/trainList'>
+                    <button className='navButton'>Train List</button>
+                  </Link>
+                </>
               )}
             </div>
           </div>

@@ -71,3 +71,28 @@ export const busScheduleByIdReducer = (state = initialBusState, action) => {
       return state;
   }
 };
+export const busAllScheduleReducer = (state = initialBusState, action) => {
+  switch (action.type) {
+    case ALL_BUSSCHEDULE_REQUEST:
+      return { ...state, isLoading: true };
+    case ALL_BUSSCHEDULE_SUCESS:
+      return {
+        ...state,
+        isLoading: false,
+        bus: action.payload.data,
+        error: null,
+      };
+    case ALL_BUSSCHEDULE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        bus: [],
+        error: action.payload,
+      };
+    case CLEAR_ERR:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+

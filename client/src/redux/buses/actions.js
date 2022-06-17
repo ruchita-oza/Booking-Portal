@@ -145,3 +145,18 @@ export const getBusScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_BUSSCHEDULE_FAIL, payload: error });
   }
 };
+
+export const getAllBusSchedule = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_BUSSCHEDULE_REQUEST });
+    const data = await getAllBusSchedule();
+    if (data) {
+      console.log(data);
+      dispatch({ type: ALL_BUSSCHEDULE_SUCESS, payload: data });
+    }
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: ALL_BUSSCHEDULE_FAIL, payload: error });
+  }
+};
+

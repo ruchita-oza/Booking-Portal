@@ -72,3 +72,31 @@ export const flightScheduleByIdReducer = (
       return state;
   }
 };
+
+export const flightAllScheduleReducer = (
+  state = initialFlightState,
+  action
+) => {
+  switch (action.type) {
+    case ALL_FLIGHTSCHEDULE_REQUEST:
+      return { ...state, isLoading: true };
+    case ALL_FLIGHTSCHEDULE_SUCESS:
+      return {
+        ...state,
+        isLoading: false,
+        flight: action.payload.data,
+        error: null,
+      };
+    case ALL_FLIGHTSCHEDULE_FAIL:
+      return {
+        ...state,
+        isLoading: false,
+        flight: [],
+        error: action.payload,
+      };
+    case CLEAR_ERR:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
