@@ -10,7 +10,10 @@ const Trains = () => {
     const getTrains = async () => {
       const result = await fetch(`/train/details/`);
       const getData = await result.json();
-      setTrains(getData.trains.rows);
+      // console.log(
+      //   getData.data
+      // );
+      setTrains(getData.data);
       console.log(getData);
     };
     getTrains();
