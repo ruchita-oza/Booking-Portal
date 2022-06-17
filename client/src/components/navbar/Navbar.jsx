@@ -29,6 +29,9 @@ const Navbar = (props) => {
     { label: "Home", link: "/" },
     { label: "Profile", link: "/userProfile" },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
+    { label: "Bus List", link: "/admin/busList" },
+    { label: "Flight List", link: "/admin/flightList" },
+    { label: "Train List", link: "/admin/trainList" },
     { label: "Logout", link: "/" },
   ];
 
@@ -53,10 +56,19 @@ const Navbar = (props) => {
     dispatch(loggingOutUserThunkAction());
   };
 
-
   const isAddTransportPage = window.location.pathname
     .split("/")
     .includes("transportDetailAndSchedule");
+
+  const isBusListPage = window.location.pathname.split("/").includes("busList");
+
+  const isTrainListPage = window.location.pathname
+    .split("/")
+    .includes("trainList");
+
+  const isFlightListPage = window.location.pathname
+    .split("/")
+    .includes("flightList");
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -66,8 +78,9 @@ const Navbar = (props) => {
     setAnchorElUser(null);
   };
 
-
   const firstPath = window.location.pathname.split("/")[1];
+
+  console.log("firstPath : ", firstPath);
 
   function doChanges(newtype) {
     props.changeType(newtype);
@@ -236,7 +249,10 @@ const Navbar = (props) => {
             </div>
           </div>
         </div>
-        {isAddTransportPage ? (
+        {isAddTransportPage ||
+        isBusListPage ||
+        isFlightListPage ||
+        isTrainListPage ? (
           <div className="addTransportPageHeader"></div>
         ) : (
           <>
@@ -284,12 +300,12 @@ const Navbar = (props) => {
               </div>
             </div>
           </>
-)}
-                <Link to='/userProfile'>
+        )}
+        {/* <Link to='/userProfile'>
                   <button className='navButton'>User Profile</button>
-                </Link>
-              
-              {loggedInUser?.is_admin === "Admin" && (
+                </Link> */}
+
+        {/* {loggedInUser?.is_admin === "Admin" && (
                 <>
                   <Link to='/admin/transportDetailAndSchedule'>
                     <button className='navButton'>Trasnport</button>
@@ -304,11 +320,11 @@ const Navbar = (props) => {
                     <button className='navButton'>Train List</button>
                   </Link>
                 </>
-              )}
-            </div>
-          </div>
-        </div>
-        {firstPath === "" ||
+              )} */}
+        {/* </div> */}
+        {/* </div> */}
+        {/* </div> */}
+        {/* {firstPath === "" ||
         firstPath === "buses" ||
         firstPath === "flights" ||
         firstPath === "trains" ? (
@@ -357,7 +373,7 @@ const Navbar = (props) => {
           </div>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
     </>
   );
