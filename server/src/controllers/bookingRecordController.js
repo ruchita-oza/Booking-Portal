@@ -53,9 +53,49 @@ async function updateBusScheduleDetail(id, data) {
   );
 }
 
+async function checkExistsBookingRecordAndReturnDetails(id) {
+  let bookingRecordDetail = await BookingRecords.findAll({
+    where: { id },
+    attributes: ["transport_type", "transport_id", "total_ticket_count"],
+    raw: true,
+  });
+
+  return bookingRecordDetail;
+}
+
+async function checkExistsBusScheduleAndReturnDetails(id) {
+  const busSchedule = await BusSchedule.findOne({
+    where: id,
+    attributes: ["total_available_seats"],
+    raw: true,
+  });
+
+  return busSchedule;
+}
+
+async function checkExitsTrainScheduleAndReturnDetails(id) {
+  const trainSchedule = await TrainSchedule.findOne({
+    where: id,
+    attributes: ["total_available_seats"],
+    raw: true,
+  });
+
+  return trainSchedule;
+}
+
+async function checkExistsFlightScheduleAndReturnDetails(id) {
+  const flightSchedule = await FlightSchedule.findOne({
+    where: id,
+    attributes: ["total_available_seats"],
+    raw: true,
+  });
+
+  return flightSchedule;
+}
+
 const createBookingRecord = async (req, res, next) => {
   try {
-    console.log("Creating booking record : ", req.body);
+    // console.log("Creating booking record : ", req.body);
     const user_id = req.body.cust_id;
     const transportId = req.body.transport_id;
     const userStatus = await checkExistsUser(user_id);
@@ -78,7 +118,7 @@ const createBookingRecord = async (req, res, next) => {
           raw: true,
         });
 
-        console.log("bus schedule detail : ", busScheduleDetail);
+        // console.log("bus schedule detail : ", busScheduleDetail);
 
         const totalAvailableTicket =
           busScheduleDetail[0]?.total_available_seats;
@@ -91,23 +131,23 @@ const createBookingRecord = async (req, res, next) => {
           return next(createError(422, "Error ticket count cannot be zero"));
         }
 
-        console.log(
-          "totalTicketCount : ",
-          totalTicketCount,
-          " totalAvailableTicket : ",
-          totalAvailableTicket
-        );
+        // console.log(
+        //   "totalTicketCount : ",
+        //   totalTicketCount,
+        //   " totalAvailableTicket : ",
+        //   totalAvailableTicket
+        // );
 
         if (totalTicketCount > totalAvailableTicket) {
           return next(createError(422, "Error total ticket count"));
         }
 
-        console.log(
-          "totalFare : ",
-          totalFare,
-          " totalCalculatedFare : ",
-          totalCalculatedFare
-        );
+        // console.log(
+        //   "totalFare : ",
+        //   totalFare,
+        //   " totalCalculatedFare : ",
+        //   totalCalculatedFare
+        // );
 
         if (totalFare != totalCalculatedFare) {
           return next(createError(422, "Error in total fare"));
@@ -221,7 +261,7 @@ const createBookingRecord = async (req, res, next) => {
 
         const updatedTicketCount = totalAvailableTicket - totalTicketCount;
 
-        console.log("req.body : ", req.body);
+        // console.log("req.body : ", req.body);
         const bookingRecord = await BookingRecords.create(req.body);
 
         await bookingRecord.save();
@@ -244,7 +284,7 @@ const createBookingRecord = async (req, res, next) => {
       return next(createError(500, "Error user does not exists"));
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return next(
       createError(500, "Error while creating booking record " + error)
     );
@@ -286,7 +326,7 @@ const updateBookingRecord = async (req, res, next) => {
           busScheduleDetail = busScheduleDetail[0]?.price_per_seat;
           totalCalculatedFare = totalTicketCount * busScheduleDetail;
 
-          const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+          const updatedTicketCount = totalAvailableSeats - totalTicketCount;
 
           const updateSchedule = await updateBusScheduleDetail(
             transportId,
@@ -310,6 +350,8 @@ const updateBookingRecord = async (req, res, next) => {
           const totalAvailableSeats =
             trainScheduleDetail[0]?.total_available_seats;
 
+          // console.log("totalAvailableSeats : ", totalAvailableSeats);
+
           if (totalTicketCount > totalAvailableSeats) {
             return next(createError(422, "Error total ticket count"));
           }
@@ -317,7 +359,7 @@ const updateBookingRecord = async (req, res, next) => {
           trainScheduleDetail = trainScheduleDetail[0]?.price_per_seat;
           totalCalculatedFare = totalTicketCount * trainScheduleDetail;
 
-          const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+          const updatedTicketCount = totalAvailableSeats - totalTicketCount;
 
           const updateSchedule = await updateTrainScheduleDetail(
             transportId,
@@ -348,7 +390,7 @@ const updateBookingRecord = async (req, res, next) => {
           flightScheduleDetail = flightScheduleDetail[0]?.price_per_seat;
           totalCalculatedFare = totalTicketCount * flightScheduleDetail;
 
-          const updatedTicketCount = totalAvailableTicket - totalTicketCount;
+          const updatedTicketCount = totalAvailableSeats - totalTicketCount;
 
           const updateSchedule = await updateFlightScheduleDetail(
             transportId,
@@ -387,17 +429,125 @@ const updateBookingRecord = async (req, res, next) => {
 const deleteBookingRecord = async (req, res, next) => {
   try {
     const bookingId = req.params.id;
-    const status = await checkExistsBookingRecord(bookingId);
-    if (status) {
-      const bookingRecord = await BookingRecords.destroy({
-        where: { id: bookingId },
-      });
-      return res.json({
-        data: "Booking record deleted successfully",
-        status: true,
-      });
+    const details = await checkExistsBookingRecordAndReturnDetails(bookingId);
+
+    const transportType = details[0]?.transport_type.toLowerCase();
+    const transportId = details[0]?.transport_id;
+    const totalTicketCount = details[0]?.total_ticket_count;
+
+    // console.log(
+    //   "transportType : ",
+    //   transportType,
+    //   " transportId : ",
+    //   transportId,
+    //   " totalTicketCount : ",
+    //   totalTicketCount
+    // );
+
+    // console.log("details.length : ", details.length);
+    if (details.length == 1) {
+      if (transportType === "train") {
+        const transportSchedule = await checkExitsTrainScheduleAndReturnDetails(
+          transportId
+        );
+
+        if (transportSchedule) {
+          let updatedTotalAvailableSeats =
+            totalTicketCount + transportSchedule?.total_available_seats;
+
+          // console.log(
+          //   "train updatedTotalAvailableSeats : ",
+          //   updatedTotalAvailableSeats
+          // );
+
+          await updateTrainScheduleDetail(
+            transportId,
+            updatedTotalAvailableSeats
+          );
+
+          const bookingRecord = await BookingRecords.destroy({
+            where: { id: bookingId },
+          });
+
+          return res.json({
+            data: "Booking record deleted successfully",
+            status: true,
+          });
+        } else {
+          return next(
+            createError(
+              422,
+              "Error deleting booking record, train schedule does not exists"
+            )
+          );
+        }
+      } else if (transportType === "bus") {
+        const transportSchedule = await checkExistsBusScheduleAndReturnDetails(
+          transportId
+        );
+
+        if (transportSchedule) {
+          let updatedTotalAvailableSeats =
+            totalTicketCount + transportSchedule?.total_available_seats;
+
+          await updateBusScheduleDetail(
+            transportId,
+            updatedTotalAvailableSeats
+          );
+
+          const bookingRecord = await BookingRecords.destroy({
+            where: { id: bookingId },
+          });
+
+          return res.json({
+            data: "Booking record deleted successfully",
+            status: true,
+          });
+        } else {
+          return next(
+            createError(
+              422,
+              "Error deleting booking record, bus schedule does not exists"
+            )
+          );
+        }
+      } else if (transportType === "flight") {
+        const transportSchedule =
+          await checkExistsFlightScheduleAndReturnDetails(transportId);
+
+        if (transportSchedule) {
+          let updatedTotalAvailableSeats =
+            totalTicketCount + transportSchedule?.total_available_seats;
+
+          await updateFlightScheduleDetail(
+            transportId,
+            updatedTotalAvailableSeats
+          );
+
+          const bookingRecord = await BookingRecords.destroy({
+            where: { id: bookingId },
+          });
+
+          return res.json({
+            data: "Booking record deleted successfully",
+            status: true,
+          });
+        } else {
+          return next(
+            createError(
+              422,
+              "Error deleting booking record, flight schedule does not exists"
+            )
+          );
+        }
+      }
     } else {
-      return next(createError(422, "Error while deleting booking record"));
+      return next(
+        createError(
+          422,
+          "Error while deleting booking record, booking record does not exists"
+        )
+      );
     }
   } catch (error) {
     return next(

@@ -11,28 +11,43 @@ const City = db.cities;
 TrainSchedule.hasMany(BookingRecord, {
   // as: "train_schedule",
   foreignKey: "transport_id",
+  constraints: false,
+  scope: {
+    commentableType: TrainSchedule,
+  },
 });
 BookingRecord.belongsTo(TrainSchedule, {
   // as: "train_schedule",
   foreignKey: "transport_id",
+  constraints: false,
 });
 
 BusSchedule.hasMany(BookingRecord, {
   // as: "bus_schedule",
   foreignKey: "transport_id",
+  constraints: false,
+  scope: {
+    commentableType: BusSchedule,
+  },
 });
 BookingRecord.belongsTo(BusSchedule, {
   // as: "bus_schedule",
   foreignKey: "transport_id",
+  constraints: false,
 });
 
 FlightSchedule.hasMany(BookingRecord, {
   // as: "flight_schedule",
   foreignKey: "transport_id",
+  constraints: false,
+  scope: {
+    commentableType: FlightSchedule,
+  },
 });
 BookingRecord.belongsTo(FlightSchedule, {
   // as: "flight_schedule",
   foreignKey: "transport_id",
+  constraints: false,
 });
 
 const findBookingRecordsByUserId = async (userId) => {
