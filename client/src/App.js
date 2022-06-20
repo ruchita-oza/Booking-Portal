@@ -25,6 +25,7 @@ import BusList from "./admin/pages/Bus/Buses";
 import TrainList from "./admin/pages/Train/Trains";
 import FlightList from "./admin/pages/Flight/Flights";
 import { AnimatePresence } from "framer-motion";
+import EditTransport from "./pages/transportDetails/EditTransport";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,11 +66,18 @@ function App() {
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
             <Route path="/admin" element={<AdminPrivateRoute />}>
-              <Route path="/admin/transportDetailAndSchedule" element={<Transport />} />
+              <Route
+                path="/admin/transportDetailAndSchedule"
+                element={<Transport />}
+              />
+              <Route
+                path="/admin/editTransportDetailAndSchedule/:transportId"
+                element={<EditTransport />}
+              />
               <Route path="/admin/busList" element={<BusList />} />
               <Route path="/admin/trainList" element={<TrainList />} />
-              <Route path="/admin/flightList" element={<FlightList />} />   
-                       </Route>
+              <Route path="/admin/flightList" element={<FlightList />} />
+            </Route>
             <Route path="" element={<ErrorPage />} />
 
             {/* <Route component={ErrorPage} /> */}

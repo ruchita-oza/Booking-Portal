@@ -29,6 +29,10 @@ const Navbar = (props) => {
     { label: "Home", link: "/" },
     { label: "Profile", link: "/userProfile" },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
+    {
+      label: "Edit Transport",
+      link: "/admin/editTransportDetailAndSchedule/GJ06XC1901",
+    },
     { label: "Bus List", link: "/admin/busList" },
     { label: "Flight List", link: "/admin/flightList" },
     { label: "Train List", link: "/admin/trainList" },
@@ -80,7 +84,7 @@ const Navbar = (props) => {
 
   const firstPath = window.location.pathname.split("/")[1];
 
-  console.log("firstPath : ", firstPath);
+  // console.log("firstPath : ", firstPath);
 
   function doChanges(newtype) {
     props.changeType(newtype);
