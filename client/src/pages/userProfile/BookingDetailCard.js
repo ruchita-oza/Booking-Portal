@@ -13,7 +13,7 @@ import {
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 // import selectUser from "../../redux/users/selectors";
 
-function BookingDetailCard({ booking }) {
+function BookingDetailCard({ booking, status }) {
   const navigate = useNavigate();
   const StyleChip = withStyles({
     root: {
@@ -26,6 +26,15 @@ function BookingDetailCard({ booking }) {
   const handleBookingClick = (e, booking) => {
     console.log(booking, booking.id);
     navigate(`/UserProfile/Bookings/${booking.id}`);
+  };
+  const handleCancel = (e, booking) => {
+    var txt;
+    if (window.confirm("Do you want to cancel your booking?!")) {
+      txt = "You pressed OK!";
+    } else {
+      txt = "You pressed Cancel!";
+    }
+    window.alert(txt);
   };
   return (
     <div>
@@ -52,16 +61,6 @@ function BookingDetailCard({ booking }) {
                 booking.train_schedule?.destination_name?.city_name +
                 " "}
             <StyleChip label={"  " + booking.booking_status} color="success" />
-            <Button
-              variant="outlined"
-              className="pull-right"
-              startIcon={<DescriptionOutlinedIcon />}
-              onClick={(e) => {
-                handleBookingClick(e, booking);
-              }}
-            >
-              Your Booking Details
-            </Button>
           </Typography>
           <Divider
             // variant="absolute"
@@ -80,6 +79,63 @@ function BookingDetailCard({ booking }) {
             Total tickets: {" " + booking.total_ticket_count}
             <br />
             Total fare: {" " + booking.total_fare}
+            {booking.booking_status === "confirm" ? (
+              <>
+                {console.log(status)}
+                {status === "upcoming" ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    className="pull-right"
+                    // startIcon={<DescriptionOutlinedIcon />}
+                    onClick={(e) => {
+                      handleCancel(e, booking);
+                    }}
+                  >
+                    Cancel Booking
+                  </Button>
+                ) : (
+                  <></>
+                )}
+
+                <Button
+                  variant="contained"
+                  className="pull-right mr-2"
+                  startIcon={<DescriptionOutlinedIcon />}
+                  onClick={(e) => {
+                    handleBookingClick(e, booking);
+                  }}
+                >
+                  Booking Reciept
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="contained"
+                  color="error"
+                  className="pull-right"
+                  // startIcon={<DescriptionOutlinedIcon />}
+                  onClick={(e) => {
+                    handleCancel(e, booking);
+                  }}
+                  disabled="true"
+                >
+                  Cancel Booking
+                </Button>
+                <Button
+                  variant="contained"
+                  className="pull-right mr-2"
+                  startIcon={<DescriptionOutlinedIcon />}
+                  onClick={(e) => {
+                    handleBookingClick(e, booking);
+                  }}
+                  disabled="true"
+                >
+                  Booking Reciept
+                </Button>
+              </>
+            )}
           </Typography>
         </CardContent>
       </Card>

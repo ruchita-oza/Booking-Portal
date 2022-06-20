@@ -486,7 +486,10 @@ function UserProfile() {
                     <TabPanel value={value} index={0} dir={theme.direction}>
                       {allUpcomingBookingRecords.map((booking) => (
                         <>
-                          <BookingDetailCard booking={booking} />
+                          <BookingDetailCard
+                            booking={booking}
+                            status="upcoming"
+                          />
                           <br />
                         </>
                       ))}
@@ -500,7 +503,8 @@ function UserProfile() {
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {allCompletedBookingRecords.map((e) => (
                         <>
-                          <BookingDetailCard booking={e} /> <br />
+                          <BookingDetailCard booking={e} status="complete" />{" "}
+                          <br />
                         </>
                       ))}
                     </TabPanel>
@@ -508,7 +512,7 @@ function UserProfile() {
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>
-                        <BookingDetailCard booking={e} />
+                        <BookingDetailCard booking={e} status="all" />
                         <br />
                       </>
                     ))}
