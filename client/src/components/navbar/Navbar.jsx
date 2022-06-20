@@ -27,7 +27,7 @@ const Navbar = (props) => {
 
   const adminMenu = [
     { label: "Home", link: "/" },
-    { label: "Profile", link: "/userProfile" },
+    { label: "Dashboard", link: "/admin/dashboard " },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
     {
       label: "Edit Transport",
@@ -260,49 +260,56 @@ const Navbar = (props) => {
           <div className="addTransportPageHeader"></div>
         ) : (
           <>
-            <div className="header">
-              <div className="headerContainer listMode">
-                <div className="headerList">
-                  <div
-                    className={
-                      props.type === "flights"
-                        ? "headerListItem active"
-                        : "headerListItem "
-                    }
-                    onClick={() => doChanges("flights")}
-                  >
-                    <FontAwesomeIcon icon={faPlane} />
-                    <span>Flight</span>
-                  </div>
-                  <div
-                    className={
-                      props.type === "buses"
-                        ? "headerListItem active"
-                        : "headerListItem "
-                    }
-                    onClick={() => {
-                      doChanges("buses");
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faBus} />
-                    <span>Bus</span>
-                  </div>
-                  <div
-                    className={
-                      props.type === "trains"
-                        ? "headerListItem active"
-                        : "headerListItem "
-                    }
-                    onClick={() => {
-                      doChanges("trains");
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faTrain} />
-                    <span>Train</span>
+            {firstPath === "" ||
+            firstPath === "buses" ||
+            firstPath === "flights" ||
+            firstPath === "trains" ? (
+              <div className="header">
+                <div className="headerContainer listMode">
+                  <div className="headerList">
+                    <div
+                      className={
+                        props.type === "flights"
+                          ? "headerListItem active"
+                          : "headerListItem "
+                      }
+                      onClick={() => doChanges("flights")}
+                    >
+                      <FontAwesomeIcon icon={faPlane} />
+                      <span>Flight</span>
+                    </div>
+                    <div
+                      className={
+                        props.type === "buses"
+                          ? "headerListItem active"
+                          : "headerListItem "
+                      }
+                      onClick={() => {
+                        doChanges("buses");
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faBus} />
+                      <span>Bus</span>
+                    </div>
+                    <div
+                      className={
+                        props.type === "trains"
+                          ? "headerListItem active"
+                          : "headerListItem "
+                      }
+                      onClick={() => {
+                        doChanges("trains");
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faTrain} />
+                      <span>Train</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <></>
+            )}
           </>
         )}
         {/* <Link to='/userProfile'>
@@ -328,56 +335,7 @@ const Navbar = (props) => {
         {/* </div> */}
         {/* </div> */}
         {/* </div> */}
-        {/* {firstPath === "" ||
-        firstPath === "buses" ||
-        firstPath === "flights" ||
-        firstPath === "trains" ? (
-          <div className="header">
-            <div className="headerContainer listMode">
-              <div className="headerList">
-                <div
-                  className={
-                    props.type === "flights"
-                      ? "headerListItem active"
-                      : "headerListItem "
-                  }
-                  onClick={() => doChanges("flights")}
-                >
-                  <FontAwesomeIcon icon={faPlane} />
-                  <span>Flight</span>
-                </div>
-                <div
-                  className={
-                    props.type === "buses"
-                      ? "headerListItem active"
-                      : "headerListItem "
-                  }
-                  onClick={() => {
-                    doChanges("buses");
-                  }}
-                >
-                  <FontAwesomeIcon icon={faBus} />
-                  <span>Bus</span>
-                </div>
-                <div
-                  className={
-                    props.type === "trains"
-                      ? "headerListItem active"
-                      : "headerListItem "
-                  }
-                  onClick={() => {
-                    doChanges("trains");
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrain} />
-                  <span>Train</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <></>
-        )} */}
+        {/**/}
       </div>
     </>
   );
