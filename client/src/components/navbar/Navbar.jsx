@@ -142,7 +142,7 @@ const Navbar = (props) => {
                               key={setting.label}
                               onClick={handleCloseUserMenu}
                             >
-                              {setting.label == "Logout" ? (
+                              {setting.label === "Logout" ? (
                                 <>
                                   <Link
                                     onClick={handleLogout}
@@ -176,7 +176,7 @@ const Navbar = (props) => {
                               key={setting.label}
                               onClick={handleCloseUserMenu}
                             >
-                              {setting.label == "Logout" ? (
+                              {setting.label === "Logout" ? (
                                 <>
                                   <Link
                                     to={setting.link}
