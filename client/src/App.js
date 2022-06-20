@@ -26,6 +26,7 @@ import AdminDashboard from "./admin/pages/AdminDashboard/AdminDashboard";
 import TrainList from "./admin/pages/Train/Trains";
 import FlightList from "./admin/pages/Flight/Flights";
 import { AnimatePresence } from "framer-motion";
+import EditTransport from "./pages/transportDetails/EditTransport";
 
 function App() {
   const dispatch = useDispatch();
@@ -70,6 +71,10 @@ function App() {
               <Route
                 path="/admin/transportDetailAndSchedule"
                 element={<Transport />}
+              />
+              <Route
+                path="/admin/editTransportDetailAndSchedule/:transportId"
+                element={<EditTransport />}
               />
               <Route path="/admin/busList" element={<BusList />} />
               <Route path="/admin/trainList" element={<TrainList />} />
