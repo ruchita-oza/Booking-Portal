@@ -104,7 +104,7 @@ const Navbar = (props) => {
           <div className="navContainer">
             <Link to="/" style={{ textDecoration: "none" }}>
               <span className="logo" style={{ color: "white" }}>
-                Safar booking
+                Skyline booking
               </span>
             </Link>
 

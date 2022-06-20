@@ -14,8 +14,16 @@ import { useNavigate, Link } from "react-router-dom";
 import { selectUser } from "../../redux/users/selectors";
 import { useSelector } from "react-redux";
 
-const Header = ({heading,description,icon,type,source,setSource,destination,setDestination}) => {
-
+const Header = ({
+  heading,
+  description,
+  icon,
+  type,
+  source,
+  setSource,
+  destination,
+  setDestination,
+}) => {
   const [openDate, setOpenDate] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -67,21 +75,21 @@ const Header = ({heading,description,icon,type,source,setSource,destination,setD
           <>
             <h1 className="headerTitle pl-5">{heading}</h1>
             <p className="headerDesc pl-5">{description}</p>
-            {!loggedInUser && (
+            {/* {!loggedInUser && (
               <Link to="/auth/login" className="pl-5">
                 <button className="headerBtn"> Sign in / Register </button>
               </Link>
-            )}
+            )} */}
 
-            <div className='headerSearch'>
-              <div className='headerSearchItem'>
-                <FontAwesomeIcon icon={icon} className='m-2 headerIcon' />
-                <input                   
-                  type='text'
-                  placeholder='Source'
-                  className='headerSearchInput'
+            <div className="headerSearch">
+              <div className="headerSearchItem">
+                <FontAwesomeIcon icon={icon} className="m-2 headerIcon" />
+                <input
+                  type="text"
+                  placeholder="Source"
+                  className="headerSearchInput"
                   onChange={(e) => setSource(e.target.value)}
-                  value = {source}
+                  value={source}
                 />
               </div>
               <div className="headerSearchItem">
@@ -90,7 +98,7 @@ const Header = ({heading,description,icon,type,source,setSource,destination,setD
                   placeholder="Destination"
                   className="headerSearchInput"
                   onChange={(e) => setDestination(e.target.value)}
-                  value = {destination}
+                  value={destination}
                 />
               </div>
 
