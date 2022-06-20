@@ -16,7 +16,7 @@ const flightScheduleRoute = require("./src/routes/flightSchedule");
 const trainScheduleRoute = require("./src/routes/TrainScheduleRoutes");
 const bookingRecordRoute = require("./src/routes/bookingRecordRoutes");
 const passengerDetailsRoutes = require("./src/routes/PassengerDetailsRoutes");
-
+const admin = require("./src/routes/admin");
 const bodyParser = require("body-parser");
 
 // app.use(bodyParser.json());
@@ -43,6 +43,7 @@ app.use("/flight/Schedule", flightScheduleRoute);
 app.use("/train/schedule", trainScheduleRoute);
 app.use("/booking/record", bookingRecordRoute);
 app.use("/passenger/details", passengerDetailsRoutes);
+app.use("/adminApi", admin);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
