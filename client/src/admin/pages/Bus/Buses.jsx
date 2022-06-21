@@ -10,12 +10,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import ParseDate from "../../../Utilities/ParseDate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import TablePagination from "@mui/material/TablePagination";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
-
+import { Link } from "react-router-dom";  
 
 function Row(props: { row: ReturnType<typeof createData> }) {
   const { row } = props;
@@ -29,21 +29,26 @@ function Row(props: { row: ReturnType<typeof createData> }) {
     console.log(getBusSchedule);
   };
 
-  const handleArrowOpen=async(id)=>{setOpen(!open);  
-    fetchBusSchedule(id);};
+  const handleArrowOpen = async (id) => {
+    setOpen(!open);
+    fetchBusSchedule(id);
+  };
+
 
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow sx={{ backgroundColor: "#F5F5F5" }}>
         <TableCell>
           <IconButton
             aria-label='expand row'
             size='small'
-            onClick={() =>{handleArrowOpen(row.id);}} >
+            onClick={() => {
+              handleArrowOpen(row.id);
+            }}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        
+
         <TableCell align='center'>{row?.bus_name}</TableCell>
         <TableCell align='center'>{row?.id}</TableCell>
         <TableCell align='center'>{row?.bus_type}</TableCell>
@@ -63,42 +68,58 @@ function Row(props: { row: ReturnType<typeof createData> }) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant='h6' gutterBottom component='div'>
+              <Typography
+                className='fw-bold'
+                variant='h6'
+                gutterBottom
+                component='div'
+                align='center'>
                 Schedule
               </Typography>
               <Table size='small' aria-label='purchases'>
                 <TableHead>
                   <TableRow>
-                    <TableCell align='center' className='fw-bold'>Source</TableCell>
-                    <TableCell align='center' className='fw-bold'>Destination</TableCell>
-                    <TableCell align='center' className='fw-bold'>Departure Time</TableCell>
-                    <TableCell align='center' className='fw-bold'>Arrival Time</TableCell>
-                    <TableCell align='center' className='fw-bold'>Total Seats Available</TableCell>
-                    <TableCell align='center' className='fw-bold'>Total price(per seat) (Rs. )</TableCell>
+                    <TableCell align='center' className='fw-bold'>
+                      Source
+                    </TableCell>
+                    <TableCell align='center' className='fw-bold'>
+                      Destination
+                    </TableCell>
+                    <TableCell align='center' className='fw-bold'>
+                      Departure Time
+                    </TableCell>
+                    <TableCell align='center' className='fw-bold'>
+                      Arrival Time
+                    </TableCell>
+                    <TableCell align='center' className='fw-bold'>
+                      Total Seats Available
+                    </TableCell>
+                    <TableCell align='center' className='fw-bold'>
+                      Total price(per seat) (Rs. )
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {getBusSchedule &&
-                   getBusSchedule.map((buses) => (                      
-                      <TableRow >
-                         <TableCell component='th' scope='row'>
-                          {buses?.source}
-                        </TableCell>
-                        <TableCell component='th' scope='row'>
+                    getBusSchedule.map((buses) => (
+                      <TableRow>
+                        <TableCell align='center'>{buses?.source}</TableCell>
+                        <TableCell align='center'>
                           {buses?.destination}
                         </TableCell>
                         <TableCell align='center'>
-                          {buses?.departure_time}
+                          {" " +
+                            ParseDate.ParseDate(buses?.departure_time, true)}
                         </TableCell>
                         <TableCell align='center'>
-                          {buses?.arrival_time}
+                          {" " + ParseDate.ParseDate(buses?.arrival_time, true)}
                         </TableCell>
                         <TableCell align='center'>
                           {buses?.total_available_seats}
                         </TableCell>
                         <TableCell align='center'>
                           {buses?.price_per_seat}{" "}
-                        </TableCell> 
+                        </TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
@@ -112,17 +133,47 @@ function Row(props: { row: ReturnType<typeof createData> }) {
 }
 
 const Buses = () => {
-  
   const [getBus, setBus] = useState(null);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   useEffect(() => {
     const FetchBus = async () => {
       const result = await fetch(`/bus/details`);
       const getData = await result.json();
-      setBus(getData.buses.rows);      
+      setBus(getData.buses.rows);
     };
     FetchBus();
   }, []);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const options = {       
+    rowsPerPage:[3],
+    rowsPerPageOptions:[1,3,5,6],
+    jumpToPage: true,
+    textLabels:{
+      pagination: {
+        next: "Next >",
+        previous: "< Previous",
+        rowsPerPage: "Total items Per Page",
+        displayRows: "OF"
+      }
+    },
+    onChangePage (currentPage) {
+      console.log({currentPage});
+    },
+    onChangeRowsPerPage (numberOfRows) {
+      console.log({numberOfRows});
+    }
+  };
 
   return (
     <div className='container my-5'>
@@ -132,7 +183,15 @@ const Buses = () => {
             className='table align-middle mb-0 bg-white'
             aria-label='collapsible table'>
             <TableHead className='bg-light'>
-              <TableRow>
+              <TableRow
+                sx={{
+                  backgroundColor: "#003580",
+                  // borderBottom: "2px solid black",
+                  "& th": {
+                    fontSize: "1rem",
+                    color: "white",
+                  },
+                }}>
                 <TableCell />
                 <TableCell component='th' align='center' className='fw-bold'>
                   Bus Name
@@ -153,12 +212,22 @@ const Buses = () => {
             </TableHead>
             <TableBody>
               {getBus &&
-                getBus.map((bus) => (
-                  <Row key={bus?.bus_name} row={bus} />
-                ))}
+                getBus
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((bus) => (<Row key={bus?.bus_name} row={bus} />))}
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component='div'
+          count={getBus?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}          
+          options={options}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </div>
     </div>
   );
