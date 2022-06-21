@@ -7,7 +7,7 @@ const SalesChart = () => {
   const [chartUser, setChartUser] = useState(null);
   const [chartLoss, setChartLoss] = useState(null);
   const pathLoc = window.location.pathname.split("/")[2];
-  console.log(pathLoc);
+ // console.log(pathLoc);
   const bookingSeries = [
     {
       name: "Bookings",
@@ -68,7 +68,7 @@ const SalesChart = () => {
     const result = await fetch(`/adminApi/userPerMonth`);
     const getData = await result.json();
     // setDetails({ yearlyLoss: getData.yearlyLoss[0].loss });
-    console.log(getData);
+    //console.log(getData);
     setChartBooking(getData.booking);
     setChartUser(getData.users);
     setChartLoss(getData.loss);

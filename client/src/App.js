@@ -50,41 +50,37 @@ function App() {
         <AnimatePresence>
           <Routes>
             <Route path="/" element={<Home type={category} />} />
-            <Route path="/auth" element={<AuthRoute />}>
-              <Route path="/auth/register" element={<Register />} />
-              <Route path="/auth/login" element={<Login />} />
-            </Route>
             <Route path="/flights" element={<List />} />
             <Route path="/flights/:id" element={<Flight />} />
             <Route path="/buses" element={<List />} />
             <Route path="/buses/:id" element={<Buses />} />
             <Route path="/trains" element={<List />} />
             <Route path="/userProfile" element={<UserPrivateRoute />}>
-              <Route path="/userProfile" element={<UserProfile />} />
-              <Route
-                path="/userProfile/Bookings/:id"
-                element={<UserBooking />}
-              />
+              <Route path="" element={<UserProfile />} />
+              <Route path="Bookings/:id" element={<UserBooking />} />
             </Route>
             <Route path=":transport_type/book/:id" element={<BookingPage />} />
             <Route path="/admin" element={<AdminPrivateRoute />}>
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
               <Route
-                path="/admin/transportDetailAndSchedule"
+                path="transportDetailAndSchedule"
                 element={<Transport />}
               />
               <Route
-                path="/admin/editTransportDetailAndSchedule/:transportId"
+                path="editTransportDetailAndSchedule/:transportId"
                 element={<EditTransport />}
               />
-              <Route path="/admin/busList" element={<BusList />} />
-              <Route path="/admin/trainList" element={<TrainList />} />
-              <Route path="/admin/flightList" element={<FlightList />} />
-              <Route path="/admin/userList" element={<UserListing />} />
+              <Route path="busList" element={<BusList />} />
+              <Route path="trainList" element={<TrainList />} />
+              <Route path="flightList" element={<FlightList />} />
+              <Route path="userList" element={<UserListing />} />
             </Route>
-            <Route path="" element={<ErrorPage />} />
+            <Route path="/auth" element={<AuthRoute />}>
+              <Route path="/auth/register" element={<Register />} />
+              <Route path="/auth/login" element={<Login />} />
+            </Route>
 
-            {/* <Route component={ErrorPage} /> */}
+            <Route path="" element={<ErrorPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </AnimatePresence>

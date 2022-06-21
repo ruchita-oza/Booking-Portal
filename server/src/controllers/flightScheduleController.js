@@ -272,7 +272,7 @@ const createFlightScheduleFromArray = async (req, res, next) => {
       return next(createError(422, "Error no flight schedule data entered"));
     }
 
-    console.log("schedule data : ", scheduleData);
+    //console.log("schedule data : ", scheduleData);
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {

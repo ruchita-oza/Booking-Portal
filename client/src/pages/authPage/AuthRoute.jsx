@@ -7,8 +7,13 @@ import { selectUser } from "../../redux/users/selectors";
 function AuthRoute() {
   const { loggedInUser } = useSelector(selectUser);
 
-  return !loggedInUser ? <Outlet /> : <Navigate to="/" />;
+  return !loggedInUser ? (
+    <Outlet />
+  ) : loggedInUser.is_admin === "Admin" ? (
+    <Navigate to="/admin/dashboard" />
+  ) : (
+    <Navigate to="/" />
+  );
 }
 
 export default AuthRoute;
-

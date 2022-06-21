@@ -51,7 +51,7 @@ const updateCity = async (req, res, next) => {
       return next(createError(404, "City not found"));
     }
     const city = await City.findOne({ where: { id: req.params.id } });
-    console.log(city);
+    //console.log(city);
     res.status(200).json({ city: { city }, success: true });
   } catch (err) {
     next(err);

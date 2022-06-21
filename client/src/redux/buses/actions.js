@@ -137,11 +137,11 @@ export const getBusScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_BUSSCHEDULE_REQUEST });
     const data = await getBusWithId(id);
     if (data) {
-      console.log(data);
+      // console.log(data);
       dispatch({ type: GET_BUSSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     dispatch({ type: GET_BUSSCHEDULE_FAIL, payload: error });
   }
 };
@@ -151,11 +151,11 @@ export const getAllBusSchedule = () => async (dispatch) => {
     dispatch({ type: ALL_BUSSCHEDULE_REQUEST });
     const data = await getAllBusSchedule();
     if (data) {
-      console.log(data);
+      // console.log(data);
       dispatch({ type: ALL_BUSSCHEDULE_SUCESS, payload: data });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     dispatch({ type: ALL_BUSSCHEDULE_FAIL, payload: error });
   }
 };

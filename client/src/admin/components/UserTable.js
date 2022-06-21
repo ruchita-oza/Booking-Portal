@@ -202,7 +202,7 @@ export default function UserTable() {
   const fetchUsers = async () => {
     const res = await fetch("/user");
     const users = await res.json();
-    console.log(users.users.rows);
+   // console.log(users.users.rows);
     setUserRows(users.users.rows);
   };
   React.useEffect(() => {

@@ -24,7 +24,7 @@ function BookingDetailCard({ booking, status }) {
   })(Chip);
   const [editOpen, setEditOpen] = useState(false);
   const handleBookingClick = (e, booking) => {
-    console.log(booking, booking.id);
+    // console.log(booking, booking.id);
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
   const handleCancel = (e, booking) => {
@@ -81,7 +81,7 @@ function BookingDetailCard({ booking, status }) {
             Total fare: {" " + booking.total_fare}
             {booking.booking_status === "confirm" ? (
               <>
-                {console.log(status)}
+                {/* {console.log(status)} */}
                 {status === "upcoming" ? (
                   <Button
                     variant="contained"
