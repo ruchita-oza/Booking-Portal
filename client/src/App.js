@@ -25,6 +25,7 @@ import BusList from "./admin/pages/Bus/Buses";
 import AdminDashboard from "./admin/pages/AdminDashboard/AdminDashboard";
 import TrainList from "./admin/pages/Train/Trains";
 import FlightList from "./admin/pages/Flight/Flights";
+import UserListing from "./admin/pages/user/userListing";
 import { AnimatePresence } from "framer-motion";
 import EditTransport from "./pages/transportDetails/EditTransport";
 
@@ -79,6 +80,7 @@ function App() {
               <Route path="/admin/busList" element={<BusList />} />
               <Route path="/admin/trainList" element={<TrainList />} />
               <Route path="/admin/flightList" element={<FlightList />} />
+              <Route path="/admin/userList" element={<UserListing />} />
             </Route>
             <Route path="" element={<ErrorPage />} />
 

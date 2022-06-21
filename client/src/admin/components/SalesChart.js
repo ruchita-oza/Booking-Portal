@@ -5,21 +5,17 @@ import { useState, useEffect } from "react";
 const SalesChart = () => {
   const [chartBooking, setChartBooking] = useState(null);
   const [chartUser, setChartUser] = useState(null);
-
-  //  [
-  //       {
-  //         name: "Iphone 13",
-  //         data: [0, 31, 40, 28, 51, 42, 109, 100],
-  //       },
-  //       {
-  //         name: "Oneplue 9",
-  //         data: [0, 11, 32, 45, 32, 34, 52, 41],
-  //       },
-  //     ],
+  const [chartLoss, setChartLoss] = useState(null);
+  const pathLoc = window.location.pathname.split("/")[2];
+  console.log(pathLoc);
   const bookingSeries = [
     {
       name: "Bookings",
       data: chartBooking,
+    },
+    {
+      name: "Losses",
+      data: chartLoss,
     },
   ];
   const userSeries = [
@@ -75,46 +71,55 @@ const SalesChart = () => {
     console.log(getData);
     setChartBooking(getData.booking);
     setChartUser(getData.users);
+    setChartLoss(getData.loss);
   };
   useEffect(() => {
     getAdminCount();
   }, []);
   return (
     <div className="row">
-      <div className="col">
-        <Card>
-          <CardContent>
-            <Typography varient="h5">Sales Summary</Typography>
-            <Typography className="text-muted" varient="h6">
-              Yearly Sales Report
-            </Typography>
-            <Chart
-              type="area"
-              width="100%"
-              height="390"
-              options={chartoptions.options}
-              series={bookingSeries}
-            ></Chart>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="col">
-        <Card>
-          <CardContent>
-            <Typography varient="h5">Users Summary</Typography>
-            <Typography className="text-muted" varient="h6">
-              Yearly Users Report
-            </Typography>
-            <Chart
-              type="area"
-              width="100%"
-              height="390"
-              options={chartoptions.options}
-              series={userSeries}
-            ></Chart>
-          </CardContent>
-        </Card>
-      </div>
+      {pathLoc === "dashboard" ? (
+        <div className="col">
+          <Card>
+            <CardContent>
+              <Typography varient="h5">Sales Summary</Typography>
+              <Typography className="text-muted" varient="h6">
+                Yearly Sales Report
+              </Typography>
+              <Chart
+                type="area"
+                width="100%"
+                height="390"
+                options={chartoptions.options}
+                series={bookingSeries}
+              ></Chart>
+            </CardContent>
+          </Card>
+        </div>
+      ) : (
+        <></>
+      )}
+      {pathLoc === "userList" || pathLoc === "dashboard" ? (
+        <div className="col">
+          <Card>
+            <CardContent>
+              <Typography varient="h5">Users Summary</Typography>
+              <Typography className="text-muted" varient="h6">
+                Yearly Users Report
+              </Typography>
+              <Chart
+                type="area"
+                width="100%"
+                height="390"
+                options={chartoptions.options}
+                series={userSeries}
+              ></Chart>
+            </CardContent>
+          </Card>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
