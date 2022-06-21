@@ -32,6 +32,8 @@ const Navbar = (props) => {
     {
       label: "Edit Transport",
       link: "/admin/editTransportDetailAndSchedule/GJ06XC1901",
+      // link: "/admin/editTransportDetailAndSchedule/E6-658",
+      // link: "/admin/editTransportDetailAndSchedule/13001",
     },
     { label: "Bus List", link: "/admin/busList" },
     { label: "Flight List", link: "/admin/flightList" },

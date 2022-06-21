@@ -369,6 +369,133 @@ const createTrainScheduleFromArray = async (req, res, next) => {
   }
 };
 
+const updateTrainScheduleFromArray = async (req, res, next) => {
+  try {
+    let scheduleData = req.body;
+
+    if (scheduleData.length == 0) {
+      return next(createError(422, "Error no train schedule data entered"));
+    }
+
+    // console.log("train schedule data : ", scheduleData)
+
+    for (let i = 0; i < scheduleData.length; i++) {
+      try {
+        const trainScheduleId = scheduleData[i]?.id;
+        const trainId = scheduleData[i]?.transportId;
+        const source = scheduleData[i]?.source;
+        const destination = scheduleData[i]?.destination;
+        const arrivalTime = scheduleData[i]?.arrival_time;
+        const departureTime = scheduleData[i]?.departure_time;
+        const totalAvailableSeats = scheduleData[i]?.total_available_seats;
+        const pricePerSeat = scheduleData[i]?.price_per_seat;
+
+        const trainExistsStatus = await checkExistsTrain(trainId);
+        const trainScheduleStatus = await checkExistsTrainSchedule(
+          trainScheduleId
+        );
+        const sourceCityStatus = await checkExistsCity(source);
+        const destinationCityStatus = await checkExistsCity(destination);
+
+        if (!sourceCityStatus) {
+          return next(createError(422, "Error source city does not exists"));
+        }
+
+        if (!destinationCityStatus) {
+          return next(
+            createError(422, "Error destination city does not exists")
+          );
+        }
+
+        if (source == destination) {
+          return next(
+            createError(422, "Error source and destination city cannot be same")
+          );
+        }
+
+        if (arrivalTime == departureTime) {
+          return next(
+            createError(
+              422,
+              "Error arrival time and departure time cannot be same"
+            )
+          );
+        }
+
+        if (departureTime > arrivalTime) {
+          return next(
+            createError(
+              422,
+              "Error departure time of source city cannot be greater than arrival time of destination city"
+            )
+          );
+        }
+
+        if (totalAvailableSeats < 0) {
+          return next(
+            createError(422, "Error total available seats cannot be negative")
+          );
+        }
+
+        if (pricePerSeat == 0) {
+          return next(createError(422, "Error price per seat cannot be zero"));
+        }
+
+        if (pricePerSeat < 0) {
+          return next(
+            createError(422, "Error price per seat cannot be less than zero")
+          );
+        }
+
+        if (!trainScheduleStatus) {
+          if (!trainExistsStatus) {
+            return next(createError(422, "Error train does not exists"));
+          }
+
+          const newTrainScheduleData = {
+            train_id: trainId,
+            source: source,
+            destination: destination,
+            departure_time: departureTime,
+            arrival_time: arrivalTime,
+            total_available_seats: totalAvailableSeats,
+            price_per_seat: pricePerSeat,
+          };
+
+          if (totalAvailableSeats == 0) {
+            return next(
+              createError(422, "Error total available seat cannot be zero")
+            );
+          }
+
+          const trainScheduleDetail = await TrainSchedule.create(
+            newTrainScheduleData
+          );
+          await trainScheduleDetail.save();
+        } else {
+          const trainSchedule = await TrainSchedule.update(scheduleData[i], {
+            where: { id: trainScheduleId },
+          });
+        }
+
+        // const trainSchedule = await TrainSchedule.create(scheduleData[i]);
+        // await trainSchedule.save();
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    return res.json({
+      data: "Train schedule updated successfully",
+      status: true,
+    });
+  } catch (error) {
+    return next(
+      createError(500, "Error while updating train schedule " + error)
+    );
+  }
+};
+
 const getAllTrainSchedulesByTrainId = async (req, res, next) => {
   try {
     const trainId = req.params.id;
@@ -388,4 +515,5 @@ module.exports = {
   viewTrainSchedules,
   createTrainScheduleFromArray,
   getAllTrainSchedulesByTrainId,
+  updateTrainScheduleFromArray,
 };

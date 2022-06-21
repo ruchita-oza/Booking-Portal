@@ -10,15 +10,17 @@ const {
   viewTrainSchedules,
   createTrainScheduleFromArray,
   getAllTrainSchedulesByTrainId,
+  updateTrainScheduleFromArray,
 } = require("../controllers/trainScheduleController");
 
 router.post("/", createTrainSchedule);
 router.post("/createTrainSchedules/", createTrainScheduleFromArray);
-router.post("/:id", updateTrainSchedule);
+router.put("/:id", updateTrainSchedule);
 router.delete("/:id", deleteTrainSchedule);
 // router.get("/", viewAllTrainSchedule);
 router.get("/:id", viewTrainScheduleById);
 router.get("/", viewTrainSchedules);
 router.get("/getAllTrainSchedulesByTrainId/:id", getAllTrainSchedulesByTrainId);
+router.post("/updateAllTrainSchedules", updateTrainScheduleFromArray);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Grid, Box, Button, MenuItem } from "@mui/material";
+import { TextField, Grid, Box, Button, MenuItem, Tooltip } from "@mui/material";
 import "./Transport.css";
 import { toast } from "react-hot-toast";
 import UsePost from "../../Utilities/UsePost";
@@ -480,23 +480,25 @@ function Transport() {
               justifyContent="end"
               style={{ marginTop: "20px" }}
             >
-              <Button
-                variant="contained"
-                onClick={() =>
-                  addComponent({
-                    id: uuidv4(),
-                    transportId: "",
-                    source: "",
-                    destination: "",
-                    departure_time: new Date(),
-                    arrival_time: new Date(),
-                    total_available_seats: "",
-                    price_per_seat: "",
-                  })
-                }
-              >
-                <AddIcon fontSize="large" />
-              </Button>
+              <Tooltip title="Add new schedule" placement="left">
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    addComponent({
+                      id: uuidv4(),
+                      transportId: "",
+                      source: "",
+                      destination: "",
+                      departure_time: new Date(),
+                      arrival_time: new Date(),
+                      total_available_seats: "",
+                      price_per_seat: "",
+                    })
+                  }
+                >
+                  <AddIcon fontSize="large" />
+                </Button>
+              </Tooltip>
             </Grid>
             <br />
             {components.map((i) => (
