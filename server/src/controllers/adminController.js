@@ -32,7 +32,23 @@ const userCountPerMonth = async (req, res, next) => {
     const BookingCountPerMonth = await sequelize.query(
       "SELECT SUM(IF(MONTH(journey_date) = 1, total_fare, 0)) AS Jan, SUM(IF(MONTH(journey_date) = 2, total_fare, 0)) AS Feb, SUM(IF(MONTH(journey_date) = 3, total_fare, 0)) AS Mar, SUM(IF(MONTH(journey_date) = 4, total_fare, 0)) AS Apr, SUM(IF(MONTH(journey_date) = 5, total_fare, 0)) AS May, SUM(IF(MONTH(journey_date) = 6, total_fare, 0)) AS Jun, SUM(IF(MONTH(journey_date) = 7, total_fare, 0)) AS Jul, SUM(IF(MONTH(journey_date) = 8, total_fare, 0)) AS Aug, SUM(IF(MONTH(journey_date) = 9, total_fare, 0)) AS Sep, SUM(IF(MONTH(journey_date) = 10, total_fare, 0)) AS OCT, SUM(IF(MONTH(journey_date) = 11, total_fare, 0)) AS Nov, SUM(IF(MONTH(journey_date) = 12, total_fare, 0)) AS `Dec` FROM booking_records WHERE YEAR(journey_date) = YEAR(CURRENT_DATE) AND booking_status = 'confirm'"
     );
+
     let data = BookingCountPerMonth[0][0];
+    const monthlySale = [
+      parseInt(data.Jan),
+      parseInt(data.Feb),
+      parseInt(data.Mar),
+      parseInt(data.Apr),
+      parseInt(data.May),
+      parseInt(data.Jun),
+      parseInt(data.Jul),
+      parseInt(data.Aug),
+      parseInt(data.Sep),
+      parseInt(data.OCT),
+      parseInt(data.Nov),
+      parseInt(data.Dec),
+    ];
+
     const userCountPerMonth = await sequelize.query(`SELECT
     SUM(IF(MONTH(createdAt) = 1, 1, 0))  AS Jan,
     SUM(IF(MONTH(createdAt) = 2, 1, 0))  AS Feb,
@@ -48,20 +64,6 @@ const userCountPerMonth = async (req, res, next) => {
     SUM(IF(MONTH(createdAt) = 12, 1, 0)) AS 'Dec'
     FROM users `);
 
-    const monthlySale = [
-      parseInt(data.Jan),
-      parseInt(data.Feb),
-      parseInt(data.Mar),
-      parseInt(data.Apr),
-      parseInt(data.May),
-      parseInt(data.Jun),
-      parseInt(data.Jul),
-      parseInt(data.Aug),
-      parseInt(data.Sep),
-      parseInt(data.OCT),
-      parseInt(data.Nov),
-      parseInt(data.Dec),
-    ];
     // console.log(parseInt(data.Jan));
     data = userCountPerMonth[0][0];
     const monthlyUser = [
@@ -79,9 +81,30 @@ const userCountPerMonth = async (req, res, next) => {
       parseInt(data.Dec),
     ];
 
+    const LossCountPerMonth = await sequelize.query(
+      "SELECT SUM(IF(MONTH(journey_date) = 1, total_fare, 0)) AS Jan, SUM(IF(MONTH(journey_date) = 2, total_fare, 0)) AS Feb, SUM(IF(MONTH(journey_date) = 3, total_fare, 0)) AS Mar, SUM(IF(MONTH(journey_date) = 4, total_fare, 0)) AS Apr, SUM(IF(MONTH(journey_date) = 5, total_fare, 0)) AS May, SUM(IF(MONTH(journey_date) = 6, total_fare, 0)) AS Jun, SUM(IF(MONTH(journey_date) = 7, total_fare, 0)) AS Jul, SUM(IF(MONTH(journey_date) = 8, total_fare, 0)) AS Aug, SUM(IF(MONTH(journey_date) = 9, total_fare, 0)) AS Sep, SUM(IF(MONTH(journey_date) = 10, total_fare, 0)) AS OCT, SUM(IF(MONTH(journey_date) = 11, total_fare, 0)) AS Nov, SUM(IF(MONTH(journey_date) = 12, total_fare, 0)) AS `Dec` FROM booking_records WHERE YEAR(journey_date) = YEAR(CURRENT_DATE) AND booking_status = 'cancel'"
+    );
+
+    data = LossCountPerMonth[0][0];
+    const monthlyLoss = [
+      parseInt(data.Jan),
+      parseInt(data.Feb),
+      parseInt(data.Mar),
+      parseInt(data.Apr),
+      parseInt(data.May),
+      parseInt(data.Jun),
+      parseInt(data.Jul),
+      parseInt(data.Aug),
+      parseInt(data.Sep),
+      parseInt(data.OCT),
+      parseInt(data.Nov),
+      parseInt(data.Dec),
+    ];
+
     return res.json({
       booking: monthlySale,
-        users: monthlyUser,
+      loss: monthlyLoss,
+      users: monthlyUser,
       success: true,
     });
   } catch (e) {
