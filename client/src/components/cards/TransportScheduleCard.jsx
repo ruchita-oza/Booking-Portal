@@ -11,6 +11,7 @@ import {
   InputAdornment,
   Card,
   CardContent,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -119,7 +120,7 @@ function TransportScheduleCard({
                 id="source"
                 label="Source City"
                 SelectProps={{ MenuProps: MenuProps }}
-                // value={data["source"]}
+                value={data["source"]}
                 onChange={(e) => {
                   // setScheduleData({
                   //   ...scheduleData,
@@ -144,7 +145,7 @@ function TransportScheduleCard({
                 id="destination"
                 label="Destination City"
                 SelectProps={{ MenuProps: MenuProps }}
-                // value={data["destination"]}
+                value={data["destination"]}
                 onChange={(e) => {
                   // setScheduleData({
                   //   ...scheduleData,
@@ -161,14 +162,16 @@ function TransportScheduleCard({
               </TextField>
             </Grid>
             <Grid item xs={12} md={0.7}>
-              <Button
-                variant="contained"
-                color="error"
-                style={{ padding: "10px" }}
-                onClick={() => deleteComponent(data.id)}
-              >
-                <DeleteIcon fontSize="large" />
-              </Button>
+              <Tooltip title="Delete schedule" placement="right">
+                <Button
+                  variant="contained"
+                  color="error"
+                  style={{ padding: "10px" }}
+                  onClick={() => deleteComponent(data.id)}
+                >
+                  <DeleteIcon fontSize="large" />
+                </Button>
+              </Tooltip>
             </Grid>
           </Grid>
           <br />
@@ -221,7 +224,7 @@ function TransportScheduleCard({
                 type="number"
                 id="outlined-required"
                 label="Total Available Seats"
-                // value={data["totalAvailableSeats"]}
+                value={data["total_available_seats"]}
                 onChange={(e) => {
                   // setScheduleData({
                   //   ...scheduleData,
@@ -245,7 +248,7 @@ function TransportScheduleCard({
                     <InputAdornment position="start">₹</InputAdornment>
                   ),
                 }}
-                // value={data["pricePerSeat"]}
+                value={data["price_per_seat"]}
                 onChange={(e) => {
                   // setScheduleData({
                   //   ...scheduleData,

@@ -25,9 +25,10 @@ const UsePut = async (url, data, method = "put") => {
     };
 
     const response = await axios.put(url, data, { headers });
-
+    // console.log("from UsePut.js", response.data.data);
     return response?.data;
   } catch (error) {
+    return error;
     console.log(error.toString());
   }
 };

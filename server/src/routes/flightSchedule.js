@@ -8,6 +8,7 @@ const {
   getAllFlightSchedules,
   createFlightScheduleFromArray,
   getAllFlightSchedulesByFlightId,
+  updateFlightScheduleFromArray,
 } = require("../controllers/flightScheduleController");
 
 // router.get("/", getFlightSchedules);
@@ -21,5 +22,6 @@ router.get(
   "/getAllFlightSchedulesByFlightId/:id",
   getAllFlightSchedulesByFlightId
 );
+router.post("/updateAllFlightSchedules", updateFlightScheduleFromArray);
 
 module.exports = router;

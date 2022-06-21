@@ -39,32 +39,23 @@ const createBus = async (req, res, next) => {
 
 const updateBus = async (req, res, next) => {
   try {
-    // const updateBus = await Bus.update(
-    //   req.body,
-    //   { where: { id: req.params.id } },
-    //   { new: true, runValidator: true, useFindAndModify: false }
-    // );
-    // if (!updateBus) {
-    //   return next(createError(404, "Bus not found"));
-    // }
-    // const bus = await Bus.findOne({ where: { id: req.params.id } });
-    // res.status(200).json({ bus, success: true });
-    // const busNumber = req.params.id;
-    const result = await busSchema.validateAsync(req.body);
-    // console.log(result);
-
-    const status = await checkExists(result.id);
+    const busNumber = req.params.id;
+    const status = await checkExists(busNumber);
     if (status) {
-      const bus = await Bus.update(result, { where: { id: result.id } });
+      const data = await busSchema.validateAsync(req.body);
+      const bus = await Bus.update(data, {
+        where: { id: busNumber },
+      });
+
       return res.json({
         data: "Bus details updated successfully",
         status: true,
       });
-    } else {
-      return next(createError(422, "Error bus number does not exists"));
     }
-  } catch (err) {
-    next(err);
+
+    return next(createError(422, "Error while updating bus details"));
+  } catch (error) {
+    return next(createError(500, "Error while updating bus details " + error));
   }
 };
 
