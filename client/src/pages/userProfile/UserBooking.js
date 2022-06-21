@@ -14,7 +14,7 @@ function UserBooking() {
     useSelector(selectPassenger);
   const { loggedInUser } = useSelector(selectUser);
   React.useEffect(() => {
-    console.log(bookingId);
+  //  console.log(bookingId);
     if (bookingId) dispatch(userBookingRecieptThunkAction(bookingId));
   }, [dispatch, bookingId]);
   const handlePrint = () => {

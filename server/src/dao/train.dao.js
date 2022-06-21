@@ -51,8 +51,8 @@ const findAllTrainSchedules = async ({
   skip,
   resultPerPage,
 }) => {
-  console.log(ticketQuery);
-  console.log("object");
+  //console.log(ticketQuery);
+ // console.log("object");
   const trainSchedules = await TrainSchedule.findAndCountAll({
     offset: skip,
     limit: resultPerPage,

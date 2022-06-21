@@ -79,7 +79,7 @@ const createTrainSchedule = async (req, res, next) => {
     } else if (pricePerSeat < 0) {
       return next(createError(422, "Error price per seat cannot be negative"));
     } else {
-      console.log(req.body);
+     // console.log(req.body);
       const train = await TrainSchedule.create(req.body);
       await train.save();
       return res.json({

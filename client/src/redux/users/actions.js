@@ -99,15 +99,15 @@ export const fetchLoginUserThunkAction = (
 ) => {
   return async (dispatch) => {
     try {
-      console.log("at login", email, password);
+      // console.log("at login", email, password);
       dispatch(setIsSigning());
       const { data } = await getLoggedInUserApi({ email, password });
-      console.log(data);
+      // console.log(data);
       if (data.success !== true) {
         throw new Error(data);
       }
       toast.success("Logged in successfully.");
-      console.log("user data: " + data);
+      // console.log("user data: " + data);
       localStorage.setItem("user", JSON.stringify(data));
       dispatch(
         setLoggedInUser({
@@ -222,7 +222,7 @@ export const userBookingRecieptThunkAction =
           if (!transport) throw new Error(`ERROR : while getting transport`);
           if (transport.data.status != true)
             throw new Error(`ERROR :${transport.data.message}`);
-          console.log(transport.data.status);
+          // console.log(transport.data.status);
           dispatch({
             type: GET_PASSENGER_DETAILS_SUCCESS,
             payload: {
@@ -239,7 +239,7 @@ export const userBookingRecieptThunkAction =
           if (!transport) throw new Error(`ERROR : while getting transport`);
           if (transport.data.status != true)
             throw new Error(`ERROR :${transport.data.message}`);
-          console.log(transport.data.status);
+          // console.log(transport.data.status);
           dispatch({
             type: GET_PASSENGER_DETAILS_SUCCESS,
             payload: {
@@ -256,7 +256,7 @@ export const userBookingRecieptThunkAction =
           if (!transport) throw new Error(`ERROR : while getting transport`);
           if (transport.data.status != true)
             throw new Error(`ERROR :${transport.data.message}`);
-          console.log(transport.data.status);
+          // console.log(transport.data.status);
           dispatch({
             type: GET_PASSENGER_DETAILS_SUCCESS,
             payload: {
@@ -268,7 +268,7 @@ export const userBookingRecieptThunkAction =
         }
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       dispatch({ type: GET_PASSENGER_DETAILS_FAIL, payload: error });
     }
   };

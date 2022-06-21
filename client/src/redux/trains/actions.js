@@ -56,7 +56,7 @@ export const getTrainSchedules =
           destCity.data.cities.count === 0
         ) {
           throw new Error(
-            `bus on Schedule ${source} and ${destination} is not available`
+            `train on Schedule ${source} and ${destination} is not available`
           );
         }
         if (!fromDate) {
@@ -123,11 +123,11 @@ export const getTrainScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_TRAINSCHEDULE_REQUEST });
     const data = await getTrainWithId(id);
     if (data) {
-      console.log(data);
+      // console.log(data);
       dispatch({ type: GET_TRAINSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     dispatch({ type: GET_TRAINSCHEDULE_FAIL, payload: error });
   }
 };
@@ -137,11 +137,11 @@ export const getAllTrainSchedule = () => async (dispatch) => {
     dispatch({ type: ALL_TRAINSCHEDULE_REQUEST });
     const data = await getAllTrainSchedule();
     if (data) {
-      console.log(data);
+      // console.log(data);
       dispatch({ type: ALL_TRAINSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     dispatch({ type: ALL_TRAINSCHEDULE_FAIL, payload: error });
   }
 };

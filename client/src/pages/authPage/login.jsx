@@ -26,15 +26,15 @@ function Login(props) {
   });
 
   const onSuccess = () => {
-    console.log("on success");
+    // console.log("on success");
     navigate("/");
   };
 
   const onError = (error) => {
-    console.log("error occured", error);
+    // console.log("error occured", error);
   };
   const fetchData = (email, password) => {
-    console.log(email, password);
+    // console.log(email, password);
     dispatch(fetchLoginUserThunkAction(email, password, onSuccess, onError));
   };
   function handleLogin({ email, password }) {
@@ -87,7 +87,7 @@ function Login(props) {
                             touched,
                           }) => (
                             <Form class="authform">
-                              {console.log(values)}
+                              {/* {console.log(values)} */}
                               <div className="row w-100 mb-3 form-floating ">
                                 <label
                                   htmlFor="email"

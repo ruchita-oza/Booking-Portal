@@ -4,42 +4,20 @@ import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import ParseDate from "../../../Utilities/ParseDate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import TablePagination from '@mui/material/TablePagination';
+import TablePagination from "@mui/material/TablePagination";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { styled } from '@mui/material/styles';
 
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
-
-function Row(props: { row: ReturnType<typeof createData> }) {
+function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
   const [getFlightSchedule, setFlightSchedule] = useState(false);
@@ -48,79 +26,104 @@ function Row(props: { row: ReturnType<typeof createData> }) {
     const result = await fetch(`/flight/schedule?flight_id=${id}`);
     const getData = await result.json();
     setFlightSchedule(getData.flightScheduleWithflights.rows);
-    console.log(getFlightSchedule);
+    // console.log(getFlightSchedule);
   };
-  const handleArrowOpen=async(id)=>{setOpen(!open);  
-  FetchFlightSchedule(id);};
+  const handleArrowOpen = async (id) => {
+    setOpen(!open);
+    FetchFlightSchedule(id);
+  };
 
   return (
     <React.Fragment>
-      <StyledTableRow sx={{ "& > *": { borderBottom: "unset"  } }}>
+      <TableRow sx={{ backgroundColor: "#F5F5F5" }}>
         <TableCell>
           <IconButton
-            aria-label='expand row'
-            size='small'
-            onClick={() =>{handleArrowOpen(row.id);}} >
+            aria-label="expand row"
+            size="small"
+            onClick={() => {
+              handleArrowOpen(row.id);
+            }}
+          >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
         {/* {console.log()} */}
-        <TableCell align='center' className='fw-bold'>{row?.flight_name}</TableCell>
-        <TableCell align='center' className='fw-bold'>{row?.id}</TableCell>
-        <TableCell align='center'>{row?.flight_type}</TableCell>
-        <TableCell align='center'>
-          <span className='badge badge-success rounded-pill'>Active</span>
+        <TableCell align="center">{row?.flight_name}</TableCell>
+        <TableCell align="center">{row?.id}</TableCell>
+        <TableCell align="center">{row?.flight_type}</TableCell>
+        <TableCell align="center">
+          <span className="badge badge-success rounded-pill">Active</span>
         </TableCell>
-        <TableCell align='center'>
-          <Link to='/admin/transportDetailAndSchedule'>
-            <button type='button' className='btn btn-link btn-sm btn-rounded'>
+        <TableCell align="center">
+          <Link to="/admin/transportDetailAndSchedule">
+            <button type="button" className="btn btn-link btn-sm btn-rounded">
               Edit
             </button>
           </Link>
         </TableCell>
-      </StyledTableRow>
+      </TableRow>
 
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout='auto' unmountOnExit>
+          <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant='h6' gutterBottom component='div'>
+              <Typography
+                className="fw-bold"
+                variant="h6"
+                gutterBottom
+                component="div"
+                align="center"
+              >
                 Schedule
               </Typography>
-              <Table size='small' aria-label='purchases'>
+              <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell align='center' className='fw-bold'>Source</TableCell>
-                    <TableCell align='center' className='fw-bold'>Destination</TableCell>
-                    <TableCell align='center' className='fw-bold'>Departure Time</TableCell>
-                    <TableCell align='center' className='fw-bold'>Arrival Time</TableCell>
-                    <TableCell align='center' className='fw-bold'>Total Seats Available</TableCell>
-                    <TableCell align='center' className='fw-bold'> Total price(per seat) (Rs. )
+                    <TableCell align="center" className="fw-bold">
+                      Source
+                    </TableCell>
+                    <TableCell align="center" className="fw-bold">
+                      Destination
+                    </TableCell>
+                    <TableCell align="center" className="fw-bold">
+                      Departure Time
+                    </TableCell>
+                    <TableCell align="center" className="fw-bold">
+                      Arrival Time
+                    </TableCell>
+                    <TableCell align="center" className="fw-bold">
+                      Total Seats Available
+                    </TableCell>
+                    <TableCell align="center" className="fw-bold">
+                      {" "}
+                      Total price(per seat) (Rs. )
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>{console.log("before map" , getFlightSchedule)}
+                <TableBody>
                   {getFlightSchedule &&
-                   getFlightSchedule.map((flights) => (                      
-                      <TableRow >
-                         <TableCell component='th' scope='row'>
+                    getFlightSchedule.map((flights) => (
+                      <TableRow>
+                        <TableCell component="th" scope="row">
                           {flights?.source}
                         </TableCell>
-                        <TableCell component='th' scope='row'>
+                        <TableCell component="th" scope="row">
                           {flights?.destination}
                         </TableCell>
-                        <TableCell align='center'>
-                          {flights?.departure_time}
+                        <TableCell align="center">
+                          {" " +
+                            ParseDate.ParseDate(flights?.departure_time, true)}
                         </TableCell>
-                        <TableCell align='center'>
-                          {flights?.arrival_time}
+                        <TableCell align="center">
+                          {" " +
+                            ParseDate.ParseDate(flights?.arrival_time, true)}
                         </TableCell>
-                        <TableCell align='center'>
+                        <TableCell align="center">
                           {flights?.total_available_seats}
                         </TableCell>
-                        <TableCell align='center'>
+                        <TableCell align="center">
                           {flights?.price_per_seat}{" "}
-                        </TableCell> 
+                        </TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
@@ -134,54 +137,106 @@ function Row(props: { row: ReturnType<typeof createData> }) {
 }
 
 const Flights = () => {
-  
   const [getFlight, setFlight] = useState(null);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   useEffect(() => {
     const FetchFlight = async () => {
       const result = await fetch(`/flight/details`);
       const getData = await result.json();
-      setFlight(getData.flights.rows);      
+      setFlight(getData.flights.rows);
     };
     FetchFlight();
   }, []);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const options = {
+    filterType: "checkbox",
+    rowsPerPage: [3],
+    rowsPerPageOptions: [1, 3, 5, 6],
+    jumpToPage: true,
+    textLabels: {
+      pagination: {
+        next: "Next >",
+        previous: "< Previous",
+        rowsPerPage: "Total items Per Page",
+        displayRows: "OF",
+      },
+    },
+    onChangePage(currentPage) {
+      // console.log({ currentPage });
+    },
+    onChangeRowsPerPage(numberOfRows) {
+      // console.log({ numberOfRows });
+    },
+  };
+
   return (
-    <div className='container my-5'>
-      <div className='shadow-4 rounded-5 overflow-hidden'>
+    <div className="container my-5">
+      <div className="shadow-4 rounded-5 overflow-hidden">
         <TableContainer component={Paper}>
           <Table
-            className='table align-middle mb-0 bg-white'
-            aria-label='collapsible table'>
-            <TableHead className='bg-light'>
-              <StyledTableRow>
-                <StyledTableCell />
-                <StyledTableCell component='th' align='center' className='fw-bold'>
+            className="table align-middle mb-0 bg-white"
+            aria-label="collapsible table"
+          >
+            <TableHead className="bg-light">
+              <TableRow
+                sx={{
+                  backgroundColor: "#003580",
+                  // borderBottom: "2px solid black",
+                  "& th": {
+                    fontSize: "1rem",
+                    color: "white",
+                  },
+                }}
+              >
+                <TableCell />
+                <TableCell component="th" align="center" className="fw-bold">
                   Flight Name
-                </StyledTableCell>
-                <StyledTableCell component='th' align='center' className='fw-bold'>
+                </TableCell>
+                <TableCell component="th" align="center" className="fw-bold">
                   Flight Number
-                </StyledTableCell>
-                <StyledTableCell component='th' align='center' className='fw-bold'>
+                </TableCell>
+                <TableCell component="th" align="center" className="fw-bold">
                   Flight Type
-                </StyledTableCell>
-                <StyledTableCell component='th' align='center' className='fw-bold'>
+                </TableCell>
+                <TableCell component="th" align="center" className="fw-bold">
                   Status
-                </StyledTableCell>
-                <StyledTableCell component='th' align='center' className='fw-bold'>
+                </TableCell>
+                <TableCell component="th" align="center" className="fw-bold">
                   Actions
-                </StyledTableCell>
-              </StyledTableRow>
+                </TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
               {getFlight &&
-                getFlight.map((flight) => (
-                  <Row key={flight?.flight_name} row={flight} />
-                ))}
+                getFlight
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((flight) => (
+                    <Row key={flight?.flight_name} row={flight} />
+                  ))}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination align="right" rowsPerPageOptions={[10, 50, { value: -1, label: 'All' }]} />
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={getFlight?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          options={options}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </div>
     </div>
   );

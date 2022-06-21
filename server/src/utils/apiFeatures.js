@@ -57,8 +57,8 @@ class Apifeatures {
     this.priceQuery = {
       price_per_seat: { [Op.between]: [minPrice, maxPrice] },
     };
-    console.log("price query");
-    console.log(this.priceQuery);
+    //console.log("price query");
+   // console.log(this.priceQuery);
     return this;
   }
   timeFilter() {

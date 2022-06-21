@@ -26,8 +26,8 @@ const Navbar = (props) => {
   ];
 
   const adminMenu = [
-    { label: "Home", link: "/" },
     { label: "Dashboard", link: "/admin/dashboard " },
+    { label: "UserList", link: "/admin/userList " },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
     {
       label: "Edit Transport",

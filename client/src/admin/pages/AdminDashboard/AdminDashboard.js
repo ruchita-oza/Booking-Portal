@@ -20,7 +20,7 @@ function AdminDashboard() {
       const result = await fetch(`/adminApi`);
       const getData = await result.json();
       // setDetails({ yearlyLoss: getData.yearlyLoss[0].loss });
-      console.log(getData.yearlyUser[0].users);
+     // console.log(getData.yearlyUser[0].users);
       setYearlyLoss(getData.YearlyLoss[0].loss);
       setYearlyProfit(getData.YearlyProfit[0].profit);
       setYearlyUsers(getData.yearlyUser[0].users);

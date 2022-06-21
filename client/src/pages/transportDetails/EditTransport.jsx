@@ -463,6 +463,7 @@ function EditTransport() {
       }
     } else if (transportMode.toLowerCase() === "bus") {
       // console.log("here in bus");
+      // console.log("here");
       let busRequestBody = {
         id: transportDetails?.id,
         bus_name: transportDetails?.name,

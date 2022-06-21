@@ -71,7 +71,7 @@ const Home = ({ type }) => {
     }
 
     function error(err) {
-      console.warn(`ERROR(${err.code}): ${err.message}`); 
+      // console.warn(`ERROR(${err.code}): ${err.message}`); 
       switch (err.code) {
         case err.PERMISSION_DENIED:
           alert("You denied the request for Geolocation.");

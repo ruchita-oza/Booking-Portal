@@ -101,7 +101,7 @@ const List = () => {
   const [resultsFound, SetResultsFound] = useState(true);
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
-    console.log(currentPage);
+    // console.log(currentPage);
   };
   React.useEffect(() => {
     window.addEventListener("load", () => {
