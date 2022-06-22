@@ -475,6 +475,7 @@ function BookingPage({ match }) {
                     </div>
                   </div>
                 </div>
+                <br />
                 <button
                   type="submit"
                   className="bkButton "

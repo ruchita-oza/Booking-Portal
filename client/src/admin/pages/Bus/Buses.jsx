@@ -15,7 +15,13 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TablePagination from "@mui/material/TablePagination";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import green from "@material-ui/core/colors/green";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Tooltip } from "@mui/material";
+import { makeStyles } from "@material-ui/core/styles";
+import "./buses.css";
 
 function Row(props) {
   const { row } = props;
@@ -33,6 +39,21 @@ function Row(props) {
     setOpen(!open);
     fetchBusSchedule(id);
   };
+
+  const navigate = useNavigate();
+
+  function handleEditAction(busNumber) {
+    console.log("in handle click action : ", busNumber);
+    navigate("/admin/editTransportDetailAndSchedule/" + busNumber);
+  }
+
+  const useTooltipStyles = makeStyles(() => ({
+    tooltip: {
+      marginTop: "0%",
+    },
+  }));
+
+  const classes = useTooltipStyles();
 
   return (
     <React.Fragment>
@@ -56,11 +77,33 @@ function Row(props) {
           <span className="badge badge-success rounded-pill">Active</span>
         </TableCell>
         <TableCell align="center">
-          <Link to="/admin/transportDetailAndSchedule">
-            <button type="button" className="btn btn-link btn-sm btn-rounded">
-              Edit
+          <Tooltip
+            title="Edit bus details and schedules"
+            placement="left"
+            classes={classes}
+          >
+            <button
+              className="btn btn-link btn-sm btn-rounded"
+              onClick={() => {
+                handleEditAction(row?.id);
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              <EditIcon />
             </button>
-          </Link>
+          </Tooltip>
+          <Tooltip
+            title="Delete bus details and schedules"
+            placement="right"
+            classes={classes}
+          >
+            <button
+              className="btn btn-link btn-sm btn-rounded"
+              style={{ textDecoration: "none" }}
+            >
+              <DeleteForeverIcon style={{ color: "red" }} />
+            </button>
+          </Tooltip>
         </TableCell>
       </TableRow>
 
@@ -75,28 +118,28 @@ function Row(props) {
                 component="div"
                 align="center"
               >
-                Schedule
+                Schedules
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
                     <TableCell align="center" className="fw-bold">
-                      Source
+                      Source City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Destination
+                      Destination City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Departure Time
+                      Departure Time of Source City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Arrival Time
+                      Arrival Time of Destination City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
                       Total Seats Available
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Total price(per seat) (Rs. )
+                      Price Per Seat (₹)
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -104,9 +147,11 @@ function Row(props) {
                   {getBusSchedule &&
                     getBusSchedule.map((buses) => (
                       <TableRow>
-                        <TableCell align="center">{buses?.source}</TableCell>
                         <TableCell align="center">
-                          {buses?.destination}
+                          {buses?.source_name?.city_name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {buses?.destination_name?.city_name}
                         </TableCell>
                         <TableCell align="center">
                           {" " +
@@ -222,7 +267,7 @@ const Buses = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5,10,25]}
+          rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={getBus?.length}
           rowsPerPage={rowsPerPage}

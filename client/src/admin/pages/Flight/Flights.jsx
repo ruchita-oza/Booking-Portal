@@ -15,7 +15,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TablePagination from "@mui/material/TablePagination";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Tooltip } from "@mui/material";
+import "./flights.css";
 
 function Row(props) {
   const { row } = props;
@@ -32,6 +36,12 @@ function Row(props) {
     setOpen(!open);
     FetchFlightSchedule(id);
   };
+
+  const navigate = useNavigate();
+
+  function handleEditAction(flightNumber) {
+    navigate("/admin/editTransportDetailAndSchedule/" + flightNumber);
+  }
 
   return (
     <React.Fragment>
@@ -55,11 +65,28 @@ function Row(props) {
           <span className="badge badge-success rounded-pill">Active</span>
         </TableCell>
         <TableCell align="center">
-          <Link to="/admin/transportDetailAndSchedule">
-            <button type="button" className="btn btn-link btn-sm btn-rounded">
-              Edit
+          <Tooltip title="Edit flight details and schedules" placement="left">
+            <button
+              className="btn btn-link btn-sm btn-rounded"
+              onClick={() => {
+                handleEditAction(row?.id);
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              <EditIcon />
             </button>
-          </Link>
+          </Tooltip>
+          <Tooltip
+            title="Delete flight details and schedules"
+            placement="right"
+          >
+            <button
+              className="btn btn-link btn-sm btn-rounded"
+              style={{ textDecoration: "none" }}
+            >
+              <DeleteForeverIcon style={{ color: "red" }} />
+            </button>
+          </Tooltip>
         </TableCell>
       </TableRow>
 
@@ -80,23 +107,22 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell align="center" className="fw-bold">
-                      Source
+                      Source City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Destination
+                      Destination City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Departure Time
+                      Departure Time of Source City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Arrival Time
+                      Arrival Time of Destination City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
                       Total Seats Available
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      {" "}
-                      Total price(per seat) (Rs. )
+                      Price Per Seat (₹)
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -105,10 +131,10 @@ function Row(props) {
                     getFlightSchedule.map((flights) => (
                       <TableRow>
                         <TableCell component="th" scope="row">
-                          {flights?.source}
+                          {flights?.source_name?.city_name}
                         </TableCell>
                         <TableCell component="th" scope="row">
-                          {flights?.destination}
+                          {flights?.destination_name?.city_name}
                         </TableCell>
                         <TableCell align="center">
                           {" " +

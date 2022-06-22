@@ -6,6 +6,8 @@ import Loader from "../../components/loader/loader";
 import { userBookingRecieptThunkAction } from "../../redux/users/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPassenger, selectUser } from "../../redux/users/selectors";
+import ParseDate from "../../Utilities/ParseDate";
+
 function UserBooking() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -14,12 +16,19 @@ function UserBooking() {
     useSelector(selectPassenger);
   const { loggedInUser } = useSelector(selectUser);
   React.useEffect(() => {
-  //  console.log(bookingId);
+    //  console.log(bookingId);
     if (bookingId) dispatch(userBookingRecieptThunkAction(bookingId));
   }, [dispatch, bookingId]);
   const handlePrint = () => {
     window.print();
   };
+
+  function makeFirstLetterCapital(str) {
+    const capitalizedStr = str.charAt(0).toUpperCase() + str.slice(1);
+
+    return capitalizedStr;
+  }
+
   return (
     <>
       {isLoading ? (
@@ -28,6 +37,7 @@ function UserBooking() {
         <div className="container">{error}</div>
       ) : (
         <>
+          <br />
           <main
             className="xl:items-start  container bookingReciept"
             // style={{ fontFamily: "Reem Kufi" }}
@@ -56,11 +66,9 @@ function UserBooking() {
                 {/* mainDetails */}
                 <section className="flex flex-col items-end justify-end">
                   <h2 className="font-bold text-3xl bookingFont uppercase mb-1">
-                    Safar Sath Sath
+                    Skyline Booking
                   </h2>
-                  <p className="bookingFont">
-                    Enjoy your safar with your humsafar
-                  </p>
+                  <p className="bookingFont">Journeys of Inspiration</p>
                 </section>
                 {/* client details */}
                 <section className="mt-2">
@@ -73,7 +81,7 @@ function UserBooking() {
                 <article className="mt-4 mb-3 flex items-center justify-center">
                   <div className="row" style={{ width: "100%" }}>
                     <div className="col-12 p-1 bg-gray-200 font-bold text-center">
-                      Your Transport details
+                      Transport details
                     </div>
                     <div className="col-md-6">
                       <ul>
@@ -87,16 +95,16 @@ function UserBooking() {
                           </span>{" "}
                         </li>
                         <li className="p-1">
-                          <span className="font-bold">booking Id number:</span>{" "}
+                          <span className="font-bold">Booking Id :</span>{" "}
                           {bookingRecord?.id}
                         </li>
 
                         <li className="p-1 bg-gray-100">
-                          <span className="font-bold">journey From :</span>{" "}
+                          <span className="font-bold">Journey from :</span>{" "}
                           {transport?.source_name}
                         </li>
                         <li className="p-1 ">
-                          <span className="font-bold">Class:</span>{" "}
+                          <span className="font-bold">Class : </span>{" "}
                           {bookingRecord?.transport_type === "train"
                             ? transport?.train_detail?.train_type
                             : bookingRecord?.transport_type === "bus"
@@ -110,7 +118,15 @@ function UserBooking() {
                       <ul>
                         <li className="p-1 bg-gray-100">
                           <span className="font-bold">
-                            {bookingRecord.transport_type} number :{" "}
+                            {
+                              // makeFirstLetterCapital(
+                              bookingRecord.transport_type
+                                .charAt(0)
+                                .toUpperCase() +
+                                bookingRecord.transport_type.slice(1)
+                              // )
+                            }{" "}
+                            number :{" "}
                           </span>
                           {bookingRecord?.transport_type === "train"
                             ? transport?.train_id
@@ -119,16 +135,16 @@ function UserBooking() {
                             : transport?.flight_id}
                         </li>
                         <li className="p-1 ">
-                          <span className="font-bold">journey Date :</span>{" "}
-                          {bookingRecord?.journey_date}
+                          <span className="font-bold">Journey Date :</span>{" "}
+                          {ParseDate.ParseDate(bookingRecord?.journey_date)}
                         </li>
                         <li className="p-1 bg-gray-100">
-                          <span className="font-bold">journey To :</span>{" "}
+                          <span className="font-bold">Journey to :</span>{" "}
                           {transport?.destination_name}
                         </li>
                         <li className="p-1 ">
-                          <span className="font-bold">Departure Time:</span>{" "}
-                          {transport?.departure_time}
+                          <span className="font-bold">Departure time:</span>{" "}
+                          {ParseDate.ParseDate(transport?.departure_time, true)}
                         </li>
                       </ul>
                     </div>
@@ -163,15 +179,15 @@ function UserBooking() {
                 </table>
                 <div>
                   <h2 className="flex items-end justify-end text-gray-800 text-2xl font-bold">
-                    Total Fare : {bookingRecord.total_fare}(₹)
+                    Total Fare : ₹ {bookingRecord.total_fare}
                   </h2>
                 </div>
                 {/* note */}
                 <section className=" mb-2">
-                  <h3> notes</h3>
+                  <h3>Note : </h3>
                   <p className="lg:w-3/4 text-justify">
-                    his e-ticket print out has to be carried by the passenger
-                    during the journey along with Original Photo ID Card of the
+                    E-ticket print out has to be carried by the passenger during
+                    the journey along with original Photo ID Card of the
                     passenger whose name appears above. Please show the e-ticket
                     at the time of checking.
                   </p>
@@ -179,23 +195,22 @@ function UserBooking() {
                     Please keep the e-ticket safely till the end of the journey.{" "}
                   </p>
                   <p className="lg:w-3/4 text-justify">
-                    Please show the e-ticket at the time of checking.
+                    {/* Please show the e-ticket at the time of checking. */}
                   </p>
                 </section>
                 {/* footer */}
                 <footer className="footer border-t-2 border-gray-300 pt-5">
-                  <ul className="flex flex-wrap items-center justify-center">
+                  <ul className="justify-center">
                     <li>
-                      <span className="font-bold">Your name:</span>{" "}
-                      {loggedInUser.first_name}
-                      {loggedInUser.last_name}
+                      <span className="font-bold">Name :</span>{" "}
+                      {loggedInUser.first_name} {loggedInUser.last_name}
                     </li>
                     <li>
-                      <span className="font-bold">Your email:</span>{" "}
+                      <span className="font-bold">Email :</span>{" "}
                       {loggedInUser.email}
                     </li>
                     <li>
-                      <span className="font-bold">Phone number:</span>{" "}
+                      <span className="font-bold">Phone number :</span>{" "}
                       {loggedInUser.phone_number}
                     </li>
                   </ul>

@@ -26,18 +26,23 @@ const Navbar = (props) => {
   ];
 
   const adminMenu = [
+    { label: "Home", link: "/" },
     { label: "Dashboard", link: "/admin/dashboard " },
-    { label: "UserList", link: "/admin/userList " },
+    { label: "Users List", link: "/admin/userList " },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
+    // {
+    // label: "Edit Transport",
+    // link: "/admin/editTransportDetailAndSchedule/GJ06XC1901",
+    // link: "/admin/editTransportDetailAndSchedule/E6-658",
+    // link: "/admin/editTransportDetailAndSchedule/13001",
+    // },
+    // { label: "Bus List", link: "/admin/busList" },
+    // { label: "Flight List", link: "/admin/flightList" },
+    // { label: "Train List", link: "/admin/trainList" },
     {
-      label: "Edit Transport",
-      link: "/admin/editTransportDetailAndSchedule/GJ06XC1901",
-      // link: "/admin/editTransportDetailAndSchedule/E6-658",
-      // link: "/admin/editTransportDetailAndSchedule/13001",
+      label: "View Transport",
+      link: "/admin/transportDetailsAndScheduleListing",
     },
-    { label: "Bus List", link: "/admin/busList" },
-    { label: "Flight List", link: "/admin/flightList" },
-    { label: "Train List", link: "/admin/trainList" },
     { label: "Logout", link: "/" },
   ];
 

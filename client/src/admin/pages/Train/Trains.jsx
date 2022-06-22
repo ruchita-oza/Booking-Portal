@@ -15,7 +15,11 @@ import TablePagination from "@mui/material/TablePagination";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import { Tooltip } from "@mui/material";
+import "./trains.css";
 
 function Row(props) {
   const { row } = props;
@@ -33,6 +37,12 @@ function Row(props) {
     setOpen(!open);
     fetchTrainSchedule(id);
   };
+
+  const navigate = useNavigate();
+
+  function handleEditAction(trainNumber) {
+    navigate("/admin/editTransportDetailAndSchedule/" + trainNumber);
+  }
 
   return (
     <React.Fragment>
@@ -56,11 +66,25 @@ function Row(props) {
           <span className="badge badge-success rounded-pill">Active</span>
         </TableCell>
         <TableCell align="center">
-          <Link to="/admin/transportDetailAndSchedule">
-            <button type="button" className="btn btn-link btn-sm btn-rounded">
-              Edit
+          <Tooltip title="Edit train details and schedules" placement="left">
+            <button
+              className="btn btn-link btn-sm btn-rounded"
+              onClick={() => {
+                handleEditAction(row?.id);
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              <EditIcon />
             </button>
-          </Link>
+          </Tooltip>
+          <Tooltip title="Delete train details and schedules" placement="right">
+            <button
+              className="btn btn-link btn-sm btn-rounded"
+              style={{ textDecoration: "none" }}
+            >
+              <DeleteForeverIcon style={{ color: "red" }} />
+            </button>
+          </Tooltip>
         </TableCell>
       </TableRow>
 
@@ -81,22 +105,22 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell align="center" className="fw-bold">
-                      Source
+                      Source City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Destination
+                      Destination City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Departure Time
+                      Departure Time of Source City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Arrival Time
+                      Arrival Time of Destination City
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
                       Total Seats Available
                     </TableCell>
                     <TableCell align="center" className="fw-bold">
-                      Total price(per seat) (Rs. )
+                      Price Per Seat (₹)
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -104,9 +128,12 @@ function Row(props) {
                   {getTrainSchedule &&
                     getTrainSchedule.map((trains) => (
                       <TableRow>
-                        <TableCell align="center">{trains?.source}</TableCell>
+                        {console.log(trains)}
                         <TableCell align="center">
-                          {trains?.destination}
+                          {trains?.source_name?.city_name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {trains?.destination_name?.city_name}
                         </TableCell>
                         <TableCell align="center">
                           {" " +
@@ -232,6 +259,8 @@ const Trains = () => {
           options={options}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          colSpan={5}
+          // style={{ padding: "10%" }}
         />
       </div>
     </div>

@@ -8,7 +8,7 @@
 }
 
 .headerContainer {
-  width:100%;
+  width: 100%;
   margin: 20px 0px 100px 0px;
   min-width: 575px;
 }
@@ -50,8 +50,6 @@
   border-radius: 3px;
 }
 
-
-
 .headerSearch {
   height: 50px;
   background-color: white;
@@ -62,7 +60,7 @@
   justify-self: center;
   border-radius: 5px;
   position: relative;
-  bottom: -125px;
+  /* bottom: -125px; */
   left: 50px;
   width: 90%;
 }
@@ -82,14 +80,12 @@
   outline: none;
   width: 100%;
   color: gray;
-
 }
 
 .headerSearchText {
   color: lightgray;
   cursor: pointer;
 }
-
 
 .options {
   z-index: 2;
@@ -131,14 +127,13 @@
   cursor: not-allowed;
 }
 
-
 @media screen and (max-width: 700px) {
-    .headerSearch {
-        height: 75px;
-        margin: 0 1rem;
-        left: 15px;
-    }
-    .headerBtn {
-      height: 65px;
-    }
+  .headerSearch {
+    height: 75px;
+    margin: 0 1rem;
+    left: 15px;
+  }
+  .headerBtn {
+    height: 65px;
+  }
 }

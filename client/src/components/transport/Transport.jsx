@@ -73,6 +73,7 @@ const Transport = ({ source, destination, setDestination }) => {
             alt="..."
             onClick={() => {
               setDestination(data?.city_name);
+              setIsDestinationSelected(true);
             }}
           />
 
@@ -85,14 +86,20 @@ const Transport = ({ source, destination, setDestination }) => {
   };
 
   const renderCityCarousel = () => {
+    let cityLength = city.length;
+
     if (!city.length) {
       return <div></div>;
     }
     const items = [];
-    // console.log("length = ");
-    // console.log(parseInt(city.length / 5));
-    let length = parseInt(city.length / 5) * 5;
-    for (let i = 0; i < length; i += 5) {
+
+    const numberOfItemsInOneFrame = 5;
+
+    let counter = cityLength - numberOfItemsInOneFrame + 1;
+
+    let i = 0;
+
+    for (i = 0; i < counter; i++) {
       items.push(
         <div className={`carousel-item ${(i === 0 && "active") || ""}`}>
           <div className="cards-wrapper">
@@ -105,6 +112,7 @@ const Transport = ({ source, destination, setDestination }) => {
         </div>
       );
     }
+
     return items;
   };
 
