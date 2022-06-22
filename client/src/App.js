@@ -31,9 +31,10 @@ import EditTransport from "./pages/transportDetails/EditTransport";
 
 function App() {
   const dispatch = useDispatch();
+  let user = null;
   const refreshStateHandler = () => {
     dispatch(refreshStateRequest());
-    const user = JSON.parse(localStorage.getItem("user")) || null;
+    user = JSON.parse(localStorage.getItem("user")) || null;
     dispatch(refreshState({ user }));
   };
   useEffect(() => {
@@ -79,7 +80,6 @@ function App() {
               <Route path="/auth/register" element={<Register />} />
               <Route path="/auth/login" element={<Login />} />
             </Route>
-
             <Route path="" element={<ErrorPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

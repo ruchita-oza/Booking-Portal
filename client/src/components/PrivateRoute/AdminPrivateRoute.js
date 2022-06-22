@@ -1,15 +1,36 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/users/selectors";
 import toast from "react-hot-toast";
-function AdminPrivateRoute() {
+import UnAuthorized from "../../pages/errorPage/UnAuthorized";
+
+function AdminPrivateRoute({ redirect = false }) {
   const { loggedInUser } = useSelector(selectUser);
-//   console.log(loggedInUser?.is_admin);
-  return loggedInUser ? loggedInUser.is_admin ==="Admin" ?<>
-   <Outlet /></> : <>{toast.error("You Are Not Authorized To View This")}<Navigate to="/auth/login" /></> 
-   :<>{toast.error("Please Login First With Admin Credential")}<Navigate to="/auth/login" /></>;
+  let user = loggedInUser
+    ? loggedInUser
+    : JSON.parse(localStorage.getItem("user")) || null;
+
+  React.useEffect(() => {
+    user = JSON.parse(localStorage.getItem("user")) || null;
+    console.log(redirect);
+  }, []);
+  return user ? (
+    user.is_admin === "Admin" ? (
+      <>
+        <Outlet />
+      </>
+    ) : (
+      <>
+        <UnAuthorized />
+      </>
+    )
+  ) : (
+    <>
+      <Navigate to="/auth/login" />
+    </>
+  );
 }
 
 export default AdminPrivateRoute;

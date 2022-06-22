@@ -12,9 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Loader from "../../components/loader/loader";
 
-
 function Login(props) {
-  const { isLoading } = useSelector(selectUser);
+  const { isLoading, is_admin } = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // let history = useHistory();
