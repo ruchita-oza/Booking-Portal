@@ -70,6 +70,7 @@ const Header = ({
         className={
           type === "list" ? "headerContainer listMode" : "headerContainer"
         }
+        style={{ marginBottom: "-22px" }}
       >
         {type !== "list" && (
           <>
