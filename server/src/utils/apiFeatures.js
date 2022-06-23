@@ -44,7 +44,12 @@ class Apifeatures {
     const toDate = this.queryStr.toDate;
     this.query = this.query.findAndCountAll({
       where: {
-        [Op.and]: [this.queryCopy, this.priceQuery, this.timeQuery],
+        [Op.and]: [
+          this.queryCopy,
+          this.priceQuery,
+          this.timeQuery,
+          this.TicketFilter,
+        ],
       },
     });
     // console.log(this.timeFilter);
@@ -58,7 +63,7 @@ class Apifeatures {
       price_per_seat: { [Op.between]: [minPrice, maxPrice] },
     };
     //console.log("price query");
-   // console.log(this.priceQuery);
+    // console.log(this.priceQuery);
     return this;
   }
   timeFilter() {

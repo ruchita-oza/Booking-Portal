@@ -1,5 +1,7 @@
 const db = require("../models");
-
+const Bus = db.bus_details;
+const Flight = db.flight_details;
+const Train = db.train_details;
 const sequelize = db.sequelize;
 const countAdminDetails = async (req, res, next) => {
   try {
@@ -111,4 +113,49 @@ const userCountPerMonth = async (req, res, next) => {
     return next(createError(500, "Error while fetching booking records " + e));
   }
 };
-module.exports = { countAdminDetails, userCountPerMonth };
+
+const adminallBuses = async (req, res, next) => {
+  try {
+    let buses = await Bus.findAndCountAll({
+      paranoid: false,
+      // include: [Other],
+    });
+    // console.log(apiFeatures.)
+    res.status(200).json({ buses });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const adminallFlights = async (req, res, next) => {
+  try {
+    let flights = await Flight.findAndCountAll({
+      paranoid: false,
+      // include: [Other],
+    });
+    // console.log(apiFeatures.)
+    res.status(200).json({ flights });
+  } catch (err) {
+    next(err);
+  }
+};
+const adminallTrains = async (req, res, next) => {
+  try {
+    let trains = await Train.findAndCountAll({
+      paranoid: false,
+      // include: [Other],
+    });
+    // console.log(apiFeatures.)
+    res.status(200).json({ trains });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  countAdminDetails,
+  userCountPerMonth,
+  adminallBuses,
+  adminallFlights,
+  adminallTrains,
+};

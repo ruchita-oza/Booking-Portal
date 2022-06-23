@@ -20,7 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Tooltip } from "@mui/material";
 import "./flights.css";
-
+import NoSchedule from "../../components/NoSchedule";
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
@@ -62,7 +62,13 @@ function Row(props) {
         <TableCell align="center">{row?.id}</TableCell>
         <TableCell align="center">{row?.flight_type}</TableCell>
         <TableCell align="center">
-          <span className="badge badge-success rounded-pill">Active</span>
+          <span
+            className={`badge rounded-pill ${
+              row.deletedAt === null ? "badge-success" : "badge-danger"
+            }`}
+          >
+            {row.deletedAt === null ? "active" : "deactive"}
+          </span>{" "}
         </TableCell>
         <TableCell align="center">
           <Tooltip title="Edit flight details and schedules" placement="left">
@@ -82,9 +88,14 @@ function Row(props) {
           >
             <button
               className="btn btn-link btn-sm btn-rounded"
-              style={{ textDecoration: "none" }}
+              style={{
+                textDecoration: "none",
+              }}
+              disable={row.deletedAt === null ? "false" : "true"}
             >
-              <DeleteForeverIcon style={{ color: "red" }} />
+              <DeleteForeverIcon
+                style={{ color: row.deletedAt === null ? "red" : "gray" }}
+              />
             </button>
           </Tooltip>
         </TableCell>
@@ -93,68 +104,76 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography
-                className="fw-bold"
-                variant="h6"
-                gutterBottom
-                component="div"
-                align="center"
-              >
-                Schedule
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center" className="fw-bold">
-                      Source City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Destination City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Departure Time of Source City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Arrival Time of Destination City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Total Seats Available
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Price Per Seat (₹)
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {getFlightSchedule &&
-                    getFlightSchedule.map((flights) => (
-                      <TableRow>
-                        <TableCell component="th" scope="row">
-                          {flights?.source_name?.city_name}
-                        </TableCell>
-                        <TableCell component="th" scope="row">
-                          {flights?.destination_name?.city_name}
-                        </TableCell>
-                        <TableCell align="center">
-                          {" " +
-                            ParseDate.ParseDate(flights?.departure_time, true)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {" " +
-                            ParseDate.ParseDate(flights?.arrival_time, true)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {flights?.total_available_seats}
-                        </TableCell>
-                        <TableCell align="center">
-                          {flights?.price_per_seat}{" "}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </Box>
+            \
+            {getFlightSchedule?.length === 0 ? (
+              <NoSchedule />
+            ) : (
+              <Box sx={{ margin: 1 }}>
+                <Typography
+                  className="fw-bold"
+                  variant="h6"
+                  gutterBottom
+                  component="div"
+                  align="center"
+                >
+                  Schedule
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" className="fw-bold">
+                        Source City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Destination City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Departure Time of Source City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Arrival Time of Destination City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Total Seats Available
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Price Per Seat (₹)
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {getFlightSchedule &&
+                      getFlightSchedule.map((flights) => (
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            {flights?.source_name?.city_name}
+                          </TableCell>
+                          <TableCell component="th" scope="row">
+                            {flights?.destination_name?.city_name}
+                          </TableCell>
+                          <TableCell align="center">
+                            {" " +
+                              ParseDate.ParseDate(
+                                flights?.departure_time,
+                                true
+                              )}
+                          </TableCell>
+                          <TableCell align="center">
+                            {" " +
+                              ParseDate.ParseDate(flights?.arrival_time, true)}
+                          </TableCell>
+                          <TableCell align="center">
+                            {flights?.total_available_seats}
+                          </TableCell>
+                          <TableCell align="center">
+                            {flights?.price_per_seat}{" "}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            )}
           </Collapse>
         </TableCell>
       </TableRow>
@@ -169,7 +188,7 @@ const Flights = () => {
 
   useEffect(() => {
     const FetchFlight = async () => {
-      const result = await fetch(`/flight/details`);
+      const result = await fetch(`/adminApi/flights`);
       const getData = await result.json();
       setFlight(getData.flights.rows);
     };
