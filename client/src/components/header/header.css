@@ -56,7 +56,7 @@
   border: 3px solid #febb02;
   display: flex;
   justify-content: space-between;
-  align-self: center;
+  align-items: center;
   justify-self: center;
   border-radius: 5px;
   position: relative;
@@ -80,12 +80,14 @@
   outline: none;
   width: 100%;
   color: gray;
+  /* white-space: normal !important; */
 }
 
 .headerSearchText {
   color: lightgray;
   cursor: pointer;
 }
+
 
 .options {
   z-index: 2;
@@ -133,7 +135,25 @@
     margin: 0 1rem;
     left: 15px;
   }
+  .headerSearchInput {
+    font-size: 11px;
+  }
+  .headerSearchText {
+    font-size:11px;
+  }
   .headerBtn {
     height: 65px;
   }
 }
+/* 
+@media screen and (min-width: 700px) {
+  .headerSearch {
+    height: 75px;
+    margin: 0 1rem;
+    left: 15px;
+  }
+  
+  .headerBtn {
+    height: 65px;
+  }
+} */
