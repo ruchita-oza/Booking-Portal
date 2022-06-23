@@ -11,10 +11,12 @@ import {
   Divider,
 } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-// import selectUser from "../../redux/users/selectors";
 
 function BookingDetailCard({ booking, status }) {
+  console.log("booking : ", booking);
+
   const navigate = useNavigate();
+
   const StyleChip = withStyles({
     root: {
       // backgroundColor:'salmon'
@@ -22,11 +24,14 @@ function BookingDetailCard({ booking, status }) {
       // padding: "1px",
     },
   })(Chip);
+
   const [editOpen, setEditOpen] = useState(false);
+
   const handleBookingClick = (e, booking) => {
     // console.log(booking, booking.id);
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
+
   const handleCancel = (e, booking) => {
     var txt;
     if (window.confirm("Do you want to cancel your booking?!")) {
@@ -36,6 +41,7 @@ function BookingDetailCard({ booking, status }) {
     }
     window.alert(txt);
   };
+
   return (
     <div>
       <Card

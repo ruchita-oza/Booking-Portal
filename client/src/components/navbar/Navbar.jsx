@@ -29,6 +29,7 @@ const Navbar = (props) => {
     { label: "Home", link: "/" },
     { label: "Dashboard", link: "/admin/dashboard " },
     { label: "Users List", link: "/admin/userList " },
+    { label: "Users Booking History", link: "/admin/usersBookingHistory" },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
     // {
     // label: "Edit Transport",
