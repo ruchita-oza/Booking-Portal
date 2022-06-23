@@ -1,5 +1,6 @@
 const db = require("../models");
 const Bus = db.bus_details;
+const BusSchedule = db.bus_schedule;
 const Apifeatures = require("../utils/apiFeatures");
 const createError = require("../utils/error");
 const { busSchema } = require("../utils/validationSchema");
@@ -111,6 +112,27 @@ const getBuses = async (req, res, next) => {
   }
 };
 
+const deleteBusDetailAndSchedule = async (req, res, next) => {
+  try {
+    const busNumber = req.params.id;
+    const busExistsStatus = await checkExists(busNumber);
+    if (!busExistsStatus) {
+      return next(createError(422, "Error bus does not exists"));
+    }
+
+    await BusSchedule.destroy({ where: { bus_id: busNumber } });
+
+    await Bus.destroy({ where: { id: busNumber } });
+
+    return res.json({
+      data: "Bus detail and its schedules deleted successfully",
+      status: true,
+    });
+  } catch (error) {
+    return next(createError(500, "Error deleting bus detail and schedule"));
+  }
+};
+
 module.exports = {
   createBus,
   getBusByBusNumber,
@@ -118,4 +140,5 @@ module.exports = {
   deleteBus,
   // getBus,
   getBuses,
+  deleteBusDetailAndSchedule,
 };
