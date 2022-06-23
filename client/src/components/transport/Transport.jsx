@@ -117,9 +117,9 @@ const Transport = ({ source, destination, setDestination }) => {
   };
 
   return (
-    <div className="transport">
+    <div className="transport container">
       <div className="row">
-        <h1 align="left">Popular Cities</h1>
+        <h1>Popular Cities</h1>
       </div>
       <div
         id="carouselExampleControls"

@@ -22,7 +22,8 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import "./buses.css";
-
+import NoSchedule from "../../components/NoSchedule";
+import toast from "react-hot-toast";
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
@@ -39,6 +40,28 @@ function Row(props) {
     setOpen(!open);
     fetchBusSchedule(id);
   };
+  let txt;
+  const handleDelete = async (id) => {
+    console.log("at delete", id);
+    if (window.confirm(`Do you want to delete ${id}`)) {
+      try {
+        const res = await fetch(`/bus/details/${id}`, { method: "DELETE" });
+        const data = await res.json();
+        console.log(data);
+        if (data.status != true) {
+          throw new Error(data.message);
+        } else {
+          toast.success(`${id} deleted successfully`);
+        }
+      } catch (err) {
+        toast.error(err);
+      }
+    } else {
+      txt = "You pressed Cancel!";
+      toast.error(txt);
+    }
+    // window.alert(txt);
+  };
 
   const navigate = useNavigate();
 
@@ -52,7 +75,6 @@ function Row(props) {
       marginTop: "0%",
     },
   }));
-
   const classes = useTooltipStyles();
 
   return (
@@ -74,7 +96,13 @@ function Row(props) {
         <TableCell align="center">{row?.id}</TableCell>
         <TableCell align="center">{row?.bus_type}</TableCell>
         <TableCell align="center">
-          <span className="badge badge-success rounded-pill">Active</span>
+          <span
+            className={`badge rounded-pill ${
+              row.deletedAt === null ? "badge-success" : "badge-danger"
+            }`}
+          >
+            {row.deletedAt === null ? "active" : "deactive"}
+          </span>
         </TableCell>
         <TableCell align="center">
           <Tooltip
@@ -99,9 +127,15 @@ function Row(props) {
           >
             <button
               className="btn btn-link btn-sm btn-rounded"
-              style={{ textDecoration: "none" }}
+              style={{
+                textDecoration: "none",
+              }}
+              disable={row.deletedAt === null ? "false" : "true"}
+              onClick={() => handleDelete(row.id)}
             >
-              <DeleteForeverIcon style={{ color: "red" }} />
+              <DeleteForeverIcon
+                style={{ color: row.deletedAt === null ? "red" : "gray" }}
+              />
             </button>
           </Tooltip>
         </TableCell>
@@ -110,67 +144,74 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography
-                className="fw-bold"
-                variant="h6"
-                gutterBottom
-                component="div"
-                align="center"
-              >
-                Schedules
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center" className="fw-bold">
-                      Source City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Destination City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Departure Time of Source City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Arrival Time of Destination City
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Total Seats Available
-                    </TableCell>
-                    <TableCell align="center" className="fw-bold">
-                      Price Per Seat (₹)
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {getBusSchedule &&
-                    getBusSchedule.map((buses) => (
-                      <TableRow>
-                        <TableCell align="center">
-                          {buses?.source_name?.city_name}
-                        </TableCell>
-                        <TableCell align="center">
-                          {buses?.destination_name?.city_name}
-                        </TableCell>
-                        <TableCell align="center">
-                          {" " +
-                            ParseDate.ParseDate(buses?.departure_time, true)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {" " + ParseDate.ParseDate(buses?.arrival_time, true)}
-                        </TableCell>
-                        <TableCell align="center">
-                          {buses?.total_available_seats}
-                        </TableCell>
-                        <TableCell align="center">
-                          {buses?.price_per_seat}{" "}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </Box>
+            {getBusSchedule?.length === 0 ? (
+              <>
+                <NoSchedule />
+              </>
+            ) : (
+              <Box sx={{ margin: 1 }}>
+                <Typography
+                  className="fw-bold"
+                  variant="h6"
+                  gutterBottom
+                  component="div"
+                  align="center"
+                >
+                  Schedules
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center" className="fw-bold">
+                        Source City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Destination City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Departure Time of Source City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Arrival Time of Destination City
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Total Seats Available
+                      </TableCell>
+                      <TableCell align="center" className="fw-bold">
+                        Price Per Seat (₹)
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {getBusSchedule &&
+                      getBusSchedule.map((buses) => (
+                        <TableRow>
+                          <TableCell align="center">
+                            {buses?.source_name?.city_name}
+                          </TableCell>
+                          <TableCell align="center">
+                            {buses?.destination_name?.city_name}
+                          </TableCell>
+                          <TableCell align="center">
+                            {" " +
+                              ParseDate.ParseDate(buses?.departure_time, true)}
+                          </TableCell>
+                          <TableCell align="center">
+                            {" " +
+                              ParseDate.ParseDate(buses?.arrival_time, true)}
+                          </TableCell>
+                          <TableCell align="center">
+                            {buses?.total_available_seats}
+                          </TableCell>
+                          <TableCell align="center">
+                            {buses?.price_per_seat}{" "}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            )}
           </Collapse>
         </TableCell>
       </TableRow>
@@ -185,7 +226,7 @@ const Buses = () => {
 
   useEffect(() => {
     const FetchBus = async () => {
-      const result = await fetch(`/bus/details`);
+      const result = await fetch(`/adminApi/buses`);
       const getData = await result.json();
       setBus(getData.buses.rows);
     };
@@ -219,6 +260,9 @@ const Buses = () => {
     onChangeRowsPerPage(numberOfRows) {
       // console.log({ numberOfRows });
     },
+  };
+  const handleDelete = (id) => {
+    console.log("at delete", id);
   };
 
   return (
@@ -262,20 +306,22 @@ const Buses = () => {
               {getBus &&
                 getBus
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((bus) => <Row key={bus?.bus_name} row={bus} />)}
+                  .map((bus) => <Row key={bus?.id} row={bus} />)}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={getBus?.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          options={options}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        {getBus && (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={getBus.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            options={options}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        )}
       </div>
     </div>
   );
