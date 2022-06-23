@@ -29,6 +29,7 @@ import UserListing from "./admin/pages/user/userListing";
 import { AnimatePresence } from "framer-motion";
 import EditTransport from "./pages/transportDetails/EditTransport";
 import TransportListingPage from "./pages/transportDetails/ListingPage";
+import UserBookingHistory from "./admin/pages/UserBookingHistory/UserBookingHistory";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,10 @@ function App() {
               <Route
                 path="transportDetailsAndScheduleListing/"
                 element={<TransportListingPage />}
+              />
+              <Route
+                path="usersBookingHistory/"
+                element={<UserBookingHistory />}
               />
               <Route path="busList" element={<BusList />} />
               <Route path="trainList" element={<TrainList />} />

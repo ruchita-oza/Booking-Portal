@@ -399,7 +399,7 @@ function UserProfile() {
                     style={{ background: "#003580" }}
                   >
                     <Tab
-                      label="Upcoming"
+                      label="Upcoming Bookings"
                       {...a11yProps(0)}
                       style={{ fontWeight: "bolder" }}
                     />
@@ -512,6 +512,7 @@ function UserProfile() {
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>
+                        {console.log("from all booking records : ", e)}
                         <BookingDetailCard booking={e} status="all" />
                         <br />
                       </>
