@@ -16,9 +16,9 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TablePagination from "@mui/material/TablePagination";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import green from "@material-ui/core/colors/green";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import "./buses.css";
@@ -40,27 +40,51 @@ function Row(props) {
     setOpen(!open);
     fetchBusSchedule(id);
   };
-  let txt;
   const handleDelete = async (id) => {
     console.log("at delete", id);
     if (window.confirm(`Do you want to delete ${id}`)) {
       try {
-        const res = await fetch(`/bus/details/${id}`, { method: "DELETE" });
+        const res = await fetch(
+          `/bus/details/deleteBusDetailAndSchedule/${id}`,
+          { method: "DELETE" }
+        );
         const data = await res.json();
         console.log(data);
         if (data.status != true) {
           throw new Error(data.message);
         } else {
           toast.success(`${id} deleted successfully`);
+          window.location.reload();
         }
       } catch (err) {
         toast.error(err);
       }
-    } else {
-      txt = "You pressed Cancel!";
-      toast.error(txt);
     }
-    // window.alert(txt);
+  };
+  const handleActive = async (id) => {
+    console.log("at delete", id);
+    if (window.confirm(`Do you want to Active ${id}`)) {
+      try {
+        const input = { deletedAt: null };
+        const res = await fetch(`/adminApi/buses/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(input),
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data.status != true) {
+          throw new Error(data.message);
+        } else {
+          toast.success(`${id} Active successfully`);
+          window.location.reload();
+        }
+      } catch (err) {
+        toast.error(err);
+      }
+    }
   };
 
   const navigate = useNavigate();
@@ -115,27 +139,47 @@ function Row(props) {
               onClick={() => {
                 handleEditAction(row?.id);
               }}
+              disabled={row.deletedAt === null ? false : true}
               style={{ textDecoration: "none" }}
             >
               <EditIcon />
             </button>
           </Tooltip>
-          <Tooltip
-            title="Delete bus details and schedules"
-            placement="right"
-            classes={classes}
-          >
-            <button
-              className="btn btn-link btn-sm btn-rounded"
-              style={{
-                textDecoration: "none",
-              }}
-              disabled={row && row.deletedAt === null ? false : true}
-              onClick={() => handleDelete(row.id)}
+          {row && row?.deletedAt === null ? (
+            <Tooltip
+              title="Delete bus details and schedules"
+              placement="right"
+              classes={classes}
             >
-              <DeleteForeverIcon style={{ color: "red " }} />
-            </button>
-          </Tooltip>
+              <button
+                className="btn btn-link btn-sm btn-rounded"
+                style={{
+                  textDecoration: "none",
+                }}
+                disabled={row && row.deletedAt === null ? false : true}
+                onClick={() => handleDelete(row.id)}
+              >
+                <DeleteForeverIcon style={{ color: "#cc3300" }} />
+              </button>
+            </Tooltip>
+          ) : (
+            <Tooltip
+              title="Active bus details and schedules"
+              placement="right"
+              classes={classes}
+            >
+              <button
+                className="btn btn-link btn-sm btn-rounded"
+                style={{
+                  textDecoration: "none",
+                }}
+                disabled={row && row.deletedAt === null ? true : false}
+                onClick={() => handleActive(row.id)}
+              >
+                <AddCircleIcon style={{ color: "#ffcc00" }} />
+              </button>
+            </Tooltip>
+          )}
         </TableCell>
       </TableRow>
 
@@ -259,10 +303,6 @@ const Buses = () => {
       // console.log({ numberOfRows });
     },
   };
-  const handleDelete = (id) => {
-    console.log("at delete", id);
-  };
-
   return (
     <div className="container my-5">
       <div className="shadow-4 rounded-5 overflow-hidden">

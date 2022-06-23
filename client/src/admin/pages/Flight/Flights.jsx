@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Tooltip } from "@mui/material";
 import "./flights.css";
 import NoSchedule from "../../components/NoSchedule";
@@ -43,27 +44,44 @@ function Row(props) {
   function handleEditAction(flightNumber) {
     navigate("/admin/editTransportDetailAndSchedule/" + flightNumber);
   }
-  let txt;
   const handleDelete = async (id) => {
-    console.log("at delete", id);
     if (window.confirm(`Do you want to delete ${id}`)) {
       try {
         const res = await fetch(`/flight/details/${id}`, { method: "DELETE" });
         const data = await res.json();
-        console.log(data);
         if (data.status != true) {
           throw new Error(data.message);
         } else {
           toast.success(`${id} deleted successfully`);
+          window.location.reload();
         }
       } catch (err) {
         toast.error(err);
       }
-    } else {
-      txt = "You pressed Cancel!";
-      toast.error(txt);
     }
-    // window.alert(txt);
+  };
+  const handleActive = async (id) => {
+    if (window.confirm(`Do you want to Active ${id}`)) {
+      try {
+        const input = { deletedAt: null };
+        const res = await fetch(`/adminApi/flights/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(input),
+        });
+        const data = await res.json();
+        if (data.status != true) {
+          throw new Error(data.message);
+        } else {
+          toast.success(`${id} Active successfully`);
+          window.location.reload();
+        }
+      } catch (err) {
+        toast.error(err);
+      }
+    }
   };
 
   return (
@@ -101,25 +119,46 @@ function Row(props) {
                 handleEditAction(row?.id);
               }}
               style={{ textDecoration: "none" }}
+              disabled={row.deletedAt === null ? false : true}
             >
               <EditIcon />
             </button>
           </Tooltip>
-          <Tooltip
-            title="Delete flight details and schedules"
-            placement="right"
-          >
-            <button
-              className="btn btn-link btn-sm btn-rounded"
-              style={{
-                textDecoration: "none",
-              }}
-              disabled={row && row.deletedAt === null ? false : true}
-              onClick={() => handleDelete(row.id)}
+          {row && row?.deletedAt === null ? (
+            <Tooltip
+              title="Delete flight details and schedules"
+              placement="right"
+              // classes={classes}
             >
-              <DeleteForeverIcon style={{ color: "red " }} />
-            </button>
-          </Tooltip>
+              <button
+                className="btn btn-link btn-sm btn-rounded"
+                style={{
+                  textDecoration: "none",
+                }}
+                disabled={row && row.deletedAt === null ? false : true}
+                onClick={() => handleDelete(row.id)}
+              >
+                <DeleteForeverIcon style={{ color: "#cc3300" }} />
+              </button>
+            </Tooltip>
+          ) : (
+            <Tooltip
+              title="Active flight details and schedules"
+              placement="right"
+              // classes={classes}
+            >
+              <button
+                className="btn btn-link btn-sm btn-rounded"
+                style={{
+                  textDecoration: "none",
+                }}
+                disabled={row && row.deletedAt === null ? true : false}
+                onClick={() => handleActive(row.id)}
+              >
+                <AddCircleIcon style={{ color: "#ffcc00" }} />
+              </button>
+            </Tooltip>
+          )}
         </TableCell>
       </TableRow>
 

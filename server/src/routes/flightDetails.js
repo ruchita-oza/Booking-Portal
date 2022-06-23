@@ -6,7 +6,8 @@ const {
   getFlights,
   createFlight,
   getFlightByFlightNumber,
-  getAllFlights,
+  // getAllFlights,
+  deleteFlightDetailAndSchedule,
 } = require("../controllers/flightController");
 
 router.get("/", getFlights);
@@ -17,5 +18,8 @@ router.put("/:id", updateFlight);
 
 router.get("/:id", getFlightByFlightNumber);
 router.delete("/:id", deleteFlight);
-
+router.delete(
+  "/deleteFlightDetailAndSchedule/:id",
+  deleteFlightDetailAndSchedule
+);
 module.exports = router;

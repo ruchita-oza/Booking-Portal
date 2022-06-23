@@ -1,5 +1,6 @@
 const db = require("../models");
 const Train = db.train_details;
+const TrainSchedule = db.train_schedules;
 const createError = require("../utils/error");
 const { trainSchema } = require("../utils/validationSchema");
 
@@ -104,10 +105,32 @@ const getAllTrain = async (req, res, next) => {
   }
 };
 
+const deleteTrainDetailAndSchedule = async (req, res, next) => {
+  try {
+    const trainNumber = req.params.id;
+    const trainExistsStatus = await checkExists(trainNumber);
+    if (!trainExistsStatus) {
+      return next(createError(422, "Error train does not exists"));
+    }
+
+    await TrainSchedule.destroy({ where: { train_id: trainNumber } });
+
+    await Train.destroy({ where: { id: trainNumber } });
+
+    return res.json({
+      data: "Train detail and its schedules deleted successfully",
+      status: true,
+    });
+  } catch (error) {
+    return next(createError(500, "Error deleting train detail and schedule"));
+  }
+};
+
 module.exports = {
   createTrain,
   updateTrain,
   deleteTrain,
   getTrainByTrainNumber,
   getAllTrain,
+  deleteTrainDetailAndSchedule,
 };
