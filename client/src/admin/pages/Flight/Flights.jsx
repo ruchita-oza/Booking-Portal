@@ -21,6 +21,7 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { Tooltip } from "@mui/material";
 import "./flights.css";
 import NoSchedule from "../../components/NoSchedule";
+import toast from "react-hot-toast";
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
@@ -42,6 +43,28 @@ function Row(props) {
   function handleEditAction(flightNumber) {
     navigate("/admin/editTransportDetailAndSchedule/" + flightNumber);
   }
+  let txt;
+  const handleDelete = async (id) => {
+    console.log("at delete", id);
+    if (window.confirm(`Do you want to delete ${id}`)) {
+      try {
+        const res = await fetch(`/flight/details/${id}`, { method: "DELETE" });
+        const data = await res.json();
+        console.log(data);
+        if (data.status != true) {
+          throw new Error(data.message);
+        } else {
+          toast.success(`${id} deleted successfully`);
+        }
+      } catch (err) {
+        toast.error(err);
+      }
+    } else {
+      txt = "You pressed Cancel!";
+      toast.error(txt);
+    }
+    // window.alert(txt);
+  };
 
   return (
     <React.Fragment>
@@ -91,11 +114,10 @@ function Row(props) {
               style={{
                 textDecoration: "none",
               }}
-              disable={row.deletedAt === null ? "false" : "true"}
+              disabled={row && row.deletedAt === null ? false : true}
+              onClick={() => handleDelete(row.id)}
             >
-              <DeleteForeverIcon
-                style={{ color: row.deletedAt === null ? "red" : "gray" }}
-              />
+              <DeleteForeverIcon style={{ color: "red " }} />
             </button>
           </Tooltip>
         </TableCell>
