@@ -130,12 +130,10 @@ function Row(props) {
               style={{
                 textDecoration: "none",
               }}
-              disable={row.deletedAt === null ? "false" : "true"}
+              disabled={row && row.deletedAt === null ? false : true}
               onClick={() => handleDelete(row.id)}
             >
-              <DeleteForeverIcon
-                style={{ color: row.deletedAt === null ? "red" : "gray" }}
-              />
+              <DeleteForeverIcon style={{ color: "red " }} />
             </button>
           </Tooltip>
         </TableCell>
