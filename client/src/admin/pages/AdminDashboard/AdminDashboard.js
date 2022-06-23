@@ -20,7 +20,7 @@ function AdminDashboard() {
       const result = await fetch(`/adminApi`);
       const getData = await result.json();
       // setDetails({ yearlyLoss: getData.yearlyLoss[0].loss });
-     // console.log(getData.yearlyUser[0].users);
+      // console.log(getData.yearlyUser[0].users);
       setYearlyLoss(getData.YearlyLoss[0].loss);
       setYearlyProfit(getData.YearlyProfit[0].profit);
       setYearlyUsers(getData.yearlyUser[0].users);
@@ -59,7 +59,7 @@ function AdminDashboard() {
     },
   ];
   return (
-    <div className="admin mt-5">
+    <div className="admin mt-5 container-fluid">
       <div className="row">
         {TopCardsInfo.map((info) => (
           <div className="col-lg-3 col-sm-6">

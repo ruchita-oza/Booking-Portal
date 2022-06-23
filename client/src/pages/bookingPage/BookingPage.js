@@ -266,12 +266,13 @@ function BookingPage({ match }) {
                   style={{ width: "80%" }}
                 >
                   {" "}
-                  Review your booking
+                  Review your booking details
                 </div>
               </h3>
               <Link
                 className="pull-right color-blue under-link change-flt-btn"
                 to="/"
+                style={{ textDecoration: "none" }}
               >
                 Change {transport_type}
               </Link>
@@ -303,15 +304,15 @@ function BookingPage({ match }) {
                   style={{ width: "80%" }}
                 >
                   {" "}
-                  Review your booking
+                  Review your personal details
                 </div>
               </h3>
-              <Link
+              {/* <Link
                 className="pull-right color-blue under-link change-flt-btn"
                 to="/"
               >
                 Change {transport_type}
-              </Link>
+              </Link> */}
               <form
                 name="travellerForm"
                 id="travellerForm"
@@ -507,27 +508,41 @@ function BookingPage({ match }) {
                   <ul className="list list-border">
                     <li className="fs-13 gray">
                       <span className="pull-left cursor-pointer pr under-link">
-                        <div className="ng-binding">Base Fare</div>
-                        <div className="gray-light fs-sm pd-15 ng-binding">
+                        <div
+                          className="ng-binding"
+                          style={{ fontSize: "18px", fontWeight: "bold" }}
+                        >
+                          Base Fare
+                        </div>
+                        <div
+                          className="gray-light fs-sm pd-15 ng-binding"
+                          style={{ fontSize: "15px" }}
+                        >
                           ({person} Traveller)
                         </div>
                       </span>
-                      <span className="pull-right tr">
+                      <span
+                        className="pull-right tr"
+                        style={{ fontSize: "18px", fontWeight: "bold" }}
+                      >
                         {" "}
-                        <span>{total_fare} ₹</span>
+                        <span>₹ {total_fare} </span>
                       </span>
                     </li>
                   </ul>
                 </div>
+                <br />
+                <br />
+                <br />
                 <div className=" full-spread pr" style={{ top: "50px" }}>
-                  <button
+                  {/* <button
                     // type="submit"
                     className="bkButton "
                     style={{ width: "100%", height: "100%" }}
                     onClick={handleBookingSubmit}
                   >
                     Confirm your booking!
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
