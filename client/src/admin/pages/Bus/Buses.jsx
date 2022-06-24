@@ -102,7 +102,7 @@ function Row(props) {
   const classes = useTooltipStyles();
 
   return (
-    <React.Fragment>
+    <React.Fragment className="adminTransport">
       <TableRow sx={{ backgroundColor: "#F5F5F5" }}>
         <TableCell>
           <IconButton
