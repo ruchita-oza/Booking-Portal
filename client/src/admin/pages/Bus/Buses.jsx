@@ -1,4 +1,5 @@
 import * as React from "react";
+import Pagination from "react-js-pagination";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -49,20 +50,30 @@ function Row(props) {
   const [open, setOpen] = useState(false);
   const [getBusSchedule, setBusSchedule] = useState(false);
   const [openModal, setOpenModal] = React.useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openID, setOpenID] = React.useState("");
+
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
   const fetchBusSchedule = async (id) => {
-    const result = await fetch(`/bus/schedule?bus_id=${id}`);
+    const result = await fetch(
+      `/bus/schedule?bus_id=${id}&page=${currentPage}`
+    );
     const getData = await result.json();
-    setBusSchedule(getData.busScheduleWithBuses.rows);
+    console.log(getData);
+    setBusSchedule(getData);
     // console.log(getBusSchedule);
   };
 
   const handleArrowOpen = async (id) => {
+    setOpenID(id);
     setOpen(!open);
     fetchBusSchedule(id);
   };
+  React.useEffect(() => {
+    if (openID) fetchBusSchedule(openID);
+  }, [currentPage]);
 
   const handleDelete = async (id) => {
     // console.log("at delete", id);
@@ -317,7 +328,7 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            {getBusSchedule?.length === 0 ? (
+            {getBusSchedule?.busScheduleWithBuses?.rows?.length === 0 ? (
               <>
                 <NoSchedule />
               </>
@@ -356,33 +367,59 @@ function Row(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {getBusSchedule &&
-                      getBusSchedule.map((buses) => (
-                        <TableRow>
-                          <TableCell align="center">
-                            {buses?.source_name?.city_name}
-                          </TableCell>
-                          <TableCell align="center">
-                            {buses?.destination_name?.city_name}
-                          </TableCell>
-                          <TableCell align="center">
-                            {" " +
-                              ParseDate.ParseDate(buses?.departure_time, true)}
-                          </TableCell>
-                          <TableCell align="center">
-                            {" " +
-                              ParseDate.ParseDate(buses?.arrival_time, true)}
-                          </TableCell>
-                          <TableCell align="center">
-                            {buses?.total_available_seats}
-                          </TableCell>
-                          <TableCell align="center">
-                            {buses?.price_per_seat}{" "}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                    {getBusSchedule?.busScheduleWithBuses?.rows &&
+                      getBusSchedule?.busScheduleWithBuses?.rows.map(
+                        (buses) => (
+                          <TableRow>
+                            <TableCell align="center">
+                              {buses?.source_name?.city_name}
+                            </TableCell>
+                            <TableCell align="center">
+                              {buses?.destination_name?.city_name}
+                            </TableCell>
+                            <TableCell align="center">
+                              {" " +
+                                ParseDate.ParseDate(
+                                  buses?.departure_time,
+                                  true
+                                )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {" " +
+                                ParseDate.ParseDate(buses?.arrival_time, true)}
+                            </TableCell>
+                            <TableCell align="center">
+                              {buses?.total_available_seats}
+                            </TableCell>
+                            <TableCell align="center">
+                              {buses?.price_per_seat}{" "}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
                   </TableBody>
                 </Table>
+                {getBusSchedule && (
+                  <div className="paginationBox pull-right">
+                    {console.log(getBusSchedule.busScheduleWithBuses.count)}
+                    <Pagination
+                      activePage={currentPage}
+                      itemsCountPerPage={getBusSchedule.resultPerPage}
+                      totalItemsCount={
+                        getBusSchedule.busScheduleWithBuses.count
+                      }
+                      onChange={(e) => setCurrentPage(e)}
+                      nextPageText="Next"
+                      prevPageText="Prev"
+                      firstPageText="1st"
+                      lastPageText="Last"
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activeClass="pageItemActive"
+                      activeLinkClass="pageLinkActive"
+                    ></Pagination>
+                  </div>
+                )}
               </Box>
             )}
           </Collapse>
@@ -401,6 +438,7 @@ const Buses = () => {
     const FetchBus = async () => {
       const result = await fetch(`/adminApi/buses`);
       const getData = await result.json();
+      // console.log(getData);
       setBus(getData.buses.rows);
     };
     FetchBus();

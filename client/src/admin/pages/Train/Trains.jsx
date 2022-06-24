@@ -30,7 +30,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import { Grid } from "@material-ui/core";
-
+import Pagination from "react-js-pagination";
 const style = {
   position: "absolute",
   top: "50%",
@@ -48,17 +48,22 @@ function Row(props) {
   const [open, setOpen] = useState(false);
   const [getTrainSchedule, setTrainSchedule] = useState(false);
   const [openModal, setOpenModal] = React.useState(false);
+  const [openID, setOpenID] = React.useState("");
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
-
+  const [currentPage, setCurrentPage] = useState(1);
   const fetchTrainSchedule = async (id) => {
-    const result = await fetch(`/train/schedule?train_id=${id}`);
+    const result = await fetch(
+      `/train/schedule?train_id=${id}&page=${currentPage}`
+    );
     const getData = await result.json();
-    setTrainSchedule(getData.data.rows);
+    console.log(getData);
+    setTrainSchedule(getData);
     // console.log(getData);
   };
 
   const handleArrowOpen = async (id) => {
+    setOpenID(id);
     setOpen(!open);
     fetchTrainSchedule(id);
   };
@@ -68,7 +73,12 @@ function Row(props) {
   function handleEditAction(trainNumber) {
     navigate("/admin/editTransportDetailAndSchedule/" + trainNumber);
   }
-
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [row]);
+  React.useEffect(() => {
+    if (openID) fetchTrainSchedule(openID);
+  }, [currentPage]);
   const handleDelete = async (id) => {
     // console.log("at delete", id);
     // if (window.confirm(`Do you want to delete ${id}`)) {
@@ -302,7 +312,7 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            {getTrainSchedule?.length === 0 ? (
+            {getTrainSchedule?.data?.rows?.length === 0 ? (
               <NoSchedule />
             ) : (
               <Box sx={{ margin: 1 }}>
@@ -315,6 +325,14 @@ function Row(props) {
                 >
                   Schedule
                 </Typography>
+                <Typography
+                  className="fw-bold"
+                  variant="h6"
+                  gutterBottom
+                  component="div"
+                  align="center"
+                ></Typography>
+
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
@@ -340,7 +358,7 @@ function Row(props) {
                   </TableHead>
                   <TableBody>
                     {getTrainSchedule &&
-                      getTrainSchedule.map((trains) => (
+                      getTrainSchedule.data.rows.map((trains) => (
                         <TableRow>
                           {/* {console.log(trains)} */}
                           <TableCell align="center">
@@ -367,6 +385,33 @@ function Row(props) {
                       ))}
                   </TableBody>
                 </Table>
+                <Typography
+                  className="fw-bold"
+                  variant="h6"
+                  gutterBottom
+                  component="div"
+                  align="right"
+                >
+                  {getTrainSchedule && (
+                    <div className="paginationBox pull-right">
+                      {console.log(getTrainSchedule.data.count)}
+                      <Pagination
+                        activePage={currentPage}
+                        itemsCountPerPage={getTrainSchedule.resultPerPage}
+                        totalItemsCount={getTrainSchedule.data.count}
+                        onChange={(e) => setCurrentPage(e)}
+                        nextPageText="Next"
+                        prevPageText="Prev"
+                        firstPageText="1st"
+                        lastPageText="Last"
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        activeClass="pageItemActive"
+                        activeLinkClass="pageLinkActive"
+                      ></Pagination>
+                    </div>
+                  )}
+                </Typography>
               </Box>
             )}
           </Collapse>

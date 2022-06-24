@@ -1,4 +1,5 @@
 import * as React from "react";
+import Pagination from "react-js-pagination";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -47,22 +48,31 @@ function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
   const [getFlightSchedule, setFlightSchedule] = useState(false);
+  const [openID, setOpenID] = React.useState("");
   const [openModal, setOpenModal] = React.useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
   const FetchFlightSchedule = async (id) => {
-    const result = await fetch(`/flight/schedule?flight_id=${id}`);
+    const result = await fetch(
+      `/flight/schedule?flight_id=${id}&page=${currentPage}`
+    );
     const getData = await result.json();
-    setFlightSchedule(getData.flightScheduleWithflights.rows);
+    console.log(getData.flightScheduleWithflights.rows);
+    setFlightSchedule(getData);
     // console.log(getFlightSchedule);
   };
 
   const handleArrowOpen = async (id) => {
+    setOpenID(id);
     setOpen(!open);
     FetchFlightSchedule(id);
   };
-
+  React.useEffect(() => {
+    if (openID) FetchFlightSchedule(openID);
+  }, [currentPage]);
   const navigate = useNavigate();
 
   function handleEditAction(flightNumber) {
@@ -299,7 +309,8 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            {getFlightSchedule?.length === 0 ? (
+            {getFlightSchedule?.flightScheduleWithflights?.rows?.length ===
+            0 ? (
               <NoSchedule />
             ) : (
               <Box sx={{ margin: 1 }}>
@@ -336,36 +347,64 @@ function Row(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {getFlightSchedule &&
-                      getFlightSchedule.map((flights) => (
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            {flights?.source_name?.city_name}
-                          </TableCell>
-                          <TableCell component="th" scope="row">
-                            {flights?.destination_name?.city_name}
-                          </TableCell>
-                          <TableCell align="center">
-                            {" " +
-                              ParseDate.ParseDate(
-                                flights?.departure_time,
-                                true
-                              )}
-                          </TableCell>
-                          <TableCell align="center">
-                            {" " +
-                              ParseDate.ParseDate(flights?.arrival_time, true)}
-                          </TableCell>
-                          <TableCell align="center">
-                            {flights?.total_available_seats}
-                          </TableCell>
-                          <TableCell align="center">
-                            {flights?.price_per_seat}{" "}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                    {getFlightSchedule?.flightScheduleWithflights?.rows &&
+                      getFlightSchedule?.flightScheduleWithflights?.rows.map(
+                        (flights) => (
+                          <TableRow>
+                            <TableCell component="th" scope="row">
+                              {flights?.source_name?.city_name}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                              {flights?.destination_name?.city_name}
+                            </TableCell>
+                            <TableCell align="center">
+                              {" " +
+                                ParseDate.ParseDate(
+                                  flights?.departure_time,
+                                  true
+                                )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {" " +
+                                ParseDate.ParseDate(
+                                  flights?.arrival_time,
+                                  true
+                                )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {flights?.total_available_seats}
+                            </TableCell>
+                            <TableCell align="center">
+                              {flights?.price_per_seat}{" "}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
                   </TableBody>
                 </Table>
+                {getFlightSchedule && (
+                  <div className="paginationBox pull-right">
+                    {console.log(
+                      getFlightSchedule.flightScheduleWithflights.count
+                    )}
+                    <Pagination
+                      activePage={currentPage}
+                      itemsCountPerPage={getFlightSchedule.resultPerPage}
+                      totalItemsCount={
+                        getFlightSchedule.flightScheduleWithflights.count
+                      }
+                      onChange={(e) => setCurrentPage(e)}
+                      nextPageText="Next"
+                      prevPageText="Prev"
+                      firstPageText="1st"
+                      lastPageText="Last"
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activeClass="pageItemActive"
+                      activeLinkClass="pageLinkActive"
+                    ></Pagination>
+                  </div>
+                )}
               </Box>
             )}
           </Collapse>
