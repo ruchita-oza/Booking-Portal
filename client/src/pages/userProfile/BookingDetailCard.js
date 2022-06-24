@@ -16,6 +16,7 @@ import {
   Box,
 } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import dateFormat from "dateformat";
 
 const style = {
   position: "absolute",
@@ -53,6 +54,17 @@ function BookingDetailCard({ booking, status }) {
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
 
+  var todaysDate = new Date();
+
+  let twoDaysOlderDate = todaysDate.setDate(todaysDate.getDate() - 2);
+
+  console.log("first");
+
+  console.log(
+    "two days older date : ",
+    dateFormat(twoDaysOlderDate, "yyyy-mm-dd HH:MM:ss", true)
+  );
+
   const handleCancel = (e, booking) => {
     var txt;
     if (window.confirm("Do you want to cancel your booking?!")) {
@@ -60,7 +72,9 @@ function BookingDetailCard({ booking, status }) {
     } else {
       txt = "You pressed Cancel!";
     }
-    window.alert(txt);
+
+    let journeyDate = ParseDate.ParseDate(booking.journey_date, true);
+    window.alert(journeyDate);
   };
 
   return (

@@ -435,16 +435,6 @@ const deleteBookingRecord = async (req, res, next) => {
     const transportId = details[0]?.transport_id;
     const totalTicketCount = details[0]?.total_ticket_count;
 
-    // console.log(
-    //   "transportType : ",
-    //   transportType,
-    //   " transportId : ",
-    //   transportId,
-    //   " totalTicketCount : ",
-    //   totalTicketCount
-    // );
-
-    // console.log("details.length : ", details.length);
     if (details.length == 1) {
       if (transportType === "train") {
         const transportSchedule = await checkExitsTrainScheduleAndReturnDetails(
@@ -454,12 +444,6 @@ const deleteBookingRecord = async (req, res, next) => {
         if (transportSchedule) {
           let updatedTotalAvailableSeats =
             totalTicketCount + transportSchedule?.total_available_seats;
-
-          // console.log(
-          //   "train updatedTotalAvailableSeats : ",
-          //   updatedTotalAvailableSeats
-          // );
-
           await updateTrainScheduleDetail(
             transportId,
             updatedTotalAvailableSeats
@@ -609,6 +593,135 @@ const viewBookingRecordByUserId = async (req, res, next) => {
   }
 };
 
+const cancelBookingRecordAndChangeStatus = async (req, res, next) => {
+  try {
+    const bookingId = req.params.id;
+    const details = await checkExistsBookingRecordAndReturnDetails(bookingId);
+
+    const transportType = details[0]?.transport_type.toLowerCase();
+    const transportId = details[0]?.transport_id;
+    const totalTicketCount = details[0]?.total_ticket_count;
+
+    if (details.length == 1) {
+      if (transportType === "train") {
+        const transportSchedule = await checkExitsTrainScheduleAndReturnDetails(
+          transportId
+        );
+
+        if (transportSchedule) {
+          let updatedTotalAvailableSeats =
+            totalTicketCount + transportSchedule?.total_available_seats;
+          await updateTrainScheduleDetail(
+            transportId,
+            updatedTotalAvailableSeats
+          );
+
+          await BookingRecords.update(
+            { booking_status: "cancel" },
+            { where: { id: bookingId } }
+          );
+
+          const bookingRecord = await BookingRecords.destroy({
+            where: { id: bookingId },
+          });
+
+          return res.json({
+            data: "Booking record deleted successfully",
+            status: true,
+          });
+        } else {
+          return next(
+            createError(
+              422,
+              "Error deleting booking record, train schedule does not exists"
+            )
+          );
+        }
+      } else if (transportType === "bus") {
+        const transportSchedule = await checkExistsBusScheduleAndReturnDetails(
+          transportId
+        );
+
+        if (transportSchedule) {
+          let updatedTotalAvailableSeats =
+            totalTicketCount + transportSchedule?.total_available_seats;
+
+          await updateBusScheduleDetail(
+            transportId,
+            updatedTotalAvailableSeats
+          );
+
+          await BookingRecords.update(
+            { booking_status: "cancel" },
+            { where: { id: bookingId } }
+          );
+
+          const bookingRecord = await BookingRecords.destroy({
+            where: { id: bookingId },
+          });
+
+          return res.json({
+            data: "Booking record deleted successfully",
+            status: true,
+          });
+        } else {
+          return next(
+            createError(
+              422,
+              "Error deleting booking record, bus schedule does not exists"
+            )
+          );
+        }
+      } else if (transportType === "flight") {
+        const transportSchedule =
+          await checkExistsFlightScheduleAndReturnDetails(transportId);
+
+        if (transportSchedule) {
+          let updatedTotalAvailableSeats =
+            totalTicketCount + transportSchedule?.total_available_seats;
+
+          await updateFlightScheduleDetail(
+            transportId,
+            updatedTotalAvailableSeats
+          );
+
+          await BookingRecords.update(
+            { booking_status: "cancel" },
+            { where: { id: bookingId } }
+          );
+
+          const bookingRecord = await BookingRecords.destroy({
+            where: { id: bookingId },
+          });
+
+          return res.json({
+            data: "Booking record deleted successfully",
+            status: true,
+          });
+        } else {
+          return next(
+            createError(
+              422,
+              "Error deleting booking record, flight schedule does not exists"
+            )
+          );
+        }
+      }
+    } else {
+      return next(
+        createError(
+          422,
+          "Error while deleting booking record, booking record does not exists"
+        )
+      );
+    }
+  } catch (error) {
+    return next(
+      createError(500, "Error while deleting booking record " + error)
+    );
+  }
+};
+
 module.exports = {
   createBookingRecord,
   updateBookingRecord,
@@ -616,4 +729,5 @@ module.exports = {
   viewAllBookingRecord,
   viewBookingRecordById,
   viewBookingRecordByUserId,
+  cancelBookingRecordAndChangeStatus,
 };

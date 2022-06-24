@@ -6,6 +6,7 @@ const FlightSchedule = db.flight_schedule;
 const Train = db.train_details;
 const TrainSchedule = db.train_schedules;
 const sequelize = db.sequelize;
+
 const countAdminDetails = async (req, res, next) => {
   try {
     const ProfitBooking = await sequelize.query(
@@ -32,6 +33,7 @@ const countAdminDetails = async (req, res, next) => {
     return next(createError(500, "Error while fetching booking records " + e));
   }
 };
+
 const userCountPerMonth = async (req, res, next) => {
   try {
     const BookingCountPerMonth = await sequelize.query(
@@ -142,6 +144,7 @@ const adminallFlights = async (req, res, next) => {
     next(err);
   }
 };
+
 const adminallTrains = async (req, res, next) => {
   try {
     let trains = await Train.findAndCountAll({
@@ -154,6 +157,7 @@ const adminallTrains = async (req, res, next) => {
     next(err);
   }
 };
+
 const activeBusWithSchedule = async (req, res, next) => {
   try {
     // console.log(req.params.id);
@@ -245,6 +249,7 @@ const activeFlightWithSchedule = async (req, res, next) => {
     return next(createError(500, error));
   }
 };
+
 const activeTrainWithSchedule = async (req, res, next) => {
   try {
     // console.log(req.params.id);

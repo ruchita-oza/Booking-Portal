@@ -8,6 +8,7 @@ const {
   viewAllBookingRecord,
   viewBookingRecordById,
   viewBookingRecordByUserId,
+  cancelBookingRecordAndChangeStatus,
 } = require("../controllers/bookingRecordController");
 
 router.post("/", createBookingRecord);
@@ -16,5 +17,6 @@ router.delete("/:id", deleteBookingRecord);
 router.get("/", viewAllBookingRecord);
 router.get("/:id", viewBookingRecordById);
 router.get("/userId/:id", viewBookingRecordByUserId);
+router.delete("/cancelBookingRecord/:id", cancelBookingRecordAndChangeStatus);
 
 module.exports = router;
