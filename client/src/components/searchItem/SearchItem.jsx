@@ -78,6 +78,7 @@ const SearchItem = ({ data, personCount }) => {
         initial={{ opacity: 0, x: "100%" }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
+        style={{ backgroundColor: "white" }}
       >
         {window.location.pathname === "/buses" ||
         window.location.pathname.split("/")[1] === "bus" ? (
