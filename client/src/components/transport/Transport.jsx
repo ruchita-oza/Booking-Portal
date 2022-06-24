@@ -85,6 +85,18 @@ const Transport = ({ source, destination, setDestination }) => {
     }
   };
 
+  const currentScreenWidth = window.screen.availWidth;
+
+  console.log("from nearby cities page : ", currentScreenWidth);
+
+  let numberOfItemsInOneFrame;
+
+  if (currentScreenWidth <= 540) {
+    numberOfItemsInOneFrame = 1;
+  } else {
+    numberOfItemsInOneFrame = 5;
+  }
+
   const renderCityCarousel = () => {
     let cityLength = city.length;
 
@@ -93,24 +105,41 @@ const Transport = ({ source, destination, setDestination }) => {
     }
     const items = [];
 
-    const numberOfItemsInOneFrame = 5;
+    // numberOfItemsInOneFrame = 5;
 
     let counter = cityLength - numberOfItemsInOneFrame + 1;
 
     let i = 0;
 
-    for (i = 0; i < counter; i++) {
-      items.push(
-        <div className={`carousel-item ${(i === 0 && "active") || ""}`}>
-          <div className="cards-wrapper">
-            {renderCityCarouselItem(i)}
-            {renderCityCarouselItem(i + 1)}
-            {renderCityCarouselItem(i + 2)}
-            {renderCityCarouselItem(i + 3)}
-            {renderCityCarouselItem(i + 4)}
+    if (numberOfItemsInOneFrame == 5) {
+      for (i = 0; i < counter; i++) {
+        items.push(
+          <div className={`carousel-item ${(i === 0 && "active") || ""}`}>
+            <div className="cards-wrapper">
+              {renderCityCarouselItem(i)}
+              {renderCityCarouselItem(i + 1)}
+              {renderCityCarouselItem(i + 2)}
+              {renderCityCarouselItem(i + 3)}
+              {renderCityCarouselItem(i + 4)}
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
+    } else if (numberOfItemsInOneFrame == 1) {
+      console.log("when screen size is small");
+      for (i = 0; i < counter; i++) {
+        items.push(
+          <div className={`carousel-item ${(i === 0 && "active") || ""}`}>
+            <div className="cards-wrapper">
+              {renderCityCarouselItem(i)}
+              {renderCityCarouselItem(i + 1)}
+              {renderCityCarouselItem(i + 2)}
+              {renderCityCarouselItem(i + 3)}
+              {renderCityCarouselItem(i + 4)}
+            </div>
+          </div>
+        );
+      }
     }
 
     return items;

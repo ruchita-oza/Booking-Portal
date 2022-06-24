@@ -23,10 +23,33 @@ import { Tooltip } from "@mui/material";
 import "./trains.css";
 import toast from "react-hot-toast";
 import NoSchedule from "../../components/NoSchedule";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import Backdrop from "@mui/material/Backdrop";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import Button from "@mui/material/Button";
+import { Grid } from "@material-ui/core";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  // border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
   const [getTrainSchedule, setTrainSchedule] = useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   const fetchTrainSchedule = async (id) => {
     const result = await fetch(`/train/schedule?train_id=${id}`);
@@ -45,48 +68,51 @@ function Row(props) {
   function handleEditAction(trainNumber) {
     navigate("/admin/editTransportDetailAndSchedule/" + trainNumber);
   }
-  let txt;
+
   const handleDelete = async (id) => {
-    console.log("at delete", id);
-    if (window.confirm(`Do you want to delete ${id}`)) {
-      try {
-        const res = await fetch(`/train/details/${id}`, { method: "DELETE" });
-        const data = await res.json();
-        console.log(data);
-        if (data.status != true) {
-          throw new Error(data.message);
-        } else {
-          toast.success(`${id} deleted successfully`);
-          window.location.reload();
-        }
-      } catch (err) {
-        toast.error(err);
+    // console.log("at delete", id);
+    // if (window.confirm(`Do you want to delete ${id}`)) {
+    try {
+      const res = await fetch(
+        `/train/details/deleteTrainDetailAndSchedule/${id}`,
+        { method: "DELETE" }
+      );
+      const data = await res.json();
+      // console.log(data);
+      if (data.status != true) {
+        throw new Error(data.message);
+      } else {
+        toast.success(`${id} deleted successfully`);
+        window.location.reload();
       }
+    } catch (err) {
+      toast.error(err);
     }
+    // }
   };
 
   const handleActive = async (id) => {
-    if (window.confirm(`Do you want to Active ${id}`)) {
-      try {
-        const input = { deletedAt: null };
-        const res = await fetch(`/adminApi/trains/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(input),
-        });
-        const data = await res.json();
-        if (data.status != true) {
-          throw new Error(data.message);
-        } else {
-          toast.success(`${id} Active successfully`);
-          window.location.reload();
-        }
-      } catch (err) {
-        toast.error(err);
+    // if (window.confirm(`Do you want to Active ${id}`)) {
+    try {
+      const input = { deletedAt: null };
+      const res = await fetch(`/adminApi/trains/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      const data = await res.json();
+      if (data.status != true) {
+        throw new Error(data.message);
+      } else {
+        toast.success(`${id} Active successfully`);
+        window.location.reload();
       }
+    } catch (err) {
+      toast.error(err);
     }
+    // }
   };
 
   return (
@@ -130,39 +156,145 @@ function Row(props) {
             </button>
           </Tooltip>
           {row && row?.deletedAt === null ? (
-            <Tooltip
-              title="Delete train details and schedules"
-              placement="right"
-              // classes={classes}
-            >
-              <button
-                className="btn btn-link btn-sm btn-rounded"
-                style={{
-                  textDecoration: "none",
-                }}
-                disabled={row && row.deletedAt === null ? false : true}
-                onClick={() => handleDelete(row.id)}
+            <>
+              <Tooltip
+                title="Disable train details and schedules"
+                placement="right"
+                // classes={classes}
               >
-                <DeleteForeverIcon style={{ color: "#cc3300" }} />
-              </button>
-            </Tooltip>
+                <button
+                  className="btn btn-link btn-sm btn-rounded"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  disabled={row && row.deletedAt === null ? false : true}
+                  // onClick={() => handleDelete(row.id)}
+                  onClick={handleOpen}
+                >
+                  {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
+                  <ToggleOffIcon
+                    style={{ color: "#cc3300", fontSize: "30px" }}
+                  />
+                </button>
+              </Tooltip>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={openModal}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={openModal}>
+                  <Box sx={style}>
+                    <Typography
+                      style={{ color: "#616161" }}
+                      id="modal-modal-title"
+                      // variant="h3"
+                      // component="h1"
+                    >
+                      Are, you sure you want to disable this train and all its
+                      schedules ?
+                    </Typography>
+                    <br />
+                    <Grid container spacing={2} justifyContent="center">
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          style={{ color: "white", backgroundColor: "#00C853" }}
+                          variant="contained"
+                          onClick={() => handleDelete(row.id)}
+                        >
+                          Confirm
+                        </Button>
+                      </Grid>
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          color="error"
+                          variant="contained"
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Fade>
+              </Modal>
+            </>
           ) : (
-            <Tooltip
-              title="Active train details and schedules"
-              placement="right"
-              // classes={classes}
-            >
-              <button
-                className="btn btn-link btn-sm btn-rounded"
-                style={{
-                  textDecoration: "none",
-                }}
-                disabled={row && row.deletedAt === null ? true : false}
-                onClick={() => handleActive(row.id)}
+            <>
+              <Tooltip
+                title="Enable train details and schedules"
+                placement="right"
+                // classes={classes}
               >
-                <AddCircleIcon style={{ color: "#ffcc00" }} />
-              </button>
-            </Tooltip>
+                <button
+                  className="btn btn-link btn-sm btn-rounded"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  disabled={row && row.deletedAt === null ? true : false}
+                  // onClick={() => handleActive(row.id)}
+                  onClick={handleOpen}
+                >
+                  {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
+                  <ToggleOnIcon style={{ color: "green", fontSize: "30px" }} />
+                </button>
+              </Tooltip>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={openModal}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={openModal}>
+                  <Box sx={style}>
+                    <Typography
+                      style={{ color: "#616161" }}
+                      id="modal-modal-title"
+                      // variant="h3"
+                      // component="h1"
+                    >
+                      Are, you sure you want to enable this train and all its
+                      schedules ?
+                    </Typography>
+                    <br />
+                    <Grid container spacing={2} justifyContent="center">
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          style={{ color: "white", backgroundColor: "#00C853" }}
+                          variant="contained"
+                          onClick={() => handleActive(row.id)}
+                        >
+                          Confirm
+                        </Button>
+                      </Grid>
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          color="error"
+                          variant="contained"
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Fade>
+              </Modal>
+            </>
           )}
         </TableCell>
       </TableRow>
@@ -210,7 +342,7 @@ function Row(props) {
                     {getTrainSchedule &&
                       getTrainSchedule.map((trains) => (
                         <TableRow>
-                          {console.log(trains)}
+                          {/* {console.log(trains)} */}
                           <TableCell align="center">
                             {trains?.source_name?.city_name}
                           </TableCell>

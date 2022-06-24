@@ -15,5 +15,8 @@ router.put("/:id", updateTrain);
 router.delete("/:id", deleteTrain);
 router.get("/:id", getTrainByTrainNumber);
 router.get("/", getAllTrain);
-router.delete("/deleteBusDetailAndSchedule/:id", deleteTrainDetailAndSchedule);
+router.delete(
+  "/deleteTrainDetailAndSchedule/:id",
+  deleteTrainDetailAndSchedule
+);
 module.exports = router;
