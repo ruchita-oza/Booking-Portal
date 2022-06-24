@@ -26,6 +26,7 @@ import UseGet from "../../../Utilities/UseGet";
 import axios from "axios";
 import NoRecord from "../../../pages/userProfile/NoRecord";
 import BookingDetailCard from "../../../pages/userProfile/BookingDetailCard";
+import dateFormat from "dateformat";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -105,14 +106,6 @@ export default function UserBookingHistory() {
 
   const [allBookingRecords, setAllBookingRecords] = useState([]);
 
-  const [allUpcomingBookingRecords, setAllUpcomingBookingRecords] = useState(
-    []
-  );
-
-  const [allCompletedBookingRecords, setAllCompletedBookingRecords] = useState(
-    []
-  );
-
   const handlePanelChange = (panel, id) => (event, newExpanded) => {
     // console.log(newExpanded);
     // console.log("id : ", id);
@@ -124,12 +117,50 @@ export default function UserBookingHistory() {
   useEffect(() => {
     // console.log("called when expanded changed : ", userId);
     axios.get("/booking/record/userId/" + userId).then((response) => {
-      console.log("response : ", response?.data?.data);
+      // console.log("response : ", response?.data?.data);
       setAllBookingRecords(response?.data?.data);
     });
   }, [expanded]);
 
-  // console.log(allBookingRecords.length);
+  console.log("all booking records : ", allBookingRecords);
+
+  var completedBookingRecords = [];
+
+  var upcomingBookingRecords = [];
+
+  var todaysDate = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss", true);
+
+  if (allBookingRecords.length > 0) {
+    var allBookingRecordsLength = allBookingRecords.length;
+
+    for (let i = 0; i < allBookingRecordsLength; i++) {
+      let currentBookingRecordDateTime = new Date(
+        allBookingRecords[i].journey_date
+      )
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+      if (currentBookingRecordDateTime > todaysDate) {
+        upcomingBookingRecords.push(allBookingRecords[i]);
+      } else {
+        completedBookingRecords.push(allBookingRecords[i]);
+      }
+    }
+  }
+
+  console.log(
+    "upcoming booking records from local variable : ",
+    upcomingBookingRecords,
+    " length : ",
+    upcomingBookingRecords.length
+  );
+
+  console.log(
+    "completed booking records from local variable : ",
+    completedBookingRecords,
+    " length : ",
+    completedBookingRecords.length
+  );
 
   const theme = useTheme();
 
@@ -239,7 +270,7 @@ export default function UserBookingHistory() {
                                     />
 
                                     <Tab
-                                      label="Completed"
+                                      label="Completed Bookings"
                                       {...a11yProps(1)}
                                       style={{ fontWeight: "bolder" }}
                                     />
@@ -264,6 +295,7 @@ export default function UserBookingHistory() {
                                     index={0}
                                     dir={theme.direction}
                                   >
+                                    <br />
                                     <NoRecord />
                                   </TabPanel>
                                   <TabPanel
@@ -271,6 +303,7 @@ export default function UserBookingHistory() {
                                     index={1}
                                     dir={theme.direction}
                                   >
+                                    <br />
                                     <NoRecord />
                                   </TabPanel>
                                   <TabPanel
@@ -278,6 +311,7 @@ export default function UserBookingHistory() {
                                     index={2}
                                     dir={theme.direction}
                                   >
+                                    <br />
                                     <NoRecord />
                                   </TabPanel>
                                 </SwipeableViews>
@@ -341,21 +375,67 @@ export default function UserBookingHistory() {
                                   index={value}
                                   onChangeIndex={handleChangeIndex}
                                 >
-                                  <TabPanel
-                                    value={value}
-                                    index={0}
-                                    dir={theme.direction}
-                                    style={{ padding: "none" }}
-                                  >
-                                    upcoming records
-                                  </TabPanel>
-                                  <TabPanel
-                                    value={value}
-                                    index={1}
-                                    dir={theme.direction}
-                                  >
-                                    completed records
-                                  </TabPanel>
+                                  {upcomingBookingRecords.length === 0 ? (
+                                    <>
+                                      <TabPanel
+                                        value={value}
+                                        index={0}
+                                        dir={theme.direction}
+                                      >
+                                        <br />
+                                        <NoRecord />
+                                      </TabPanel>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <TabPanel
+                                        value={value}
+                                        index={0}
+                                        dir={theme.direction}
+                                        style={{ padding: "none" }}
+                                      >
+                                        {upcomingBookingRecords.map((item) => (
+                                          <>
+                                            <br />
+                                            <BookingDetailCard
+                                              booking={item}
+                                              status="upcoming"
+                                            />
+                                          </>
+                                        ))}
+                                      </TabPanel>
+                                    </>
+                                  )}
+                                  {completedBookingRecords.length === 0 ? (
+                                    <>
+                                      <TabPanel
+                                        value={value}
+                                        index={1}
+                                        dir={theme.direction}
+                                      >
+                                        <br />
+                                        <NoRecord />
+                                      </TabPanel>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <TabPanel
+                                        value={value}
+                                        index={1}
+                                        dir={theme.direction}
+                                      >
+                                        {completedBookingRecords.map((item) => (
+                                          <>
+                                            <br />
+                                            <BookingDetailCard
+                                              booking={item}
+                                              status="completed"
+                                            />
+                                          </>
+                                        ))}
+                                      </TabPanel>
+                                    </>
+                                  )}
                                   <TabPanel
                                     value={value}
                                     index={2}

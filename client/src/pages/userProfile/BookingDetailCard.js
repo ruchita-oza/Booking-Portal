@@ -9,11 +9,28 @@ import {
   Typography,
   Chip,
   Divider,
+  Backdrop,
+  Modal,
+  Fade,
+  Grid,
+  Box,
 } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  // border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 function BookingDetailCard({ booking, status }) {
-  console.log("booking : ", booking);
+  // console.log("booking : ", booking);
 
   const navigate = useNavigate();
 
@@ -26,6 +43,10 @@ function BookingDetailCard({ booking, status }) {
   })(Chip);
 
   const [editOpen, setEditOpen] = useState(false);
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   const handleBookingClick = (e, booking) => {
     // console.log(booking, booking.id);
@@ -89,17 +110,72 @@ function BookingDetailCard({ booking, status }) {
               <>
                 {/* {console.log(status)} */}
                 {status === "upcoming" ? (
-                  <Button
-                    variant="contained"
-                    color="error"
-                    className="pull-right"
-                    // startIcon={<DescriptionOutlinedIcon />}
-                    onClick={(e) => {
-                      handleCancel(e, booking);
-                    }}
-                  >
-                    Cancel Booking
-                  </Button>
+                  <>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      className="pull-right"
+                      // startIcon={<DescriptionOutlinedIcon />}
+                      // onClick={(e) => {
+                      //   handleCancel(e, booking);
+                      // }}
+                      onClick={handleOpen}
+                    >
+                      Cancel Booking
+                    </Button>
+                    <Modal
+                      aria-labelledby="transition-modal-title"
+                      aria-describedby="transition-modal-description"
+                      open={openModal}
+                      onClose={handleClose}
+                      closeAfterTransition
+                      BackdropComponent={Backdrop}
+                      BackdropProps={{
+                        timeout: 500,
+                      }}
+                    >
+                      <Fade in={openModal}>
+                        <Box sx={style}>
+                          <Typography
+                            style={{ color: "#616161" }}
+                            id="modal-modal-title"
+                            // variant="h3"
+                            // component="h1"
+                          >
+                            Are, you sure you want to cancel this booking ?
+                          </Typography>
+                          <br />
+                          <Grid container spacing={2} justifyContent="center">
+                            <Grid md={6} item>
+                              <Button
+                                fullWidth
+                                style={{
+                                  color: "white",
+                                  backgroundColor: "#00C853",
+                                }}
+                                variant="contained"
+                                onClick={(e) => {
+                                  handleCancel(e, booking);
+                                }}
+                              >
+                                Confirm
+                              </Button>
+                            </Grid>
+                            <Grid md={6} item>
+                              <Button
+                                fullWidth
+                                color="error"
+                                variant="contained"
+                                onClick={handleClose}
+                              >
+                                Cancel
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Fade>
+                    </Modal>
+                  </>
                 ) : (
                   <></>
                 )}
