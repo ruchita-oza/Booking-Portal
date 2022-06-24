@@ -11,6 +11,8 @@ import {
   getAllBusesApi,
   getBusesWithLocationPriceApi,
   getBusesWithLocationPriceTimeApi,
+  getBusesWithSourcePriceApi,
+  getBusesWithSourcePriceTimeApi,
   getBusWithId,
 } from "../../services/BusServices";
 
@@ -51,13 +53,18 @@ export const getBusSchedules =
       maxPrice = maxPrice ? maxPrice : 1000000;
       personCount = personCount ? personCount : 1;
       currentPage = currentPage ? currentPage : 1;
-      // console.log(fromDate);
-      // console.log(toDate);
+      const today = new Date();
+      fromDate = fromDate
+        ? fromDate
+        : today.getFullYear() +
+          "-" +
+          (today.getMonth() + 1) +
+          "-" +
+          today.getDate();
+
       if (source && destination) {
-        // console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
-        // console.log(sourceCity);
         if (
           (sourceCity === undefined && destCity === undefined) ||
           sourceCity.data.cities.count === 0 ||
@@ -67,12 +74,31 @@ export const getBusSchedules =
             `bus on Schedule ${source} and ${destination} is not available`
           );
         }
-        if (!fromDate) {
+        if (!toDate) {
           let { data } = await getBusesWithLocationPriceApi(
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
             minPrice,
             maxPrice,
+            personCount,
+            currentPage,
+            fromDate
+          );
+          if (data) {
+            if (data.busScheduleWithBuses.count === 0) setResult(false);
+            dispatch(fetchAllBusScheduleSuccess(data));
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (toDate) {
+          let { data } = await getBusesWithLocationPriceTimeApi(
+            sourceCity.data.cities.rows[0].id,
+            destCity.data.cities.rows[0].id,
+            minPrice,
+            maxPrice,
+            fromDate,
+            toDate,
             personCount,
             currentPage
           );
@@ -83,10 +109,31 @@ export const getBusSchedules =
           } else {
             throw new Error();
           }
-        } else if (fromDate) {
-          let { data } = await getBusesWithLocationPriceTimeApi(
+        }
+      } else if (source) {
+        var sourceCity = await getCityApi(source);
+        if (sourceCity === undefined || sourceCity.data.cities.count === 0) {
+          throw new Error(`bus on Schedule ${source} is not available`);
+        }
+        if (!toDate) {
+          let { data } = await getBusesWithSourcePriceApi(
             sourceCity.data.cities.rows[0].id,
-            destCity.data.cities.rows[0].id,
+            minPrice,
+            maxPrice,
+            personCount,
+            currentPage,
+            fromDate
+          );
+          if (data) {
+            if (data.busScheduleWithBuses.count === 0) setResult(false);
+            dispatch(fetchAllBusScheduleSuccess(data));
+            return;
+          } else {
+            throw new Error();
+          }
+        } else if (toDate) {
+          let { data } = await getBusesWithSourcePriceTimeApi(
+            sourceCity.data.cities.rows[0].id,
             minPrice,
             maxPrice,
             fromDate,
@@ -107,7 +154,8 @@ export const getBusSchedules =
           minPrice,
           maxPrice,
           personCount,
-          currentPage
+          currentPage,
+          fromDate
         );
         if (data) {
           // console.log(data);
@@ -159,4 +207,3 @@ export const getAllBusSchedule = () => async (dispatch) => {
     dispatch({ type: ALL_BUSSCHEDULE_FAIL, payload: error });
   }
 };
-

@@ -10,24 +10,8 @@ class Apifeatures {
     this.ticketQuery = "";
     this.skip = "";
   }
-  // search() {
-  //   const keyword = this.queryStr.keyword
-  //     ? {
-  //         location: {
-  //           $regex: this.queryStr.keyword,
-  //           $options: "i",
-  //         },
-  //       }
-  //     : {};
-  //   console.log(keyword);
-  //   this.query = this.query.findAll({ ...keyword });
-  //   return this;
-  // }
   filter() {
     this.queryCopy = { ...this.queryStr };
-    // console.log(this.query);
-    // console.log(this.queryCopy);
-    //remove somefield from catagory
     const removeFields = [
       "page",
       "limit",
@@ -38,8 +22,6 @@ class Apifeatures {
       "personCount",
     ];
     removeFields.forEach((key) => delete this.queryCopy[key]);
-    // console.log("filter query");
-    // console.log(this.queryCopy);
     const fromDate = this.queryStr.fromDate;
     const toDate = this.queryStr.toDate;
     this.query = this.query.findAndCountAll({
@@ -67,9 +49,13 @@ class Apifeatures {
     return this;
   }
   timeFilter() {
+    console.log(this.queryStr);
+    console.log("at time query");
+
     if (this.queryStr.fromDate && this.queryStr.toDate) {
       const fromDate = this.queryStr.fromDate;
       const toDate = this.queryStr.toDate;
+      console.log(fromDate, toDate);
       this.timeQuery = {
         [Op.and]: [
           (this.timeQuery = Sequelize.where(
@@ -82,6 +68,18 @@ class Apifeatures {
             "<=",
             toDate
           ),
+        ],
+      };
+    } else if (this.queryStr.fromDate) {
+      const fromDate = this.queryStr.fromDate;
+      // console.log(fromDate, toDate);
+      this.timeQuery = {
+        [Op.and]: [
+          (this.timeQuery = Sequelize.where(
+            Sequelize.fn("date", Sequelize.col("departure_time")),
+            ">=",
+            fromDate
+          )),
         ],
       };
     }
