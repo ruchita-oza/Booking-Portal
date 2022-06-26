@@ -16,6 +16,10 @@ import {
   Box,
 } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import dateFormat from "dateformat";
+import { toast } from "react-hot-toast";
+import UseDelete from "../../Utilities/UseDelete";
+import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -29,7 +33,7 @@ const style = {
   p: 4,
 };
 
-function BookingDetailCard({ booking, status }) {
+function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingRecordsFromAdmin }) {
   // console.log("booking : ", booking);
 
   const navigate = useNavigate();
@@ -42,6 +46,8 @@ function BookingDetailCard({ booking, status }) {
     },
   })(Chip);
 
+  const isAdminPage = window.location.pathname.split("/").includes("admin");
+
   const [editOpen, setEditOpen] = useState(false);
 
   const [openModal, setOpenModal] = React.useState(false);
@@ -53,14 +59,75 @@ function BookingDetailCard({ booking, status }) {
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
 
+
+  var todaysDate = dateFormat(new Date(), "dd/mm/yyyy", true)
+
+
+
+  // let twoDaysOlderDate = todaysDate.setDate(todaysDate.getDate() - 2);
+
+  // twoDaysOlderDate = dateFormat(twoDaysOlderDate, "dd/mm/yyyy", true)
+
+
+
   const handleCancel = (e, booking) => {
-    var txt;
-    if (window.confirm("Do you want to cancel your booking?!")) {
-      txt = "You pressed OK!";
-    } else {
-      txt = "You pressed Cancel!";
+    // var txt;
+    // if (window.confirm("Do you want to cancel your booking?!")) {
+    //   txt = "You pressed OK!";
+    // } else {
+    //   txt = "You pressed Cancel!";
+    // }
+
+    // console.log(
+    //   "two days older date : ",
+    //   twoDaysOlderDate
+    // );
+
+
+    let journeyDate = ParseDate.ParseDate(booking.journey_date, false);
+
+    let date = journeyDate.split("/")
+    date[0] = (date[0] - 2)
+    journeyDate = date.join("/")
+
+    // console.log(booking.journey_date.getDate())
+
+    // window.alert(journeyDate);
+    // console.log("todays date : ", todaysDate)
+    // console.log("current journey date : ", journeyDate)
+
+    if (journeyDate > todaysDate) {
+      // console.log("you can cancel your booking")
+      // /booking/record/cancelBookingRecord/
+      // console.log("booking id : ", booking?.id)
+      axios.delete("/booking/record/cancelBookingRecord/" + booking?.id).then((response) => {
+        // console.log("response : ", response)
+        if (response?.data?.status) {
+          toast.success(response?.data?.data)
+
+          if (isAdminPage) {
+            fetchBookingRecordsFromAdmin()
+          }
+          else {
+            fetchBookingRecords()
+          }
+          // window.location.reload();
+        }
+        else {
+          toast.error(response?.response?.data?.message)
+
+        }
+      })
+
     }
-    window.alert(txt);
+    else {
+      // console.log("you cannot cancel your booking")
+      toast.error("You can no longer cancel your booking. As cancellation is only possible before 2 days from the scheduled journey date", {
+        duration: 10000
+      })
+    }
+
+    handleClose()
   };
 
   return (
@@ -75,15 +142,15 @@ function BookingDetailCard({ booking, status }) {
           <Typography variant="h5">
             {booking.transport_type == "flight"
               ? booking.flight_schedule?.source_name?.city_name +
-                " to " +
-                booking.flight_schedule?.destination_name?.city_name +
-                " "
+              " to " +
+              booking.flight_schedule?.destination_name?.city_name +
+              " "
               : booking.transport_type == "bus"
-              ? booking.bus_schedule?.source_name?.city_name +
+                ? booking.bus_schedule?.source_name?.city_name +
                 " to " +
                 booking.bus_schedule?.destination_name?.city_name +
                 " "
-              : booking.train_schedule?.source_name?.city_name +
+                : booking.train_schedule?.source_name?.city_name +
                 " to " +
                 booking.train_schedule?.destination_name?.city_name +
                 " "}
@@ -139,8 +206,8 @@ function BookingDetailCard({ booking, status }) {
                           <Typography
                             style={{ color: "#616161" }}
                             id="modal-modal-title"
-                            // variant="h3"
-                            // component="h1"
+                          // variant="h3"
+                          // component="h1"
                           >
                             Are, you sure you want to cancel this booking ?
                           </Typography>
