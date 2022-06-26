@@ -187,7 +187,7 @@ export const loggingOutUserThunkAction = () => {
       localStorage.removeItem("user");
       toast.success("Logged out successfully.");
       // onSuccess();
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 

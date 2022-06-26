@@ -626,7 +626,7 @@ const cancelBookingRecordAndChangeStatus = async (req, res, next) => {
           });
 
           return res.json({
-            data: "Booking record deleted successfully",
+            data: "Booking cancelled successfully",
             status: true,
           });
         } else {
@@ -661,7 +661,7 @@ const cancelBookingRecordAndChangeStatus = async (req, res, next) => {
           });
 
           return res.json({
-            data: "Booking record deleted successfully",
+            data: "Booking cancelled successfully",
             status: true,
           });
         } else {
@@ -695,7 +695,7 @@ const cancelBookingRecordAndChangeStatus = async (req, res, next) => {
           });
 
           return res.json({
-            data: "Booking record deleted successfully",
+            data: "Booking cancelled successfully",
             status: true,
           });
         } else {

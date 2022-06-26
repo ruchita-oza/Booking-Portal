@@ -114,15 +114,20 @@ export default function UserBookingHistory() {
     // console.log("panel changed");
   };
 
-  useEffect(() => {
+  function fetchBookingRecordsFromAdmin() {
+    // console.log("fetchBookingRecords from admin side called")
     // console.log("called when expanded changed : ", userId);
     axios.get("/booking/record/userId/" + userId).then((response) => {
       // console.log("response : ", response?.data?.data);
       setAllBookingRecords(response?.data?.data);
     });
+  }
+
+  useEffect(() => {
+    fetchBookingRecordsFromAdmin()
   }, [expanded]);
 
-  console.log("all booking records : ", allBookingRecords);
+  // console.log("all booking records : ", allBookingRecords);
 
   var completedBookingRecords = [];
 
@@ -148,19 +153,19 @@ export default function UserBookingHistory() {
     }
   }
 
-  console.log(
-    "upcoming booking records from local variable : ",
-    upcomingBookingRecords,
-    " length : ",
-    upcomingBookingRecords.length
-  );
+  // console.log(
+  //   "upcoming booking records from local variable : ",
+  //   upcomingBookingRecords,
+  //   " length : ",
+  //   upcomingBookingRecords.length
+  // );
 
-  console.log(
-    "completed booking records from local variable : ",
-    completedBookingRecords,
-    " length : ",
-    completedBookingRecords.length
-  );
+  // console.log(
+  //   "completed booking records from local variable : ",
+  //   completedBookingRecords,
+  //   " length : ",
+  //   completedBookingRecords.length
+  // );
 
   const theme = useTheme();
 
@@ -400,6 +405,7 @@ export default function UserBookingHistory() {
                                             <BookingDetailCard
                                               booking={item}
                                               status="upcoming"
+                                              fetchBookingRecordsFromAdmin={fetchBookingRecordsFromAdmin}
                                             />
                                           </>
                                         ))}
@@ -430,6 +436,7 @@ export default function UserBookingHistory() {
                                             <BookingDetailCard
                                               booking={item}
                                               status="completed"
+                                              fetchBookingRecordsFromAdmin={fetchBookingRecordsFromAdmin}
                                             />
                                           </>
                                         ))}
@@ -447,6 +454,7 @@ export default function UserBookingHistory() {
                                         <BookingDetailCard
                                           booking={e}
                                           status="all"
+                                          fetchBookingRecordsFromAdmin={fetchBookingRecordsFromAdmin}
                                         />
                                       </>
                                     ))}
