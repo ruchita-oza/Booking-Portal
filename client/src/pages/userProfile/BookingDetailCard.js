@@ -33,7 +33,12 @@ const style = {
   p: 4,
 };
 
-function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingRecordsFromAdmin }) {
+function BookingDetailCard({
+  booking,
+  status,
+  fetchBookingRecords,
+  fetchBookingRecordsFromAdmin,
+}) {
   // console.log("booking : ", booking);
 
   const navigate = useNavigate();
@@ -59,16 +64,11 @@ function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingR
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
 
-
-  var todaysDate = dateFormat(new Date(), "dd/mm/yyyy", true)
-
-
+  var todaysDate = dateFormat(new Date(), "dd/mm/yyyy", true);
 
   // let twoDaysOlderDate = todaysDate.setDate(todaysDate.getDate() - 2);
 
   // twoDaysOlderDate = dateFormat(twoDaysOlderDate, "dd/mm/yyyy", true)
-
-
 
   const handleCancel = (e, booking) => {
     // var txt;
@@ -83,12 +83,11 @@ function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingR
     //   twoDaysOlderDate
     // );
 
-
     let journeyDate = ParseDate.ParseDate(booking.journey_date, false);
 
-    let date = journeyDate.split("/")
-    date[0] = (date[0] - 2)
-    journeyDate = date.join("/")
+    let date = journeyDate.split("/");
+    date[0] = date[0] - 2;
+    journeyDate = date.join("/");
 
     // console.log(booking.journey_date.getDate())
 
@@ -100,34 +99,34 @@ function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingR
       // console.log("you can cancel your booking")
       // /booking/record/cancelBookingRecord/
       // console.log("booking id : ", booking?.id)
-      axios.delete("/booking/record/cancelBookingRecord/" + booking?.id).then((response) => {
-        // console.log("response : ", response)
-        if (response?.data?.status) {
-          toast.success(response?.data?.data)
+      axios
+        .delete("/booking/record/cancelBookingRecord/" + booking?.id)
+        .then((response) => {
+          // console.log("response : ", response)
+          if (response?.data?.status) {
+            toast.success(response?.data?.data);
 
-          if (isAdminPage) {
-            fetchBookingRecordsFromAdmin()
+            if (isAdminPage) {
+              fetchBookingRecordsFromAdmin();
+            } else {
+              fetchBookingRecords();
+            }
+            // window.location.reload();
+          } else {
+            toast.error(response?.response?.data?.message);
           }
-          else {
-            fetchBookingRecords()
-          }
-          // window.location.reload();
-        }
-        else {
-          toast.error(response?.response?.data?.message)
-
-        }
-      })
-
-    }
-    else {
+        });
+    } else {
       // console.log("you cannot cancel your booking")
-      toast.error("You can no longer cancel your booking. As cancellation is only possible before 2 days from the scheduled journey date", {
-        duration: 10000
-      })
+      toast.error(
+        "You can no longer cancel your booking. As cancellation is only possible before 2 days from the scheduled journey date",
+        {
+          duration: 10000,
+        }
+      );
     }
 
-    handleClose()
+    handleClose();
   };
 
   return (
@@ -142,15 +141,15 @@ function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingR
           <Typography variant="h5">
             {booking.transport_type == "flight"
               ? booking.flight_schedule?.source_name?.city_name +
-              " to " +
-              booking.flight_schedule?.destination_name?.city_name +
-              " "
+                " to " +
+                booking.flight_schedule?.destination_name?.city_name +
+                " "
               : booking.transport_type == "bus"
-                ? booking.bus_schedule?.source_name?.city_name +
+              ? booking.bus_schedule?.source_name?.city_name +
                 " to " +
                 booking.bus_schedule?.destination_name?.city_name +
                 " "
-                : booking.train_schedule?.source_name?.city_name +
+              : booking.train_schedule?.source_name?.city_name +
                 " to " +
                 booking.train_schedule?.destination_name?.city_name +
                 " "}
@@ -175,88 +174,100 @@ function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingR
             Total fare: {" " + booking.total_fare}
             {booking.booking_status === "confirm" ? (
               <>
+                {/* <Grid
+                  spacing={2}
+                  container
+                  justifyContent="center"
+                  alignItems="center"
+                  textAlign="center"
+                > */}
                 {/* {console.log(status)} */}
                 {status === "upcoming" ? (
                   <>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      className="pull-right"
-                      // startIcon={<DescriptionOutlinedIcon />}
-                      // onClick={(e) => {
-                      //   handleCancel(e, booking);
-                      // }}
-                      onClick={handleOpen}
-                    >
-                      Cancel Booking
-                    </Button>
-                    <Modal
-                      aria-labelledby="transition-modal-title"
-                      aria-describedby="transition-modal-description"
-                      open={openModal}
-                      onClose={handleClose}
-                      closeAfterTransition
-                      BackdropComponent={Backdrop}
-                      BackdropProps={{
-                        timeout: 500,
-                      }}
-                    >
-                      <Fade in={openModal}>
-                        <Box sx={style}>
-                          <Typography
-                            style={{ color: "#616161" }}
-                            id="modal-modal-title"
-                          // variant="h3"
-                          // component="h1"
-                          >
-                            Are, you sure you want to cancel this booking ?
-                          </Typography>
-                          <br />
-                          <Grid container spacing={2} justifyContent="center">
-                            <Grid md={6} item>
-                              <Button
-                                fullWidth
-                                style={{
-                                  color: "white",
-                                  backgroundColor: "#00C853",
-                                }}
-                                variant="contained"
-                                onClick={(e) => {
-                                  handleCancel(e, booking);
-                                }}
-                              >
-                                Confirm
-                              </Button>
+                    <Grid item xs={12}>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        className="pull-right"
+                        // startIcon={<DescriptionOutlinedIcon />}
+                        // onClick={(e) => {
+                        //   handleCancel(e, booking);
+                        // }}
+                        onClick={handleOpen}
+                      >
+                        Cancel Booking
+                      </Button>
+                      <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        open={openModal}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                          timeout: 500,
+                        }}
+                      >
+                        <Fade in={openModal}>
+                          <Box sx={style}>
+                            <Typography
+                              style={{ color: "#616161" }}
+                              id="modal-modal-title"
+                              // variant="h3"
+                              // component="h1"
+                            >
+                              Are, you sure you want to cancel this booking ?
+                            </Typography>
+                            <br />
+                            <Grid container spacing={2} justifyContent="center">
+                              <Grid md={6} item>
+                                <Button
+                                  fullWidth
+                                  style={{
+                                    color: "white",
+                                    backgroundColor: "#00C853",
+                                  }}
+                                  variant="contained"
+                                  onClick={(e) => {
+                                    handleCancel(e, booking);
+                                  }}
+                                >
+                                  Confirm
+                                </Button>
+                              </Grid>
+                              <Grid md={6} item>
+                                <Button
+                                  fullWidth
+                                  color="error"
+                                  variant="contained"
+                                  onClick={handleClose}
+                                >
+                                  Cancel
+                                </Button>
+                              </Grid>
                             </Grid>
-                            <Grid md={6} item>
-                              <Button
-                                fullWidth
-                                color="error"
-                                variant="contained"
-                                onClick={handleClose}
-                              >
-                                Cancel
-                              </Button>
-                            </Grid>
-                          </Grid>
-                        </Box>
-                      </Fade>
-                    </Modal>
+                          </Box>
+                        </Fade>
+                      </Modal>
+                    </Grid>
                   </>
                 ) : (
                   <></>
                 )}
-
-                <Button
-                  variant="contained"
-                  className="pull-right mr-2"
-                  startIcon={<DescriptionOutlinedIcon />}
-                  onClick={(e) => {
-                    handleBookingClick(e, booking);
-                  }}
-                >
-                  Booking Reciept
-                </Button>
+                <Grid item xs={12}>
+                  <Button
+                    variant="contained"
+                    className="pull-right mr-2"
+                    startIcon={<DescriptionOutlinedIcon />}
+                    onClick={(e) => {
+                      handleBookingClick(e, booking);
+                    }}
+                  >
+                    Booking Receipt
+                  </Button>
+                </Grid>
+                <br />
+                {/* </Grid> */}
               </>
             ) : (
               <>
@@ -281,7 +292,7 @@ function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingR
                   }}
                   disabled="true"
                 >
-                  Booking Reciept
+                  Booking Receipt
                 </Button>
               </>
             )}

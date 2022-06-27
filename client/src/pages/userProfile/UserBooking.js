@@ -221,6 +221,45 @@ function UserBooking() {
                     </ul>
                   </footer>
                 </div>
+                {/* note */}
+                <section className=" mb-2">
+                  <h3>Note : </h3>
+                  <p className="lg:w-3/4 text-justify">
+                    E-ticket print out has to be carried by the passenger during
+                    the journey along with original Photo ID Card of the
+                    passenger whose name appears above. Please show the e-ticket
+                    at the time of checking.
+                  </p>
+                  <p className="lg:w-3/4 text-justify">
+                    Please keep the e-ticket safely till the end of the journey.{" "}
+                  </p>
+                  <p className="lg:w-3/4 text-justify">
+                    {/* Please show the e-ticket at the time of checking. */}
+                  </p>
+                </section>
+                {/* footer */}
+                <footer
+                  className="footer border-t-2 border-gray-300 pt-5"
+                  style={{ textAlign: "center" }}
+                >
+                  {/* <ul className="justify-center">
+                    <li>
+                      <span className="font-bold">Name :</span>{" "}
+                      {loggedInUser?.first_name} {loggedInUser?.last_name}
+                    </li>
+                    <li>
+                      <span className="font-bold">Email :</span>{" "}
+                      {loggedInUser?.email}
+                    </li>
+                    <li>
+                      <span className="font-bold">Phone number :</span>{" "}
+                      {loggedInUser?.phone_number}
+                    </li>
+                  </ul> */}
+                  In case of any emergency you can contact us at{" "}
+                  <b>1800 9999 9999</b> or email your queries at{" "}
+                  <b>skylinebookingportal@gmail.com</b>
+                </footer>
               </div>
             </main>
           </div>
