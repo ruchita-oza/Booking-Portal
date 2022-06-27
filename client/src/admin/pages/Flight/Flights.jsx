@@ -70,9 +70,11 @@ function Row(props) {
     setOpen(!open);
     FetchFlightSchedule(id);
   };
+
   React.useEffect(() => {
     if (openID) FetchFlightSchedule(openID);
   }, [currentPage]);
+
   const navigate = useNavigate();
 
   function handleEditAction(flightNumber) {
@@ -90,14 +92,18 @@ function Row(props) {
       if (data.status != true) {
         throw new Error(data.message);
       } else {
-        toast.success(`${id} deleted successfully`);
-        window.location.reload();
+        toast.success(`${id} disabled successfully`);
+        // window.location.reload();
+        props.FetchFlight();
+        FetchFlightSchedule(id);
       }
     } catch (err) {
       toast.error(err);
     }
+    handleClose();
     // }
   };
+
   const handleActive = async (id) => {
     // if (window.confirm(`Do you want to Active ${id}`)) {
     try {
@@ -113,12 +119,15 @@ function Row(props) {
       if (data.status != true) {
         throw new Error(data.message);
       } else {
-        toast.success(`${id} Active successfully`);
-        window.location.reload();
+        toast.success(`${id} enabled successfully`);
+        // window.location.reload();
+        props.FetchFlight();
+        FetchFlightSchedule(id);
       }
     } catch (err) {
       toast.error(err);
     }
+    handleClose();
     // }
   };
 
@@ -179,9 +188,7 @@ function Row(props) {
                   onClick={handleOpen}
                 >
                   {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
-                  <ToggleOffIcon
-                    style={{ color: "#cc3300", fontSize: "30px" }}
-                  />
+                  <ToggleOffIcon style={{ color: "green", fontSize: "30px" }} />
                 </button>
               </Tooltip>
               <Modal
@@ -250,7 +257,9 @@ function Row(props) {
                   onClick={handleOpen}
                 >
                   {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
-                  <ToggleOnIcon style={{ color: "green", fontSize: "30px" }} />
+                  <ToggleOnIcon
+                    style={{ color: "#cc3300", fontSize: "30px" }}
+                  />
                 </button>
               </Tooltip>
               <Modal
@@ -419,12 +428,13 @@ const Flights = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const FetchFlight = async () => {
+    const result = await fetch(`/adminApi/flights`);
+    const getData = await result.json();
+    setFlight(getData.flights.rows);
+  };
+
   useEffect(() => {
-    const FetchFlight = async () => {
-      const result = await fetch(`/adminApi/flights`);
-      const getData = await result.json();
-      setFlight(getData.flights.rows);
-    };
     FetchFlight();
   }, []);
 
@@ -500,7 +510,11 @@ const Flights = () => {
                 getFlight
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((flight) => (
-                    <Row key={flight?.flight_name} row={flight} />
+                    <Row
+                      key={flight?.flight_name}
+                      row={flight}
+                      FetchFlight={FetchFlight}
+                    />
                   ))}
             </TableBody>
           </Table>

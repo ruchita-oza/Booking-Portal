@@ -333,6 +333,7 @@ function BookingPage({ match }) {
                           onChange={(e) => handleBookingInput(e)}
                           placeholder="Email ID"
                           required={true}
+                          autoComplete="on"
                         />
                       </div>
                       <div className="col-md-4 col-md-offset-0 align-width">
@@ -346,6 +347,7 @@ function BookingPage({ match }) {
                             handleBookingInput(e);
                           }}
                           required={true}
+                          autoComplete="on"
                           minLength="10"
                           maxLength="10"
                         />
@@ -431,7 +433,7 @@ function BookingPage({ match }) {
                             <div className="col-md-3 col-md-offset-0">
                               <input
                                 type="text"
-                                autoComplete="none"
+                                autoComplete="on"
                                 id="passenger_name"
                                 name="passenger_name"
                                 onChange={(e) =>
@@ -446,7 +448,7 @@ function BookingPage({ match }) {
                             <div className="col-md-3 col-lg-3 col-md-offset-0">
                               <input
                                 type="number"
-                                autoComplete="none"
+                                autoComplete="on"
                                 id="passenger_age"
                                 name="passenger_age"
                                 className="bookingInputText"

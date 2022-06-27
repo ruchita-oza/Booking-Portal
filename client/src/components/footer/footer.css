@@ -5,7 +5,8 @@
 }
 
 body {
-  min-height: 100%;
+  /* min-height: 100%; */
+  margin-bottom: 280px;
 }
 
 #mainfooter {
@@ -16,9 +17,12 @@ body {
   font-family: "Open Sans";
   padding-top: 40px;
   margin-top: auto;
+  /* margin-top: 1%; */
   color: #fff;
   text-align: center;
-  position: relative;
+  /* position: relative; */
+  bottom: 53px;
+  position: fixed;
   top: 100px;
 }
 

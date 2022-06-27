@@ -202,8 +202,11 @@ function UserBooking() {
                   </p>
                 </section>
                 {/* footer */}
-                <footer className="footer border-t-2 border-gray-300 pt-5">
-                  <ul className="justify-center">
+                <footer
+                  className="footer border-t-2 border-gray-300 pt-5"
+                  style={{ textAlign: "center" }}
+                >
+                  {/* <ul className="justify-center">
                     <li>
                       <span className="font-bold">Name :</span>{" "}
                       {loggedInUser?.first_name} {loggedInUser?.last_name}
@@ -216,7 +219,10 @@ function UserBooking() {
                       <span className="font-bold">Phone number :</span>{" "}
                       {loggedInUser?.phone_number}
                     </li>
-                  </ul>
+                  </ul> */}
+                  In case of any emergency you can contact us at{" "}
+                  <b>1800 9999 9999</b> or email your queries at{" "}
+                  <b>skylinebookingportal@gmail.com</b>
                 </footer>
               </div>
             </div>

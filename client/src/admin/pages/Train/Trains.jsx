@@ -52,6 +52,7 @@ function Row(props) {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
   const [currentPage, setCurrentPage] = useState(1);
+
   const fetchTrainSchedule = async (id) => {
     const result = await fetch(
       `/train/schedule?train_id=${id}&page=${currentPage}`
@@ -73,12 +74,15 @@ function Row(props) {
   function handleEditAction(trainNumber) {
     navigate("/admin/editTransportDetailAndSchedule/" + trainNumber);
   }
+
   React.useEffect(() => {
     setCurrentPage(1);
   }, [row]);
+
   React.useEffect(() => {
     if (openID) fetchTrainSchedule(openID);
   }, [currentPage]);
+
   const handleDelete = async (id) => {
     // console.log("at delete", id);
     // if (window.confirm(`Do you want to delete ${id}`)) {
@@ -92,12 +96,15 @@ function Row(props) {
       if (data.status != true) {
         throw new Error(data.message);
       } else {
-        toast.success(`${id} deleted successfully`);
-        window.location.reload();
+        toast.success(`${id} disabled successfully`);
+        // window.location.reload();
+        props.FetchTrains();
+        fetchTrainSchedule(id);
       }
     } catch (err) {
       toast.error(err);
     }
+    handleClose();
     // }
   };
 
@@ -116,12 +123,15 @@ function Row(props) {
       if (data.status != true) {
         throw new Error(data.message);
       } else {
-        toast.success(`${id} Active successfully`);
-        window.location.reload();
+        toast.success(`${id} enabled successfully`);
+        // window.location.reload();
+        props.FetchTrains();
+        fetchTrainSchedule(id);
       }
     } catch (err) {
       toast.error(err);
     }
+    handleClose();
     // }
   };
 
@@ -182,9 +192,7 @@ function Row(props) {
                   onClick={handleOpen}
                 >
                   {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
-                  <ToggleOffIcon
-                    style={{ color: "#cc3300", fontSize: "30px" }}
-                  />
+                  <ToggleOffIcon style={{ color: "green", fontSize: "30px" }} />
                 </button>
               </Tooltip>
               <Modal
@@ -253,7 +261,9 @@ function Row(props) {
                   onClick={handleOpen}
                 >
                   {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
-                  <ToggleOnIcon style={{ color: "green", fontSize: "30px" }} />
+                  <ToggleOnIcon
+                    style={{ color: "#cc3300", fontSize: "30px" }}
+                  />
                 </button>
               </Tooltip>
               <Modal
@@ -426,12 +436,13 @@ const Trains = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const FetchTrains = async () => {
+    const result = await fetch(`/adminApi/trains`);
+    const getData = await result.json();
+    setTrain(getData.trains.rows);
+  };
+
   useEffect(() => {
-    const FetchTrains = async () => {
-      const result = await fetch(`/adminApi/trains`);
-      const getData = await result.json();
-      setTrain(getData.trains.rows);
-    };
     FetchTrains();
   }, []);
 
@@ -506,7 +517,13 @@ const Trains = () => {
               {getTrain &&
                 getTrain
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((train) => <Row key={train?.train_name} row={train} />)}
+                  .map((train) => (
+                    <Row
+                      key={train?.train_name}
+                      row={train}
+                      FetchTrains={FetchTrains}
+                    />
+                  ))}
             </TableBody>
           </Table>
         </TableContainer>

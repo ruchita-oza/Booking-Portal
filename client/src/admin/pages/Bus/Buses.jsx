@@ -61,7 +61,7 @@ function Row(props) {
       `/bus/schedule?bus_id=${id}&page=${currentPage}`
     );
     const getData = await result.json();
-    console.log(getData);
+    // console.log(getData);
     setBusSchedule(getData);
     // console.log(getBusSchedule);
   };
@@ -71,6 +71,7 @@ function Row(props) {
     setOpen(!open);
     fetchBusSchedule(id);
   };
+
   React.useEffect(() => {
     if (openID) fetchBusSchedule(openID);
   }, [currentPage]);
@@ -87,12 +88,15 @@ function Row(props) {
       if (data.status != true) {
         throw new Error(data.message);
       } else {
-        toast.success(`${id} deleted successfully`);
-        window.location.reload();
+        toast.success(`${id} disabled successfully`);
+        // window.location.reload();
+        props.FetchBus();
+        fetchBusSchedule(id);
       }
     } catch (err) {
       toast.error(err);
     }
+    handleClose();
     // }
   };
 
@@ -113,12 +117,15 @@ function Row(props) {
       if (data.status != true) {
         throw new Error(data.message);
       } else {
-        toast.success(`${id} Active successfully`);
-        window.location.reload();
+        toast.success(`${id} enabled successfully`);
+        // window.location.reload();
+        props.FetchBus();
+        fetchBusSchedule(id);
       }
     } catch (err) {
       toast.error(err);
     }
+    handleClose();
     // }
   };
 
@@ -198,9 +205,7 @@ function Row(props) {
                   onClick={handleOpen}
                 >
                   {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
-                  <ToggleOffIcon
-                    style={{ color: "#cc3300", fontSize: "30px" }}
-                  />
+                  <ToggleOffIcon style={{ color: "green", fontSize: "30px" }} />
                 </button>
               </Tooltip>
               <Modal
@@ -269,7 +274,9 @@ function Row(props) {
                   onClick={handleOpen}
                 >
                   {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
-                  <ToggleOnIcon style={{ color: "green", fontSize: "30px" }} />
+                  <ToggleOnIcon
+                    style={{ color: "#cc3300", fontSize: "30px" }}
+                  />
                 </button>
               </Tooltip>
               <Modal
@@ -401,7 +408,7 @@ function Row(props) {
                 </Table>
                 {getBusSchedule && (
                   <div className="paginationBox pull-right">
-                    {console.log(getBusSchedule.busScheduleWithBuses.count)}
+                    {/* {console.log(getBusSchedule.busScheduleWithBuses.count)} */}
                     <Pagination
                       activePage={currentPage}
                       itemsCountPerPage={getBusSchedule.resultPerPage}
@@ -434,13 +441,15 @@ const Buses = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const FetchBus = async () => {
+    // console.log("fetch bus called");
+    const result = await fetch(`/adminApi/buses`);
+    const getData = await result.json();
+    // console.log(getData);
+    setBus(getData.buses.rows);
+  };
+
   useEffect(() => {
-    const FetchBus = async () => {
-      const result = await fetch(`/adminApi/buses`);
-      const getData = await result.json();
-      // console.log(getData);
-      setBus(getData.buses.rows);
-    };
     FetchBus();
   }, []);
 
@@ -472,6 +481,7 @@ const Buses = () => {
       // console.log({ numberOfRows });
     },
   };
+
   return (
     <div className="container my-5">
       <div className="shadow-4 rounded-5 overflow-hidden">
@@ -513,7 +523,9 @@ const Buses = () => {
               {getBus &&
                 getBus
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((bus) => <Row key={bus?.id} row={bus} />)}
+                  .map((bus) => (
+                    <Row key={bus?.id} row={bus} FetchBus={FetchBus} />
+                  ))}
             </TableBody>
           </Table>
         </TableContainer>
