@@ -30,7 +30,15 @@ const Transport = ({ source, destination, setDestination }) => {
       state: { source, destination },
     });
   };
-
+  useEffect(() => {
+    currentScreenWidth = window.innerWidth;
+    console.log(window.innerWidth, "window.innerWidth");
+    if (currentScreenWidth <= 768) {
+      numberOfItemsInOneFrame = 1;
+    } else {
+      numberOfItemsInOneFrame = 5;
+    }
+  }, [window.innerWidth]);
   useEffect(() => {
     if (state) {
       const getCity = async () => {
@@ -54,6 +62,7 @@ const Transport = ({ source, destination, setDestination }) => {
     if (index < city.length) {
       const data = city[index];
       let cardClass = index % 5 === 0 ? "card" : "card d-none d-md-block";
+      if (numberOfItemsInOneFrame === 1) cardClass = "card";
       return (
         <div className={cardClass} key={data?.id}>
           <img
@@ -85,13 +94,13 @@ const Transport = ({ source, destination, setDestination }) => {
     }
   };
 
-  const currentScreenWidth = window.screen.availWidth;
+  let currentScreenWidth = window.innerWidth;
 
   console.log("from nearby cities page : ", currentScreenWidth);
 
   let numberOfItemsInOneFrame;
 
-  if (currentScreenWidth <= 540) {
+  if (currentScreenWidth <= 768) {
     numberOfItemsInOneFrame = 1;
   } else {
     numberOfItemsInOneFrame = 5;
@@ -132,10 +141,10 @@ const Transport = ({ source, destination, setDestination }) => {
           <div className={`carousel-item ${(i === 0 && "active") || ""}`}>
             <div className="cards-wrapper">
               {renderCityCarouselItem(i)}
-              {renderCityCarouselItem(i + 1)}
+              {/* {renderCityCarouselItem(i + 1)}
               {renderCityCarouselItem(i + 2)}
               {renderCityCarouselItem(i + 3)}
-              {renderCityCarouselItem(i + 4)}
+              {renderCityCarouselItem(i + 4)} */}
             </div>
           </div>
         );
@@ -233,7 +242,114 @@ const Transport = ({ source, destination, setDestination }) => {
               </div>
             </div>
           </div>
+          {numberOfItemsInOneFrame === 1 ? (
+            <>
+              <div className="carousel-item">
+                <div className="cards-wrapper">
+                  {" "}
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1496372412473-e8548ffd82bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1314&q=80"
+                      className="card-img-top"
+                      alt="..."
+                      onClick={() => {
+                        setDestination("Delhi");
+                        setIsDestinationSelected(true);
+                      }}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Delhi - Capital of india</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="carousel-item">
+                <div className="cards-wrapper">
+                  {" "}
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1494522855154-9297ac14b55f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGdhbmRoaW5hZ2FyJTIwZ2lmdCUyMGNpdHklMjAxJTNBMXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                      className="card-img-top"
+                      alt="..."
+                      onClick={() => {
+                        setDestination("Gandhinagar");
+                        setIsDestinationSelected(true);
+                      }}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        Gandhinagar - Capital of Gujarat
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="carousel-item">
+                <div className="cards-wrapper">
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1635227408430-1025bbff13b9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YmFuZ2xvcmUlMjBjb2l0eSUyMDElM0ExfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                      className="card-img-top"
+                      alt="..."
+                      onClick={() => {
+                        setDestination("Banglore");
+                        setIsDestinationSelected(true);
+                      }}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Banglore - The IT Industry</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="carousel-item">
+                <div className="cards-wrapper">
+                  <div className="card">
+                    <img
+                      src="https://images.unsplash.com/photo-1518930259200-3e5b29f42096?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8bXVtYmFpJTIwZmlsbSUyMGluZHVzdHJ5MSUzQTF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
+                      className="card-img-top"
+                      alt="..."
+                      onClick={() => {
+                        setDestination("Mumbai");
+                        setIsDestinationSelected(true);
+                      }}
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">Mumbai - The Film Industry</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
+        {numberOfItemsInOneFrame === 1 ? (
+          <>
+            <div className="carousel-item">
+              <div className="cards-wrapper">
+                {" "}
+                <div className="card">
+                  <img
+                    src="https://images.unsplash.com/photo-1496372412473-e8548ffd82bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1314&q=80"
+                    className="card-img-top"
+                    alt="..."
+                    onClick={() => {
+                      setDestination("Delhi");
+                      setIsDestinationSelected(true);
+                    }}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">Delhi - Capital of india</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
         <a
           className="carousel-control-prev"
           href="#carouselExampleControls"

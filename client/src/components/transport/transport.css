@@ -38,17 +38,20 @@
   .transport .row h1 {
     text-align: center;
   }
-  .transport h5{
+  .transport h5 {
     font-size: 20px;
   }
+  .transport .card img {
+    height: 11em;
+  }
 }
-@media (max-width: 992px )and (min-width: 768px)   {
-  .transport h5{
+@media (max-width: 992px) and (min-width: 768px) {
+  .transport h5 {
     font-size: 14px;
   }
 }
 @media (min-width: 767px) {
   .transport .card img {
     height: 11em;
-  }  
+  }
 }

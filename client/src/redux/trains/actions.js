@@ -46,14 +46,18 @@ export const getTrainSchedules =
       maxPrice = maxPrice ? maxPrice : 1000000;
       personCount = personCount ? personCount : 1;
       const today = new Date();
-      fromDate = fromDate
-        ? fromDate
-        : today.getFullYear() +
-          "-" +
-          (today.getMonth() + 1) +
-          "-" +
-          today.getDate();
-      //  console.log(fromDate);
+      const currentDate =
+        today.getFullYear() +
+        "-" +
+        String(today.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(today.getDate()).padStart(2, "0");
+      fromDate = fromDate ? fromDate : currentDate;
+      if (toDate === currentDate) {
+        toDate = null;
+      }
+
+      // console.log(currentDate, toDate);
       // console.log(toDate);
       if (source && destination) {
         // console.log("at source dest");
