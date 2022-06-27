@@ -1,25 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
-.authform {
-  display: flex;
+/* .authform {
+  /* display: flex;
   align-items: center;
   justify-content: center;
   padding: 0rem 5rem;
   transition: a0ll 0.2s 0.7s;
-  overflow: hidden;
-}
+  overflow: hidden; 
+} */
 
 body {
   min-width: 575px;
 }
+
 body,
-.authLogin {
+.input {
   font-family: "Poppins", sans-serif;
   left: 100px;
 }
 
-.authform .sign-in-form {
-  z-index: 2;
+.sign-in-form {
+  z-index: 1;
 }
 
 .title {

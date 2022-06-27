@@ -39,7 +39,7 @@ function Register() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         first_name,
-        
+
         last_name,
         email,
         password,
@@ -60,21 +60,21 @@ function Register() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
-          <div className="card border-0 shadow rounded-3 my-5">
-            <div className="row card-body p-4 ">
-              <div className="col-lg-3 d-flex align-items-center justify-content-center">
-                <h2 className="card-title text-center mb-5 ">
+    <div className='container'>
+      <div className='row'>
+        <div className='col-sm-12 col-md-12 col-lg-12 mx-auto'>
+          <div className='card border-0 shadow rounded-3 my-5'>
+            <div className='row card-body p-4 '>
+              <div className='col-lg-3 d-flex align-items-center justify-content-center'>
+                <h2 className='card-title text-center mb-5 '>
                   <img
-                    src="https://i.pinimg.com/originals/02/fc/da/02fcda11cbfb2a84537f9d059b4c81b2.gif"
-                    alt="true"
-                    height="200px"
+                    src='https://i.pinimg.com/originals/02/fc/da/02fcda11cbfb2a84537f9d059b4c81b2.gif'
+                    alt='true'
+                    height='200px'
                   />
                 </h2>
               </div>
-              <div className="col-lg-9 ">
+              <div className='col-lg-9 '>
                 <div>
                   <Formik
                     initialValues={{
@@ -86,28 +86,26 @@ function Register() {
                       phone_number: "",
                     }}
                     validationSchema={validate}
-                    onSubmit={handleRegister}
-                  >
+                    onSubmit={handleRegister}>
                     {({ setFieldValue, values, errors, status, touched }) => (
                       <Form>
                         {/* {" "} */}
-                        {console.log(values)}
-                        <div className="row w-100 mb-3 form-floating ">
+                        {/* {console.log(values)} */}
+                        <div className='row w-100 mb-3'>
                           <label
-                            htmlFor="first_name"
-                            id="lblFName"
-                            className="col-lg-4 col-md-4 col-sm-10"
-                          >
+                            htmlFor='first_name'
+                            id='lblFName'
+                            className='col-lg-4 col-md-4 col-sm-12'>
                             First Name
                           </label>
 
                           <Input
-                            placeholder="First Name"
-                            name="first_name"
-                            type="first_name"
-                            label="lblFName"
+                            placeholder='First Name'
+                            name='first_name'
+                            type='first_name'
+                            label='lblFName'
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control" +
                               (errors.first_name && touched.first_name
                                 ? " is-invalid"
                                 : "")
@@ -115,25 +113,26 @@ function Register() {
                             value={values["first_name"]}
                             setFieldValue={setFieldValue}
                           />
-                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage name="first_name" component="div" />
+                          <div className='row'>
+                            <div className='invalid-feedback col-lg-10 col-md-12 col-sm-12 d-flex justify-content-center'>
+                              <ErrorMessage name='first_name' component='div' />
+                            </div>
                           </div>
                         </div>
-                        <div className="row w-100 mb-3 form-floating ">
+                        <div className='row w-100 mb-3 '>
                           <label
-                            htmlFor="last_name"
-                            id="lblLName"
-                            className="col-lg-4 col-md-4 col-sm-10"
-                          >
+                            htmlFor='last_name'
+                            id='lblLName'
+                            className='col-lg-4 col-md-4 col-sm-12'>
                             Last Name
                           </label>
                           <Input
-                            placeholder="Last Name"
-                            name="last_name"
-                            type="last_name"
-                            label="lblLName"
+                            placeholder='Last Name'
+                            name='last_name'
+                            type='last_name'
+                            label='lblLName'
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control" +
                               (errors.last_name && touched.last_name
                                 ? " is-invalid"
                                 : "")
@@ -141,26 +140,27 @@ function Register() {
                             value={values["last_name"]}
                             setFieldValue={setFieldValue}
                           />
-                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage name="last_name" component="div" />
+                          <div className="row">
+                          <div className='invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center'>
+                            <ErrorMessage name='last_name' component='div' />
                           </div>
+                          </div>                          
                         </div>
-                        <div className="row w-100 form-floating  mb-3">
+                        <div className='row w-100 mb-3'>
                           <label
-                            htmlFor="email"
-                            id="lblEmail "
-                            className="col-lg-4 col-md-4 col-sm-10"
-                          >
+                            htmlFor='email'
+                            id='lblEmail '
+                            className='col-lg-4 col-md-4 col-sm-12'>
                             Email
                           </label>
                           <Input
-                            placeholder="Email"
-                            name="email"
-                            type="email"
-                            label="lblEmail"
+                            placeholder='Email'
+                            name='email'
+                            type='email'
+                            label='lblEmail'
                             icon={faEnvelope}
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control" +
                               (errors.email && touched.email
                                 ? " is-invalid"
                                 : "")
@@ -168,26 +168,28 @@ function Register() {
                             value={values["email"]}
                             setFieldValue={setFieldValue}
                           />
-                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage name="email" component="div" />
+                          <div className="row">
+                          <div className='invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center'>
+                            <ErrorMessage name='email' component='div' />
                           </div>
+                          </div>
+                          
                         </div>
-                        <div className="row w-100 form-floating mb-3 ">
+                        <div className='row w-100 mb-3 '>
                           <label
-                            htmlFor="password"
-                            id="lblPass"
-                            className="col-lg-4 col-md-4 col-sm-10"
-                          >
+                            htmlFor='password'
+                            id='lblPass'
+                            className='col-lg-4 col-md-4 col-sm-12'>
                             Password
                           </label>
                           <Input
-                            placeholder="Password"
-                            name="password"
-                            type="password"
-                            label="lblPass"
-                            autocomplete="on"
+                            placeholder='Password'
+                            name='password'
+                            type='password'
+                            label='lblPass'
+                            autocomplete='on'
                             className={
-                              " col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
+                              " col-lg-7 col-md-7 col-sm-12 form-control" +
                               (errors.password && touched.password
                                 ? " is-invalid"
                                 : "")
@@ -195,25 +197,27 @@ function Register() {
                             value={values["password"]}
                             setFieldValue={setFieldValue}
                           />
-                          <div className="invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage name="password" component="div" />
+                          <div className="row">
+                          <div className='invalid-feedback form-floating col-lg-10 col-md-7 col-sm-12 d-flex justify-content-center'>
+                            <ErrorMessage name='password' component='div' />
                           </div>
+                          </div>
+                          
                         </div>
-                        <div className="row w-100 form-floating mb-3 ">
+                        <div className='row w-100 mb-3 '>
                           <label
-                            htmlFor="confPass"
-                            id="confPass"
-                            className="col-lg-4 col-md-4 col-sm-10"
-                          >
+                            htmlFor='confPass'
+                            id='confPass'
+                            className='col-lg-4 col-md-4 col-sm-12'>
                             Confirm Password
                           </label>
                           <Input
-                            placeholder="Confirm Password"
-                            name="confPass"
-                            type="password"
-                            label="confPass"
+                            placeholder='Confirm Password'
+                            name='confPass'
+                            type='password'
+                            label='confPass'
                             className={
-                              " col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
+                              " col-lg-7 col-md-7 col-sm-12 form-control" +
                               (errors.confPass && touched.confPass
                                 ? " is-invalid"
                                 : "")
@@ -221,25 +225,27 @@ function Register() {
                             value={values["confPass"]}
                             setFieldValue={setFieldValue}
                           />
-                          <div className="invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage name="confPass" component="div" />
+                          <div className="row">
+                          <div className='invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center'>
+                            <ErrorMessage name='confPass' component='div' />
                           </div>
+                          </div>
+                          
                         </div>
-                        <div className="row w-100 mb-3 form-floating ">
+                        <div className='row w-100 mb-3'>
                           <label
-                            htmlFor="phone_number"
-                            id="lblphone_number"
-                            className="col-lg-4 col-md-4 col-sm-10"
-                          >
+                            htmlFor='phone_number'
+                            id='lblphone_number'
+                            className='col-lg-4 col-md-4 col-sm-12'>
                             Phone Number
                           </label>
 
                           <Input
-                            name="phone_number"
-                            type="phone_number"
-                            label="lblphone_number"
+                            name='phone_number'
+                            type='phone_number'
+                            label='lblphone_number'
                             className={
-                              "col-lg-7 col-md-7 col-sm-12 form-control authLogin" +
+                              "col-lg-7 col-md-7 col-sm-12 form-control" +
                               (errors.first_name && touched.first_name
                                 ? " is-invalid"
                                 : "")
@@ -247,34 +253,35 @@ function Register() {
                             value={values["phone_number"]}
                             setFieldValue={setFieldValue}
                           />
-                          <div className="invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center">
-                            <ErrorMessage name="phone_number" component="div" />
+                          <div className="row">
+                          <div className='invalid-feedback form-floating col-lg-11 col-md-7 col-sm-12 d-flex justify-content-center'>
+                            <ErrorMessage name='phone_number' component='div' />
                           </div>
+                          </div>                          
                         </div>
                         {status && (
                           <div className={"alert alert-danger"}>
                             {status.toString()}
                           </div>
                         )}
-                        <div className="d-grid justify-content-center">
+                        <div className='d-grid justify-content-center'>
                           <Button
-                            type="submit"
-                            value="Sign up"
+                            type='submit'
+                            value='Sign up'
                             validationSchema={validate}
-                            onClick={handleRegister(values)}
-                          ></Button>
+                            onClick={handleRegister(values)}></Button>
                         </div>
-                        <hr className="my-4" />
-                        <div className="w-100  ">
-                          <div className="d-flex justify-content-center">
+                        <hr className='my-4' />
+                        <div className='w-100  '>
+                          <div className='d-flex justify-content-center'>
                             <div>
                               <h3>One of us ?</h3>
                               <p>Great! Just Login Again</p>
                             </div>
                           </div>
-                          <div className="d-flex justify-content-center">
-                            <Link to="/auth/login">
-                              <Button value="Sign In" type="button"></Button>
+                          <div className='d-flex justify-content-center'>
+                            <Link to='/auth/login'>
+                              <Button value='Sign In' type='button'></Button>
                             </Link>
                           </div>
                         </div>
