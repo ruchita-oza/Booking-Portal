@@ -3,3 +3,19 @@
   border-color: #003580;
   color: white;
 }
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: larger;
+  }
+  .col-span {
+    font-size: smaller;
+    width: 100%;
+  }
+  .bookingReciept {
+    font-size: smaller;
+  }
+  .bookingReciept .container {
+    width: 90%;
+  }
+}

@@ -8,7 +8,7 @@ import "./login.css";
 import { fetchLoginUserThunkAction } from "../../redux/users/actions";
 import { selectUser } from "../../redux/users/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import Loader from "../../components/loader/loader";
 
@@ -52,30 +52,32 @@ function Login(props) {
         <Loader />
       ) : (
         <motion.div
-          className='container'
+          className="container authPage"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}>
-          <div className='row'>
-            <div className='col-sm-12 col-md-12 col-lg-12 mx-auto'>
-              <div className='card border-0 shadow my-5'>
-                <div className='card-body p-4'>
-                  <div className='row'>
-                    <div className='col-lg-3 d-flex align-items-center justify-content-center'>
-                      <h2 className='card-title text-center mb-5 '>
+          exit={{ opacity: 0 }}
+        >
+          <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-12 mx-auto">
+              <div className="card border-0 shadow my-5">
+                <div className="card-body p-4">
+                  <div className="row">
+                    <div className="col-lg-3 d-flex align-items-center justify-content-center">
+                      <h2 className="card-title text-center mb-5 ">
                         <img
-                          src='https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/8a6668117921675.607f0e97eaa14.gif'
-                          alt='true'
-                          height='160px'
+                          src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/8a6668117921675.607f0e97eaa14.gif"
+                          alt="true"
+                          height="160px"
                         />
                       </h2>
                     </div>
-                    <div className='col-lg-9 '>
+                    <div className="col-lg-9 ">
                       <div>
                         <Formik
                           initialValues={{ email: "", password: "" }}
                           validationSchema={validate}
-                          onSubmit={handleLogin}>
+                          onSubmit={handleLogin}
+                        >
                           {({
                             values,
                             setFieldValue,
@@ -85,17 +87,18 @@ function Login(props) {
                           }) => (
                             <Form>
                               {/* {console.log(values)} */}
-                              <div className='row w-100 mb-3'>
+                              <div className="row w-100 mb-3">
                                 <label
-                                  htmlFor='email'
-                                  id='lblUser'
-                                  className='col-lg-4 col-md-4 col-sm-12'>
-                                  <div className='text-left'>Email</div>
+                                  htmlFor="email"
+                                  id="lblUser"
+                                  className="col-lg-4 col-md-4 col-sm-12"
+                                >
+                                  <div className="text-left">Email</div>
                                 </label>
 
                                 <Input
-                                  name='email'
-                                  label='lblUser'
+                                  name="email"
+                                  label="lblUser"
                                   className={
                                     "col-lg-7 col-md-7 col-sm-12 form-control" +
                                     (errors.email && touched.email
@@ -106,28 +109,30 @@ function Login(props) {
                                   setFieldValue={setFieldValue}
                                   // onChange={(e) => setEmail(e.target.value)}
                                 />
-                                <div className='row'>
-                                  <div className='invalid-feedback col-lg-10 col-md-10 col-sm-12 d-flex justify-content-around'>
+                                <div className="row">
+                                  <div className="col-lg-3"></div>
+                                  <div className="invalid-feedback col-lg-10 col-md-10 col-sm-12 d-flex offset-md-4">
                                     <ErrorMessage
-                                      name='email'
-                                      component='div'
+                                      name="email"
+                                      component="div"
                                     />
                                   </div>
                                 </div>
                               </div>
 
-                              <div className='row w-100 mb-3 '>
+                              <div className="row w-100 mb-3 ">
                                 <label
-                                  htmlFor='password'
-                                  id='lblPass'
-                                  className='col-lg-4 col-md-4 col-sm-12 '>
-                                  <div className='text-left'>Password</div>
+                                  htmlFor="password"
+                                  id="lblPass"
+                                  className="col-lg-4 col-md-4 col-sm-12 "
+                                >
+                                  <div className="text-left">Password</div>
                                 </label>
 
                                 <Input
-                                  name='password'
-                                  type='password'
-                                  label='lblPass'
+                                  name="password"
+                                  type="password"
+                                  label="lblPass"
                                   className={
                                     "col-mg-7 col-md-7 col-sm-12 form-control" +
                                     (errors.password && touched.password
@@ -138,11 +143,11 @@ function Login(props) {
                                   // onChange={(e) => setPassword(e.target.value)}
                                   setFieldValue={setFieldValue}
                                 />
-                                <div className='row'>
-                                  <div className='invalid-feedback px-1 form-floating col-lg-10 col-md-11 col-sm-12 d-flex justify-content-around'>
+                                <div className="row">
+                                  <div className="invalid-feedback form-floating col-lg-10 col-md-11 col-sm-12  col-md-offset-3 d-flex offset-md-4 ">
                                     <ErrorMessage
-                                      name='password'
-                                      component='div'
+                                      name="password"
+                                      component="div"
                                     />
                                   </div>
                                 </div>
@@ -152,35 +157,39 @@ function Login(props) {
                                   {status.toString()}
                                 </div>
                               )}
-                              <div className='d-flex w-100 justify-content-center'>
+                              <div className="d-flex w-100 justify-content-center">
                                 <Button
-                                  type='submit'
-                                  value='Login'
+                                  type="submit"
+                                  value="Login"
                                   onClick={() => {}}
                                 />
                               </div>
                               <div>
                                 <button
-                                  type='button'
-                                  className='btn btn-link d-flex w-100 justify-content-center'>
+                                  type="button"
+                                  className="btn btn-link d-flex w-100 justify-content-center"
+                                >
                                   Forgot Password?
                                 </button>
                               </div>
                               {/* <hr className='my-4' /> */}
-                              <div className='w-100 content '>
-                                <div className='d-flex justify-content-center'>
+                              <div className="w-100 content ">
+                                <div className="d-flex justify-content-center">
                                   <div>
                                     <h3>New here ?</h3>
                                     <p>Please Sign Up to our website</p>
                                   </div>
                                 </div>
-                                <div className='d-flex justify-content-center'>
-                                  <Button
-                                    value='Sign Up'
-                                    type='button'
-                                    onClick={() => {
-                                      props.changeVal();
-                                    }}></Button>
+                                <div className="d-flex justify-content-center">
+                                  <Link to="/auth/register">
+                                    <Button
+                                      value="Sign Up"
+                                      type="button"
+                                      onClick={() => {
+                                        props.changeVal();
+                                      }}
+                                    ></Button>
+                                  </Link>
                                 </div>
                               </div>
                             </Form>

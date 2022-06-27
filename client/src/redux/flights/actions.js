@@ -54,14 +54,18 @@ export const getFlightSchedules =
       personCount = personCount ? personCount : 1;
       const today = new Date();
       currentPage = currentPage ? currentPage : 1;
-      fromDate = fromDate
-        ? fromDate
-        : today.getFullYear() +
-          "-" +
-          (today.getMonth() + 1) +
-          "-" +
-          today.getDate();
-      console.log(fromDate);
+      const currentDate =
+        today.getFullYear() +
+        "-" +
+        String(today.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(today.getDate()).padStart(2, "0");
+      fromDate = fromDate ? fromDate : currentDate;
+      if (toDate === currentDate) {
+        toDate = null;
+      }
+
+      // console.log(fromDate);
       if (source && destination) {
         // console.log("at source dest");
         var sourceCity = await getCityApi(source);

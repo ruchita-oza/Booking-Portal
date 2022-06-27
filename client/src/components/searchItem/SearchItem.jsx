@@ -146,10 +146,15 @@ const SearchItem = ({ data, personCount }) => {
               }}
             >
               <span className="siSource" style={{ flex: 1, marginLeft: "4px" }}>
-                {data?.source_name?.city_name}
+                {window.location.pathname.split("/")[2] === "book"
+                  ? data?.source_name
+                  : data?.source_name?.city_name}
+                {/* {data?.source_name?.city_name} */}
               </span>
               <span style={{ flex: 1, marginLeft: "15px" }}>
-                {data?.destination_name?.city_name}
+                {window.location.pathname.split("/")[2] === "book"
+                  ? data?.destination_name
+                  : data?.destination_name?.city_name}
               </span>{" "}
             </span>
           </span>
