@@ -29,6 +29,7 @@ const Navbar = (props) => {
     { label: "Home", link: "/" },
     { label: "Dashboard", link: "/admin/dashboard " },
     { label: "Users List", link: "/admin/userList " },
+    { label: "Users Booking History", link: "/admin/usersBookingHistory" },
     { label: "Add Transport", link: "/admin/transportDetailAndSchedule" },
     // {
     // label: "Edit Transport",
@@ -67,19 +68,17 @@ const Navbar = (props) => {
     dispatch(loggingOutUserThunkAction());
   };
 
-  const isAddTransportPage = window.location.pathname
-    .split("/")
-    .includes("transportDetailAndSchedule");
+  const isAdminPage = window.location.pathname.split("/").includes("admin");
 
-  const isBusListPage = window.location.pathname.split("/").includes("busList");
+  // const isBusListPage = window.location.pathname.split("/").includes("busList");
 
-  const isTrainListPage = window.location.pathname
-    .split("/")
-    .includes("trainList");
+  // const isTrainListPage = window.location.pathname
+  //   .split("/")
+  //   .includes("trainList");
 
-  const isFlightListPage = window.location.pathname
-    .split("/")
-    .includes("flightList");
+  // const isFlightListPage = window.location.pathname
+  //   .split("/")
+  //   .includes("flightList");
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -260,64 +259,65 @@ const Navbar = (props) => {
             </div>
           </div>
         </div>
-        {isAddTransportPage ||
-        isBusListPage ||
-        isFlightListPage ||
-        isTrainListPage ? (
-          <div className="addTransportPageHeader"></div>
-        ) : (
+        {firstPath === "" ||
+        firstPath === "buses" ||
+        firstPath === "flights" ||
+        firstPath === "trains" ? (
+          // <>
+          //   {firstPath === "" ||
+          //   firstPath === "buses" ||
+          //   firstPath === "flights" ||
+          //   firstPath === "trains" ? (
           <>
-            {firstPath === "" ||
-            firstPath === "buses" ||
-            firstPath === "flights" ||
-            firstPath === "trains" ? (
-              <div className="header">
-                <div className="headerContainer listMode">
-                  <div className="headerList">
-                    <div
-                      className={
-                        props.type === "flights"
-                          ? "headerListItem active"
-                          : "headerListItem "
-                      }
-                      onClick={() => doChanges("flights")}
-                    >
-                      <FontAwesomeIcon icon={faPlane} />
-                      <span>Flight</span>
-                    </div>
-                    <div
-                      className={
-                        props.type === "buses"
-                          ? "headerListItem active"
-                          : "headerListItem "
-                      }
-                      onClick={() => {
-                        doChanges("buses");
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faBus} />
-                      <span>Bus</span>
-                    </div>
-                    <div
-                      className={
-                        props.type === "trains"
-                          ? "headerListItem active"
-                          : "headerListItem "
-                      }
-                      onClick={() => {
-                        doChanges("trains");
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faTrain} />
-                      <span>Train</span>
-                    </div>
+            <div className="header">
+              <div className="headerContainer listMode">
+                <div className="headerList">
+                  <div
+                    className={
+                      props.type === "flights"
+                        ? "headerListItem active"
+                        : "headerListItem "
+                    }
+                    onClick={() => doChanges("flights")}
+                  >
+                    <FontAwesomeIcon icon={faPlane} />
+                    <span>Flight</span>
+                  </div>
+                  <div
+                    className={
+                      props.type === "buses"
+                        ? "headerListItem active"
+                        : "headerListItem "
+                    }
+                    onClick={() => {
+                      doChanges("buses");
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faBus} />
+                    <span>Bus</span>
+                  </div>
+                  <div
+                    className={
+                      props.type === "trains"
+                        ? "headerListItem active"
+                        : "headerListItem "
+                    }
+                    onClick={() => {
+                      doChanges("trains");
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faTrain} />
+                    <span>Train</span>
                   </div>
                 </div>
               </div>
-            ) : (
-              <></>
-            )}
+            </div>
           </>
+        ) : (
+          // )
+          //  : (
+          // )}
+          <div className="addTransportPageHeader"></div>
         )}
         {/* <Link to='/userProfile'>
                   <button className='navButton'>User Profile</button>

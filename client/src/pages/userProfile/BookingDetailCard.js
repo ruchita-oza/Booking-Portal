@@ -9,12 +9,35 @@ import {
   Typography,
   Chip,
   Divider,
+  Backdrop,
+  Modal,
+  Fade,
+  Grid,
+  Box,
 } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-// import selectUser from "../../redux/users/selectors";
+import dateFormat from "dateformat";
+import { toast } from "react-hot-toast";
+import UseDelete from "../../Utilities/UseDelete";
+import axios from "axios";
 
-function BookingDetailCard({ booking, status }) {
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  // border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+function BookingDetailCard({ booking, status, fetchBookingRecords, fetchBookingRecordsFromAdmin }) {
+  // console.log("booking : ", booking);
+
   const navigate = useNavigate();
+
   const StyleChip = withStyles({
     root: {
       // backgroundColor:'salmon'
@@ -22,20 +45,91 @@ function BookingDetailCard({ booking, status }) {
       // padding: "1px",
     },
   })(Chip);
+
+  const isAdminPage = window.location.pathname.split("/").includes("admin");
+
   const [editOpen, setEditOpen] = useState(false);
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
+
   const handleBookingClick = (e, booking) => {
     // console.log(booking, booking.id);
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
+
+
+  var todaysDate = dateFormat(new Date(), "dd/mm/yyyy", true)
+
+
+
+  // let twoDaysOlderDate = todaysDate.setDate(todaysDate.getDate() - 2);
+
+  // twoDaysOlderDate = dateFormat(twoDaysOlderDate, "dd/mm/yyyy", true)
+
+
+
   const handleCancel = (e, booking) => {
-    var txt;
-    if (window.confirm("Do you want to cancel your booking?!")) {
-      txt = "You pressed OK!";
-    } else {
-      txt = "You pressed Cancel!";
+    // var txt;
+    // if (window.confirm("Do you want to cancel your booking?!")) {
+    //   txt = "You pressed OK!";
+    // } else {
+    //   txt = "You pressed Cancel!";
+    // }
+
+    // console.log(
+    //   "two days older date : ",
+    //   twoDaysOlderDate
+    // );
+
+
+    let journeyDate = ParseDate.ParseDate(booking.journey_date, false);
+
+    let date = journeyDate.split("/")
+    date[0] = (date[0] - 2)
+    journeyDate = date.join("/")
+
+    // console.log(booking.journey_date.getDate())
+
+    // window.alert(journeyDate);
+    // console.log("todays date : ", todaysDate)
+    // console.log("current journey date : ", journeyDate)
+
+    if (journeyDate > todaysDate) {
+      // console.log("you can cancel your booking")
+      // /booking/record/cancelBookingRecord/
+      // console.log("booking id : ", booking?.id)
+      axios.delete("/booking/record/cancelBookingRecord/" + booking?.id).then((response) => {
+        // console.log("response : ", response)
+        if (response?.data?.status) {
+          toast.success(response?.data?.data)
+
+          if (isAdminPage) {
+            fetchBookingRecordsFromAdmin()
+          }
+          else {
+            fetchBookingRecords()
+          }
+          // window.location.reload();
+        }
+        else {
+          toast.error(response?.response?.data?.message)
+
+        }
+      })
+
     }
-    window.alert(txt);
+    else {
+      // console.log("you cannot cancel your booking")
+      toast.error("You can no longer cancel your booking. As cancellation is only possible before 2 days from the scheduled journey date", {
+        duration: 10000
+      })
+    }
+
+    handleClose()
   };
+
   return (
     <div>
       <Card
@@ -48,15 +142,15 @@ function BookingDetailCard({ booking, status }) {
           <Typography variant="h5">
             {booking.transport_type == "flight"
               ? booking.flight_schedule?.source_name?.city_name +
-                " to " +
-                booking.flight_schedule?.destination_name?.city_name +
-                " "
+              " to " +
+              booking.flight_schedule?.destination_name?.city_name +
+              " "
               : booking.transport_type == "bus"
-              ? booking.bus_schedule?.source_name?.city_name +
+                ? booking.bus_schedule?.source_name?.city_name +
                 " to " +
                 booking.bus_schedule?.destination_name?.city_name +
                 " "
-              : booking.train_schedule?.source_name?.city_name +
+                : booking.train_schedule?.source_name?.city_name +
                 " to " +
                 booking.train_schedule?.destination_name?.city_name +
                 " "}
@@ -83,17 +177,72 @@ function BookingDetailCard({ booking, status }) {
               <>
                 {/* {console.log(status)} */}
                 {status === "upcoming" ? (
-                  <Button
-                    variant="contained"
-                    color="error"
-                    className="pull-right"
-                    // startIcon={<DescriptionOutlinedIcon />}
-                    onClick={(e) => {
-                      handleCancel(e, booking);
-                    }}
-                  >
-                    Cancel Booking
-                  </Button>
+                  <>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      className="pull-right"
+                      // startIcon={<DescriptionOutlinedIcon />}
+                      // onClick={(e) => {
+                      //   handleCancel(e, booking);
+                      // }}
+                      onClick={handleOpen}
+                    >
+                      Cancel Booking
+                    </Button>
+                    <Modal
+                      aria-labelledby="transition-modal-title"
+                      aria-describedby="transition-modal-description"
+                      open={openModal}
+                      onClose={handleClose}
+                      closeAfterTransition
+                      BackdropComponent={Backdrop}
+                      BackdropProps={{
+                        timeout: 500,
+                      }}
+                    >
+                      <Fade in={openModal}>
+                        <Box sx={style}>
+                          <Typography
+                            style={{ color: "#616161" }}
+                            id="modal-modal-title"
+                          // variant="h3"
+                          // component="h1"
+                          >
+                            Are, you sure you want to cancel this booking ?
+                          </Typography>
+                          <br />
+                          <Grid container spacing={2} justifyContent="center">
+                            <Grid md={6} item>
+                              <Button
+                                fullWidth
+                                style={{
+                                  color: "white",
+                                  backgroundColor: "#00C853",
+                                }}
+                                variant="contained"
+                                onClick={(e) => {
+                                  handleCancel(e, booking);
+                                }}
+                              >
+                                Confirm
+                              </Button>
+                            </Grid>
+                            <Grid md={6} item>
+                              <Button
+                                fullWidth
+                                color="error"
+                                variant="contained"
+                                onClick={handleClose}
+                              >
+                                Cancel
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Fade>
+                    </Modal>
+                  </>
                 ) : (
                   <></>
                 )}

@@ -78,6 +78,7 @@ const SearchItem = ({ data, personCount }) => {
         initial={{ opacity: 0, x: "100%" }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
+        style={{ backgroundColor: "white" }}
       >
         {window.location.pathname === "/buses" ||
         window.location.pathname.split("/")[1] === "bus" ? (
@@ -190,7 +191,7 @@ const SearchItem = ({ data, personCount }) => {
             <button>{data?.total_available_seats}</button>
           </div>
           <div className="siDetailTexts">
-            <span className="siPrice">${data?.price_per_seat}</span>
+            <span className="siPrice">₹ {data?.price_per_seat}</span>
             <span className="siFlight">Includes taxes and fees</span>
             <button
               className="siCheckButton"

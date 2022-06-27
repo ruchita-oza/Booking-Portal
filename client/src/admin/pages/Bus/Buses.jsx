@@ -1,4 +1,5 @@
 import * as React from "react";
+import Pagination from "react-js-pagination";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -16,57 +17,115 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TablePagination from "@mui/material/TablePagination";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import green from "@material-ui/core/colors/green";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import "./buses.css";
 import NoSchedule from "../../components/NoSchedule";
 import toast from "react-hot-toast";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import Backdrop from "@mui/material/Backdrop";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import Button from "@mui/material/Button";
+import { Grid } from "@material-ui/core";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  // border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = useState(false);
   const [getBusSchedule, setBusSchedule] = useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openID, setOpenID] = React.useState("");
+
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   const fetchBusSchedule = async (id) => {
-    const result = await fetch(`/bus/schedule?bus_id=${id}`);
+    const result = await fetch(
+      `/bus/schedule?bus_id=${id}&page=${currentPage}`
+    );
     const getData = await result.json();
-    setBusSchedule(getData.busScheduleWithBuses.rows);
+    console.log(getData);
+    setBusSchedule(getData);
     // console.log(getBusSchedule);
   };
 
   const handleArrowOpen = async (id) => {
+    setOpenID(id);
     setOpen(!open);
     fetchBusSchedule(id);
   };
-  let txt;
+  React.useEffect(() => {
+    if (openID) fetchBusSchedule(openID);
+  }, [currentPage]);
+
   const handleDelete = async (id) => {
-    console.log("at delete", id);
-    if (window.confirm(`Do you want to delete ${id}`)) {
-      try {
-        const res = await fetch(`/bus/details/${id}`, { method: "DELETE" });
-        const data = await res.json();
-        console.log(data);
-        if (data.status != true) {
-          throw new Error(data.message);
-        } else {
-          toast.success(`${id} deleted successfully`);
-        }
-      } catch (err) {
-        toast.error(err);
+    // console.log("at delete", id);
+    // if (window.confirm(`Do you want to delete ${id}`)) {
+    try {
+      const res = await fetch(`/bus/details/deleteBusDetailAndSchedule/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      // console.log(data);
+      if (data.status != true) {
+        throw new Error(data.message);
+      } else {
+        toast.success(`${id} deleted successfully`);
+        window.location.reload();
       }
-    } else {
-      txt = "You pressed Cancel!";
-      toast.error(txt);
+    } catch (err) {
+      toast.error(err);
     }
-    // window.alert(txt);
+    // }
+  };
+
+  const handleActive = async (id) => {
+    // console.log("at delete", id);
+    // if (window.confirm(`Do you want to Active ${id}`)) {
+    try {
+      const input = { deletedAt: null };
+      const res = await fetch(`/adminApi/buses/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      const data = await res.json();
+      // console.log(data);
+      if (data.status != true) {
+        throw new Error(data.message);
+      } else {
+        toast.success(`${id} Active successfully`);
+        window.location.reload();
+      }
+    } catch (err) {
+      toast.error(err);
+    }
+    // }
   };
 
   const navigate = useNavigate();
 
   function handleEditAction(busNumber) {
-    console.log("in handle click action : ", busNumber);
+    // console.log("in handle click action : ", busNumber);
     navigate("/admin/editTransportDetailAndSchedule/" + busNumber);
   }
 
@@ -75,10 +134,11 @@ function Row(props) {
       marginTop: "0%",
     },
   }));
+
   const classes = useTooltipStyles();
 
   return (
-    <React.Fragment>
+    <React.Fragment className="adminTransport">
       <TableRow sx={{ backgroundColor: "#F5F5F5" }}>
         <TableCell>
           <IconButton
@@ -115,36 +175,160 @@ function Row(props) {
               onClick={() => {
                 handleEditAction(row?.id);
               }}
+              disabled={row.deletedAt === null ? false : true}
               style={{ textDecoration: "none" }}
             >
               <EditIcon />
             </button>
           </Tooltip>
-          <Tooltip
-            title="Delete bus details and schedules"
-            placement="right"
-            classes={classes}
-          >
-            <button
-              className="btn btn-link btn-sm btn-rounded"
-              style={{
-                textDecoration: "none",
-              }}
-              disable={row.deletedAt === null ? "false" : "true"}
-              onClick={() => handleDelete(row.id)}
-            >
-              <DeleteForeverIcon
-                style={{ color: row.deletedAt === null ? "red" : "gray" }}
-              />
-            </button>
-          </Tooltip>
+          {row && row?.deletedAt === null ? (
+            <>
+              <Tooltip
+                title="Disable bus details and schedules"
+                placement="right"
+                classes={classes}
+              >
+                <button
+                  className="btn btn-link btn-sm btn-rounded"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  disabled={row && row.deletedAt === null ? false : true}
+                  // onClick={() => handleDelete(row.id)}
+                  onClick={handleOpen}
+                >
+                  {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
+                  <ToggleOffIcon
+                    style={{ color: "#cc3300", fontSize: "30px" }}
+                  />
+                </button>
+              </Tooltip>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={openModal}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={openModal}>
+                  <Box sx={style}>
+                    <Typography
+                      style={{ color: "#616161" }}
+                      id="modal-modal-title"
+                      // variant="h3"
+                      // component="h1"
+                    >
+                      Are, you sure you want to disable this bus and all its
+                      schedules ?
+                    </Typography>
+                    <br />
+                    <Grid container spacing={2} justifyContent="center">
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          style={{ color: "white", backgroundColor: "#00C853" }}
+                          variant="contained"
+                          onClick={() => handleDelete(row.id)}
+                        >
+                          Confirm
+                        </Button>
+                      </Grid>
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          color="error"
+                          variant="contained"
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Fade>
+              </Modal>
+            </>
+          ) : (
+            <>
+              <Tooltip
+                title="Enable bus details and schedules"
+                placement="right"
+                classes={classes}
+              >
+                <button
+                  className="btn btn-link btn-sm btn-rounded"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  disabled={row && row.deletedAt === null ? true : false}
+                  // onClick={() => handleActive(row.id)}
+                  onClick={handleOpen}
+                >
+                  {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
+                  <ToggleOnIcon style={{ color: "green", fontSize: "30px" }} />
+                </button>
+              </Tooltip>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={openModal}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={openModal}>
+                  <Box sx={style}>
+                    <Typography
+                      style={{ color: "#616161" }}
+                      id="modal-modal-title"
+                      // variant="h3"
+                      // component="h1"
+                    >
+                      Are, you sure you want to enable this bus and all its
+                      schedules ?
+                    </Typography>
+                    <br />
+                    <Grid container spacing={2} justifyContent="center">
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          style={{ color: "white", backgroundColor: "#00C853" }}
+                          variant="contained"
+                          onClick={() => handleActive(row.id)}
+                        >
+                          Confirm
+                        </Button>
+                      </Grid>
+                      <Grid md={6} item>
+                        <Button
+                          fullWidth
+                          color="error"
+                          variant="contained"
+                          onClick={handleClose}
+                        >
+                          Cancel
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Fade>
+              </Modal>
+            </>
+          )}
         </TableCell>
       </TableRow>
 
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            {getBusSchedule?.length === 0 ? (
+            {getBusSchedule?.busScheduleWithBuses?.rows?.length === 0 ? (
               <>
                 <NoSchedule />
               </>
@@ -183,33 +367,59 @@ function Row(props) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {getBusSchedule &&
-                      getBusSchedule.map((buses) => (
-                        <TableRow>
-                          <TableCell align="center">
-                            {buses?.source_name?.city_name}
-                          </TableCell>
-                          <TableCell align="center">
-                            {buses?.destination_name?.city_name}
-                          </TableCell>
-                          <TableCell align="center">
-                            {" " +
-                              ParseDate.ParseDate(buses?.departure_time, true)}
-                          </TableCell>
-                          <TableCell align="center">
-                            {" " +
-                              ParseDate.ParseDate(buses?.arrival_time, true)}
-                          </TableCell>
-                          <TableCell align="center">
-                            {buses?.total_available_seats}
-                          </TableCell>
-                          <TableCell align="center">
-                            {buses?.price_per_seat}{" "}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                    {getBusSchedule?.busScheduleWithBuses?.rows &&
+                      getBusSchedule?.busScheduleWithBuses?.rows.map(
+                        (buses) => (
+                          <TableRow>
+                            <TableCell align="center">
+                              {buses?.source_name?.city_name}
+                            </TableCell>
+                            <TableCell align="center">
+                              {buses?.destination_name?.city_name}
+                            </TableCell>
+                            <TableCell align="center">
+                              {" " +
+                                ParseDate.ParseDate(
+                                  buses?.departure_time,
+                                  true
+                                )}
+                            </TableCell>
+                            <TableCell align="center">
+                              {" " +
+                                ParseDate.ParseDate(buses?.arrival_time, true)}
+                            </TableCell>
+                            <TableCell align="center">
+                              {buses?.total_available_seats}
+                            </TableCell>
+                            <TableCell align="center">
+                              {buses?.price_per_seat}{" "}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
                   </TableBody>
                 </Table>
+                {getBusSchedule && (
+                  <div className="paginationBox pull-right">
+                    {console.log(getBusSchedule.busScheduleWithBuses.count)}
+                    <Pagination
+                      activePage={currentPage}
+                      itemsCountPerPage={getBusSchedule.resultPerPage}
+                      totalItemsCount={
+                        getBusSchedule.busScheduleWithBuses.count
+                      }
+                      onChange={(e) => setCurrentPage(e)}
+                      nextPageText="Next"
+                      prevPageText="Prev"
+                      firstPageText="1st"
+                      lastPageText="Last"
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      activeClass="pageItemActive"
+                      activeLinkClass="pageLinkActive"
+                    ></Pagination>
+                  </div>
+                )}
               </Box>
             )}
           </Collapse>
@@ -228,6 +438,7 @@ const Buses = () => {
     const FetchBus = async () => {
       const result = await fetch(`/adminApi/buses`);
       const getData = await result.json();
+      // console.log(getData);
       setBus(getData.buses.rows);
     };
     FetchBus();
@@ -261,10 +472,6 @@ const Buses = () => {
       // console.log({ numberOfRows });
     },
   };
-  const handleDelete = (id) => {
-    console.log("at delete", id);
-  };
-
   return (
     <div className="container my-5">
       <div className="shadow-4 rounded-5 overflow-hidden">

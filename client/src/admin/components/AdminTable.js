@@ -9,7 +9,7 @@ const tableData = [
     name: "Ruchita Oza",
     email: "ruchita@atliq.com",
     Roles: "Full stack developer",
-    activiy: "done",
+    active: "done",
     // weeks: "35",
     // budget: "95K",
   },
@@ -17,8 +17,8 @@ const tableData = [
     avatar: user5,
     name: "Rikin Chauhan",
     email: "rikin@atliq.com",
-    Roles: "Fullstack developer",
-    activiy: "done",
+    Roles: "Full Stack Developer",
+    active: "done",
     // weeks: "35",
     // budget: "95K",
   },
@@ -27,7 +27,7 @@ const tableData = [
     name: "Hetvee sakaria",
     email: "Hetvee@atliq.com",
     Roles: "FrontEnd developer",
-    activiy: "done",
+    active: "done",
     // weeks: "35",
     // budget: "95K",
   },
@@ -50,7 +50,7 @@ const AdminTable = () => {
                 <th>Team Lead</th>
                 <th>Roles</th>
 
-                <th>activiy</th>
+                <th>active</th>
                 {/* <th>Weeks</th>
                 <th>Budget</th> */}
               </tr>
@@ -75,9 +75,9 @@ const AdminTable = () => {
                   </td>
                   <td>{tdata.Roles}</td>
                   <td>
-                    {tdata.activiy === "pending" ? (
+                    {tdata.active === "pending" ? (
                       <span className="p-2 bg-danger rounded-circle d-inline-block ms-3"></span>
-                    ) : tdata.activiy === "holt" ? (
+                    ) : tdata.active === "holt" ? (
                       <span className="p-2 bg-warning rounded-circle d-inline-block ms-3"></span>
                     ) : (
                       <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>

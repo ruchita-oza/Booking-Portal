@@ -1,8 +1,12 @@
 const db = require("../models");
 const Bus = db.bus_details;
+const BusSchedule = db.bus_schedule;
 const Flight = db.flight_details;
+const FlightSchedule = db.flight_schedule;
 const Train = db.train_details;
+const TrainSchedule = db.train_schedules;
 const sequelize = db.sequelize;
+
 const countAdminDetails = async (req, res, next) => {
   try {
     const ProfitBooking = await sequelize.query(
@@ -29,6 +33,7 @@ const countAdminDetails = async (req, res, next) => {
     return next(createError(500, "Error while fetching booking records " + e));
   }
 };
+
 const userCountPerMonth = async (req, res, next) => {
   try {
     const BookingCountPerMonth = await sequelize.query(
@@ -139,6 +144,7 @@ const adminallFlights = async (req, res, next) => {
     next(err);
   }
 };
+
 const adminallTrains = async (req, res, next) => {
   try {
     let trains = await Train.findAndCountAll({
@@ -152,10 +158,152 @@ const adminallTrains = async (req, res, next) => {
   }
 };
 
+const activeBusWithSchedule = async (req, res, next) => {
+  try {
+    // console.log(req.params.id);
+    const busNumber = req.params.id || KT06XC1903;
+    const status = await Bus.findOne({
+      where: { id: busNumber },
+      paranoid: false,
+    });
+    // console.log(status);
+    if (status) {
+      let bus = await Bus.update(req.body, {
+        where: { id: busNumber },
+        paranoid: false,
+      });
+      bus = await Bus.findOne({ where: { id: busNumber } });
+      // console.log(bus);
+      if (!bus) return next(createError(422, "Error while Activing bus"));
+      const findSchedule = await BusSchedule.findAll({
+        where: { bus_id: busNumber },
+      });
+      if (findSchedule) {
+        const busSchedule = await BusSchedule.update(req.body, {
+          where: { bus_id: busNumber },
+          paranoid: false,
+        });
+        if (busSchedule) {
+          return res.json({
+            data: "Bus Activated with it's old schedule successfully",
+            status: true,
+          });
+        } else {
+          return createError(422, "error while updating schedule");
+        }
+      }
+
+      return res.json({
+        data: "Bus Activated but it does not containe any schedule",
+        status: true,
+      });
+    }
+    return next(createError(422, "Bus does not exist"));
+  } catch (error) {
+    return next(createError(500, "Error while updating bus details " + error));
+  }
+};
+
+const activeFlightWithSchedule = async (req, res, next) => {
+  try {
+    // console.log(req.body);
+    const flightNumber = req.params.id;
+    const status = await Flight.findOne({
+      where: { id: flightNumber },
+      paranoid: false,
+    });
+    // console.log(status);
+    if (status) {
+      let flight = await Flight.update(req.body, {
+        where: { id: flightNumber },
+        paranoid: false,
+      });
+      flight = await Flight.findOne({ where: { id: flightNumber } });
+      // console.log(flight);
+      if (!flight) return next(createError(422, "Error while Activing flight"));
+      const findSchedule = await FlightSchedule.findAll({
+        where: { flight_id: flightNumber },
+      });
+      if (findSchedule) {
+        const flightSchedule = await FlightSchedule.update(req.body, {
+          where: { flight_id: flightNumber },
+          paranoid: false,
+        });
+        if (flightSchedule) {
+          return res.json({
+            data: "Flight Activated with it's old schedule successfully",
+            status: true,
+          });
+        } else {
+          return createError(422, "error while updating schedule");
+        }
+      }
+
+      return res.json({
+        data: "Flight Activated but it does not containe any schedule",
+        status: true,
+      });
+    }
+    return next(createError(422, "flight does not exist"));
+  } catch (error) {
+    return next(createError(500, error));
+  }
+};
+
+const activeTrainWithSchedule = async (req, res, next) => {
+  try {
+    // console.log(req.params.id);
+    const trainNumber = req.params.id;
+    const status = await Train.findOne({
+      where: { id: trainNumber },
+      paranoid: false,
+    });
+    // console.log(status);
+    if (status) {
+      let train = await Train.update(req.body, {
+        where: { id: trainNumber },
+        paranoid: false,
+      });
+      train = await Train.findOne({ where: { id: trainNumber } });
+      // console.log(train);
+      if (!train) return next(createError(422, "Error while Activing train"));
+      const findSchedule = await TrainSchedule.findAll({
+        where: { train_id: trainNumber },
+      });
+      if (findSchedule) {
+        const trainSchedule = await TrainSchedule.update(req.body, {
+          where: { train_id: trainNumber },
+          paranoid: false,
+        });
+        if (trainSchedule) {
+          return res.json({
+            data: "Train Activated with it's old schedule successfully",
+            status: true,
+          });
+        } else {
+          return createError(422, "error while updating schedule");
+        }
+      }
+
+      return res.json({
+        data: "Train Activated but it does not containe any schedule",
+        status: true,
+      });
+    }
+    return next(createError(422, "Train does not exist"));
+  } catch (error) {
+    return next(
+      createError(500, "Error while updating Train details " + error)
+    );
+  }
+};
 module.exports = {
   countAdminDetails,
   userCountPerMonth,
   adminallBuses,
   adminallFlights,
   adminallTrains,
+  activeBusWithSchedule,
+  activeFlightWithSchedule,
+  activeTrainWithSchedule,
 };

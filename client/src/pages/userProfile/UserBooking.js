@@ -7,27 +7,36 @@ import { userBookingRecieptThunkAction } from "../../redux/users/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectPassenger, selectUser } from "../../redux/users/selectors";
 import ParseDate from "../../Utilities/ParseDate";
+import "./userBooking.css";
 
 function UserBooking() {
   const dispatch = useDispatch();
+
   const location = useLocation();
+
   const bookingId = location.pathname.split("/")[3];
+
   const { isLoading, error, bookingRecord, passengers, transport } =
     useSelector(selectPassenger);
+
   const { loggedInUser } = useSelector(selectUser);
+
   React.useEffect(() => {
     //  console.log(bookingId);
     if (bookingId) dispatch(userBookingRecieptThunkAction(bookingId));
   }, [dispatch, bookingId]);
+
   const handlePrint = () => {
     window.print();
   };
 
-  function makeFirstLetterCapital(str) {
-    const capitalizedStr = str.charAt(0).toUpperCase() + str.slice(1);
+  // function makeFirstLetterCapital(str) {
+  //   const capitalizedStr = str[0].toUpperCase() + str.slice(1);
 
-    return capitalizedStr;
-  }
+  //   console.log("capitalized string : ", capitalizedStr);
+
+  //   return capitalizedStr;
+  // }
 
   return (
     <>
@@ -50,11 +59,13 @@ function UserBooking() {
             >
               <div className="p-5">
                 <button
-                  className="bg-blue-500 ml-4 text-white font-bold py-2 px-8 rounded shadow border-2 border-blue-500 hover:bg-transparent hover:text-blue-500 transition-all duration-300 xl:flex-row  xl:justify-between"
+                  className="bg-blue-500 ml-4 text-white font-bold py-2 px-8 rounded shadow border-2 border-blue-500 transition-all duration-300 xl:flex-row  xl:justify-between printButton"
                   onClick={handlePrint}
                 >
                   Print / Download
                 </button>
+                <br />
+                <br />
                 <header className="flex flex-col items-center justify-center py-2 px-8  xl:flex-row  xl:justify-between">
                   <div>
                     <h1 className="font-bold uppercase tracking-wide text-3xl mb-3 bookingFont">
@@ -118,15 +129,7 @@ function UserBooking() {
                       <ul>
                         <li className="p-1 bg-gray-100">
                           <span className="font-bold">
-                            {
-                              // makeFirstLetterCapital(
-                              bookingRecord.transport_type
-                                .charAt(0)
-                                .toUpperCase() +
-                                bookingRecord.transport_type.slice(1)
-                              // )
-                            }{" "}
-                            number :{" "}
+                            {"Transport number : "}
                           </span>
                           {bookingRecord?.transport_type === "train"
                             ? transport?.train_id
@@ -203,15 +206,15 @@ function UserBooking() {
                   <ul className="justify-center">
                     <li>
                       <span className="font-bold">Name :</span>{" "}
-                      {loggedInUser.first_name} {loggedInUser.last_name}
+                      {loggedInUser?.first_name} {loggedInUser?.last_name}
                     </li>
                     <li>
                       <span className="font-bold">Email :</span>{" "}
-                      {loggedInUser.email}
+                      {loggedInUser?.email}
                     </li>
                     <li>
                       <span className="font-bold">Phone number :</span>{" "}
-                      {loggedInUser.phone_number}
+                      {loggedInUser?.phone_number}
                     </li>
                   </ul>
                 </footer>

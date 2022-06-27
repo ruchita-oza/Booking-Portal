@@ -7,6 +7,7 @@ const {
   getBuses,
   createBus,
   getBusByBusNumber,
+  deleteBusDetailAndSchedule,
 } = require("../controllers/busController");
 
 router.get("/", getBuses);
@@ -16,5 +17,6 @@ router.put("/:id", updateBus);
 router.get("/:id", getBusByBusNumber);
 router.delete("/:id", deleteBus);
 // router.get("/:id", getBus);
+router.delete("/deleteBusDetailAndSchedule/:id", deleteBusDetailAndSchedule);
 
 module.exports = router;
