@@ -8,10 +8,21 @@ import three from "../../images/india/3.png";
 import four from "../../images/india/4.png";
 import five from "../../images/india/5.png";
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
+
 const Transport = ({ source, destination, setDestination }) => {
   const [city, setCity] = useState(null);
   const [state, setState] = useState(null);
   const [isDestinationSelected, setIsDestinationSelected] = useState(false);
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
 
   async function getStates() {
     let url = "https://ipinfo.io/json?token=779eae9e88d5b2";
@@ -30,15 +41,17 @@ const Transport = ({ source, destination, setDestination }) => {
       state: { source, destination },
     });
   };
-  useEffect(() => {
-    currentScreenWidth = window.innerWidth;
-    console.log(window.innerWidth, "window.innerWidth");
-    if (currentScreenWidth <= 768) {
-      numberOfItemsInOneFrame = 1;
-    } else {
-      numberOfItemsInOneFrame = 5;
-    }
-  }, [window.innerWidth]);
+
+  // useEffect(() => {
+  //   currentScreenWidth = window.innerWidth;
+  //   console.log(window.innerWidth, "window.innerWidth");
+  //   if (currentScreenWidth <= 768) {
+  //     numberOfItemsInOneFrame = 1;
+  //   } else {
+  //     numberOfItemsInOneFrame = 5;
+  //   }
+  // }, [window.innerWidth]);
+
   useEffect(() => {
     if (state) {
       const getCity = async () => {
@@ -94,13 +107,22 @@ const Transport = ({ source, destination, setDestination }) => {
     }
   };
 
-  let currentScreenWidth = window.innerWidth;
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
 
-  console.log("from nearby cities page : ", currentScreenWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // let currentScreenWidth = window.innerWidth;
+
+  console.log("from nearby cities page : ", windowDimensions.width);
 
   let numberOfItemsInOneFrame;
 
-  if (currentScreenWidth <= 768) {
+  if (windowDimensions.width <= 768) {
     numberOfItemsInOneFrame = 1;
   } else {
     numberOfItemsInOneFrame = 5;
