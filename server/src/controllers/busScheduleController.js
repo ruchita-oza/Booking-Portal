@@ -224,8 +224,6 @@ const getBusSchedules = async (req, res, next) => {
       .pagination(resultPerPage)
       .filter();
 
-    // console.log("at bus schedule");
-    // console.log(apiFeatures.ticketQuery);
     let busScheduleWithBuses = await findAllBusSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
@@ -235,7 +233,6 @@ const getBusSchedules = async (req, res, next) => {
       resultPerPage,
     });
     let filteredPerCount = busScheduleWithBuses.rows.length;
-    // console.log(busScheduleWithBuses.rows.length);
     res
       .status(200)
       .json({ busScheduleWithBuses, filteredPerCount, resultPerPage });
@@ -344,7 +341,6 @@ const createBusScheduleFromArray = async (req, res, next) => {
 
 const updateBusScheduleFromArray = async (req, res, next) => {
   try {
-    // console.log("here");
     let scheduleData = req.body;
 
     if (scheduleData.length == 0) {
@@ -353,7 +349,6 @@ const updateBusScheduleFromArray = async (req, res, next) => {
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {
-        // console.log("i = ", i, " scheduleData : ", scheduleData[i]);
         const busScheduleId = scheduleData[i]?.id;
         const busId = scheduleData[i]?.transportId;
         const source = scheduleData[i]?.source;

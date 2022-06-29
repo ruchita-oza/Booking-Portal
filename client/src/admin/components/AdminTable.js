@@ -10,8 +10,6 @@ const tableData = [
     email: "ruchita@atliq.com",
     Roles: "Full stack developer",
     active: "done",
-    // weeks: "35",
-    // budget: "95K",
   },
   {
     avatar: user5,
@@ -19,8 +17,6 @@ const tableData = [
     email: "rikin@atliq.com",
     Roles: "Full Stack Developer",
     active: "done",
-    // weeks: "35",
-    // budget: "95K",
   },
   {
     avatar: user3,
@@ -28,8 +24,6 @@ const tableData = [
     email: "Hetvee@atliq.com",
     Roles: "FrontEnd developer",
     active: "done",
-    // weeks: "35",
-    // budget: "95K",
   },
 ];
 
@@ -51,8 +45,6 @@ const AdminTable = () => {
                 <th>Roles</th>
 
                 <th>active</th>
-                {/* <th>Weeks</th>
-                <th>Budget</th> */}
               </tr>
             </thead>
             <tbody>
@@ -83,8 +75,6 @@ const AdminTable = () => {
                       <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>
                     )}
                   </td>
-                  {/* <td>{tdata.weeks}</td>
-                  <td>{tdata.budget}</td> */}
                 </tr>
               ))}
             </tbody>

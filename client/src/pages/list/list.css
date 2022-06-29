@@ -138,3 +138,41 @@ input[type="number"]::-webkit-outer-spin-button {
 .listResult {
   flex: 3;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 900px) {
+  #sourceCityInput {
+    font-size: small;
+  }
+  #destinationCityInput {
+    font-size: 11.5px;
+  }
+  #dateInput {
+    font-size: 15px;
+  }
+  #numberofpersonslabel {
+    font-size: 10px;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/* @media only screen and (min-width: 600px) {
+  #sourceCityInput {
+    font-size: small;
+  }
+  #destinationCityInput {
+    font-size: small;
+  }
+} */
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+}

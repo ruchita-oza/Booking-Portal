@@ -39,8 +39,6 @@ function BookingDetailCard({
   fetchBookingRecords,
   fetchBookingRecordsFromAdmin,
 }) {
-  // console.log("booking : ", booking);
-
   const navigate = useNavigate();
 
   const StyleChip = withStyles({
@@ -60,7 +58,6 @@ function BookingDetailCard({
   const handleClose = () => setOpenModal(false);
 
   const handleBookingClick = (e, booking) => {
-    // console.log(booking, booking.id);
     navigate(`/UserProfile/Bookings/${booking.id}`);
   };
 
@@ -78,31 +75,19 @@ function BookingDetailCard({
     //   txt = "You pressed Cancel!";
     // }
 
-    // console.log(
-    //   "two days older date : ",
-    //   twoDaysOlderDate
-    // );
-
     let journeyDate = ParseDate.ParseDate(booking.journey_date, false);
 
     let date = journeyDate.split("/");
     date[0] = date[0] - 2;
     journeyDate = date.join("/");
 
-    // console.log(booking.journey_date.getDate())
-
     // window.alert(journeyDate);
-    // console.log("todays date : ", todaysDate)
-    // console.log("current journey date : ", journeyDate)
 
     if (journeyDate > todaysDate) {
-      // console.log("you can cancel your booking")
       // /booking/record/cancelBookingRecord/
-      // console.log("booking id : ", booking?.id)
       axios
         .delete("/booking/record/cancelBookingRecord/" + booking?.id)
         .then((response) => {
-          // console.log("response : ", response)
           if (response?.data?.status) {
             toast.success(response?.data?.data);
 
@@ -117,7 +102,6 @@ function BookingDetailCard({
           }
         });
     } else {
-      // console.log("you cannot cancel your booking")
       toast.error(
         "You can no longer cancel your booking. As cancellation is only possible before 2 days from the scheduled journey date",
         {
@@ -181,7 +165,6 @@ function BookingDetailCard({
                   alignItems="center"
                   textAlign="center"
                 > */}
-                {/* {console.log(status)} */}
                 {status === "upcoming" ? (
                   <>
                     <Grid item xs={12}>

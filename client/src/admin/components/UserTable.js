@@ -65,8 +65,6 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
 function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -172,7 +170,6 @@ const EnhancedTableToolbar = () => {
 export default function UserTable() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
-  // const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -202,7 +199,6 @@ export default function UserTable() {
   const fetchUsers = async () => {
     const res = await fetch("/user");
     const users = await res.json();
-   // console.log(users.users.rows);
     setUserRows(users.users.rows);
   };
   React.useEffect(() => {
@@ -234,28 +230,11 @@ export default function UserTable() {
                 stableSort(userRows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    // const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
-                      <TableRow
-                        hover
-                        // onClick={(event) => handleClick(event, row.name)}
-                        // role="checkbox"
-                        // aria-checked={isItemSelected}
-                        // tabIndex={-1}
-                        key={row.id}
-                        // selected={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          {/* <Checkbox
-                          color="primary"
-                          // checked={isItemSelected}
-                          inputProps={{
-                            "aria-labelledby": labelId,
-                          }}
-                        /> */}
-                        </TableCell>
+                      <TableRow hover key={row.id}>
+                        <TableCell padding="checkbox"></TableCell>
                         <TableCell
                           style={{ width: 150 }}
                           component="th"

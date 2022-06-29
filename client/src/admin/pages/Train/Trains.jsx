@@ -38,7 +38,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -58,9 +57,7 @@ function Row(props) {
       `/train/schedule?train_id=${id}&page=${currentPage}`
     );
     const getData = await result.json();
-    console.log(getData);
     setTrainSchedule(getData);
-    // console.log(getData);
   };
 
   const handleArrowOpen = async (id) => {
@@ -84,20 +81,16 @@ function Row(props) {
   }, [currentPage]);
 
   const handleDelete = async (id) => {
-    // console.log("at delete", id);
-    // if (window.confirm(`Do you want to delete ${id}`)) {
     try {
       const res = await fetch(
         `/train/details/deleteTrainDetailAndSchedule/${id}`,
         { method: "DELETE" }
       );
       const data = await res.json();
-      // console.log(data);
       if (data.status != true) {
         throw new Error(data.message);
       } else {
         toast.success(`${id} disabled successfully`);
-        // window.location.reload();
         props.FetchTrains();
         fetchTrainSchedule(id);
       }
@@ -105,11 +98,9 @@ function Row(props) {
       toast.error(err);
     }
     handleClose();
-    // }
   };
 
   const handleActive = async (id) => {
-    // if (window.confirm(`Do you want to Active ${id}`)) {
     try {
       const input = { deletedAt: null };
       const res = await fetch(`/adminApi/trains/${id}`, {
@@ -124,7 +115,6 @@ function Row(props) {
         throw new Error(data.message);
       } else {
         toast.success(`${id} enabled successfully`);
-        // window.location.reload();
         props.FetchTrains();
         fetchTrainSchedule(id);
       }
@@ -132,7 +122,6 @@ function Row(props) {
       toast.error(err);
     }
     handleClose();
-    // }
   };
 
   return (
@@ -180,7 +169,6 @@ function Row(props) {
               <Tooltip
                 title="Disable train details and schedules"
                 placement="right"
-                // classes={classes}
               >
                 <button
                   className="btn btn-link btn-sm btn-rounded"
@@ -188,10 +176,8 @@ function Row(props) {
                     textDecoration: "none",
                   }}
                   disabled={row && row.deletedAt === null ? false : true}
-                  // onClick={() => handleDelete(row.id)}
                   onClick={handleOpen}
                 >
-                  {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
                   <ToggleOffIcon style={{ color: "green", fontSize: "30px" }} />
                 </button>
               </Tooltip>
@@ -211,8 +197,6 @@ function Row(props) {
                     <Typography
                       style={{ color: "#616161" }}
                       id="modal-modal-title"
-                      // variant="h3"
-                      // component="h1"
                     >
                       Are, you sure you want to disable this train and all its
                       schedules ?
@@ -249,7 +233,6 @@ function Row(props) {
               <Tooltip
                 title="Enable train details and schedules"
                 placement="right"
-                // classes={classes}
               >
                 <button
                   className="btn btn-link btn-sm btn-rounded"
@@ -257,10 +240,8 @@ function Row(props) {
                     textDecoration: "none",
                   }}
                   disabled={row && row.deletedAt === null ? true : false}
-                  // onClick={() => handleActive(row.id)}
                   onClick={handleOpen}
                 >
-                  {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
                   <ToggleOnIcon
                     style={{ color: "#cc3300", fontSize: "30px" }}
                   />
@@ -282,8 +263,6 @@ function Row(props) {
                     <Typography
                       style={{ color: "#616161" }}
                       id="modal-modal-title"
-                      // variant="h3"
-                      // component="h1"
                     >
                       Are, you sure you want to enable this train and all its
                       schedules ?
@@ -370,7 +349,6 @@ function Row(props) {
                     {getTrainSchedule &&
                       getTrainSchedule.data.rows.map((trains) => (
                         <TableRow>
-                          {/* {console.log(trains)} */}
                           <TableCell align="center">
                             {trains?.source_name?.city_name}
                           </TableCell>
@@ -404,7 +382,6 @@ function Row(props) {
                 >
                   {getTrainSchedule && (
                     <div className="paginationBox pull-right">
-                      {console.log(getTrainSchedule.data.count)}
                       <Pagination
                         activePage={currentPage}
                         itemsCountPerPage={getTrainSchedule.resultPerPage}
@@ -468,12 +445,8 @@ const Trains = () => {
         displayRows: "OF",
       },
     },
-    onChangePage(currentPage) {
-      // console.log({ currentPage });
-    },
-    onChangeRowsPerPage(numberOfRows) {
-      // console.log({ numberOfRows });
-    },
+    onChangePage(currentPage) {},
+    onChangeRowsPerPage(numberOfRows) {},
   };
 
   return (
@@ -488,7 +461,6 @@ const Trains = () => {
               <TableRow
                 sx={{
                   backgroundColor: "#003580",
-                  // borderBottom: "2px solid black",
                   "& th": {
                     fontSize: "1rem",
                     color: "white",
@@ -537,7 +509,6 @@ const Trains = () => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           colSpan={5}
-          // style={{ padding: "10%" }}
         />
       </div>
     </div>

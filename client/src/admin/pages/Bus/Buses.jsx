@@ -40,7 +40,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -61,9 +60,8 @@ function Row(props) {
       `/bus/schedule?bus_id=${id}&page=${currentPage}`
     );
     const getData = await result.json();
-    // console.log(getData);
+
     setBusSchedule(getData);
-    // console.log(getBusSchedule);
   };
 
   const handleArrowOpen = async (id) => {
@@ -77,19 +75,16 @@ function Row(props) {
   }, [currentPage]);
 
   const handleDelete = async (id) => {
-    // console.log("at delete", id);
-    // if (window.confirm(`Do you want to delete ${id}`)) {
     try {
       const res = await fetch(`/bus/details/deleteBusDetailAndSchedule/${id}`, {
         method: "DELETE",
       });
       const data = await res.json();
-      // console.log(data);
+
       if (data.status != true) {
         throw new Error(data.message);
       } else {
         toast.success(`${id} disabled successfully`);
-        // window.location.reload();
         props.FetchBus();
         fetchBusSchedule(id);
       }
@@ -97,12 +92,9 @@ function Row(props) {
       toast.error(err);
     }
     handleClose();
-    // }
   };
 
   const handleActive = async (id) => {
-    // console.log("at delete", id);
-    // if (window.confirm(`Do you want to Active ${id}`)) {
     try {
       const input = { deletedAt: null };
       const res = await fetch(`/adminApi/buses/${id}`, {
@@ -113,12 +105,10 @@ function Row(props) {
         body: JSON.stringify(input),
       });
       const data = await res.json();
-      // console.log(data);
       if (data.status != true) {
         throw new Error(data.message);
       } else {
         toast.success(`${id} enabled successfully`);
-        // window.location.reload();
         props.FetchBus();
         fetchBusSchedule(id);
       }
@@ -126,13 +116,11 @@ function Row(props) {
       toast.error(err);
     }
     handleClose();
-    // }
   };
 
   const navigate = useNavigate();
 
   function handleEditAction(busNumber) {
-    // console.log("in handle click action : ", busNumber);
     navigate("/admin/editTransportDetailAndSchedule/" + busNumber);
   }
 
@@ -201,10 +189,8 @@ function Row(props) {
                     textDecoration: "none",
                   }}
                   disabled={row && row.deletedAt === null ? false : true}
-                  // onClick={() => handleDelete(row.id)}
                   onClick={handleOpen}
                 >
-                  {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
                   <ToggleOffIcon style={{ color: "green", fontSize: "30px" }} />
                 </button>
               </Tooltip>
@@ -224,8 +210,6 @@ function Row(props) {
                     <Typography
                       style={{ color: "#616161" }}
                       id="modal-modal-title"
-                      // variant="h3"
-                      // component="h1"
                     >
                       Are, you sure you want to disable this bus and all its
                       schedules ?
@@ -270,10 +254,8 @@ function Row(props) {
                     textDecoration: "none",
                   }}
                   disabled={row && row.deletedAt === null ? true : false}
-                  // onClick={() => handleActive(row.id)}
                   onClick={handleOpen}
                 >
-                  {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
                   <ToggleOnIcon
                     style={{ color: "#cc3300", fontSize: "30px" }}
                   />
@@ -295,8 +277,6 @@ function Row(props) {
                     <Typography
                       style={{ color: "#616161" }}
                       id="modal-modal-title"
-                      // variant="h3"
-                      // component="h1"
                     >
                       Are, you sure you want to enable this bus and all its
                       schedules ?
@@ -408,7 +388,6 @@ function Row(props) {
                 </Table>
                 {getBusSchedule && (
                   <div className="paginationBox pull-right">
-                    {/* {console.log(getBusSchedule.busScheduleWithBuses.count)} */}
                     <Pagination
                       activePage={currentPage}
                       itemsCountPerPage={getBusSchedule.resultPerPage}
@@ -442,10 +421,8 @@ const Buses = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const FetchBus = async () => {
-    // console.log("fetch bus called");
     const result = await fetch(`/adminApi/buses`);
     const getData = await result.json();
-    // console.log(getData);
     setBus(getData.buses.rows);
   };
 
@@ -474,12 +451,8 @@ const Buses = () => {
         displayRows: "OF",
       },
     },
-    onChangePage(currentPage) {
-      // console.log({ currentPage });
-    },
-    onChangeRowsPerPage(numberOfRows) {
-      // console.log({ numberOfRows });
-    },
+    onChangePage(currentPage) {},
+    onChangeRowsPerPage(numberOfRows) {},
   };
 
   return (
@@ -494,7 +467,6 @@ const Buses = () => {
               <TableRow
                 sx={{
                   backgroundColor: "#003580",
-                  // borderBottom: "2px solid black",
                   "& th": {
                     fontSize: "1rem",
                     color: "white",

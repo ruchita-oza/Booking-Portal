@@ -4,13 +4,7 @@ function NoRecord() {
   return (
     <div>
       {" "}
-      <Card
-        // variant="outlined"
-        style={{ border: "none", boxShadow: "none" }}
-        // sx={{
-        //   boxShadow: 3,
-        // }}
-      >
+      <Card style={{ border: "none", boxShadow: "none" }}>
         <CardContent>
           <Grid
             container

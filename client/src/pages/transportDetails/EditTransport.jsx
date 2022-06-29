@@ -31,28 +31,19 @@ function EditTransport() {
   const [data, setData] = useState(undefined);
 
   const id = useLocation().pathname.split("/")[3];
-  // console.log("id.length : ", id.length);
 
   function fetchData() {
-    // console.log("in fetch data function");
     if (id.length == 10) {
       axios
         .get("/bus/schedule/getAllBusSchedulesByBusId/" + id)
         .then((response) => {
-          // console.log(
-          //   "response.data.data.rows from bus : ",
-          //   response.data.data.rows.length
-          // );
           if (response.data.data.rows.length == 0) {
-            // console.log("here in length == 0");
             axios.get("/bus/details/" + id).then((response) => {
               let busDetails = {
                 id: response.data.data[0].id,
                 name: response.data.data[0].bus_name,
                 type: response.data.data[0].bus_type,
               };
-              // console.log("response from else if : ", response?.data?.data[0]);
-              // console.log("bus details : ", fbusDetails);
               setTransportDetails(busDetails);
             });
           } else {
@@ -84,7 +75,6 @@ function EditTransport() {
               allBusSchedules.push(busScheduleDetail);
             }
             setComponents(allBusSchedules);
-            // console.log("all bus schedule details : ", allBusSchedules);
           }
         });
     } else if (id.length == 5) {
@@ -92,15 +82,12 @@ function EditTransport() {
         .get("/train/schedule/getAllTrainSchedulesByTrainId/" + id)
         .then((response) => {
           if (response.data.data.rows.length == 0) {
-            // console.log("here in length == 0");
             axios.get("/train/details/" + id).then((response) => {
-              // console.log("response from else if : ", response?.data?.data);
               let trainDetails = {
                 id: response.data.data.id,
                 name: response.data.data.train_name,
                 type: response.data.data.train_type,
               };
-              // console.log("train details : ", trainDetails);
               setTransportDetails(trainDetails);
             });
           } else {
@@ -137,28 +124,19 @@ function EditTransport() {
               allTrainSchedules.push(trainScheduleDetail);
             }
             setComponents(allTrainSchedules);
-            // console.log("all train schedule details : ", allTrainSchedules);
           }
         });
     } else if (id.length == 6) {
       axios
         .get("/flight/schedule/getAllFlightSchedulesByFlightId/" + id)
         .then((response) => {
-          // console.log("response flight : ", response);
-          // console.log(
-          //   "response.data.data.rows from flight : ",
-          //   response.data.data.rows.length
-          // );
           if (response.data.data.rows.length == 0) {
-            // console.log("here in length == 0");
             axios.get("/flight/details/" + id).then((response) => {
               let flightDetails = {
                 id: response.data.data[0].id,
                 name: response.data.data[0].flight_name,
                 type: response.data.data[0].flight_type,
               };
-              // console.log("response from else if : ", response);
-              // console.log("flight details : ", flightDetails);
               setTransportDetails(flightDetails);
             });
           } else {
@@ -195,14 +173,12 @@ function EditTransport() {
               allFlightSchedules.push(flightScheduleDetail);
             }
             setComponents(allFlightSchedules);
-            // console.log("all flight schedule details : ", allFlightSchedules);
           }
         });
     }
   }
 
   useEffect(() => {
-    // console.log("in use effect");
     if (id.length == 10) {
       setTransportMode("Bus");
     }
@@ -218,16 +194,9 @@ function EditTransport() {
     fetchData();
   }, []);
 
-  // console.log("transport mode : ", transportMode);
-
-  // console.log("data : ", data);
-
-  // console.log("transport details : ", transportDetails);
-
   const transportId = transportDetails?.id;
 
   const todaysDate = new Date();
-  // console.log("transport id : ", transportId);
 
   function handleSourceData(id, sourceData) {
     let allComponents = [...components];
@@ -293,14 +262,9 @@ function EditTransport() {
     setComponents([...components, { ...data, transportId: id }]);
   }
 
-  console.log("component", components);
-
   function deleteComponent(id) {
-    // console.log("delete component id : ", id);
-    // console.log("transport mode in delete : ", transportMode);
     if (transportMode.toLowerCase() == "bus") {
       axios.delete("/bus/schedule/" + id).then((response) => {
-        // console.log("response : ", response);
         if (response?.data?.status) {
           toast.success(response?.data?.data);
         } else {
@@ -309,7 +273,6 @@ function EditTransport() {
       });
     } else if (transportMode.toLowerCase() == "train") {
       axios.delete("/train/schedule/" + id).then((response) => {
-        // console.log("response : ", response);
         if (response?.data?.status) {
           toast.success(response?.data?.data);
         } else {
@@ -318,7 +281,6 @@ function EditTransport() {
       });
     } else if (transportMode.toLowerCase() == "flight") {
       axios.delete("/flight/schedule/" + id).then((response) => {
-        // console.log("response : ", response);
         if (response?.data?.status) {
           toast.success(response?.data?.data);
         } else {
@@ -329,7 +291,6 @@ function EditTransport() {
     setComponents((previousData) =>
       previousData.filter((element) => element.id !== id)
     );
-    // console.log("components after delete : ", components);
   }
 
   let types = [
@@ -347,7 +308,6 @@ function EditTransport() {
 
   async function handleSubmit() {
     if (components.length > 0) {
-      // console.log("components before changing its structure : ", components);
       var scheduleData = [...components];
 
       scheduleData = scheduleData.map((item) => ({
@@ -383,8 +343,6 @@ function EditTransport() {
       //   );
       // }
       // }
-
-      // console.log("schedule data : ", scheduleData);
     }
 
     if (transportMode == null) {
@@ -396,15 +354,12 @@ function EditTransport() {
         train_type: transportDetails?.type,
       };
 
-      // console.log("trainRequestBody : ", trainRequestBody);
       const response = await UsePut(
         "/train/details/" + id,
         trainRequestBody,
         "put"
       );
-      // console.log("train response : ", response);
       if (response?.status) {
-        // console.log("train schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.success(response?.data);
           // document.getElementById("add-transport-details").reset();
@@ -427,8 +382,6 @@ function EditTransport() {
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        // console.log(response?.status);
-        // console.log("train schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
           // document.getElementById("add-transport-details").reset();
@@ -440,7 +393,6 @@ function EditTransport() {
           );
           if (response1?.data?.status) {
             toast.error(response?.response?.data?.message);
-            // console.log("transportDetails?.id : ", transportDetails?.id);
             setTimeout(function () {
               toast.success(
                 response1?.data?.data + " for train number : " + id
@@ -450,10 +402,6 @@ function EditTransport() {
             // setComponents([]);
             // document.getElementById("add-transport-details").reset();
           } else {
-            // console.log(
-            //   "response1?.response1?.data?.message : ",
-            //   response1?.response?.data?.message
-            // );
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
               toast.error(response1?.response?.data?.message);
@@ -462,8 +410,6 @@ function EditTransport() {
         }
       }
     } else if (transportMode.toLowerCase() === "bus") {
-      // console.log("here in bus");
-      // console.log("here");
       let busRequestBody = {
         id: transportDetails?.id,
         bus_name: transportDetails?.name,
@@ -474,11 +420,7 @@ function EditTransport() {
         busRequestBody,
         "put"
       );
-      // console.log("bus response  : ", response?.data);
-      // console.log("bus schedule data : ", scheduleData);
       if (response?.status) {
-        // console.log("response from success : ", response?.data);
-        // console.log("bus schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.success(response?.data);
           // document.getElementById("add-transport-details").reset();
@@ -501,8 +443,6 @@ function EditTransport() {
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        // console.log("bus schedule data : ", scheduleData);
-        // console.log(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
           // document.getElementById("add-transport-details").reset();
@@ -520,10 +460,6 @@ function EditTransport() {
             // setComponents([]);
             // document.getElementById("add-transport-details").reset();
           } else {
-            // console.log(
-            //   "response1?.response1?.data?.message : ",
-            //   response1?.response?.data?.message
-            // );
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
               toast.error(response1?.response?.data?.message);
@@ -542,10 +478,7 @@ function EditTransport() {
         flightRequestBody,
         "put"
       );
-      // console.log("flight response  : ", response?.data?.status);
       if (response?.status) {
-        // console.log("flight schedule data : ", scheduleData);
-        // console.log(scheduleData, components.length, "check here");
         if (components.length == 0) {
           toast.success(response?.data);
           // document.getElementById("add-transport-details").reset();
@@ -568,7 +501,6 @@ function EditTransport() {
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        // console.log("flight schedule data : ", scheduleData);
         // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
@@ -579,7 +511,6 @@ function EditTransport() {
             scheduleData,
             "post"
           );
-          // console.log("response1 : ", response1);
           if (response1?.data?.status) {
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
@@ -590,10 +521,6 @@ function EditTransport() {
             // setComponents([]);
             // document.getElementById("add-transport-details").reset();
           } else {
-            // console.log(
-            //   "response1?.response1?.data?.message : ",
-            //   response1?.response?.data?.message
-            // );
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
               toast.error(response1?.response?.data?.message);
@@ -628,7 +555,6 @@ function EditTransport() {
                 // onChange={handleTransportMode}
               >
                 {/* {types.map((option) => (
-                  // console.log(option.value)
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>

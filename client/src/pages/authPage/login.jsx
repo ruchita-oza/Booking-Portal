@@ -25,21 +25,15 @@ function Login(props) {
   });
 
   const onSuccess = () => {
-    // console.log("on success");
     navigate("/");
   };
 
-  const onError = (error) => {
-    // console.log("error occured", error);
-  };
+  const onError = (error) => {};
   const fetchData = (email, password) => {
-    // console.log(email, password);
     dispatch(fetchLoginUserThunkAction(email, password, onSuccess, onError));
   };
   function handleLogin({ email, password }) {
     fetchData(email, password);
-    // console.log("at handle login");
-    // console.log(email, password);
     // dispatch(fetchLoginUserThunkAction(email, password), navigate("/"));
   }
   // useEffect(() => {
@@ -86,7 +80,6 @@ function Login(props) {
                             touched,
                           }) => (
                             <Form>
-                              {/* {console.log(values)} */}
                               <div className="row w-100 mb-3">
                                 <label
                                   htmlFor="email"
@@ -163,14 +156,6 @@ function Login(props) {
                                   value="Login"
                                   onClick={() => {}}
                                 />
-                              </div>
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn btn-link d-flex w-100 justify-content-center"
-                                >
-                                  Forgot Password?
-                                </button>
                               </div>
                               {/* <hr className='my-4' /> */}
                               <div className="w-100 content ">

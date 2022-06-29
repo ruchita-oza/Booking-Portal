@@ -17,7 +17,6 @@ const initialState = {
 };
 const initialBusState = { isLoading: false, bus: [], error: null };
 export const busReducer = (state = initialState, action) => {
-  // console.log(action.type);
   switch (action.type) {
     case ALL_BUSSCHEDULE_REQUEST:
       return { ...state, isLoading: true, buses: [], filteredPerCount: null };
@@ -32,7 +31,6 @@ export const busReducer = (state = initialState, action) => {
 
       };
     case ALL_BUSSCHEDULE_FAIL:
-      // console.log(action.payload.message);
       return {
         ...state,
         isLoading: false,

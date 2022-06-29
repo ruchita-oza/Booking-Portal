@@ -45,9 +45,7 @@ export const getFlightSchedules =
   ) =>
   async (dispatch) => {
     try {
-      // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
       dispatch(fetchAllFlightScheduleRequest());
-      // console.log(setResult);
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
@@ -65,9 +63,7 @@ export const getFlightSchedules =
         toDate = null;
       }
 
-      // console.log(fromDate);
       if (source && destination) {
-        // console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
         if (
@@ -80,7 +76,6 @@ export const getFlightSchedules =
           );
         }
         if (!toDate) {
-          console.log("not fromDate");
           let { data } = await getFlightsWithLocationPriceApi(
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
@@ -98,7 +93,6 @@ export const getFlightSchedules =
             throw new Error();
           }
         } else if (toDate) {
-          console.log("in fromDate");
           let { data } = await getFlightsWithLocationPriceTimeApi(
             sourceCity.data.cities.rows[0].id,
             destCity.data.cities.rows[0].id,
@@ -109,7 +103,6 @@ export const getFlightSchedules =
             personCount,
             currentPage
           );
-          console.log(data);
           if (data) {
             if (data.flightScheduleWithflights.count === 0) setResult(false);
             dispatch(fetchAllFlightScheduleSuccess(data));
@@ -119,14 +112,12 @@ export const getFlightSchedules =
           }
         }
       } else if (source) {
-        console.log("at only source");
         // est");
         var sourceCity = await getCityApi(source);
         if (sourceCity === undefined || sourceCity.data.cities.count === 0) {
           throw new Error(`flight on Schedule ${source} is not available`);
         }
         if (!toDate) {
-          console.log("not fromDate");
           let { data } = await getFlightsWithSourcePriceApi(
             sourceCity.data.cities.rows[0].id,
             minPrice,
@@ -143,7 +134,6 @@ export const getFlightSchedules =
             throw new Error();
           }
         } else if (toDate) {
-          console.log("in fromDate", sourceCity.data.cities.rows[0].id);
           let { data } = await getFlightsWithSourcePriceTimeApi(
             sourceCity.data.cities.rows[0].id,
             minPrice,
@@ -153,7 +143,6 @@ export const getFlightSchedules =
             personCount,
             currentPage
           );
-          console.log(data);
           if (data) {
             if (data.flightScheduleWithflights.count === 0) setResult(false);
             dispatch(fetchAllFlightScheduleSuccess(data));
@@ -170,9 +159,7 @@ export const getFlightSchedules =
           currentPage,
           fromDate
         );
-        console.log("in else");
         if (data) {
-          // console.log(data);
           if (data.flightScheduleWithflights.count === 0) setResult(false);
           dispatch(fetchAllFlightScheduleSuccess(data));
           return;
@@ -181,7 +168,6 @@ export const getFlightSchedules =
         }
       }
     } catch (error) {
-      // console.log(error);
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllFlightScheduleFail(error));
@@ -199,11 +185,9 @@ export const getFlightScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_FLIGHTSCHEDULE_REQUEST });
     const data = await getFlightWithId(id);
     if (data) {
-      // console.log(data);
       dispatch({ type: GET_FLIGHTSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    // console.log(error);
     dispatch({ type: GET_FLIGHTSCHEDULE_FAIL, payload: error });
   }
 };
@@ -213,11 +197,9 @@ export const getAllFlightSchedule = () => async (dispatch) => {
     dispatch({ type: ALL_FLIGHTSCHEDULE_REQUEST });
     const data = await getAllFlightSchedule();
     if (data) {
-      // console.log(data);
       dispatch({ type: ALL_FLIGHTSCHEDULE_SUCESS, payload: data });
     }
   } catch (error) {
-    // console.log(error);
     dispatch({ type: ALL_FLIGHTSCHEDULE_FAIL, payload: error });
   }
 };

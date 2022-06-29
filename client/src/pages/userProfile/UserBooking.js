@@ -22,7 +22,6 @@ function UserBooking() {
   const { loggedInUser } = useSelector(selectUser);
 
   React.useEffect(() => {
-    //  console.log(bookingId);
     if (bookingId) dispatch(userBookingRecieptThunkAction(bookingId));
   }, [dispatch, bookingId]);
 
@@ -32,8 +31,6 @@ function UserBooking() {
 
   // function makeFirstLetterCapital(str) {
   //   const capitalizedStr = str[0].toUpperCase() + str.slice(1);
-
-  //   console.log("capitalized string : ", capitalizedStr);
 
   //   return capitalizedStr;
   // }
@@ -144,7 +141,7 @@ function UserBooking() {
                             {transport?.destination_name}
                           </li>
                           <li className="p-1 col-span ">
-                            <span className="font-bold">Dept time:</span>{" "}
+                            <span className="font-bold">Departure time:</span>{" "}
                             {ParseDate.ParseDate(
                               transport?.departure_time,
                               true
@@ -204,45 +201,11 @@ function UserBooking() {
                     </p>
                   </section>
                   {/* footer */}
-                  <footer className="footer border-t-2 border-gray-300 pt-5">
-                    <ul className="justify-center p-0">
-                      <li>
-                        <span className="font-bold">Name :</span>{" "}
-                        {loggedInUser?.first_name} {loggedInUser?.last_name}
-                      </li>
-                      <li>
-                        <span className="font-bold">Email :</span>{" "}
-                        {loggedInUser?.email}
-                      </li>
-                      <li>
-                        <span className="font-bold">Phone number :</span>{" "}
-                        {loggedInUser?.phone_number}
-                      </li>
-                    </ul>
-                  </footer>
-                </div>
-                {/* note */}
-                <section className=" mb-2">
-                  <h3>Note : </h3>
-                  <p className="lg:w-3/4 text-justify">
-                    E-ticket print out has to be carried by the passenger during
-                    the journey along with original Photo ID Card of the
-                    passenger whose name appears above. Please show the e-ticket
-                    at the time of checking.
-                  </p>
-                  <p className="lg:w-3/4 text-justify">
-                    Please keep the e-ticket safely till the end of the journey.{" "}
-                  </p>
-                  <p className="lg:w-3/4 text-justify">
-                    {/* Please show the e-ticket at the time of checking. */}
-                  </p>
-                </section>
-                {/* footer */}
-                <footer
-                  className="footer border-t-2 border-gray-300 pt-5"
-                  style={{ textAlign: "center" }}
-                >
-                  {/* <ul className="justify-center">
+                  <footer
+                    className="footer border-t-2 border-gray-300 pt-5"
+                    style={{ textAlign: "center" }}
+                  >
+                    {/* <ul className="justify-center">
                     <li>
                       <span className="font-bold">Name :</span>{" "}
                       {loggedInUser?.first_name} {loggedInUser?.last_name}
@@ -256,10 +219,11 @@ function UserBooking() {
                       {loggedInUser?.phone_number}
                     </li>
                   </ul> */}
-                  In case of any emergency you can contact us at{" "}
-                  <b>1800 9999 9999</b> or email your queries at{" "}
-                  <b>skylinebookingportal@gmail.com</b>
-                </footer>
+                    In case of any emergency you can contact us at{" "}
+                    <b>1800 9999 9999</b> or email your queries at{" "}
+                    <b>skylinebookingportal@gmail.com</b>
+                  </footer>
+                </div>
               </div>
             </main>
           </div>

@@ -48,7 +48,6 @@ const ParseDate = function (date, time_required = false) {
 
     return return_date;
   } catch (e) {
-    console.log(e.toString());
   }
 };
 
@@ -57,7 +56,6 @@ const getYear = function (date) {
     let parse_date = date.split("T")[0].split("-");
     return parse_date[0];
   } catch (e) {
-    console.log(e.toString());
   }
 };
 

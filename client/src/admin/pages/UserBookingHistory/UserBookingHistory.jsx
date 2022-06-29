@@ -107,27 +107,19 @@ export default function UserBookingHistory() {
   const [allBookingRecords, setAllBookingRecords] = useState([]);
 
   const handlePanelChange = (panel, id) => (event, newExpanded) => {
-    // console.log(newExpanded);
-    // console.log("id : ", id);
     setUserId(id);
     setExpanded(newExpanded ? panel : false);
-    // console.log("panel changed");
   };
 
   function fetchBookingRecordsFromAdmin() {
-    // console.log("fetchBookingRecords from admin side called")
-    // console.log("called when expanded changed : ", userId);
     axios.get("/booking/record/userId/" + userId).then((response) => {
-      // console.log("response : ", response?.data?.data);
       setAllBookingRecords(response?.data?.data);
     });
   }
 
   useEffect(() => {
-    fetchBookingRecordsFromAdmin()
+    fetchBookingRecordsFromAdmin();
   }, [expanded]);
-
-  // console.log("all booking records : ", allBookingRecords);
 
   var completedBookingRecords = [];
 
@@ -153,20 +145,6 @@ export default function UserBookingHistory() {
     }
   }
 
-  // console.log(
-  //   "upcoming booking records from local variable : ",
-  //   upcomingBookingRecords,
-  //   " length : ",
-  //   upcomingBookingRecords.length
-  // );
-
-  // console.log(
-  //   "completed booking records from local variable : ",
-  //   completedBookingRecords,
-  //   " length : ",
-  //   completedBookingRecords.length
-  // );
-
   const theme = useTheme();
 
   const [value, setValue] = React.useState(0);
@@ -181,23 +159,14 @@ export default function UserBookingHistory() {
 
   const { data: allUsers, loading } = UseGet("/user/");
 
-  // if (!loading) {
-  //   console.log("all users : ", allUsers?.users?.rows);
-  // }
-
   useEffect(() => {
     axios.get("/user/").then((response) => {
-      // console.log("response from : ", response?.data?.users?.rows?.length);
       setUsers(response?.data?.users?.rows);
     });
   }, []);
 
-  // console.log("users : ", users);
-
   return (
     <>
-      {/* <Grid container style={{ margin: "2%" }}> */}
-
       {users.length === 0 ? (
         <></>
       ) : (
@@ -205,7 +174,6 @@ export default function UserBookingHistory() {
           <div className="m-5">
             {users.map((item, index = 1) => {
               index++;
-              // console.log("item : ", index, " ", item);
               return (
                 <>
                   <Accordion
@@ -216,12 +184,6 @@ export default function UserBookingHistory() {
                       aria-controls="panel1d-content"
                       id="panel1d-header"
                     >
-                      {/* <Typography
-                        fontSize="150%"
-                        sx={{ width: "20%", flexShrink: 0 }}
-                      >
-                        <b>User Id</b> : {item?.id}
-                      </Typography> */}
                       <Typography
                         fontSize="150%"
                         sx={{ width: "50%", flexShrink: 0 }}
@@ -331,7 +293,6 @@ export default function UserBookingHistory() {
                               direction="row"
                               alignItems="center"
                               justifyContent="center"
-                              // style={{ marginTop: "1%" }}
                             >
                               <Box
                                 justifyContent="center"
@@ -405,7 +366,9 @@ export default function UserBookingHistory() {
                                             <BookingDetailCard
                                               booking={item}
                                               status="upcoming"
-                                              fetchBookingRecordsFromAdmin={fetchBookingRecordsFromAdmin}
+                                              fetchBookingRecordsFromAdmin={
+                                                fetchBookingRecordsFromAdmin
+                                              }
                                             />
                                           </>
                                         ))}
@@ -436,7 +399,9 @@ export default function UserBookingHistory() {
                                             <BookingDetailCard
                                               booking={item}
                                               status="completed"
-                                              fetchBookingRecordsFromAdmin={fetchBookingRecordsFromAdmin}
+                                              fetchBookingRecordsFromAdmin={
+                                                fetchBookingRecordsFromAdmin
+                                              }
                                             />
                                           </>
                                         ))}
@@ -454,7 +419,9 @@ export default function UserBookingHistory() {
                                         <BookingDetailCard
                                           booking={e}
                                           status="all"
-                                          fetchBookingRecordsFromAdmin={fetchBookingRecordsFromAdmin}
+                                          fetchBookingRecordsFromAdmin={
+                                            fetchBookingRecordsFromAdmin
+                                          }
                                         />
                                       </>
                                     ))}

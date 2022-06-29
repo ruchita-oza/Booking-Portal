@@ -19,8 +19,6 @@ function AdminDashboard() {
     const getAdminCount = async () => {
       const result = await fetch(`/adminApi`);
       const getData = await result.json();
-      // setDetails({ yearlyLoss: getData.yearlyLoss[0].loss });
-      // console.log(getData.yearlyUser[0].users);
       setYearlyLoss(getData.YearlyLoss[0].loss);
       setYearlyProfit(getData.YearlyProfit[0].profit);
       setYearlyUsers(getData.yearlyUser[0].users);
@@ -64,11 +62,6 @@ function AdminDashboard() {
         {TopCardsInfo.map((info) => (
           <div className="col-lg-3 col-sm-6">
             <TopCards
-              // bg="border-danger text-danger"
-              // title="Refunds"
-              // subtitle="Refund given"
-              // earning="$1k"
-              // icon={faCoins}
               bg={info?.bg}
               title={info.title}
               subtitle={info?.subtitle}

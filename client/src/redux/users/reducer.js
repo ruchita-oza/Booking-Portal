@@ -33,7 +33,6 @@ const initialPassengerDetails = {
   transport: [],
 };
 export const authReducer = (state = initialState, action) => {
-  // console.log(action.type);
   switch (action.type) {
     case SET_LOGGEDIN_USER:
       return {
@@ -96,7 +95,6 @@ export const authReducer = (state = initialState, action) => {
 };
 
 export const passengerReducer = (state = initialPassengerDetails, action) => {
-  // console.log(action.type);
   switch (action.type) {
     case GET_PASSENGER_DETAILS_REQUEST:
       return {

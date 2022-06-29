@@ -95,7 +95,6 @@ async function checkExistsFlightScheduleAndReturnDetails(id) {
 
 const createBookingRecord = async (req, res, next) => {
   try {
-    // console.log("Creating booking record : ", req.body);
     const user_id = req.body.cust_id;
     const transportId = req.body.transport_id;
     const userStatus = await checkExistsUser(user_id);
@@ -118,8 +117,6 @@ const createBookingRecord = async (req, res, next) => {
           raw: true,
         });
 
-        // console.log("bus schedule detail : ", busScheduleDetail);
-
         const totalAvailableTicket =
           busScheduleDetail[0]?.total_available_seats;
 
@@ -131,23 +128,9 @@ const createBookingRecord = async (req, res, next) => {
           return next(createError(422, "Error ticket count cannot be zero"));
         }
 
-        // console.log(
-        //   "totalTicketCount : ",
-        //   totalTicketCount,
-        //   " totalAvailableTicket : ",
-        //   totalAvailableTicket
-        // );
-
         if (totalTicketCount > totalAvailableTicket) {
           return next(createError(422, "Error total ticket count"));
         }
-
-        // console.log(
-        //   "totalFare : ",
-        //   totalFare,
-        //   " totalCalculatedFare : ",
-        //   totalCalculatedFare
-        // );
 
         if (totalFare != totalCalculatedFare) {
           return next(createError(422, "Error in total fare"));
@@ -261,7 +244,6 @@ const createBookingRecord = async (req, res, next) => {
 
         const updatedTicketCount = totalAvailableTicket - totalTicketCount;
 
-        // console.log("req.body : ", req.body);
         const bookingRecord = await BookingRecords.create(req.body);
 
         await bookingRecord.save();
@@ -284,7 +266,6 @@ const createBookingRecord = async (req, res, next) => {
       return next(createError(500, "Error user does not exists"));
     }
   } catch (error) {
-    // console.log(error);
     return next(
       createError(500, "Error while creating booking record " + error)
     );
@@ -349,8 +330,6 @@ const updateBookingRecord = async (req, res, next) => {
 
           const totalAvailableSeats =
             trainScheduleDetail[0]?.total_available_seats;
-
-          // console.log("totalAvailableSeats : ", totalAvailableSeats);
 
           if (totalTicketCount > totalAvailableSeats) {
             return next(createError(422, "Error total ticket count"));

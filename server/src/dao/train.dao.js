@@ -20,7 +20,6 @@ TrainSchedule.belongsTo(City, {
 // City.belongsTo(TrainSchedule, { foreignKey: "destination" });
 
 const findTrainScheduleById = async (trainScheduleId) => {
-  // console.log("train");
   return TrainSchedule.findAll({
     where: { id: trainScheduleId },
     include: [
@@ -51,8 +50,6 @@ const findAllTrainSchedules = async ({
   skip,
   resultPerPage,
 }) => {
-  //console.log(ticketQuery);
- // console.log("object");
   const trainSchedules = await TrainSchedule.findAndCountAll({
     offset: skip,
     limit: resultPerPage,

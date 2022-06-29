@@ -46,8 +46,6 @@ const findAllBusSchedules = async ({
   skip,
   resultPerPage,
 }) => {
-  // console.log("at dao");
-  // console.log(queryCopy, priceQuery, timeQuery, ticketQuery);
   const busSchedules = await BusSchedule.findAndCountAll({
     limit: resultPerPage,
     offset: skip,
@@ -69,7 +67,6 @@ const findAllBusSchedules = async ({
       },
     ],
   });
-  // console.log(busSchedules.rows.length)
   return busSchedules;
 };
 
