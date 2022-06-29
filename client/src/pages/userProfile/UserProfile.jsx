@@ -35,7 +35,6 @@ import UserBooking from "./UserBooking";
 import BookingDetailCard from "./BookingDetailCard";
 import NoRecord from "./NoRecord";
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -121,21 +120,19 @@ function UserProfile() {
     bookingRecords: data1,
   } = useSelector(selectUser);
 
-  function fetchBookingRecords(){
-    // console.log("fetchBookingRecords called")
-    console.log("In fetchBookingRecords data1?.data : ", data1?.data)
+  function fetchBookingRecords() {
     setUserDetails(data);
     // setBookingDetails(data1?.data);
     if (data) {
       dispatch(
         fetchUserBookingRecordsDetailThunkAction(data?.id, onError, onSuccess)
-        );
-      }
-    setBookingDetails(data1?.data)
+      );
+    }
+    setBookingDetails(data1?.data);
   }
 
   useEffect(() => {
-    fetchBookingRecords()
+    fetchBookingRecords();
   }, [dispatch, data]);
 
   var allBookingRecords = [];
@@ -164,7 +161,7 @@ function UserProfile() {
       }
     }
   }
-  
+
   useEffect(() => {
     setBookingDetails(data1?.data);
     setAllCompletedBookingRecords(completedBookingRecords);
@@ -511,7 +508,11 @@ function UserProfile() {
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       {allCompletedBookingRecords.map((e) => (
                         <>
-                          <BookingDetailCard booking={e} status="complete" fetchBookingRecords={fetchBookingRecords} />{" "}
+                          <BookingDetailCard
+                            booking={e}
+                            status="complete"
+                            fetchBookingRecords={fetchBookingRecords}
+                          />{" "}
                           <br />
                         </>
                       ))}
@@ -520,8 +521,11 @@ function UserProfile() {
                   <TabPanel value={value} index={2} dir={theme.direction}>
                     {bookingDetails.map((e) => (
                       <>
-                        {/* {console.log("from all booking records : ", e)} */}
-                        <BookingDetailCard booking={e} status="all" fetchBookingRecords={fetchBookingRecords} />
+                        <BookingDetailCard
+                          booking={e}
+                          status="all"
+                          fetchBookingRecords={fetchBookingRecords}
+                        />
                         <br />
                       </>
                     ))}

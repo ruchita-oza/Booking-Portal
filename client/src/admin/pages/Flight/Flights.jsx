@@ -39,7 +39,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -60,9 +59,7 @@ function Row(props) {
       `/flight/schedule?flight_id=${id}&page=${currentPage}`
     );
     const getData = await result.json();
-    console.log(getData.flightScheduleWithflights.rows);
     setFlightSchedule(getData);
-    // console.log(getFlightSchedule);
   };
 
   const handleArrowOpen = async (id) => {
@@ -82,7 +79,6 @@ function Row(props) {
   }
 
   const handleDelete = async (id) => {
-    // if (window.confirm(`Do you want to delete ${id}`)) {
     try {
       const res = await fetch(
         `/flight/details/deleteFlightDetailAndSchedule/${id}`,
@@ -93,7 +89,6 @@ function Row(props) {
         throw new Error(data.message);
       } else {
         toast.success(`${id} disabled successfully`);
-        // window.location.reload();
         props.FetchFlight();
         FetchFlightSchedule(id);
       }
@@ -101,11 +96,9 @@ function Row(props) {
       toast.error(err);
     }
     handleClose();
-    // }
   };
 
   const handleActive = async (id) => {
-    // if (window.confirm(`Do you want to Active ${id}`)) {
     try {
       const input = { deletedAt: null };
       const res = await fetch(`/adminApi/flights/${id}`, {
@@ -120,7 +113,6 @@ function Row(props) {
         throw new Error(data.message);
       } else {
         toast.success(`${id} enabled successfully`);
-        // window.location.reload();
         props.FetchFlight();
         FetchFlightSchedule(id);
       }
@@ -128,7 +120,6 @@ function Row(props) {
       toast.error(err);
     }
     handleClose();
-    // }
   };
 
   return (
@@ -145,7 +136,6 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        {/* {console.log()} */}
         <TableCell align="center">{row?.flight_name}</TableCell>
         <TableCell align="center">{row?.id}</TableCell>
         <TableCell align="center">{row?.flight_type}</TableCell>
@@ -176,7 +166,6 @@ function Row(props) {
               <Tooltip
                 title="Disable flight details and schedules"
                 placement="right"
-                // classes={classes}
               >
                 <button
                   className="btn btn-link btn-sm btn-rounded"
@@ -184,10 +173,8 @@ function Row(props) {
                     textDecoration: "none",
                   }}
                   disabled={row && row.deletedAt === null ? false : true}
-                  // onClick={() => handleDelete(row.id)}
                   onClick={handleOpen}
                 >
-                  {/* <DeleteForeverIcon style={{ color: "#cc3300" }} /> */}
                   <ToggleOffIcon style={{ color: "green", fontSize: "30px" }} />
                 </button>
               </Tooltip>
@@ -207,8 +194,6 @@ function Row(props) {
                     <Typography
                       style={{ color: "#616161" }}
                       id="modal-modal-title"
-                      // variant="h3"
-                      // component="h1"
                     >
                       Are, you sure you want to disable this flight and all its
                       schedules ?
@@ -245,7 +230,6 @@ function Row(props) {
               <Tooltip
                 title="Enable flight details and schedules"
                 placement="right"
-                // classes={classes}
               >
                 <button
                   className="btn btn-link btn-sm btn-rounded"
@@ -253,10 +237,8 @@ function Row(props) {
                     textDecoration: "none",
                   }}
                   disabled={row && row.deletedAt === null ? true : false}
-                  // onClick={() => handleActive(row.id)}
                   onClick={handleOpen}
                 >
-                  {/* <AddCircleIcon style={{ color: "#ffcc00" }} /> */}
                   <ToggleOnIcon
                     style={{ color: "#cc3300", fontSize: "30px" }}
                   />
@@ -278,8 +260,6 @@ function Row(props) {
                     <Typography
                       style={{ color: "#616161" }}
                       id="modal-modal-title"
-                      // variant="h3"
-                      // component="h1"
                     >
                       Are, you sure you want to enable this flight and all its
                       schedules ?
@@ -393,9 +373,6 @@ function Row(props) {
                 </Table>
                 {getFlightSchedule && (
                   <div className="paginationBox pull-right">
-                    {console.log(
-                      getFlightSchedule.flightScheduleWithflights.count
-                    )}
                     <Pagination
                       activePage={currentPage}
                       itemsCountPerPage={getFlightSchedule.resultPerPage}
@@ -460,12 +437,8 @@ const Flights = () => {
         displayRows: "OF",
       },
     },
-    onChangePage(currentPage) {
-      // console.log({ currentPage });
-    },
-    onChangeRowsPerPage(numberOfRows) {
-      // console.log({ numberOfRows });
-    },
+    onChangePage(currentPage) {},
+    onChangeRowsPerPage(numberOfRows) {},
   };
 
   return (
@@ -480,7 +453,6 @@ const Flights = () => {
               <TableRow
                 sx={{
                   backgroundColor: "#003580",
-                  // borderBottom: "2px solid black",
                   "& th": {
                     fontSize: "1rem",
                     color: "white",

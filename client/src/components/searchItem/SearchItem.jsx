@@ -43,8 +43,6 @@ const SearchItem = ({ data, personCount }) => {
     }
   };
   if (data.departure_time) {
-    // var date = DateTime.Parse(data.departure_time);
-    // console.log(data.departure_time);
     var dept_date = `${
       data?.departure_time?.split("T")[0]?.split("-")[2]
     } ${getMonth(data?.departure_time?.split("T")[0]?.split("-")[1])}`;
@@ -57,7 +55,7 @@ const SearchItem = ({ data, personCount }) => {
     var arrival_time = `${
       data?.arrival_time?.split("T")[1]?.split(".")[0]?.split(":")[0]
     }:${data?.arrival_time?.split("T")[1]?.split(".")[0]?.split(":")[1]}`;
-  } // console.log(dept_time);
+  }
   const handleClick = () => {
     if (loggedInUser) {
       if (window.location.pathname === "/buses")
@@ -115,7 +113,6 @@ const SearchItem = ({ data, personCount }) => {
                   window.location.pathname.split("/")[1] === "flight"
                 ? data?.flight_id
                 : data.train_id}
-              {/* {data?.bus_id} */}
             </span>
             {" - "}
             <span>
@@ -129,13 +126,7 @@ const SearchItem = ({ data, personCount }) => {
                 : data.train_detail.train_type}
             </span>
           </span>
-          {/* <span className="siDistance"> </span> */}
-          {/* <span className="siTaxiOp">View Fares</span> */}
           <span className="siSubtitle">
-            {/* <FontAwesomeIcon
-              icon={faLocationDot}
-              style={{ marginRight: "10px" }}
-            ></FontAwesomeIcon> */}
             <span
               className="siFeatures"
               style={{
@@ -149,7 +140,6 @@ const SearchItem = ({ data, personCount }) => {
                 {window.location.pathname.split("/")[2] === "book"
                   ? data?.source_name
                   : data?.source_name?.city_name}
-                {/* {data?.source_name?.city_name} */}
               </span>
               <span style={{ flex: 1, marginLeft: "15px" }}>
                 {window.location.pathname.split("/")[2] === "book"

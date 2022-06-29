@@ -109,7 +109,6 @@ function BookingPage({ match }) {
       //   Accept: "application/json",
       //   "Content-Type": "application/json",
       // };
-      // console.log(booking);
       // const response = await axios.post(`/booking/record`, booking, {
       //   headers,
       // });
@@ -136,11 +135,10 @@ function BookingPage({ match }) {
         throw new Error(`success false with error ${data.message}`);
       }
 
-      // console.log("res:  ", data);
       return data;
     } catch (error) {
       toast.error(error);
-      // console.log(error.toString());
+
       return error;
     }
   };
@@ -174,7 +172,6 @@ function BookingPage({ match }) {
       return response;
     } catch (error) {
       toast.error(error);
-      // console.log(error.toString());
       return error;
     }
   };
@@ -195,16 +192,13 @@ function BookingPage({ match }) {
           : transport_type === "bus"
           ? busData?.departure_time
           : trainData?.departure_time;
-      // console.log("id : ", loggedInUser.id);
       setBooking({
         ...booking,
         cust_id: loggedInUser.id,
         journey_date: journey_date,
         total_fare: total_fare,
       });
-      // console.log("before call");
       const bookingResult = await addBookingRecord();
-      // console.log("after call", bookingResult);
       if (bookingResult.success === true) {
         passengerDetails.forEach(async (person) => {
           const passengerResult = await addPassengerDetails(
@@ -214,16 +208,12 @@ function BookingPage({ match }) {
         });
         toast.success("booking confirmed");
         navigate("/");
-        // console.log("bookingResult");
       } else {
         toast.error("in else part");
       }
-      // console.log("booking details :", booking);
-      // console.log("person details");
     }
   };
   React.useEffect(() => {
-    // console.log(transport_type);
     switch (transport_type) {
       case "flight":
         dispatch(getFlightScheduleById(transport_id));

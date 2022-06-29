@@ -15,7 +15,6 @@ const countAdminDetails = async (req, res, next) => {
     const lossBooking = await sequelize.query(
       'SELECT SUM(total_fare) as loss from booking_records WHERE YEAR(journey_date) = YEAR(CURRENT_DATE) AND booking_status = "cancel"'
     );
-    // console.log(ProfitBooking[0]["profit"]);
     const yearlyUser = await sequelize.query(
       "SELECT COUNT(*) as users FROM `users` WHERE deletedAt IS NULL"
     );
@@ -71,7 +70,6 @@ const userCountPerMonth = async (req, res, next) => {
     SUM(IF(MONTH(createdAt) = 12, 1, 0)) AS 'Dec'
     FROM users `);
 
-    // console.log(parseInt(data.Jan));
     data = userCountPerMonth[0][0];
     const monthlyUser = [
       parseInt(data.Jan),
@@ -125,7 +123,6 @@ const adminallBuses = async (req, res, next) => {
       paranoid: false,
       // include: [Other],
     });
-    // console.log(apiFeatures.)
     res.status(200).json({ buses });
   } catch (err) {
     next(err);
@@ -138,7 +135,6 @@ const adminallFlights = async (req, res, next) => {
       paranoid: false,
       // include: [Other],
     });
-    // console.log(apiFeatures.)
     res.status(200).json({ flights });
   } catch (err) {
     next(err);
@@ -151,7 +147,6 @@ const adminallTrains = async (req, res, next) => {
       paranoid: false,
       // include: [Other],
     });
-    // console.log(apiFeatures.)
     res.status(200).json({ trains });
   } catch (err) {
     next(err);
@@ -160,20 +155,17 @@ const adminallTrains = async (req, res, next) => {
 
 const activeBusWithSchedule = async (req, res, next) => {
   try {
-    // console.log(req.params.id);
     const busNumber = req.params.id || KT06XC1903;
     const status = await Bus.findOne({
       where: { id: busNumber },
       paranoid: false,
     });
-    // console.log(status);
     if (status) {
       let bus = await Bus.update(req.body, {
         where: { id: busNumber },
         paranoid: false,
       });
       bus = await Bus.findOne({ where: { id: busNumber } });
-      // console.log(bus);
       if (!bus) return next(createError(422, "Error while Activing bus"));
       const findSchedule = await BusSchedule.findAll({
         where: { bus_id: busNumber },
@@ -206,20 +198,17 @@ const activeBusWithSchedule = async (req, res, next) => {
 
 const activeFlightWithSchedule = async (req, res, next) => {
   try {
-    // console.log(req.body);
     const flightNumber = req.params.id;
     const status = await Flight.findOne({
       where: { id: flightNumber },
       paranoid: false,
     });
-    // console.log(status);
     if (status) {
       let flight = await Flight.update(req.body, {
         where: { id: flightNumber },
         paranoid: false,
       });
       flight = await Flight.findOne({ where: { id: flightNumber } });
-      // console.log(flight);
       if (!flight) return next(createError(422, "Error while Activing flight"));
       const findSchedule = await FlightSchedule.findAll({
         where: { flight_id: flightNumber },
@@ -252,20 +241,17 @@ const activeFlightWithSchedule = async (req, res, next) => {
 
 const activeTrainWithSchedule = async (req, res, next) => {
   try {
-    // console.log(req.params.id);
     const trainNumber = req.params.id;
     const status = await Train.findOne({
       where: { id: trainNumber },
       paranoid: false,
     });
-    // console.log(status);
     if (status) {
       let train = await Train.update(req.body, {
         where: { id: trainNumber },
         paranoid: false,
       });
       train = await Train.findOne({ where: { id: trainNumber } });
-      // console.log(train);
       if (!train) return next(createError(422, "Error while Activing train"));
       const findSchedule = await TrainSchedule.findAll({
         where: { train_id: trainNumber },

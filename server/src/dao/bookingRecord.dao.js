@@ -114,14 +114,11 @@ const findBookingRecordsByUserId = async (userId) => {
     ],
   });
 
-  // console.log(bookingRecords1);
-
   let allBookingRecords = [];
 
   flightBookingRecords = JSON.parse(JSON.stringify(flightBookingRecords));
 
   flightBookingRecords.forEach((element) => {
-    // console.log(element);
     allBookingRecords.push(element);
   });
 
@@ -152,10 +149,6 @@ const findBookingRecordsByUserId = async (userId) => {
   //     busData.push(element);
   //   }
   // });
-
-  //   console.log("flight booking records : " + JSON.stringify(flightData));
-  //   console.log("train booking records : " + trainData);
-  //   console.log("bus booking records : " + busData);
 
   return allBookingRecords;
 };

@@ -18,12 +18,10 @@ const initialState = {
 const initialTrainState = { isLoading: false, train: [], error: null };
 
 export const trainScheduleReducer = (state = initialState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case ALL_TRAINSCHEDULE_REQUEST:
       return { ...state, isLoading: true };
     case ALL_TRAINSCHEDULE_SUCCESS:
-      // console.log(action.payload);
       return {
         ...state,
         isLoading: false,

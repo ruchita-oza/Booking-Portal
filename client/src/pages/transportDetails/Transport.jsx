@@ -33,7 +33,6 @@ function Transport() {
   const transportId = transportDetails?.id;
 
   const todaysDate = new Date();
-  // console.log("transport id : ", transportId);
 
   let allScheduleData = [];
 
@@ -61,7 +60,6 @@ function Transport() {
 
   function handleDestinationData(id, destinationData) {
     // const selectedSchedule = components.find((item) => item.id == id);
-    // // console.log("selected schedule : ", selectedSchedule.id);
     // selectedSchedule.destination = destinationData;
     // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
@@ -75,7 +73,6 @@ function Transport() {
 
   function handleDepartureTimeData(id, departureTimeData) {
     // const selectedSchedule = components.find((item) => item.id == id);
-    // // console.log("selected schedule : ", selectedSchedule.id);
     // selectedSchedule.departure_time = departureTimeData;
     // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
@@ -89,7 +86,6 @@ function Transport() {
 
   function handleArrivalTimeData(id, arrivalTimeData) {
     // const selectedSchedule = components.find((item) => item.id == id);
-    // // console.log("selected schedule : ", selectedSchedule.id);
     // selectedSchedule.arrival_time = arrivalTimeData;
     // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
@@ -103,7 +99,6 @@ function Transport() {
 
   function handleTotalAvailableSeats(id, totalAvailableSeatsData) {
     // const selectedSchedule = components.find((item) => item.id == id);
-    // // console.log("selected schedule : ", selectedSchedule.id);
     // selectedSchedule.total_available_seats = totalAvailableSeatsData;
     // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
@@ -117,7 +112,6 @@ function Transport() {
 
   function handlePricePerSeat(id, pricePerSeatData) {
     // const selectedSchedule = components.find((item) => item.id == id);
-    // // console.log("selected schedule : ", selectedSchedule.id);
     // selectedSchedule.price_per_seat = pricePerSeatData;
     // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
@@ -135,8 +129,6 @@ function Transport() {
   //   allScheduleData.push(scheduleData);
   // }, [scheduleData]);
 
-  // console.log("all schedule data : ", allScheduleData);
-
   function addComponent(data) {
     setComponents([
       ...components,
@@ -144,10 +136,7 @@ function Transport() {
     ]);
   }
 
-  // console.log("component", components);
-
   function deleteComponent(id) {
-    // console.log("delete component id : ", id);
     setComponents((previousData) =>
       previousData.filter((element) => element.id !== id)
     );
@@ -203,8 +192,6 @@ function Transport() {
           );
         }
       }
-
-      // console.log("schedule data : ", scheduleData);
     }
 
     if (transportMode == null) {
@@ -221,7 +208,6 @@ function Transport() {
         "post"
       );
       if (response?.data?.status) {
-        // console.log("train schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.success(response?.data?.data);
           document.getElementById("add-transport-details").reset();
@@ -241,7 +227,6 @@ function Transport() {
         // document.getElementById("add-transport-details").reset();
       } else {
         // toast.error(response?.response?.data?.message);
-        // console.log("train schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
           // document.getElementById("add-transport-details").reset();
@@ -252,7 +237,6 @@ function Transport() {
             "post"
           );
           if (response1?.data?.status) {
-            // console.log("transportDetails?.id : ", transportDetails?.id);
             toast.success(
               response1?.data?.data +
                 " for train number : " +
@@ -261,10 +245,6 @@ function Transport() {
             setComponents([]);
             document.getElementById("add-transport-details").reset();
           } else {
-            // console.log(
-            //   "response1?.response1?.data?.message : ",
-            //   response1?.response?.data?.message
-            // );
             toast.error(response1?.response?.data?.message);
           }
         }
@@ -276,9 +256,7 @@ function Transport() {
         bus_type: transportDetails?.type,
       };
       const response = await UsePost("/bus/details", busRequestBody, "post");
-      // console.log("bus response  : ", response);
       if (response?.data?.status) {
-        // console.log("bus schedule data : ", scheduleData);
         if (components.length == 0) {
           toast.success(response?.data?.data);
           document.getElementById("add-transport-details").reset();
@@ -297,7 +275,6 @@ function Transport() {
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        // console.log("bus schedule data : ", scheduleData);
         // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
@@ -317,10 +294,6 @@ function Transport() {
             setComponents([]);
             document.getElementById("add-transport-details").reset();
           } else {
-            // console.log(
-            //   "response1?.response1?.data?.message : ",
-            //   response1?.response?.data?.message
-            // );
             toast.error(response1?.response?.data?.message);
           }
         }
@@ -336,10 +309,7 @@ function Transport() {
         flightRequestBody,
         "post"
       );
-      // console.log("flight response  : ", response?.data?.status);
       if (response?.data?.status) {
-        // console.log("flight schedule data : ", scheduleData);
-        // console.log(scheduleData, components.length, "check here");
         if (components.length == 0) {
           toast.success(response?.data?.data);
           document.getElementById("add-transport-details").reset();
@@ -358,7 +328,6 @@ function Transport() {
         // toast.success(response?.data?.data);
         // document.getElementById("add-transport-details").reset();
       } else {
-        // console.log("flight schedule data : ", scheduleData);
         // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
@@ -369,7 +338,6 @@ function Transport() {
             scheduleData,
             "post"
           );
-          // console.log("response1 : ", response1);
           if (response1?.data?.status) {
             toast.success(
               response1?.data?.data +
@@ -379,10 +347,6 @@ function Transport() {
             setComponents([]);
             document.getElementById("add-transport-details").reset();
           } else {
-            // console.log(
-            //   "response1?.response1?.data?.message : ",
-            //   response1?.response?.data?.message
-            // );
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
               toast.error(response1?.response?.data?.message);
@@ -417,7 +381,6 @@ function Transport() {
                 value={transportMode}
               >
                 {types.map((option) => (
-                  // console.log(option.value)
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>

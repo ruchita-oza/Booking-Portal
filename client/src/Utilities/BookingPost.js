@@ -10,7 +10,6 @@ const BookingPost = async (url, data, method = "post") => {
 
     return response;
   } catch (error) {
-    console.log(error.toString());
     return error;
   }
 };

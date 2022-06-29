@@ -53,7 +53,6 @@ function Register() {
       toast.success("Registration successful");
       navigate("/auth/login");
     } else {
-      // console.log(data.success === false);
       if (data.success === false) toast.error(data.message);
       else toast.error("unknown error");
     }
@@ -90,8 +89,6 @@ function Register() {
                   >
                     {({ setFieldValue, values, errors, status, touched }) => (
                       <Form>
-                        {/* {" "} */}
-                        {/* {console.log(values)} */}
                         <div className="row w-100 mb-3">
                           <label
                             htmlFor="first_name"

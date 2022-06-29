@@ -79,7 +79,6 @@ const createTrainSchedule = async (req, res, next) => {
     } else if (pricePerSeat < 0) {
       return next(createError(422, "Error price per seat cannot be negative"));
     } else {
-     // console.log(req.body);
       const train = await TrainSchedule.create(req.body);
       await train.save();
       return res.json({
@@ -197,7 +196,6 @@ const deleteTrainSchedule = async (req, res, next) => {
 //     //     element.destination_name[0]?.city_name;
 //     //   data.push(train_schedule_data);
 //     // });
-//     // console.log(data);
 //     return res.json({ data: trainschedules, status: true });
 //   } catch (error) {
 //     return next(
@@ -215,7 +213,6 @@ const viewTrainScheduleById = async (req, res, next) => {
       //   where: { id: trainScheduleId },
       // });
       const trainschedule = await findTrainScheduleById(trainScheduleId);
-      // console.log("train schedule: " + trainschedule);
       // let data = [];
       // trainschedule.forEach(element => {
       //   let train_schedule_data = [...element];
@@ -224,7 +221,6 @@ const viewTrainScheduleById = async (req, res, next) => {
       //   data.push(train_schedule_data)
       // });
       let train_schedule_data = JSON.parse(JSON.stringify(trainschedule[0]));
-      // console.log(train_schedule_data);
       train_schedule_data.source_name =
         train_schedule_data.source_name?.city_name;
       train_schedule_data.destination_name =
@@ -276,8 +272,6 @@ const createTrainScheduleFromArray = async (req, res, next) => {
     if (scheduleData.length == 0) {
       return next(createError(422, "Error no train schedule data entered"));
     }
-
-    // console.log("train schedule data : ", scheduleData)
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {
@@ -376,8 +370,6 @@ const updateTrainScheduleFromArray = async (req, res, next) => {
     if (scheduleData.length == 0) {
       return next(createError(422, "Error no train schedule data entered"));
     }
-
-    // console.log("train schedule data : ", scheduleData)
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {

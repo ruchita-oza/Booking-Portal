@@ -34,8 +34,6 @@ class Apifeatures {
         ],
       },
     });
-    // console.log(this.timeFilter);
-    // console.log(this.query);
     return this;
   }
   priceFilter() {
@@ -44,18 +42,12 @@ class Apifeatures {
     this.priceQuery = {
       price_per_seat: { [Op.between]: [minPrice, maxPrice] },
     };
-    //console.log("price query");
-    // console.log(this.priceQuery);
     return this;
   }
   timeFilter() {
-    console.log(this.queryStr);
-    console.log("at time query");
-
     if (this.queryStr.fromDate && this.queryStr.toDate) {
       const fromDate = this.queryStr.fromDate;
       const toDate = this.queryStr.toDate;
-      console.log(fromDate, toDate);
       this.timeQuery = {
         [Op.and]: [
           (this.timeQuery = Sequelize.where(
@@ -72,7 +64,6 @@ class Apifeatures {
       };
     } else if (this.queryStr.fromDate) {
       const fromDate = this.queryStr.fromDate;
-      // console.log(fromDate, toDate);
       this.timeQuery = {
         [Op.and]: [
           (this.timeQuery = Sequelize.where(

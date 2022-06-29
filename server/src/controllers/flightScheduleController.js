@@ -12,9 +12,7 @@ const {
 } = require("../dao/flight.dao");
 
 async function checkExistsFlight(id) {
-  // console.log(id);
   const flights = await Flight.findAll({ where: { id: id } });
-  // console.log(flights);
   return flights.length > 0 ? true : false;
 }
 
@@ -88,7 +86,6 @@ const createFlightSchedule = async (req, res, next) => {
     if (price_per_seat == 0) {
       return next(createError(422, "Error price per seat cannot be zero"));
     }
-    // console.log(req.body);
     const flightSchedule = await FlightSchedule.create(req.body);
     const data = await flightSchedule.save();
     return res.json({
@@ -157,7 +154,6 @@ const updateFlightSchedule = async (req, res, next) => {
     if (pricePerSeat == 0) {
       return next(createError(422, "Error price per seat cannot be zero"));
     }
-    // console.log("req.body : " + req.body);
     const flightSchedule = await FlightSchedule.update(req.body, {
       where: { id: flightScheduleId },
     });
@@ -227,8 +223,6 @@ const getAllFlightSchedules = async (req, res, next) => {
       .pagination(resultPerPage)
       .filter();
 
-    // console.log("at flight schedule");
-    // console.log(apiFeatures.priceQuery);
     let flightScheduleWithflights = await findAllFlightSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
@@ -251,7 +245,6 @@ const getAllFlightSchedules = async (req, res, next) => {
 
 const getFlightSchedules = async (req, res, next) => {
   try {
-    // console.log(req.query);
     const apiFeatures = new Apifeatures(FlightSchedule, req.query)
       .priceFilter()
       .filter();
@@ -271,8 +264,6 @@ const createFlightScheduleFromArray = async (req, res, next) => {
     if (scheduleData.length == 0) {
       return next(createError(422, "Error no flight schedule data entered"));
     }
-
-    //console.log("schedule data : ", scheduleData);
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {
@@ -373,8 +364,6 @@ const updateFlightScheduleFromArray = async (req, res, next) => {
     if (scheduleData.length == 0) {
       return next(createError(422, "Error no flight schedule data entered"));
     }
-
-    // console.log("schedule data : ", scheduleData);
 
     for (let i = 0; i < scheduleData.length; i++) {
       try {

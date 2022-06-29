@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import React, { useState, useEffect } from "react";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import "./header.css";
 import { useNavigate, Link } from "react-router-dom";
 import { selectUser } from "../../redux/users/selectors";
@@ -27,12 +27,6 @@ const Header = ({
   const [openDate, setOpenDate] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // useEffect(() => {
-  //   document.addEventListener("mousedown" , () => {
-  //     setIsOpen(false);
-  //   });
-  // });
-
   const [date, setDate] = useState([
     {
       startDate: new Date(),
@@ -48,7 +42,6 @@ const Header = ({
   });
   const navigate = useNavigate();
 
-  // console.log(props.heading);
   const handleOption = (name, operation) => {
     setOptions((prev) => {
       return {
@@ -76,11 +69,6 @@ const Header = ({
           <>
             <h1 className="headerTitle pl-5">{heading}</h1>
             <p className="headerDesc pl-5">{description}</p>
-            {/* {!loggedInUser && (
-              <Link to="/auth/login" className="pl-5">
-                <button className="headerBtn"> Sign in / Register </button>
-              </Link>
-            )} */}
 
             <div className="headerSearch">
               <div className="headerSearchItem">
@@ -102,10 +90,6 @@ const Header = ({
                   value={destination}
                 />
               </div>
-
-              {/* search: calendar */}
-
-              {/* <!-- Button trigger modal --> */}
               <button
                 type="button"
                 className="btn btn-text"
@@ -159,9 +143,6 @@ const Header = ({
                   </div>
                 </div>
               </div>
-              {/* end search: calendar */}
-
-              {/* search: passengers */}
               <button
                 type="button"
                 className="btn btn-text"
@@ -231,7 +212,6 @@ const Header = ({
                   </div>
                 </div>
               </div>
-              {/* end search: passengers */}
 
               <div className="headerSearchItem">
                 <button className="headerBtn" onClick={handleSearch}>

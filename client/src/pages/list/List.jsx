@@ -70,9 +70,7 @@ const List = () => {
   //       : location.pathname === "/trains"
   //       ? trainFilterCount
   //       : flightFilterCount;
-  //   console.log(filteredPerCount);
   // };
-  // console.log(filteredPerCount);
   const isLoading = isFlightLoaded || isTrainLoaded || isBusLoaded;
   const location = useLocation();
   // const [filteredPerCount, SetFilteredPerCount] = useState(null);
@@ -101,7 +99,6 @@ const List = () => {
   const [resultsFound, SetResultsFound] = useState(true);
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
-    // console.log(currentPage);
   };
   React.useEffect(() => {
     window.addEventListener("load", () => {
@@ -191,6 +188,7 @@ const List = () => {
     }
     // SetfilteredPerCount();
   };
+
   useEffect(() => {
     let fromDate = convertDate(date[0].startDate);
     let toDate = convertDate(date[0].endDate);
@@ -257,6 +255,7 @@ const List = () => {
   const handleSearch = () => {
     fetchData();
   };
+
   return (
     <>
       <motion.div
@@ -272,11 +271,16 @@ const List = () => {
               <div className="lsItem">
                 <label>Source</label>
                 <input
+                  id="sourceCityInput"
                   placeholder="&#xF002; Enter Your Source"
                   className="lsSearchInput"
                   type="text"
                   value={source}
-                  style={{ fontFamily: "FontAwesome" }}
+                  style={{
+                    fontFamily: "FontAwesome",
+                    padding: "5%",
+                    textAlign: "left",
+                  }}
                   onChange={(e) => {
                     SetSource(e.target.value);
                   }}
@@ -285,7 +289,12 @@ const List = () => {
               <div className="lsItem">
                 <label>Destination</label>
                 <input
-                  style={{ fontFamily: "FontAwesome" }}
+                  id="destinationCityInput"
+                  style={{
+                    fontFamily: "FontAwesome",
+                    paddingLeft: "5%",
+                    textAlign: "left",
+                  }}
                   placeholder="&#xF002; Enter Your Destination"
                   type="text"
                   value={destination}
@@ -295,8 +304,10 @@ const List = () => {
                 ></input>
               </div>
               <div className="lsItem">
-                <label>Check-in Date</label>
+                <label>Select Journey Date</label>
                 <span
+                  id="dateInput"
+                  style={{ textAlign: "left", padding: "5%" }}
                   onClick={() => setOpenDate(!openDate)}
                   onFocus={() => setOpenDate(!openDate)}
                   onBlur={() => setOpenDate(!openDate)}
@@ -312,7 +323,7 @@ const List = () => {
                   />
                 )}
                 <div className="lsItem">
-                  <label className="mt-3 mb-3">Options</label>
+                  <label className="mt-3 mb-3">Select Price Range</label>
                   <div className="lsOptions">
                     <div className="lsOptionItem mt-3">
                       <div className={classes.root}>
@@ -337,7 +348,9 @@ const List = () => {
                       </div>
                     </div>
                     <div className="lsOptionItem">
-                      <span className="lsOptionText">person</span>
+                      <span className="lsOptionText" id="numberofpersonslabel">
+                        Enter number of persons travelling
+                      </span>
                       <input
                         style={{ fontFamily: "FontAwesome" }}
                         type="number"
@@ -366,7 +379,6 @@ const List = () => {
                     <ResultNotFoundPage />
                   ) : (
                     <>
-                      {/* {console.log(filteredPerCount)} */}
                       {window.location.pathname === "/flights" &&
                         flights.rows &&
                         flights.rows.map((flight) => (

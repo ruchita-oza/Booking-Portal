@@ -45,9 +45,7 @@ export const getBusSchedules =
   ) =>
   async (dispatch) => {
     try {
-      // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
       dispatch(fetchAllBusScheduleRequest());
-      // console.log(setResult);
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
@@ -161,7 +159,6 @@ export const getBusSchedules =
           fromDate
         );
         if (data) {
-          // console.log(data);
           if (data.busScheduleWithBuses.count === 0) setResult(false);
           dispatch(fetchAllBusScheduleSuccess(data));
           return;
@@ -170,7 +167,6 @@ export const getBusSchedules =
         }
       }
     } catch (error) {
-      // console.log(error);
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllBusScheduleFail(error));
@@ -188,11 +184,9 @@ export const getBusScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_BUSSCHEDULE_REQUEST });
     const data = await getBusWithId(id);
     if (data) {
-      // console.log(data);
       dispatch({ type: GET_BUSSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    // console.log(error);
     dispatch({ type: GET_BUSSCHEDULE_FAIL, payload: error });
   }
 };
@@ -202,11 +196,9 @@ export const getAllBusSchedule = () => async (dispatch) => {
     dispatch({ type: ALL_BUSSCHEDULE_REQUEST });
     const data = await getAllBusSchedule();
     if (data) {
-      // console.log(data);
       dispatch({ type: ALL_BUSSCHEDULE_SUCESS, payload: data });
     }
   } catch (error) {
-    // console.log(error);
     dispatch({ type: ALL_BUSSCHEDULE_FAIL, payload: error });
   }
 };

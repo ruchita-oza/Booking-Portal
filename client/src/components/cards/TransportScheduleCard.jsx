@@ -31,46 +31,11 @@ function TransportScheduleCard({
   handleTotalAvailableSeats,
   handlePricePerSeat,
 }) {
-  // console.log("data : ", data);
-  // const transportId = transportDetails?.id;
-  // const todaysDate = new Date();
-  // // console.log("transport id : ", transportId);
-
-  // let allScheduleData = [];
-
-  // const [scheduleData, setScheduleData] = useState({
-  //   id: transportId,
-  //   source: "",
-  //   destination: "",
-  //   departure_time: todaysDate,
-  //   arrival_time: todaysDate,
-  //   total_available_seats: "",
-  //   price_per_seat: "",
-  // });
-
-  // // console.log("schedule data : ", scheduleData);
-
-  // allScheduleData.push(scheduleData);
-
-  // console.log("all schedule data : ", allScheduleData);
-
-  // const [value, setValue] = useState(todaysDate);
-
-  // const handleArrivalTimeChange = (newValue) => {
-  //   setValue(newValue);
-  // };
-
-  // const handleDepartureTimeChange = (newValue) => {
-  //   setValue(newValue);
-  // };
-
   const { data: requiredCities, loading } = UseGet("/city/");
-  // console.log("loading : ", loading);
 
   let cities = [];
 
   if (!loading) {
-    // console.log("required cities : ", requiredCities.length);
     for (let i = 0; i < requiredCities.length; i++) {
       let cityObject = {};
       cityObject["value"] = requiredCities[i]?.id;
@@ -78,8 +43,6 @@ function TransportScheduleCard({
       cities.push(cityObject);
     }
   }
-
-  // console.log("cities : ", cities);
 
   const ITEM_HEIGHT = 35;
   const ITEM_PADDING_TOP = 8;
@@ -101,17 +64,7 @@ function TransportScheduleCard({
         }}
       >
         <CardContent>
-          {/* <Box> */}
-          {/* <Grid
-            //   container
-            //   spacing={2}
-            //   direction="row"
-            //   justifyContent="center"
-            //   alignItems="center"
-            style={{ marginTop: "20px" }}
-          > */}
           <Grid spacing={2} container>
-            {/* <form enctype="multipart/form-data" id="add-transport-schedule"> */}
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
@@ -122,10 +75,6 @@ function TransportScheduleCard({
                 SelectProps={{ MenuProps: MenuProps }}
                 value={data["source"]}
                 onChange={(e) => {
-                  // setScheduleData({
-                  //   ...scheduleData,
-                  //   source: e.target.value,
-                  // });
                   handleSourceData(data?.id, e.target.value);
                 }}
               >
@@ -147,10 +96,6 @@ function TransportScheduleCard({
                 SelectProps={{ MenuProps: MenuProps }}
                 value={data["destination"]}
                 onChange={(e) => {
-                  // setScheduleData({
-                  //   ...scheduleData,
-                  //   destination: e.target.value,
-                  // });
                   handleDestinationData(data?.id, e.target.value);
                 }}
               >
@@ -181,14 +126,8 @@ function TransportScheduleCard({
                 <DateTimePicker
                   fullWidth
                   label="Departure Time of Source City"
-                  // value={value}
                   value={data?.departure_time}
-                  // onChange={handleChange}
                   onChange={(e) => {
-                    // setScheduleData({
-                    //   ...scheduleData,
-                    //   departure_time: e,
-                    // });
                     handleDepartureTimeData(data?.id, e);
                   }}
                   renderInput={(params) => <TextField {...params} fullWidth />}
@@ -200,14 +139,8 @@ function TransportScheduleCard({
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
                   label="Arrival Time of Destination City"
-                  // value={value}
                   value={data?.arrival_time}
-                  // onChange={handleChange}
                   onChange={(e) => {
-                    // setScheduleData({
-                    //   ...scheduleData,
-                    //   arrival_time: e,
-                    // });
                     handleArrivalTimeData(data?.id, e);
                   }}
                   renderInput={(params) => <TextField {...params} fullWidth />}
@@ -226,10 +159,6 @@ function TransportScheduleCard({
                 label="Total Available Seats"
                 value={data["total_available_seats"]}
                 onChange={(e) => {
-                  // setScheduleData({
-                  //   ...scheduleData,
-                  //   total_available_seats: e.target.value,
-                  // });
                   handleTotalAvailableSeats(data?.id, e.target.value);
                 }}
               />
@@ -238,7 +167,6 @@ function TransportScheduleCard({
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                // disabled
                 required
                 type="number"
                 id="outlined-required"
@@ -250,18 +178,11 @@ function TransportScheduleCard({
                 }}
                 value={data["price_per_seat"]}
                 onChange={(e) => {
-                  // setScheduleData({
-                  //   ...scheduleData,
-                  //   price_per_seat: e.target.value,
-                  // });
                   handlePricePerSeat(data?.id, e.target.value);
                 }}
               />
             </Grid>
           </Grid>
-          {/* </form> */}
-          {/* </Grid> */}
-          {/* </Box> */}
         </CardContent>
       </Card>
       <br />

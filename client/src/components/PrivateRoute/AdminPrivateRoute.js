@@ -14,7 +14,6 @@ function AdminPrivateRoute({ redirect = false }) {
 
   React.useEffect(() => {
     user = JSON.parse(localStorage.getItem("user")) || null;
-    console.log(redirect);
   }, []);
   return user ? (
     user.is_admin === "Admin" ? (

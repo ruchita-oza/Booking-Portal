@@ -38,9 +38,7 @@ export const getTrainSchedules =
   ) =>
   async (dispatch) => {
     try {
-      // console.log(source, destination, minPrice, maxPrice, fromDate, toDate);
       dispatch(fetchAllTrainScheduleRequest());
-      // console.log(setResult);
       setResult(true);
       minPrice = minPrice ? minPrice : 0;
       maxPrice = maxPrice ? maxPrice : 1000000;
@@ -57,13 +55,9 @@ export const getTrainSchedules =
         toDate = null;
       }
 
-      // console.log(currentDate, toDate);
-      // console.log(toDate);
       if (source && destination) {
-        // console.log("at source dest");
         var sourceCity = await getCityApi(source);
         var destCity = await getCityApi(destination);
-        // console.log(sourceCity);
         if (
           (sourceCity === undefined && destCity === undefined) ||
           sourceCity.data.cities.count === 0 ||
@@ -108,9 +102,7 @@ export const getTrainSchedules =
           }
         }
       } else if (source) {
-        // console.log("at source dest");
         var sourceCity = await getCityApi(source);
-        // console.log(sourceCity);
         if (sourceCity === undefined || sourceCity.data.cities.count === 0) {
           throw new Error(`train on Schedule ${source} is not available`);
         }
@@ -153,9 +145,7 @@ export const getTrainSchedules =
           personCount,
           fromDate
         );
-        // console.log(data);
         if (data) {
-          console.log(data);
           if (data.data.count === 0) setResult(false);
           dispatch(fetchAllTrainScheduleSuccess(data));
           return;
@@ -164,7 +154,6 @@ export const getTrainSchedules =
         }
       }
     } catch (error) {
-      // console.log(error);
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllTrainScheduleFail(error));
@@ -182,11 +171,9 @@ export const getTrainScheduleById = (id) => async (dispatch) => {
     dispatch({ type: GET_TRAINSCHEDULE_REQUEST });
     const data = await getTrainWithId(id);
     if (data) {
-      // console.log(data);
       dispatch({ type: GET_TRAINSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    // console.log(error);
     dispatch({ type: GET_TRAINSCHEDULE_FAIL, payload: error });
   }
 };
@@ -196,11 +183,9 @@ export const getAllTrainSchedule = () => async (dispatch) => {
     dispatch({ type: ALL_TRAINSCHEDULE_REQUEST });
     const data = await getAllTrainSchedule();
     if (data) {
-      // console.log(data);
       dispatch({ type: ALL_TRAINSCHEDULE_SUCCESS, payload: data });
     }
   } catch (error) {
-    // console.log(error);
     dispatch({ type: ALL_TRAINSCHEDULE_FAIL, payload: error });
   }
 };
