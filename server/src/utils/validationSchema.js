@@ -30,23 +30,14 @@ busSchema = Joi.object({
     .required()
     .lowercase()
     .valid("non ac sleeper", "non ac seating", "ac sleeper", "ac seating"),
-  // bus_number: Joi.string()
-  //   .length(10)
-  //   .pattern(/^[A-Z]{2}[0-9]{2}[A-Z]{2}[0-9]{4}$/)
-  //   .required(),
 });
 //flight schema
-// flight number example :G8-322
 flightSchema = Joi.object({
   id: Joi.string()
     .required()
     .uppercase()
     .pattern(/^[A-Z][A-Z0-9]-[0-9]{3}$/),
   flight_name: Joi.string().required(),
-  // flight_number: Joi.string()
-  //   .required()
-  //   .uppercase()
-  //   .pattern(/^[A-Z][A-Z0-9]-[0-9]{3}$/),
   flight_type: Joi.string()
     .lowercase()
     .valid("first class", "premium economy", "business class"),

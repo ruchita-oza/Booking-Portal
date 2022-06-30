@@ -16,9 +16,6 @@ TrainSchedule.belongsTo(City, {
   foreignKey: "destination",
 });
 
-// TrainSchedule.hasMany(City, { as: "destinationId", foreignKey: "destination" });
-// City.belongsTo(TrainSchedule, { foreignKey: "destination" });
-
 const findTrainScheduleById = async (trainScheduleId) => {
   return TrainSchedule.findAll({
     where: { id: trainScheduleId },
@@ -38,7 +35,6 @@ const findTrainScheduleById = async (trainScheduleId) => {
         attributes: ["city_name"],
       },
     ],
-    // raw: true,
   });
 };
 

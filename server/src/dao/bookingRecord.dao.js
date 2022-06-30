@@ -9,7 +9,6 @@ const { findBusScheduleById } = require("../dao/bus.dao");
 const City = db.cities;
 
 TrainSchedule.hasMany(BookingRecord, {
-  // as: "train_schedule",
   foreignKey: "transport_id",
   constraints: false,
   scope: {
@@ -17,13 +16,11 @@ TrainSchedule.hasMany(BookingRecord, {
   },
 });
 BookingRecord.belongsTo(TrainSchedule, {
-  // as: "train_schedule",
   foreignKey: "transport_id",
   constraints: false,
 });
 
 BusSchedule.hasMany(BookingRecord, {
-  // as: "bus_schedule",
   foreignKey: "transport_id",
   constraints: false,
   scope: {
@@ -31,13 +28,11 @@ BusSchedule.hasMany(BookingRecord, {
   },
 });
 BookingRecord.belongsTo(BusSchedule, {
-  // as: "bus_schedule",
   foreignKey: "transport_id",
   constraints: false,
 });
 
 FlightSchedule.hasMany(BookingRecord, {
-  // as: "flight_schedule",
   foreignKey: "transport_id",
   constraints: false,
   scope: {
@@ -45,7 +40,6 @@ FlightSchedule.hasMany(BookingRecord, {
   },
 });
 BookingRecord.belongsTo(FlightSchedule, {
-  // as: "flight_schedule",
   foreignKey: "transport_id",
   constraints: false,
 });
@@ -129,26 +123,6 @@ const findBookingRecordsByUserId = async (userId) => {
   trainBookingRecords.forEach((element) => {
     allBookingRecords.push(element);
   });
-
-  // allBookingRecords.push(flightBookingRecords);
-  // allBookingRecords.push(busBookingRecords);
-  // allBookingRecords.push(trainBookingRecords);
-
-  // let booking_records_data = bookingRecords;
-
-  // let flightData = [];
-  // let trainData = [];
-  // let busData = [];
-
-  // booking_records_data.forEach((element) => {
-  //   if (element?.transport_type == "flight") {
-  //     flightData.push(element);
-  //   } else if (element?.transport_type == "train") {
-  //     trainData.push(element);
-  //   } else if (element?.transport_type == "bus") {
-  //     busData.push(element);
-  //   }
-  // });
 
   return allBookingRecords;
 };

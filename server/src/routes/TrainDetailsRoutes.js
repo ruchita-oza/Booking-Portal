@@ -19,4 +19,5 @@ router.delete(
   "/deleteTrainDetailAndSchedule/:id",
   deleteTrainDetailAndSchedule
 );
+
 module.exports = router;

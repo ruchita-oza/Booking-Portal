@@ -28,7 +28,7 @@ export const fetchAllFlightScheduleSuccess = (flightSchedules) => {
 export const fetchAllFlightScheduleFail = (error) => {
   return { type: ALL_FLIGHTSCHEDULE_FAIL, payload: error };
 };
-//get flightSchedules
+
 export const getFlightSchedules =
   (
     {
@@ -112,7 +112,6 @@ export const getFlightSchedules =
           }
         }
       } else if (source) {
-        // est");
         var sourceCity = await getCityApi(source);
         if (sourceCity === undefined || sourceCity.data.cities.count === 0) {
           throw new Error(`flight on Schedule ${source} is not available`);
@@ -171,11 +170,9 @@ export const getFlightSchedules =
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllFlightScheduleFail(error));
-      // setResult(false);
     }
   };
 
-//clearing all errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERR });
 };

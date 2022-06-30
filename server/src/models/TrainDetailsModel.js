@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("NON AC Sleeper", "AC Sleeper", "NON AC Seating"),
         default: "NON AC Sleeper",
       },
-      // train_number: {
-      //   type: DataTypes.STRING(10),
-      // },
     },
     {
       timestamps: true,

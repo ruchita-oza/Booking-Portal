@@ -1,4 +1,3 @@
-// import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
 export const getAllFlightsApi = (
   minPrice,

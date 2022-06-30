@@ -1,4 +1,3 @@
-// import AxiosInstance from "./AxiosInstance";
 import axios from "axios";
 export const getAllBusesApi = (
   minPrice,
@@ -36,7 +35,6 @@ export const getBusesWithLocationPriceTimeApi = (
   axios.get(
     `/bus/Schedule?source=${sourceId}&destination=${destId}&minPrice=${minPrice}&maxPrice=${maxPrice}&fromDate=${fromDate}&toDate=${toDate}&personCount=${personCount}&page=${currentPage}&fromDate=${fromDate}`
   );
-
 
 export const getBusesWithSourcePriceApi = (
   sourceId,

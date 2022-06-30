@@ -5,9 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       booking_id: {
         type: DataTypes.INTEGER,
-        // references: { model: "BookedRecords", key: "id" },
-        // onUpdate: "cascade",
-        // onDelete: "cascade",
       },
 
       name: {

@@ -86,7 +86,6 @@ class Apifeatures {
   pagination(resultPerPage) {
     const currentPage = Number(this.queryStr.page) || 1;
     this.skip = resultPerPage * (currentPage - 1);
-    // this.query = this.query.limit(resultPerPage).skip(skip);
     return this;
   }
 }

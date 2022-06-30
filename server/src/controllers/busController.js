@@ -75,15 +75,6 @@ const deleteBus = async (req, res, next) => {
   }
 };
 
-// const getBus = async (req, res, next) => {
-//   try {
-//     const bus = await Bus.findOne({ where: { id: req.params.id } });
-//     res.status(200).json(bus);
-//   } catch (err) {
-//     next(err);
-//   }
-// };
-
 const getBusByBusNumber = async (req, res, next) => {
   try {
     const busNumber = req.params.id;
@@ -135,7 +126,6 @@ module.exports = {
   getBusByBusNumber,
   updateBus,
   deleteBus,
-  // getBus,
   getBuses,
   deleteBusDetailAndSchedule,
 };

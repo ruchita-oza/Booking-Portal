@@ -28,7 +28,7 @@ export const fetchAllBusScheduleSuccess = (busScheduleWithBuses) => {
 export const fetchAllBusScheduleFail = (error) => {
   return { type: ALL_BUSSCHEDULE_FAIL, payload: error };
 };
-//get BusSchedules
+
 export const getBusSchedules =
   (
     {
@@ -170,11 +170,9 @@ export const getBusSchedules =
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllBusScheduleFail(error));
-      // setResult(false);
     }
   };
 
-//clearing all errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERR });
 };

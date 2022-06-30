@@ -66,8 +66,6 @@ export default function ListingPage() {
   };
 
   return (
-    // <Box sx={{ bgcolor: "background.paper", width: 500 }}>
-
     <>
       <Grid
         item

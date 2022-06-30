@@ -6,9 +6,6 @@ import {
   SET_LOGGEDIN_USER,
   SET_LOGGEDOUT_USER,
   SET_USER_SEARCH,
-  // USER_DETAIL_REQUEST,
-  // USER_DETAIL_SUCCESS,
-  // USER_DETAIL_FAIL,
   USER_BOOKING_RECORD_REQUEST,
   USER_BOOKING_RECORD_SUCCESS,
   USER_BOOKING_RECORD_FAIL,
@@ -19,7 +16,6 @@ import {
 
 import {
   getLoggedInUserApi,
-  // getUserDetailApi,
   getUserBookingRecordsDetailApi,
 } from "../../services/UserService";
 import { getBusWithId } from "../../services/BusServices";
@@ -30,7 +26,6 @@ import {
   getAllPassengerDetailsWithBookingIdApi,
 } from "../../services/BookingService";
 import toast from "react-hot-toast";
-// import { dispatch } from "react-hot-toast/dist/core/store";
 
 export const refreshState = ({ token, user }) => ({
   type: REFRESH_STATE,
@@ -108,7 +103,6 @@ export const fetchLoginUserThunkAction = (
       localStorage.setItem("user", JSON.stringify(data));
       dispatch(
         setLoggedInUser({
-          // token: data.data.token,
           user: data,
         })
       );
@@ -143,41 +137,12 @@ export const fetchUserBookingRecordsDetailThunkAction = (
   };
 };
 
-// export const fetchUserDetailThunkAction = (user_id) => {
-//   return async (dispatch) => {
-//     try {
-//       dispatch(userDetailRequest());
-//       const { data } = await getUserDetailApi({ id:user_id });
-//       if (!data) {
-//         throw new Error(data);
-//       }
-//       toast.success("Logged in successfully.");
-//       localStorage.setItem("user", JSON.stringify(data));
-//       dispatch(
-//         setLoggedInUser({
-//           // token: data.data.token,
-//           user: data,
-//         })
-//       );
-//       onSuccess();
-//     } catch (error) {
-//       onError(error.response.data.message || error?.message);
-//       dispatch(resetIsSigning());
-//       toast.error(
-//         `ERROR ${error.response.data.status} : ${error.response.data.message}`
-//       );
-//     }
-//   };
-// };
-
 export const loggingOutUserThunkAction = () => {
   return async (dispatch) => {
     try {
       dispatch(setLoggedOutUser());
-      // localStorage.removeItem("token");
       localStorage.removeItem("user");
       toast.success("Logged out successfully.");
-      // onSuccess();
     } catch (error) {}
   };
 };

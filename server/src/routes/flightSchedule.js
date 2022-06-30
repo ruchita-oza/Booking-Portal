@@ -11,7 +11,6 @@ const {
   updateFlightScheduleFromArray,
 } = require("../controllers/flightScheduleController");
 
-// router.get("/", getFlightSchedules);
 router.get("/", getAllFlightSchedules);
 router.post("/", createFlightSchedule);
 router.post("/createFlightSchedules/", createFlightScheduleFromArray);

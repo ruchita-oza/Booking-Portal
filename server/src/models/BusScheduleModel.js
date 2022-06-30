@@ -4,21 +4,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       bus_id: {
         type: DataTypes.STRING,
-        // references: { model: "BusDetails", key: "id" },
-        // onUpdate: "cascade",
-        // onDelete: "cascade",
       },
       source: {
         type: DataTypes.INTEGER,
-        // references: { model: "Cities", key: "id" },
-        // onUpdate: "cascade",
-        // onDelete: "cascade",
       },
       destination: {
         type: DataTypes.INTEGER,
-        // references: { model: "Cities", key: "id" },
-        // onUpdate: "cascade",
-        // onDelete: "cascade",
       },
       departure_time: {
         type: DataTypes.DATE,

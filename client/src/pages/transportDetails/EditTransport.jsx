@@ -314,35 +314,6 @@ function EditTransport() {
         ...item,
         transportId: transportDetails?.id != "" ? transportDetails?.id : id1,
       }));
-
-      // for (let i = 0; i < components.length; i++) {
-      //   delete scheduleData[i].id;
-      // if (transportMode.toLowerCase() === "train") {
-      //   // scheduleData[i].transportId = scheduleData[i]["train_id"];
-      //   scheduleData = scheduleData.map(
-      //     ({ transportId: train_id, ...rest }) => ({
-      //       train_id,
-      //       ...rest,
-      //     })
-      //   );
-      // } else if (transportMode.toLowerCase() === "bus") {
-      //   // scheduleData[i].transportId = scheduleData[i]["bus_id"];
-      //   scheduleData = scheduleData.map(
-      //     ({ transportId: bus_id, ...rest }) => ({
-      //       bus_id,
-      //       ...rest,
-      //     })
-      //   );
-      // } else if (transportMode.toLowerCase() === "flight") {
-      //   // scheduleData[i].transportId = scheduleData[i]["flight_id"];
-      //   scheduleData = scheduleData.map(
-      //     ({ transportId: flight_id, ...rest }) => ({
-      //       flight_id,
-      //       ...rest,
-      //     })
-      //   );
-      // }
-      // }
     }
 
     if (transportMode == null) {
@@ -362,10 +333,8 @@ function EditTransport() {
       if (response?.status) {
         if (components.length == 0) {
           toast.success(response?.data);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
-            // "/train/schedule/" + transportDetails.id,
             "/train/schedule/updateAllTrainSchedules",
             scheduleData,
             "post"
@@ -373,18 +342,13 @@ function EditTransport() {
           if (response1?.data?.status) {
             toast.success("Train details and " + response1?.data?.data);
             setComponents(components);
-            // setComponents([]);
-            // document.getElementById("add-transport-details").reset();
           } else {
             toast.error(response1?.response?.data?.message);
           }
         }
-        // toast.success(response?.data?.data);
-        // document.getElementById("add-transport-details").reset();
       } else {
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
             "/train/schedule/updateAllTrainSchedules",
@@ -398,9 +362,6 @@ function EditTransport() {
                 response1?.data?.data + " for train number : " + id
               );
             }, 4000);
-
-            // setComponents([]);
-            // document.getElementById("add-transport-details").reset();
           } else {
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
@@ -423,10 +384,8 @@ function EditTransport() {
       if (response?.status) {
         if (components.length == 0) {
           toast.success(response?.data);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
-            // "/bus/schedule/" + transportDetails.id,
             "/bus/schedule/updateAllBusSchedules",
             scheduleData,
             "post"
@@ -434,18 +393,13 @@ function EditTransport() {
           if (response1?.data?.status) {
             toast.success("Bus details and " + response1?.data?.data);
             setComponents(components);
-            // setComponents([]);
-            // document.getElementById("add-transport-details").reset();
           } else {
             toast.error(response1?.response?.data?.message);
           }
         }
-        // toast.success(response?.data?.data);
-        // document.getElementById("add-transport-details").reset();
       } else {
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
             "/bus/schedule/updateAllBusSchedules",
@@ -457,8 +411,6 @@ function EditTransport() {
             setTimeout(function () {
               toast.success(response1?.data?.data + " for bus number : " + id);
             }, 4000);
-            // setComponents([]);
-            // document.getElementById("add-transport-details").reset();
           } else {
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
@@ -481,10 +433,8 @@ function EditTransport() {
       if (response?.status) {
         if (components.length == 0) {
           toast.success(response?.data);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
-            // "/flight/schedule/" + transportDetails.id,
             "/flight/schedule/updateAllFlightSchedules/",
             scheduleData,
             "post"
@@ -492,19 +442,13 @@ function EditTransport() {
           if (response1?.data?.status) {
             toast.success("Flight details and " + response1?.data?.data);
             setComponents(components);
-            // setComponents([]);
-            // document.getElementById("add-transport-details").reset();
           } else {
             toast.error(response1?.response?.data?.message);
           }
         }
-        // toast.success(response?.data?.data);
-        // document.getElementById("add-transport-details").reset();
       } else {
-        // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
             "/flight/schedule/updateAllFlightSchedules/",
@@ -518,14 +462,11 @@ function EditTransport() {
                 response1?.data?.data + " for flight number : " + id
               );
             }, 4000);
-            // setComponents([]);
-            // document.getElementById("add-transport-details").reset();
           } else {
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
               toast.error(response1?.response?.data?.message);
-            }, 4000); //run this after 3 seconds
-            // toast.error(response1?.response?.data?.message);
+            }, 4000);
           }
         }
       }
@@ -548,18 +489,10 @@ function EditTransport() {
               <TextField
                 fullWidth
                 required
-                // select
                 id="transport-modes"
                 value={transportMode}
                 label="Transport Mode"
-                // onChange={handleTransportMode}
-              >
-                {/* {types.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))} */}
-              </TextField>
+              ></TextField>
             </Grid>
             <br />
             <Grid item xs={12} md={12}>
@@ -569,37 +502,21 @@ function EditTransport() {
                 id="outlined-required"
                 label="Transport Number"
                 value={transportDetails.id}
-                // value={
-                //   transportMode == "bus"
-                //     ? data[0].bus_id
-                //     : transportMode == "train"
-                //     ? data[0].train_id
-                //     : data[0].flight_id
-                // }
                 onChange={(e) => {
                   setTransportDetails({
                     ...transportDetails,
                     id: e.target.value,
                   });
                 }}
-                //   defaultValue="Enter transport number / id"
               />
             </Grid>
             <br />
             <Grid item xs={12} md={12}>
               <TextField
                 fullWidth
-                // disabled
                 required
                 id="outlined-required"
                 label="Transport Name"
-                // value={
-                //   transportMode.toLowerCase() == "bus"
-                //     ? transportDetails?.bus_name
-                //     : transportMode.toLowerCase() == "train"
-                //     ? transportDetails?.train_name
-                //     : transportDetails?.flight_name
-                // }
                 value={transportDetails.name}
                 onChange={(e) => {
                   setTransportDetails({
@@ -607,7 +524,6 @@ function EditTransport() {
                     name: e.target.value,
                   });
                 }}
-                //   defaultValue="Enter transport name"
               />
             </Grid>
             <br />
@@ -618,20 +534,12 @@ function EditTransport() {
                 id="outlined-required"
                 label="Transport Type"
                 value={transportDetails.type}
-                // value={
-                //   transportMode.toLowerCase() == "bus"
-                //     ? transportDetails?.bus_type
-                //     : transportMode.toLowerCase() == "train"
-                //     ? transportDetails?.train_type
-                //     : transportDetails?.flight_type
-                // }
                 onChange={(e) => {
                   setTransportDetails({
                     ...transportDetails,
                     type: e.target.value,
                   });
                 }}
-                //   defaultValue="Enter transport type"
               />
             </Grid>
             <Grid
@@ -666,8 +574,6 @@ function EditTransport() {
               <TransportScheduleCard
                 deleteComponent={deleteComponent}
                 data={i}
-                // {...transportDetails}
-                // {...scheduleData}
                 {...components}
                 handleSourceData={handleSourceData}
                 handleDestinationData={handleDestinationData}

@@ -79,9 +79,7 @@ const bull = (
 
 const StyleChip = withStyles({
   root: {
-    // backgroundColor:'salmon'
     height: "25px",
-    // padding: "1px",
   },
 })(Chip);
 
@@ -122,7 +120,6 @@ function UserProfile() {
 
   function fetchBookingRecords() {
     setUserDetails(data);
-    // setBookingDetails(data1?.data);
     if (data) {
       dispatch(
         fetchUserBookingRecordsDetailThunkAction(data?.id, onError, onSuccess)
@@ -184,12 +181,6 @@ function UserProfile() {
       toast.error(response?.message);
     }
   }
-
-  // const styles = (theme) => ({
-  //   indicator: {
-  //     backgroundColor: "red",
-  //   },
-  // });
 
   const upcomingRecords = () => {
     return allUpcomingBookingRecords.map((e) => (

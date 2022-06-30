@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Typography, Grid, CardContent } from "@mui/material";
+
 function NoRecord() {
   return (
     <div>

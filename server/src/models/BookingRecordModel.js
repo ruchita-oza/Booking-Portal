@@ -3,11 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "booking_records",
     {
       cust_id: {
-        // type: Sequelize.INTEGER,
         type: DataTypes.INTEGER,
-        // references: { model: "Users", key: "id" },
-        // onUpdate: "cascade",
-        // onDelete: "cascade",
       },
 
       cust_email: {
@@ -21,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       transport_id: {
         type: DataTypes.INTEGER(50),
-        // type: DataTypes.STRING(15),
       },
       total_ticket_count: {
         type: DataTypes.INTEGER(10),

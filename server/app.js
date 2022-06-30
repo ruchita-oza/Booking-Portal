@@ -19,17 +19,12 @@ const passengerDetailsRoutes = require("./src/routes/PassengerDetailsRoutes");
 const admin = require("./src/routes/admin");
 const bodyParser = require("body-parser");
 
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//create express route
 const router = express.Router();
 app.use(router);
 
-//middleware
 app.use(cookieParser());
 app.use("/authRoute", authRoute);
 app.use("/user", userRoute);

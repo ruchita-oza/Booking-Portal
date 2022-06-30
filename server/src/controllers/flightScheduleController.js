@@ -193,7 +193,6 @@ const getFlightScheduleById = async (req, res, next) => {
     const id = req.params.id;
     const status = await checkExistsFlightSchedule(id);
     if (status) {
-      // const flightSchedule = await FlightSchedule.findAll({ where: { id } });
       const flightSchedule = await findFlightScheduleById(id);
 
       let flight_schedule_data = JSON.parse(JSON.stringify(flightSchedule[0]));
@@ -250,7 +249,6 @@ const getFlightSchedules = async (req, res, next) => {
       .filter();
     let flightSchedules = await apiFeatures.query;
 
-    // const flightSchedulees = await FlightSchedule.findAndCountAll();
     res.status(200).json({ flightSchedules });
   } catch (err) {
     next(err);
@@ -383,16 +381,6 @@ const updateFlightScheduleFromArray = async (req, res, next) => {
         const sourceCityStatus = await checkExistsCity(source);
         const destinationCityStatus = await checkExistsCity(destination);
 
-        // if (!flightExistsStatus) {
-        //   return next(createError(422, "Error flight does not exists"));
-        // }
-
-        // if (!flightScheduleStatus) {
-        //   return next(
-        //     createError(422, "Error flight schedule does not exists")
-        //   );
-        // }
-
         if (!sourceCityStatus) {
           return next(createError(422, "Error source city does not exists"));
         }
@@ -426,12 +414,6 @@ const updateFlightScheduleFromArray = async (req, res, next) => {
             )
           );
         }
-
-        // if (totalAvailableSeats == 0) {
-        //   return next(
-        //     createError(422, "Error total available seat cannot be zero")
-        //   );
-        // }
 
         if (totalAvailableSeats < 0) {
           return next(
