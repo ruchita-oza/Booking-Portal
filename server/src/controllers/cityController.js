@@ -1,6 +1,3 @@
-// const { Op } = require("sequelize");
-// const City = require("../models/Cities");
-// const Sequelize = require("sequelize");
 const { citySchema } = require("../utils/validationSchema");
 const db = require("../models");
 const City = db.cities;

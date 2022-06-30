@@ -20,9 +20,6 @@ module.exports = (sequelize, DataTypes) => {
         ),
         default: "NON AC Seating",
       },
-      // bus_number: {
-      //   type: DataTypes.STRING(11),
-      // },
     },
     {
       timestamps: true,

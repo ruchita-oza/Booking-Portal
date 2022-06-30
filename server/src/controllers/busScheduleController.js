@@ -363,14 +363,6 @@ const updateBusScheduleFromArray = async (req, res, next) => {
         const sourceCityStatus = await checkExistsCity(source);
         const destinationCityStatus = await checkExistsCity(destination);
 
-        // if (!busExistsStatus) {
-        //   return next(createError(422, "Error bus does not exists"));
-        // }
-
-        // if (!busScheduleStatus) {
-        //   return next(createError(422, "Error bus schedule does not exists"));
-        // }
-
         if (!sourceCityStatus) {
           return next(createError(422, "Error source city does not exists"));
         }

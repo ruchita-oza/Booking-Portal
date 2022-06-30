@@ -28,7 +28,6 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  // border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -43,9 +42,7 @@ function BookingDetailCard({
 
   const StyleChip = withStyles({
     root: {
-      // backgroundColor:'salmon'
       height: "25px",
-      // padding: "1px",
     },
   })(Chip);
 
@@ -63,28 +60,14 @@ function BookingDetailCard({
 
   var todaysDate = dateFormat(new Date(), "dd/mm/yyyy", true);
 
-  // let twoDaysOlderDate = todaysDate.setDate(todaysDate.getDate() - 2);
-
-  // twoDaysOlderDate = dateFormat(twoDaysOlderDate, "dd/mm/yyyy", true)
-
   const handleCancel = (e, booking) => {
-    // var txt;
-    // if (window.confirm("Do you want to cancel your booking?!")) {
-    //   txt = "You pressed OK!";
-    // } else {
-    //   txt = "You pressed Cancel!";
-    // }
-
     let journeyDate = ParseDate.ParseDate(booking.journey_date, false);
 
     let date = journeyDate.split("/");
     date[0] = date[0] - 2;
     journeyDate = date.join("/");
 
-    // window.alert(journeyDate);
-
     if (journeyDate > todaysDate) {
-      // /booking/record/cancelBookingRecord/
       axios
         .delete("/booking/record/cancelBookingRecord/" + booking?.id)
         .then((response) => {
@@ -96,7 +79,6 @@ function BookingDetailCard({
             } else {
               fetchBookingRecords();
             }
-            // window.location.reload();
           } else {
             toast.error(response?.response?.data?.message);
           }
@@ -140,11 +122,9 @@ function BookingDetailCard({
             <StyleChip label={"  " + booking.booking_status} color="success" />
           </Typography>
           <Divider
-            // variant="absolute"
             style={{
               marginTop: "5px",
               marginBottom: "5px",
-              // height: "100%",
             }}
           />
           <Typography variant="body1">
@@ -158,13 +138,6 @@ function BookingDetailCard({
             Total fare: {" " + booking.total_fare}
             {booking.booking_status === "confirm" ? (
               <>
-                {/* <Grid
-                  spacing={2}
-                  container
-                  justifyContent="center"
-                  alignItems="center"
-                  textAlign="center"
-                > */}
                 {status === "upcoming" ? (
                   <>
                     <Grid item xs={12}>
@@ -172,10 +145,6 @@ function BookingDetailCard({
                         variant="contained"
                         color="error"
                         className="pull-right"
-                        // startIcon={<DescriptionOutlinedIcon />}
-                        // onClick={(e) => {
-                        //   handleCancel(e, booking);
-                        // }}
                         onClick={handleOpen}
                       >
                         Cancel Booking
@@ -196,8 +165,6 @@ function BookingDetailCard({
                             <Typography
                               style={{ color: "#616161" }}
                               id="modal-modal-title"
-                              // variant="h3"
-                              // component="h1"
                             >
                               Are, you sure you want to cancel this booking ?
                             </Typography>
@@ -250,7 +217,6 @@ function BookingDetailCard({
                   </Button>
                 </Grid>
                 <br />
-                {/* </Grid> */}
               </>
             ) : (
               <>
@@ -258,7 +224,6 @@ function BookingDetailCard({
                   variant="contained"
                   color="error"
                   className="pull-right"
-                  // startIcon={<DescriptionOutlinedIcon />}
                   onClick={(e) => {
                     handleCancel(e, booking);
                   }}

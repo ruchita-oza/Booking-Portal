@@ -16,7 +16,6 @@ function Login(props) {
   const { isLoading, is_admin } = useSelector(selectUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // let history = useHistory();
   const validate = Yup.object().shape({
     email: Yup.string().required("Email is required").email("Email is invalid"),
     password: Yup.string()
@@ -34,11 +33,7 @@ function Login(props) {
   };
   function handleLogin({ email, password }) {
     fetchData(email, password);
-    // dispatch(fetchLoginUserThunkAction(email, password), navigate("/"));
   }
-  // useEffect(() => {
-  //   if (loggedInUser) navigate("/");
-  // }, [error]);
 
   return (
     <>
@@ -100,7 +95,6 @@ function Login(props) {
                                   }
                                   value={values["email"]}
                                   setFieldValue={setFieldValue}
-                                  // onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <div className="row">
                                   <div className="col-lg-3"></div>
@@ -133,7 +127,6 @@ function Login(props) {
                                       : "")
                                   }
                                   value={values["password"]}
-                                  // onChange={(e) => setPassword(e.target.value)}
                                   setFieldValue={setFieldValue}
                                 />
                                 <div className="row">
@@ -157,7 +150,6 @@ function Login(props) {
                                   onClick={() => {}}
                                 />
                               </div>
-                              {/* <hr className='my-4' /> */}
                               <div className="w-100 content ">
                                 <div className="d-flex justify-content-center">
                                   <div>

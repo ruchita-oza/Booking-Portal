@@ -20,7 +20,7 @@ import { getBusScheduleById } from "../../redux/buses/actions";
 import { getTrainScheduleById } from "../../redux/trains/actions";
 import toast from "react-hot-toast";
 import axios from "axios";
-// import { dispatch } from "react-hot-toast/dist/core/store";
+
 function BookingPage({ match }) {
   const { loggedInUser } = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -105,13 +105,6 @@ function BookingPage({ match }) {
       : trainData?.departure_time;
   const addBookingRecord = async () => {
     try {
-      // const headers = {
-      //   Accept: "application/json",
-      //   "Content-Type": "application/json",
-      // };
-      // const response = await axios.post(`/booking/record`, booking, {
-      //   headers,
-      // });
       const res = await fetch("/booking/record", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -297,12 +290,6 @@ function BookingPage({ match }) {
                   Review your personal details
                 </div>
               </h3>
-              {/* <Link
-                className="pull-right color-blue under-link change-flt-btn"
-                to="/"
-              >
-                Change {transport_type}
-              </Link> */}
               <form
                 name="travellerForm"
                 id="travellerForm"
@@ -488,7 +475,6 @@ function BookingPage({ match }) {
           {" "}
           <div className="box fair-details ng-scope">
             {" "}
-            {/* fair details */}{" "}
             <div className="box-title bold normal clearfix hide-under-overlay half-width">
               {" "}
               <span className="pull-left fs-md pd-tp">Fair Details</span>
@@ -526,16 +512,7 @@ function BookingPage({ match }) {
                 <br />
                 <br />
                 <br />
-                <div className=" full-spread pr" style={{ top: "50px" }}>
-                  {/* <button
-                    // type="submit"
-                    className="bkButton "
-                    style={{ width: "100%", height: "100%" }}
-                    onClick={handleBookingSubmit}
-                  >
-                    Confirm your booking!
-                  </button> */}
-                </div>
+                <div className=" full-spread pr" style={{ top: "50px" }}></div>
               </div>
             </div>
           </div>

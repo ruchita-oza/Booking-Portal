@@ -20,6 +20,5 @@ router.get("/flights", adminallFlights);
 router.put("/flights/:id", activeFlightWithSchedule);
 router.get("/trains", adminallTrains);
 router.put("/trains/:id", activeTrainWithSchedule);
-// router.post("/register", register);
-// router.post("/login", login);
+
 module.exports = router;

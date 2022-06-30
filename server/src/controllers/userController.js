@@ -1,4 +1,3 @@
-// const User = require("../models/Users");
 const db = require("../models");
 const User = db.users;
 
@@ -19,13 +18,11 @@ const updateUser = async (req, res, next) => {
     }
     const user = await User.findOne({ where: { id: req.params.id } });
     const { password, ...otherDetails } = user.dataValues;
-    res
-      .status(200)
-      .json({
-        data: "User details updated successfully",
-        user: { ...otherDetails },
-        success: true,
-      });
+    res.status(200).json({
+      data: "User details updated successfully",
+      user: { ...otherDetails },
+      success: true,
+    });
   } catch (err) {
     next(err);
   }
@@ -46,7 +43,7 @@ const getUser = async (req, res, next) => {
     const status = await checkExistsUser(userId);
     if (status) {
       const user = await User.findAll({ where: { id: userId } });
-      const {password , ...otherDetails} = user;
+      const { password, ...otherDetails } = user;
       return res.json({ data: otherDetails, status: true });
     }
     return next(createError(422, "Error user does not exists"));
@@ -57,8 +54,7 @@ const getUser = async (req, res, next) => {
 const getUsers = async (req, res, next) => {
   try {
     const users = await User.findAndCountAll({ where: { is_admin: "User" } });
-    // const {...otherDetails} = users
-    res.status(200).json({ users});
+    res.status(200).json({ users });
   } catch (err) {
     next(err);
   }

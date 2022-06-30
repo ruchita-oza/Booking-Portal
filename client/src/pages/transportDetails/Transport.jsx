@@ -54,14 +54,9 @@ function Transport() {
       }
     }
     setComponents([].concat(allComponents));
-    // const selectedSchedule = components.find((item) => item.id == id);
-    // selectedSchedule.source = sourceData;
   }
 
   function handleDestinationData(id, destinationData) {
-    // const selectedSchedule = components.find((item) => item.id == id);
-    // selectedSchedule.destination = destinationData;
-    // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
     for (let i = 0; i < allComponents.length; i++) {
       if (id == allComponents[i].id) {
@@ -72,9 +67,6 @@ function Transport() {
   }
 
   function handleDepartureTimeData(id, departureTimeData) {
-    // const selectedSchedule = components.find((item) => item.id == id);
-    // selectedSchedule.departure_time = departureTimeData;
-    // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
     for (let i = 0; i < allComponents.length; i++) {
       if (id == allComponents[i].id) {
@@ -85,9 +77,6 @@ function Transport() {
   }
 
   function handleArrivalTimeData(id, arrivalTimeData) {
-    // const selectedSchedule = components.find((item) => item.id == id);
-    // selectedSchedule.arrival_time = arrivalTimeData;
-    // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
     for (let i = 0; i < allComponents.length; i++) {
       if (id == allComponents[i].id) {
@@ -98,9 +87,6 @@ function Transport() {
   }
 
   function handleTotalAvailableSeats(id, totalAvailableSeatsData) {
-    // const selectedSchedule = components.find((item) => item.id == id);
-    // selectedSchedule.total_available_seats = totalAvailableSeatsData;
-    // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
     for (let i = 0; i < allComponents.length; i++) {
       if (id == allComponents[i].id) {
@@ -111,9 +97,6 @@ function Transport() {
   }
 
   function handlePricePerSeat(id, pricePerSeatData) {
-    // const selectedSchedule = components.find((item) => item.id == id);
-    // selectedSchedule.price_per_seat = pricePerSeatData;
-    // setComponents([].concat(selectedSchedule));
     let allComponents = [...components];
     for (let i = 0; i < allComponents.length; i++) {
       if (id == allComponents[i].id) {
@@ -122,12 +105,6 @@ function Transport() {
     }
     setComponents([].concat(allComponents));
   }
-
-  // allScheduleData.push(components);
-
-  // useEffect(() => {
-  //   allScheduleData.push(scheduleData);
-  // }, [scheduleData]);
 
   function addComponent(data) {
     setComponents([
@@ -167,7 +144,6 @@ function Transport() {
       for (let i = 0; i < components.length; i++) {
         delete scheduleData[i].id;
         if (transportMode === "train") {
-          // scheduleData[i].transportId = scheduleData[i]["train_id"];
           scheduleData = scheduleData.map(
             ({ transportId: train_id, ...rest }) => ({
               train_id,
@@ -175,7 +151,6 @@ function Transport() {
             })
           );
         } else if (transportMode === "bus") {
-          // scheduleData[i].transportId = scheduleData[i]["bus_id"];
           scheduleData = scheduleData.map(
             ({ transportId: bus_id, ...rest }) => ({
               bus_id,
@@ -183,7 +158,6 @@ function Transport() {
             })
           );
         } else if (transportMode === "flight") {
-          // scheduleData[i].transportId = scheduleData[i]["flight_id"];
           scheduleData = scheduleData.map(
             ({ transportId: flight_id, ...rest }) => ({
               flight_id,
@@ -223,13 +197,9 @@ function Transport() {
             document.getElementById("add-transport-details").reset();
           }
         }
-        // toast.success(response?.data?.data);
-        // document.getElementById("add-transport-details").reset();
       } else {
-        // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
             "/train/schedule/createTrainSchedules",
@@ -272,13 +242,9 @@ function Transport() {
             document.getElementById("add-transport-details").reset();
           }
         }
-        // toast.success(response?.data?.data);
-        // document.getElementById("add-transport-details").reset();
       } else {
-        // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
             "/bus/schedule/createBusSchedules",
@@ -325,13 +291,9 @@ function Transport() {
             document.getElementById("add-transport-details").reset();
           }
         }
-        // toast.success(response?.data?.data);
-        // document.getElementById("add-transport-details").reset();
       } else {
-        // toast.error(response?.response?.data?.message);
         if (components.length == 0) {
           toast.error(response?.response?.data?.message);
-          // document.getElementById("add-transport-details").reset();
         } else {
           const response1 = await UsePost(
             "/flight/schedule/createFlightSchedules",
@@ -350,8 +312,7 @@ function Transport() {
             toast.error(response?.response?.data?.message);
             setTimeout(function () {
               toast.error(response1?.response?.data?.message);
-            }, 4000); //run this after 3 seconds
-            // toast.error(response1?.response?.data?.message);
+            }, 4000);
           }
         }
       }
@@ -400,14 +361,12 @@ function Transport() {
                     id: e.target.value,
                   });
                 }}
-                //   defaultValue="Enter transport number / id"
               />
             </Grid>
             <br />
             <Grid item xs={12} md={12}>
               <TextField
                 fullWidth
-                // disabled
                 required
                 id="outlined-required"
                 label="Transport Name"
@@ -417,7 +376,6 @@ function Transport() {
                     name: e.target.value,
                   });
                 }}
-                //   defaultValue="Enter transport name"
               />
             </Grid>
             <br />
@@ -433,7 +391,6 @@ function Transport() {
                     type: e.target.value,
                   });
                 }}
-                //   defaultValue="Enter transport type"
               />
             </Grid>
             <Grid
@@ -468,8 +425,6 @@ function Transport() {
               <TransportScheduleCard
                 deleteComponent={deleteComponent}
                 data={i}
-                // {...transportDetails}
-                // {...scheduleData}
                 {...components}
                 handleSourceData={handleSourceData}
                 handleDestinationData={handleDestinationData}
@@ -479,15 +434,6 @@ function Transport() {
                 handlePricePerSeat={handlePricePerSeat}
               />
             ))}
-            {/* <Grid container justifyContent="center">
-              <Button
-                variant="contained"
-                style={{ marginTop: "15px", width: "100px" }}
-                onClick={handleAdd}
-              >
-                Add
-              </Button>
-            </Grid> */}
           </form>
         </Grid>
       </Box>
@@ -500,20 +446,6 @@ function Transport() {
           Add
         </Button>
       </Grid>
-      {/* <Box>
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          style={{ marginTop: "20px" }}
-        >
-          <Button variant="contained">
-            <AddIcon fontSize="large" />
-          </Button>
-        </Grid>
-      </Box> */}
     </>
   );
 }

@@ -1,5 +1,4 @@
 import Header from "../../components/header/Header";
-// import Navbar from "../../components/navbar/Navbar";
 import Transport from "../../components/transport/Transport";
 import { faPlane, faBus, faTrain } from "@fortawesome/free-solid-svg-icons";
 
@@ -15,13 +14,11 @@ const Home = ({ type }) => {
   const [destination, setDestination] = useState("");
   const [currentState, setCurrentState] = useState("");
 
-  // Step 2: Get city name
   function getCity(coordinates) {
     var xhr = new XMLHttpRequest();
     var lat = coordinates[0];
     var lng = coordinates[1];
 
-    // Paste your LocationIQ token below.
     xhr.open(
       "GET",
       "https://us1.locationiq.com/v1/reverse.php?key=pk.17d0cbca19dd9c109e5d5f13ede954be&lat=" +
@@ -45,7 +42,6 @@ const Home = ({ type }) => {
     }
   }
 
-  // get state name
   async function getStates() {
     let url = "https://ipinfo.io/json?token=779eae9e88d5b2";
     let response = await fetch(url);
@@ -71,26 +67,25 @@ const Home = ({ type }) => {
     }
 
     function error(err) {
-      // console.warn(`ERROR(${err.code}): ${err.message}`); 
       switch (err.code) {
         case err.PERMISSION_DENIED:
           alert("You denied the request for Geolocation.");
-          document.getElementById('nearbyCities').classList.add('d-none')
+          document.getElementById("nearbyCities").classList.add("d-none");
           break;
 
         case error.POSITION_UNAVAILABLE:
           alert("Location information is unavailable.");
-          document.getElementById('nearbyCities').classList.add('d-none')
+          document.getElementById("nearbyCities").classList.add("d-none");
           break;
 
         case error.TIMEOUT:
           alert("The request to get user location timed out.");
-          document.getElementById('nearbyCities').classList.add('d-none')
+          document.getElementById("nearbyCities").classList.add("d-none");
           break;
 
         case error.UNKNOWN_ERROR:
           alert("An unknown error occurred.");
-          document.getElementById('nearbyCities').classList.add('d-none')
+          document.getElementById("nearbyCities").classList.add("d-none");
           break;
 
         default:
@@ -104,7 +99,7 @@ const Home = ({ type }) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className=''>
+        <div className="">
           {type === "flights" && (
             <Header
               type={type}
@@ -147,7 +142,7 @@ const Home = ({ type }) => {
               setDestination={setDestination}
             />
           )}
-          <div className='homeContainer'>
+          <div className="homeContainer">
             <Transport
               source={source}
               destination={destination}

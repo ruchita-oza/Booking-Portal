@@ -1,4 +1,3 @@
-//import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from "./types";
 import {
   RESET_IS_SIGNING,
   SET_IS_SIGNING,
@@ -16,14 +15,10 @@ import {
 
 const initialState = {
   loggedInUser: null,
-  //   token: null,
   isLoading: false,
   error: "",
   isSigning: false,
   bookingRecords: [],
-  //   reportedUsers: [],
-  //   forgetEmail: "",
-  //   search: "",
 };
 const initialPassengerDetails = {
   isLoading: false,
@@ -38,7 +33,6 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loggedInUser: action.payload.user,
-        //   token: action.payload.token,
         error: "",
         isSigning: false,
       };
@@ -87,8 +81,6 @@ export const authReducer = (state = initialState, action) => {
         bookingRecords: [],
         error: action.payload,
       };
-    // case CLEAR_ERR:
-    //   return { ...state, error: null };
     default:
       return state;
   }

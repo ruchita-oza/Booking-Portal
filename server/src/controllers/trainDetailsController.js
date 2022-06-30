@@ -16,7 +16,6 @@ const createTrain = async (req, res, next) => {
     const data = await trainSchema.validateAsync(req.body);
     const status = await checkExists(data.id);
     if (!status) {
-      // const data = data;
       const train = await Train.create(data);
       await train.save();
 

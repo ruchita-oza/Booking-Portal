@@ -5,7 +5,6 @@ const {
   createTrainSchedule,
   updateTrainSchedule,
   deleteTrainSchedule,
-  viewAllTrainSchedule,
   viewTrainScheduleById,
   viewTrainSchedules,
   createTrainScheduleFromArray,
@@ -17,7 +16,6 @@ router.post("/", createTrainSchedule);
 router.post("/createTrainSchedules/", createTrainScheduleFromArray);
 router.put("/:id", updateTrainSchedule);
 router.delete("/:id", deleteTrainSchedule);
-// router.get("/", viewAllTrainSchedule);
 router.get("/:id", viewTrainScheduleById);
 router.get("/", viewTrainSchedules);
 router.get("/getAllTrainSchedulesByTrainId/:id", getAllTrainSchedulesByTrainId);

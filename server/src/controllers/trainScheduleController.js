@@ -184,42 +184,13 @@ const deleteTrainSchedule = async (req, res, next) => {
   }
 };
 
-// const viewAllTrainSchedule = async (req, res, next) => {
-//   try {
-//     // const trainschedules = await TrainSchedule.findAll({});
-//     const trainschedules = await findAllTrainSchedules();
-//     // let data = [];
-//     // trainschedules.forEach((element) => {
-//     //   let train_schedule_data = [...element];
-//     //   train_schedule_data.source_name = element.source_name[0]?.city_name;
-//     //   train_schedule_data.destination_name =
-//     //     element.destination_name[0]?.city_name;
-//     //   data.push(train_schedule_data);
-//     // });
-//     return res.json({ data: trainschedules, status: true });
-//   } catch (error) {
-//     return next(
-//       createError(500, "Error while fetching train schedule " + error)
-//     );
-//   }
-// };
-
 const viewTrainScheduleById = async (req, res, next) => {
   try {
     const trainScheduleId = req.params.id;
     const status = await checkExistsTrainSchedule(trainScheduleId);
     if (status) {
-      // const trainschedule = await TrainSchedule.findAll({
-      //   where: { id: trainScheduleId },
-      // });
       const trainschedule = await findTrainScheduleById(trainScheduleId);
-      // let data = [];
-      // trainschedule.forEach(element => {
-      //   let train_schedule_data = [...element];
-      //   train_schedule_data.source_name = element.source_name[0]?.city_name
-      //   train_schedule_data.destination_name = element.source_name[0]?.city_name;
-      //   data.push(train_schedule_data)
-      // });
+
       let train_schedule_data = JSON.parse(JSON.stringify(trainschedule[0]));
       train_schedule_data.source_name =
         train_schedule_data.source_name?.city_name;
@@ -245,7 +216,6 @@ const viewTrainSchedules = async (req, res, next) => {
       .TicketFilter()
       .pagination(resultPerPage)
       .filter();
-    // let trainschedules = await apiFeatures.query;
     let trainschedules = await findAllTrainSchedules({
       queryCopy: apiFeatures.queryCopy,
       priceQuery: apiFeatures.priceQuery,
@@ -469,9 +439,6 @@ const updateTrainScheduleFromArray = async (req, res, next) => {
             where: { id: trainScheduleId },
           });
         }
-
-        // const trainSchedule = await TrainSchedule.create(scheduleData[i]);
-        // await trainSchedule.save();
       } catch (error) {
         throw error;
       }
@@ -502,7 +469,6 @@ module.exports = {
   createTrainSchedule,
   updateTrainSchedule,
   deleteTrainSchedule,
-  // viewAllTrainSchedule,
   viewTrainScheduleById,
   viewTrainSchedules,
   createTrainScheduleFromArray,

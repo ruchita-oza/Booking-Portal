@@ -62,18 +62,10 @@ const List = () => {
     filteredPerCount: trainFilterCount,
     resultPerPage: trainResultPerPage,
   } = useSelector(selectTrains);
-  // var filteredPerCount = null;
-  // const SetfilteredPerCount = () => {
-  //   filteredPerCount =
-  //     location.path === "/buses"
-  //       ? busFilterCount
-  //       : location.pathname === "/trains"
-  //       ? trainFilterCount
-  //       : flightFilterCount;
-  // };
+
   const isLoading = isFlightLoaded || isTrainLoaded || isBusLoaded;
   const location = useLocation();
-  // const [filteredPerCount, SetFilteredPerCount] = useState(null);
+
   const [source, SetSource] = useState(location?.state?.source || "");
   const [destination, SetDestination] = useState(
     location?.state?.destination || ""
@@ -147,7 +139,6 @@ const List = () => {
             setResult
           )
         );
-        // SetFilteredPerCount(flightFilterCount);
         break;
 
       case "/buses":
@@ -166,7 +157,6 @@ const List = () => {
             setResult
           )
         );
-        // SetFilteredPerCount(busFilterCount);
         break;
       default:
         dispatch(
@@ -184,9 +174,7 @@ const List = () => {
             setResult
           )
         );
-      // SetFilteredPerCount(trainFilterCount);
     }
-    // SetfilteredPerCount();
   };
 
   useEffect(() => {
@@ -211,7 +199,6 @@ const List = () => {
             setResult
           )
         );
-        // SetFilteredPerCount(flightFilterCount);
         break;
       case "/buses":
         dispatch(
@@ -229,7 +216,6 @@ const List = () => {
             setResult
           )
         );
-        // SetFilteredPerCount(busFilterCount);
         break;
 
       default:
@@ -248,7 +234,6 @@ const List = () => {
             setResult
           )
         );
-      // SetFilteredPerCount(trainFilterCount);
     }
   }, [dispatch, location.pathname, currentPage]);
 
@@ -467,7 +452,6 @@ const List = () => {
           </div>
         </div>
       </motion.div>
-      {/* )}{" "} */}
     </>
   );
 };

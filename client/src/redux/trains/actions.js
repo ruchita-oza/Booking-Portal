@@ -30,7 +30,6 @@ export const fetchAllTrainScheduleFail = (error) => {
   return { type: ALL_TRAINSCHEDULE_FAIL, payload: error };
 };
 
-//get trainSchedules
 export const getTrainSchedules =
   (
     { source, destination, minPrice, maxPrice, fromDate, toDate, personCount },
@@ -157,11 +156,9 @@ export const getTrainSchedules =
       toast.error(error.message);
       setResult(false);
       dispatch(fetchAllTrainScheduleFail(error));
-      // setResult(false);
     }
   };
 
-//clearing all errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERR });
 };

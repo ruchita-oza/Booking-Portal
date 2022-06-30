@@ -121,7 +121,6 @@ const adminallBuses = async (req, res, next) => {
   try {
     let buses = await Bus.findAndCountAll({
       paranoid: false,
-      // include: [Other],
     });
     res.status(200).json({ buses });
   } catch (err) {
@@ -133,7 +132,6 @@ const adminallFlights = async (req, res, next) => {
   try {
     let flights = await Flight.findAndCountAll({
       paranoid: false,
-      // include: [Other],
     });
     res.status(200).json({ flights });
   } catch (err) {
@@ -145,7 +143,6 @@ const adminallTrains = async (req, res, next) => {
   try {
     let trains = await Train.findAndCountAll({
       paranoid: false,
-      // include: [Other],
     });
     res.status(200).json({ trains });
   } catch (err) {
